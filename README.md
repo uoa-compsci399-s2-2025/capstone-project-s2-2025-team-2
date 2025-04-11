@@ -1,6 +1,8 @@
 # tsoa-boilerplate
 
-This is a boilerplate for a TypeScript Express server using TSOA. This project is designed to provide a starting point for building a RESTful API using TypeScript and Express.
+This is a boilerplate for a TypeScript Express server using TSOA. This project is designed to provide a starting point for building a RESTful API using TypeScript and Express. 
+
+made by bbj - Jeffery.
 
 ## Installation
 
