@@ -1,5 +1,8 @@
 import { User } from "../../data-layer/models/models";
-import { UserCreationParams, UserService } from "../../data-layer/services/UserService";
+import {
+  UserCreationParams,
+  UserService,
+} from "../../data-layer/services/UserService";
 import {
   Body,
   Controller,
