@@ -6,6 +6,7 @@ import {
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Path,
   Post,
@@ -32,5 +33,10 @@ export class UsersController extends Controller {
     this.setStatus(201); // set return status 201
     new UserService().create(requestBody);
     return;
+  }
+
+  @Delete("{userId}")
+  public async deleteUser(@Path() userId: number): Promise<void> {
+    await new UserService().delete(userId);
   }
 }
