@@ -39,4 +39,9 @@ export class UsersController extends Controller {
   public async deleteUser(@Path() userId: number): Promise<void> {
     await new UserService().delete(userId);
   }
+
+  @Get()
+  public async getAllUsers(): Promise<User[]> {
+    return new UserService().getAll();
+  }
 }

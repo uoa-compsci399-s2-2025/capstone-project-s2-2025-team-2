@@ -35,6 +35,10 @@ export class UserService {
     };
   }
 
+  public getAll(): User[] {
+    return users;
+  }
+
   public add(user: User): void {
     users.push(user);
   }
