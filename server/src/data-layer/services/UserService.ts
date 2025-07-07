@@ -21,6 +21,8 @@ const users: User[] = [
     phoneNumbers: ["123-456-7890", "987-654-3210"],
   },
 ];
+
+let count = users.length;
 // A post request should not contain an id.
 export type UserCreationParams = Pick<User, "email" | "name" | "phoneNumbers">;
 
@@ -44,11 +46,13 @@ export class UserService {
   }
 
   public create(userCreationParams: UserCreationParams): User {
-    return {
-      id: Math.floor(Math.random() * 10000), // Random
-      status: "Happy",
+    count++;
+    const user = {
+      id: count, // Random
       ...userCreationParams,
     };
+    users.push(user);
+    return user;
   }
 
   public async delete(id: number): Promise<void> {
