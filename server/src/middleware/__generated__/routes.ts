@@ -32,7 +32,7 @@ const models: TsoaRoute.Models = {
             "phoneNumbers": {"dataType":"array","array":{"dataType":"string"},"required":true},
             "title": {"dataType":"string","required":true},
             "admin_id": {"dataType":"double","required":true},
-            "permissions": {"dataType":"array","array":{"dataType":"string"},"required":true},
+            "permissions": {"dataType":"array","array":{"dataType":"string"}},
         },
         "additionalProperties": false,
     },
@@ -44,7 +44,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "UserCreationParams": {
         "dataType": "refAlias",
-        "type": {"ref":"Pick_User.email-or-name-or-phoneNumbers_","validators":{}},
+        "type": {"dataType":"intersection","subSchemas":[{"ref":"Pick_User.email-or-name-or-phoneNumbers_"},{"dataType":"nestedObjectLiteral","nestedProperties":{"isAdmin":{"dataType":"boolean"}}}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 };

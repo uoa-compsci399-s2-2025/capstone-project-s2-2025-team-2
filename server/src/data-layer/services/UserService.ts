@@ -33,12 +33,12 @@ export type UserCreationParams = Pick<
 
 export class UserService {
   public get(id: number, name?: string): User {
-    return {
-      id,
-      email: "jane@doe.com",
-      name: name ?? "Jane Doe",
-      phoneNumbers: [],
-    };
+    const user = users.find((user) => user.id === id);
+    if (name) {
+      const user = users.find((user) => user.name === name);
+      return user;
+    }
+    return user;
   }
 
   public getAll(): User[] {
