@@ -32,7 +32,6 @@ export class UserService {
       id,
       email: "jane@doe.com",
       name: name ?? "Jane Doe",
-      status: "Happy",
       phoneNumbers: [],
     };
   }
