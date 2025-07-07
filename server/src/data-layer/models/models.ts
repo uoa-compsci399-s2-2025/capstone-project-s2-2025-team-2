@@ -4,3 +4,9 @@ export interface User {
   name: string;
   phoneNumbers: string[];
 }
+
+export interface Admin extends User {
+  title: string;
+  admin_id: number;
+  permissions?: string[];
+}

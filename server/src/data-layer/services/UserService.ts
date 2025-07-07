@@ -1,4 +1,4 @@
-import { User } from "data-layer/models/models";
+import { User, Admin } from "data-layer/models/models";
 
 // Mock user data
 const users: User[] = [
@@ -24,7 +24,12 @@ const users: User[] = [
 
 let count = users.length;
 // A post request should not contain an id.
-export type UserCreationParams = Pick<User, "email" | "name" | "phoneNumbers">;
+export type UserCreationParams = Pick<
+  User,
+  "email" | "name" | "phoneNumbers"
+> & {
+  isAdmin?: boolean;
+};
 
 export class UserService {
   public get(id: number, name?: string): User {
@@ -46,6 +51,17 @@ export class UserService {
 
   public create(userCreationParams: UserCreationParams): User {
     count++;
+    if (userCreationParams.isAdmin) {
+      const admin: Admin = {
+        id: count,
+        ...userCreationParams,
+        title: "Security Admin",
+        admin_id: count * 1000,
+        permissions: ["read", "write", "delete"],
+      };
+      users.push(admin);
+      return admin;
+    }
     const user = {
       id: count, // Random
       ...userCreationParams,
