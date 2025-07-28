@@ -35,49 +35,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"Admin": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"email": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"phoneNumbers": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					},
-					"title": {
-						"type": "string"
-					},
-					"admin_id": {
-						"type": "number",
-						"format": "double"
-					},
-					"permissions": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"id",
-					"email",
-					"name",
-					"phoneNumbers",
-					"title",
-					"admin_id"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"Pick_User.email-or-name-or-phoneNumbers_": {
 				"properties": {
 					"email": {
@@ -134,14 +91,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"anyOf": [
-										{
-											"$ref": "#/components/schemas/User"
-										},
-										{
-											"$ref": "#/components/schemas/Admin"
-										}
-									]
+									"$ref": "#/components/schemas/User"
 								}
 							}
 						}
@@ -198,14 +148,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"anyOf": [
-										{
-											"$ref": "#/components/schemas/User"
-										},
-										{
-											"$ref": "#/components/schemas/Admin"
-										}
-									]
+									"$ref": "#/components/schemas/User"
 								}
 							}
 						}
