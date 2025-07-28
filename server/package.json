@@ -1,0 +1,38 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "packageManager": "yarn@4.6.0",
+  "scripts": {
+    "nodemon": "nodemon",
+    "build": "tsc -p ./tsconfig.json && tsc-alias",
+    "serve": "node --es-module-specifier-resolution=node dist/index.js",
+    "start": "concurrently \"yarn nodemon -e ts,js --exec \" \"yarn tsoa spec-and-routes\""
+  },
+  "dependencies": {
+    "@tsoa/runtime": "^6.6.0",
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1",
+    "tsoa": "^6.6.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/dotenv": "^8.2.3",
+    "@types/express": "^5",
+    "@types/helmet": "^4.0.0",
+    "@types/node": "^22.14.0",
+    "@types/swagger-jsdoc": "^6",
+    "@types/swagger-ui-express": "^4.1.8",
+    "concurrently": "^9.1.2",
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "tsc-alias": "^1.8.8",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.3.3"
+  }
+}

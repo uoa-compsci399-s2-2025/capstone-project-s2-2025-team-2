@@ -1,0 +1,22 @@
+{
+  "name": "tsoa-boilerplate",
+  "version": "1.0.0",
+  "description": "TSOA Boilerplate",
+  "private": true,
+  "scripts": {
+    "dev-server": "yarn workspace server start"
+  },
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "packageManager": "yarn@4.6.0",
+  "devDependencies": {
+    "@types/node": "^22.14.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "yarn": "^1.22.22"
+  }
+}
