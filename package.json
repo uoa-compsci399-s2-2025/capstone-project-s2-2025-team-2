@@ -4,7 +4,8 @@
   "description": "TSOA Boilerplate",
   "private": true,
   "scripts": {
-    "dev-server": "yarn workspace server start"
+    "dev-server": "yarn workspace server start",
+    "dev-client": "yarn workspace client dev"
   },
   "workspaces": [
     "client",
