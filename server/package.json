@@ -7,7 +7,7 @@
     "nodemon": "nodemon",
     "build": "tsc -p ./tsconfig.json && tsc-alias",
     "serve": "node --es-module-specifier-resolution=node dist/index.js",
-    "start": "concurrently \"yarn nodemon -e ts,js --exec \" \"yarn tsoa spec-and-routes\""
+    "start": "concurrently \"pnpm nodemon -e ts,js --exec\" \"pnpm tsoa spec-and-routes\""
   },
   "dependencies": {
     "@tsoa/runtime": "^6.6.0",
@@ -21,6 +21,7 @@
     "tsoa": "^6.6.0"
   },
   "devDependencies": {
+    "@types/body-parser": "^1.19.6",
     "@types/cors": "^2.8.17",
     "@types/dotenv": "^8.2.3",
     "@types/express": "^5",
