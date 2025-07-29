@@ -1,0 +1,248 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+env:
+  CI: "true"
+
+jobs:
+  check_changes:
+    name: Check Changes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      exists: ${{ steps.filter.outputs.exists }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Filter changes
+        uses: yumemi-inc/path-filter@v2
+        id: filter
+        with:
+          patterns: |
+            **
+            !**.md
+            !.gitignore
+            !.gitattributes
+            !.github/**
+            !.vscode/**
+            !.env.example
+
+  setup:
+    name: Setup
+    needs: check_changes
+    if: ${{ needs.check_changes.outputs.exists == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Cache pnpm store and node_modules
+        uses: actions/cache@v4
+        id: cache-pnpm-store
+        with:
+          path: |
+            node_modules
+            server/node_modules
+            client/node_modules
+            ~/.pnpm-store
+          key: pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-store-
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Enable Corepack & prepare pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
+
+      - name: Install dependencies if cache missed
+        if: steps.cache-pnpm-store.outputs.cache-hit != 'true'
+        run: pnpm install
+
+  style:
+    needs: [check_changes, setup]
+    if: ${{ needs.check_changes.outputs.exists == 'true' }}
+    name: Prettier
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Enable Corepack & prepare pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
+
+      - name: Restore pnpm cache and node_modules
+        uses: actions/cache@v4
+        id: cache-pnpm-store
+        with:
+          path: |
+            node_modules
+            server/node_modules
+            client/node_modules
+            ~/.pnpm-store
+          key: pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-store-
+
+      - name: Install dependencies if cache missed
+        if: steps.cache-pnpm-store.outputs.cache-hit != 'true'
+        run: pnpm install
+
+      - name: Check formatting
+        run: pnpm run format:ci
+
+  lint:
+    needs: [check_changes, setup]
+    if: ${{ needs.check_changes.outputs.exists == 'true' }}
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Enable Corepack & prepare pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
+
+      - name: Restore pnpm cache and node_modules
+        uses: actions/cache@v4
+        id: cache-pnpm-store
+        with:
+          path: |
+            node_modules
+            server/node_modules
+            client/node_modules
+            ~/.pnpm-store
+          key: pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-store-
+
+      - name: Install dependencies if cache missed
+        if: steps.cache-pnpm-store.outputs.cache-hit != 'true'
+        run: pnpm install
+
+      - name: Run linting
+        run: pnpm run lint:ci
+
+  codegen:
+    needs: [check_changes, setup]
+    if: ${{ needs.check_changes.outputs.exists == 'true' }}
+    name: Codegen
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Enable Corepack & prepare pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
+
+      - name: Restore pnpm cache and node_modules
+        uses: actions/cache@v4
+        id: cache-pnpm-store
+        with:
+          path: |
+            node_modules
+            server/node_modules
+            client/node_modules
+            ~/.pnpm-store
+          key: pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-store-
+
+      - name: Install dependencies if cache missed
+        if: steps.cache-pnpm-store.outputs.cache-hit != 'true'
+        run: pnpm install
+
+      - name: Generate typing
+        run: pnpm --filter server run tsoa spec-and-routes
+
+      - name: Write git diff
+        run: |
+          if git diff --quiet; then
+            echo "TYPE_GEN_DIFF=0" >> $GITHUB_ENV
+          else
+            echo "TYPE_GEN_DIFF=1" >> $GITHUB_ENV
+          fi
+
+      - name: Check for differences in typing
+        if: ${{ env.TYPE_GEN_DIFF != '0'}}
+        uses: actions/github-script@v3
+        with:
+          script: |
+            core.setFailed('Your code generation for the server is not up to date. Run pnpm --filter server run tsoa spec-and-routes')
+
+  build:
+    needs: [check_changes, setup]
+    if: ${{ needs.check_changes.outputs.exists == 'true' }}
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Enable Corepack & prepare pnpm
+        run: |
+          corepack enable
+          corepack prepare pnpm@latest --activate
+
+      - name: Restore pnpm cache and node_modules
+        uses: actions/cache@v4
+        id: cache-pnpm-store
+        with:
+          path: |
+            node_modules
+            server/node_modules
+            client/node_modules
+            ~/.pnpm-store
+          key: pnpm-store-${{ hashFiles('pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-store-
+
+      - name: Install dependencies if cache missed
+        if: steps.cache-pnpm-store.outputs.cache-hit != 'true'
+        run: pnpm install
+
+      - name: Build
+        run: pnpm run build
+
+  verify:
+    name: Verify
+    needs: [check_changes, build, lint, style, codegen]
+    runs-on: ubuntu-latest
+    if: ${{ always() && (needs.check_changes.outputs.exists != 'true' || (needs.build.result == 'success' && needs.lint.result == 'success' && needs.style.result == 'success')) }}
+    steps:
+      - name: All checks passed
+        run: echo "All checks passed!"
