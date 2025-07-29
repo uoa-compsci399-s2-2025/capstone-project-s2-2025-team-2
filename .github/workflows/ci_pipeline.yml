@@ -107,7 +107,7 @@ jobs:
         run: pnpm install
 
       - name: Check formatting
-        run: pnpm run format:ci
+        run: pnpm run prettier
 
   lint:
     needs: [check_changes, setup]
@@ -145,7 +145,7 @@ jobs:
         run: pnpm install
 
       - name: Run linting
-        run: pnpm run lint:ci
+        run: pnpm run lint
 
   codegen:
     needs: [check_changes, setup]
