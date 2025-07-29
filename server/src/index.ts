@@ -14,7 +14,7 @@ const app: Express = express();
 app.use(
   urlencoded({
     extended: true,
-  })
+  }),
 );
 app.use(json());
 app.use(helmet());

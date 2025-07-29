@@ -20,7 +20,7 @@ export class UsersController extends Controller {
   @Get("{userId}")
   public async getUser(
     @Path() userId: number,
-    @Query() name?: string
+    @Query() name?: string,
   ): Promise<User> {
     return new UserService().get(userId, name);
   }
@@ -28,7 +28,7 @@ export class UsersController extends Controller {
   @SuccessResponse("201", "Created") // Custom success response
   @Post()
   public async createUser(
-    @Body() requestBody: UserCreationParams
+    @Body() requestBody: UserCreationParams,
   ): Promise<User> {
     this.setStatus(201); // set return status 201
     return new UserService().create(requestBody);
