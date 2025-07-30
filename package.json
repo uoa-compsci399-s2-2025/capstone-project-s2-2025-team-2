@@ -8,6 +8,7 @@
     "dev-client": "pnpm --filter client dev",
     "dev": "run-p dev-server dev-client",
     "format": "prettier --write \"**/*.{js,ts,tsx,jsx,json,css,md}\" --ignore-path .gitignore",
+    "prettier": "prettier --check \"**/*.{js,ts,tsx,jsx,json,css,md}\" --ignore-path .gitignore",
     "lint": "eslint \"client/**/*.{ts,tsx}\" \"server/**/*.{ts,js}\" --fix",
     "lint:check": "eslint \"client/**/*.{ts,tsx}\" \"server/**/*.{ts,js}\"",
     "lint:all": "eslint . --ext .ts,.tsx,.js --fix"
