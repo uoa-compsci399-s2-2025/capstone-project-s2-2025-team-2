@@ -14,7 +14,7 @@ const app: Express = express();
 app.use(
   urlencoded({
     extended: true,
-  })
+  }),
 );
 app.use(json());
 app.use(helmet());
@@ -27,7 +27,7 @@ RegisterRoutes(app);
 const port = process.env.PORT || 8000;
 
 const _app = app.listen(port, () => {
-  console.log(`Backend server listening on port ${port}.`);
+  console.log(`Backend server listening on port http://localhost:${port}`);
 });
 
 export { _app };

@@ -2,7 +2,7 @@
   "name": "server",
   "version": "1.0.0",
   "main": "src/index.ts",
-  "packageManager": "yarn@4.6.0",
+  "packageManager": "pnpm@10.7.1",
   "scripts": {
     "nodemon": "nodemon",
     "build": "tsc -p ./tsconfig.json && tsc-alias",
