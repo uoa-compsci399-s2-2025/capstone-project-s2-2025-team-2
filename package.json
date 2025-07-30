@@ -11,7 +11,10 @@
     "prettier": "prettier --check \"**/*.{js,ts,tsx,jsx,json,css,md}\" --ignore-path .gitignore",
     "lint": "eslint \"client/**/*.{ts,tsx}\" \"server/**/*.{ts,js}\" --fix",
     "lint:check": "eslint \"client/**/*.{ts,tsx}\" \"server/**/*.{ts,js}\"",
-    "lint:all": "eslint . --ext .ts,.tsx,.js --fix"
+    "lint:all": "eslint . --ext .ts,.tsx,.js --fix",
+    "build": "pnpm --filter server build && pnpm --filter client build",
+    "build:server": "pnpm --filter server build",
+    "build:client": "pnpm --filter client build"
   },
   "workspaces": [
     "client",
