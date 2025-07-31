@@ -1,4 +1,4 @@
-import { User, Admin } from "data-layer/models/models";
+import { User, Admin } from "data-layer/models/models"
 
 // Mock user data
 const users: User[] = [
@@ -20,37 +20,37 @@ const users: User[] = [
     email: "charlie.lee@example.com",
     phoneNumbers: ["123-456-7890", "987-654-3210"],
   },
-];
+]
 
-let count = users.length;
+let count = users.length
 // A post request should not contain an id.
 export type UserCreationParams = Pick<
   User,
   "email" | "name" | "phoneNumbers"
 > & {
-  isAdmin?: boolean;
-};
+  isAdmin?: boolean
+}
 
 export class UserService {
   public get(id: number, name?: string): User {
-    const user = users.find((user) => user.id === id);
+    const user = users.find((user) => user.id === id)
     if (name) {
-      const user = users.find((user) => user.name === name);
-      return user;
+      const user = users.find((user) => user.name === name)
+      return user
     }
-    return user;
+    return user
   }
 
   public getAll(): User[] {
-    return users;
+    return users
   }
 
   public add(user: User): void {
-    users.push(user);
+    users.push(user)
   }
 
   public create(userCreationParams: UserCreationParams): User {
-    count++;
+    count++
     if (userCreationParams.isAdmin) {
       const admin: Admin = {
         id: count,
@@ -58,23 +58,23 @@ export class UserService {
         title: "Security Admin",
         admin_id: count * 1000,
         permissions: ["read", "write", "delete"],
-      };
-      users.push(admin);
-      return admin;
+      }
+      users.push(admin)
+      return admin
     }
     const user = {
       id: count, // Random
       ...userCreationParams,
-    };
-    users.push(user);
-    return user;
+    }
+    users.push(user)
+    return user
   }
 
   public async delete(id: number): Promise<void> {
-    const index = users.findIndex((user) => user.id === id);
+    const index = users.findIndex((user) => user.id === id)
     if (index === -1) {
-      throw new Error(`User with id ${id} not found`);
+      throw new Error(`User with id ${id} not found`)
     }
-    users.splice(index, 1);
+    users.splice(index, 1)
   }
 }
