@@ -4,9 +4,11 @@
   "description": "TSOA Boilerplate",
   "private": true,
   "scripts": {
-    "dev-server": "pnpm --filter server start",
-    "dev-client": "pnpm --filter client dev",
+    "dev:server": "pnpm --filter server start",
+    "dev:client": "pnpm --filter client dev",
     "dev": "run-p dev-server dev-client",
+    "storybook": "pnpm --filter client storybook",
+    "build:storybook": "pnpm --filter client build-storybook",
     "format": "prettier --write \"**/*.{js,ts,tsx,jsx,json,css,md}\"",
     "prettier": "prettier --check \"**/*.{js,ts,tsx,jsx,json,css,md}\"",
     "lint": "eslint \"client/**/*.{ts,tsx}\" \"server/**/*.{ts,js}\" --fix",
