@@ -1,8 +1,8 @@
-import type { Meta, StoryObj } from "@storybook/nextjs";
+import type { Meta, StoryObj } from "@storybook/nextjs"
 
-import { fn } from "storybook/test";
+import { fn } from "storybook/test"
 
-import Button from "./Button";
+import Button from "./Button"
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
@@ -20,10 +20,10 @@ const meta = {
   },
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
   args: { onClick: fn() },
-} satisfies Meta<typeof Button>;
+} satisfies Meta<typeof Button>
 
-export default meta;
-type Story = StoryObj<typeof meta>;
+export default meta
+type Story = StoryObj<typeof meta>
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const SmallButton: Story = {
@@ -32,7 +32,7 @@ export const SmallButton: Story = {
     label: "I am a small button",
     backgroundColor: "#ff5555",
   },
-};
+}
 
 export const MediumButton: Story = {
   args: {
@@ -40,7 +40,7 @@ export const MediumButton: Story = {
     label: "I am a medium button",
     backgroundColor: "#ea49f2",
   },
-};
+}
 
 export const LargeButton: Story = {
   args: {
@@ -48,10 +48,10 @@ export const LargeButton: Story = {
     label: "Ray Zhao 🥵🥵🥵🥵",
     backgroundColor: "#34ba32",
   },
-};
+}
 
 export const DefaultButton: Story = {
   args: {
     label: "I don't have specified props",
   },
-};
+}
