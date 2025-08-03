@@ -6,7 +6,7 @@
   "scripts": {
     "dev:server": "pnpm --filter server start",
     "dev:client": "pnpm --filter client dev",
-    "dev": "run-p dev-server dev-client",
+    "dev": "run-p dev:server dev:client",
     "storybook": "pnpm --filter client storybook",
     "build:storybook": "pnpm --filter client build-storybook",
     "format": "prettier --write \"**/*.{js,ts,tsx,jsx,json,css,md}\"",
