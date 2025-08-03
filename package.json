@@ -16,7 +16,8 @@
     "lint:all": "eslint . --ext .ts,.tsx,.js --fix",
     "build": "pnpm --filter server build && pnpm --filter client build",
     "build:server": "pnpm --filter server build",
-    "build:client": "pnpm --filter client build"
+    "build:client": "pnpm --filter client build",
+    "generate:types": "pnpm run generate:types"
   },
   "workspaces": [
     "client",

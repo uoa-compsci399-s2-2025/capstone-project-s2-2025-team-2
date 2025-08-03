@@ -8,10 +8,13 @@
     "start": "next start",
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "generate:types": "openapi-typescript ../server/src/middleware/__generated__/swagger.json -o models/__generated__/schema.d.ts"
   },
   "dependencies": {
     "next": "15.4.4",
+    "openapi-fetch": "^0.14.0",
+    "openapi-typescript": "^7.8.0",
     "react": "19.1.0",
     "react-dom": "19.1.0"
   },
