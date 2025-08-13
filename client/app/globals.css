@@ -13,11 +13,29 @@
   --gray: #e6e6e6;
   --muted: #4d4d4d;
   --accent: #f5f7fc;
+  --success: #53be5a;
+  --warning: #da5d5d;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  /* primary */
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-salmon: var(--salmon);
+  --color-orange: var(--orange);
+  --color-green: var(--green);
+  --color-purple: var(--purple);
+  --color-midnight: var(--midnight);
+  --color-gray: var(--gray);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+
+  /* functional */
+  --color-success: var(--success);
+  --color-warning: var(--warning);
 
   /* text setting */
   --font-sans: var(--font-geist-sans);
