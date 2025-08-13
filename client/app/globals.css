@@ -3,11 +3,23 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --primary: #5d5fef;
+  --secondary: #4c9af3;
+  --salmon: #fa5a7d;
+  --orange: #ff947a;
+  --green: #3cd856;
+  --purple: #bf83ff;
+  --midnight: #151d48;
+  --gray: #e6e6e6;
+  --muted: #4d4d4d;
+  --accent: #f5f7fc;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  /* text setting */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
