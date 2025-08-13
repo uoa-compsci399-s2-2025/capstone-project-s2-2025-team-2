@@ -1,3 +1,4 @@
 **/.git
 **/.svn
 **/node_modules
+**/server/src/middleware
