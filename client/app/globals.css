@@ -1,20 +1,23 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-  --primary: #5d5fef;
-  --secondary: #4c9af3;
-  --salmon: #fa5a7d;
-  --orange: #ff947a;
-  --green: #3cd856;
-  --purple: #bf83ff;
-  --midnight: #151d48;
-  --gray: #e6e6e6;
-  --muted: #4d4d4d;
+  --background: #171717;
+  /* --foreground: #171717; */
+  --primary: #252525;
+  --secondary: #787879;
+  --tint: #f4f4f4;
+  --white: #ffffff;
+
+  --red-70: #a2191f;
+  --magenta-70: #9f1853;
+  --purple-70: #6929c4;
+  --cyan-70: #00539a;
+  --teal-70: #005d5d;
+
+  /* --muted: #4d4d4d;
   --accent: #f5f7fc;
   --success: #53be5a;
-  --warning: #da5d5d;
+  --warning: #da5d5d; */
 }
 
 @theme inline {
@@ -24,18 +27,15 @@
   /* primary */
   --color-primary: var(--primary);
   --color-secondary: var(--secondary);
-  --color-salmon: var(--salmon);
-  --color-orange: var(--orange);
-  --color-green: var(--green);
-  --color-purple: var(--purple);
-  --color-midnight: var(--midnight);
-  --color-gray: var(--gray);
-  --color-muted: var(--muted);
-  --color-accent: var(--accent);
+  --color-tint: var(--tint);
+  --color-white: var(--white);
 
-  /* functional */
-  --color-success: var(--success);
-  --color-warning: var(--warning);
+  /* color palette */
+  --color-red-70: var(--red-70);
+  --color-magenta-70: var(--magenta-70);
+  --color-purple-70: var(--purple-70);
+  --color-cyan-70: var(--cyan-70);
+  --color-teal-70: var(--teal-70);
 
   /* text setting */
   --font-sans: var(--font-geist-sans);
