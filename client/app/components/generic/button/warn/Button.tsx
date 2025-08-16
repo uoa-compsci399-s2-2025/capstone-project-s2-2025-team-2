@@ -1,0 +1,42 @@
+import { ButtonHTMLAttributes } from "react"
+
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  backgroundColor?: string
+  size?: "small" | "medium" | "large" | "success" | "error"
+  label: string
+}
+
+// base button component w/ common styling/functionality across all variants
+const BaseButton = ({ label, className, ...props }: ButtonProps) => {
+  return (
+    <button
+      type="button"
+      className={[
+        "inline-block cursor-pointer border-0 rounded-[8px] font-sans text-white hover:bg-blue-primary/75",
+        className,
+      ].join(" ")}
+      {...props}
+    >
+      <h5>{label}</h5>
+    </button>
+  )
+}
+
+const SuccessButton = (props: ButtonProps) => (
+  <BaseButton {...props} className="py-3 px-5 bg-success" />
+)
+const ErrorButton = (props: ButtonProps) => (
+  <BaseButton {...props} className="py-3 px-5 bg-warning" />
+)
+
+// exported btn component to be used
+const WarnButton = ({ size = "medium", ...props }: ButtonProps) => {
+  switch (size) {
+    case "success":
+      return <SuccessButton {...props} />
+    case "error":
+      return <ErrorButton {...props} />
+  }
+}
+
+export default WarnButton

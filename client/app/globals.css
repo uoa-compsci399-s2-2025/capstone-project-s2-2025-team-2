@@ -78,6 +78,8 @@
   --color-blue-primary: var(--blue-primary);
   --color-blue-secondary: var(--blue-secondary);
   --color-muted: var(--muted);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
 }
 
 @media (prefers-color-scheme: dark) {
