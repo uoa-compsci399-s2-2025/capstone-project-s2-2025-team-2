@@ -12,7 +12,7 @@ const BaseButton = ({ label, className, ...props }: ButtonProps) => {
     <button
       type="button"
       className={[
-        "inline-block cursor-pointer border-0 rounded-[8px] font-sans text-white hover:bg-blue-primary/75",
+        "inline-block cursor-pointer border-0 rounded-[8px] font-sans text-white",
         className,
       ].join(" ")}
       {...props}
@@ -23,10 +23,10 @@ const BaseButton = ({ label, className, ...props }: ButtonProps) => {
 }
 
 const SuccessButton = (props: ButtonProps) => (
-  <BaseButton {...props} className="py-3 px-5 bg-success" />
+  <BaseButton {...props} className="py-3 px-5 bg-success hover:bg-success/75" />
 )
 const ErrorButton = (props: ButtonProps) => (
-  <BaseButton {...props} className="py-3 px-5 bg-warning" />
+  <BaseButton {...props} className="py-3 px-5 bg-warning hover:bg-warning/75" />
 )
 
 // exported btn component to be used
