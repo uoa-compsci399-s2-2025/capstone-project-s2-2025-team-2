@@ -12,12 +12,12 @@ const BaseButton = ({ label, className, ...props }: ButtonProps) => {
     <button
       type="button"
       className={[
-        "inline-block cursor-pointer border-0 rounded-[8px] bg-blue-primary text-white",
+        "inline-block cursor-pointer border-0 rounded-[8px] font-sans bg-blue-primary text-white hover:bg-blue-primary/75",
         className,
       ].join(" ")}
       {...props}
     >
-      {label}
+      <h1>{label}</h1>
     </button>
   )
 }
