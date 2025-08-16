@@ -7,20 +7,14 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 // base button component w/ common styling/functionality across all variants
-const BaseButton = ({
-  backgroundColor = "#b3b3b3",
-  label,
-  className,
-  ...props
-}: ButtonProps) => {
+const BaseButton = ({ label, className, ...props }: ButtonProps) => {
   return (
     <button
       type="button"
       className={[
-        "inline-block cursor-pointer border-0 rounded-full font-bold",
+        "inline-block cursor-pointer border-0 border-r-[25px] font-bold bg-blue-primary",
         className,
       ].join(" ")}
-      style={{ backgroundColor }}
       {...props}
     >
       {label}
