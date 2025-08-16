@@ -17,22 +17,22 @@ const BaseButton = ({ label, className, ...props }: ButtonProps) => {
       ].join(" ")}
       {...props}
     >
-      <h1>{label}</h1>
+      <h5>{label}</h5>
     </button>
   )
 }
 
 // btn variants
 const SmallButton = (props: ButtonProps) => (
-  <BaseButton {...props} className="py-2.5 px-4 text-xs" />
+  <BaseButton {...props} className="py-1.5 px-3" />
 )
 
 const MediumButton = (props: ButtonProps) => (
-  <BaseButton {...props} className="py-3 px-5 text-sm" />
+  <BaseButton {...props} className="py-3 px-5" />
 )
 
 const LargeButton = (props: ButtonProps) => (
-  <BaseButton {...props} className="py-3.5 px-6 text-base" />
+  <BaseButton {...props} className="py-4.5 px-7" />
 )
 
 // exported btn component to be used

@@ -47,7 +47,7 @@
   }
 
   h5 {
-    @apply text-lg font-normal text-white leading-normal;
+    @apply text-lg font-medium text-white leading-normal tracking-widest;
   }
 
   h6 {
