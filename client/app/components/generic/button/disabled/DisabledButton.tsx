@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes } from "react"
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   backgroundColor?: string
-  size?: "small" | "medium" | "large"
+  size?: "small" | "medium" | "large" | "outline"
   label: string
 }
 
@@ -35,6 +35,13 @@ const LargeButton = (props: ButtonProps) => (
   <BaseButton {...props} className="py-4.5 px-7" />
 )
 
+const OutlinedButton = (props: ButtonProps) => (
+  <BaseButton
+    {...props}
+    className="py-4.5 px-7 bg-transparent border-2 border-muted"
+  />
+)
+
 // exported btn component to be used
 const DisabledButton = ({ size = "medium", ...props }: ButtonProps) => {
   switch (size) {
@@ -44,6 +51,8 @@ const DisabledButton = ({ size = "medium", ...props }: ButtonProps) => {
       return <MediumButton {...props} />
     case "large":
       return <LargeButton {...props} />
+    case "outline":
+      return <OutlinedButton {...props} />
     default:
       return <MediumButton {...props} />
   }

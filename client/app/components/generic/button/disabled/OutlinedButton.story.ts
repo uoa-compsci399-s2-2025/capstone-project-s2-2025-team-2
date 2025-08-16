@@ -6,7 +6,7 @@ import DisabledButton from "./DisabledButton"
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: "Example/Button",
+  title: "Example/Disabled/Button",
   component: DisabledButton,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
@@ -45,6 +45,14 @@ export const MediumDisabledButton: Story = {
 export const LargeDisabledButton: Story = {
   args: {
     size: "large",
+    label: "Ray Zhao 🥵🥵🥵🥵",
+    backgroundColor: "#34ba32",
+  },
+}
+
+export const OutlinedDisabledButton: Story = {
+  args: {
+    size: "outline",
     label: "Ray Zhao 🥵🥵🥵🥵",
     backgroundColor: "#34ba32",
   },
