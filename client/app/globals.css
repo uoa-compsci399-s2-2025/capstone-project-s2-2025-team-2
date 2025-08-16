@@ -14,10 +14,14 @@
   --cyan-70: #00539a;
   --teal-70: #005d5d;
 
-  /* --muted: #4d4d4d;
+  /* component */
+  --blue-primary: #5d5fef;
+  --blue-secondary: #4c9af3;
+
+  --muted: #4d4d4d;
   --accent: #f5f7fc;
   --success: #53be5a;
-  --warning: #da5d5d; */
+  --warning: #da5d5d;
 }
 
 @theme inline {
@@ -36,6 +40,10 @@
   --color-purple-70: var(--purple-70);
   --color-cyan-70: var(--cyan-70);
   --color-teal-70: var(--teal-70);
+
+  /* component setting */
+  --color-blue-primary: var(--blue-primary);
+  --color-blue-secondary: var(--blue-secondary);
 
   /* text setting */
   --font-sans: var(--font-geist-sans);
