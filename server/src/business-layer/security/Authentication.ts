@@ -1,22 +1,22 @@
-import FireBaseError from 'business-layer/errors/FirebaseError'
-import type * as express from 'express'
-import { StatusCodes } from 'http-status-codes'
-import { auth } from './Firebase'
+import FireBaseError from "business-layer/errors/FirebaseError"
+import type * as express from "express"
+import { StatusCodes } from "http-status-codes"
+import { auth } from "./Firebase"
 
 export function expressAuthentication(
   request: express.Request,
   securityName: string,
   scopes?: string[],
 ) {
-  if (securityName === 'jwt') {
-    const authHeader = String(request.headers.authorization || '')
+  if (securityName === "jwt") {
+    const authHeader = String(request.headers.authorization || "")
 
     return new Promise((resolve, reject) => {
-      if (!authHeader.startsWith('Bearer ')) {
-        reject(new Error('No token provided'))
+      if (!authHeader.startsWith("Bearer ")) {
+        reject(new Error("No token provided"))
       }
 
-      const token = authHeader.split(' ')[1] // Gets part after Bearer
+      const token = authHeader.split(" ")[1] // Gets part after Bearer
 
       auth
         .verifyIdToken(token)
@@ -28,9 +28,9 @@ export function expressAuthentication(
               for (const scope of scopes) {
                 if (user.customClaims === undefined) {
                   throw new FireBaseError(
-                    'Authentication Error',
+                    "Authentication Error",
                     StatusCodes.UNAUTHORIZED,
-                    'No Scope',
+                    "No Scope",
                   )
                 }
                 if (
@@ -38,9 +38,9 @@ export function expressAuthentication(
                   !user.customClaims[scope]
                 ) {
                   throw new FireBaseError(
-                    'Authentication Error',
+                    "Authentication Error",
                     StatusCodes.UNAUTHORIZED,
-                    'No Scope',
+                    "No Scope",
                   )
                 }
               }
@@ -52,7 +52,7 @@ export function expressAuthentication(
               }
               reject(
                 new FireBaseError(
-                  'Authentication Error',
+                  "Authentication Error",
                   StatusCodes.UNAUTHORIZED,
                   reason,
                 ),
@@ -65,7 +65,7 @@ export function expressAuthentication(
           }
           reject(
             new FireBaseError(
-              'Authentication Error',
+              "Authentication Error",
               StatusCodes.UNAUTHORIZED,
               reason,
             ),
@@ -73,5 +73,5 @@ export function expressAuthentication(
         })
     })
   }
-  return Promise.reject(new Error('Unknown Error'))
+  return Promise.reject(new Error("Unknown Error"))
 }

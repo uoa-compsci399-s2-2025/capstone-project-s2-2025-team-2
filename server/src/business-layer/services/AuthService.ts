@@ -1,5 +1,5 @@
-import { auth } from 'business-layer/security/Firebase'
-import type { UserRecord } from 'firebase-admin/auth'
+import { auth } from "business-layer/security/Firebase"
+import type { UserRecord } from "firebase-admin/auth"
 
 export default class AuthService {
   public async createUser(
@@ -13,8 +13,8 @@ export default class AuthService {
         password,
       })
     } catch (err) {
-      console.error('Error creating user:', err)
-      throw new Error('Failed to create user')
+      console.error("Error creating user:", err)
+      throw new Error("Failed to create user")
     }
     return userRecord
   }
