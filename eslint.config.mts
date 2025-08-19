@@ -39,6 +39,7 @@ export default [
       "**/*.config.js",
       "**/*.config.mjs",
       "**/coverage/**",
+      "server/src/middleware/**",
     ],
   },
 ]
