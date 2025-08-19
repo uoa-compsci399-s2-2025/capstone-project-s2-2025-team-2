@@ -12,6 +12,7 @@
     "generate:types": "openapi-typescript ../server/src/middleware/__generated__/swagger.json -o models/__generated__/schema.d.ts"
   },
   "dependencies": {
+    "firebase": "^12.1.0",
     "next": "15.4.4",
     "openapi-fetch": "^0.14.0",
     "openapi-typescript": "^7.8.0",
