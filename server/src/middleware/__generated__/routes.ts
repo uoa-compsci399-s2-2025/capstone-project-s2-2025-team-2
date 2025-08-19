@@ -16,7 +16,6 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "username": {"dataType":"string","required":true},
-            "email": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -38,25 +37,24 @@ export function RegisterRoutes(app: Router) {
 
 
     
-        const argsUserController_getUser: Record<string, TsoaRoute.ParameterSchema> = {
-                userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
+        const argsUserController_getAllUsers: Record<string, TsoaRoute.ParameterSchema> = {
         };
-        app.get('/users/:userId',
+        app.get('/users',
             ...(fetchMiddlewares<RequestHandler>(UserController)),
-            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.getUser)),
+            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.getAllUsers)),
 
-            async function UserController_getUser(request: ExRequest, response: ExResponse, next: any) {
+            async function UserController_getAllUsers(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsUserController_getUser, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsUserController_getAllUsers, request, response });
 
                 const controller = new UserController();
 
               await templateService.apiHandler({
-                methodName: 'getUser',
+                methodName: 'getAllUsers',
                 controller,
                 response,
                 next,

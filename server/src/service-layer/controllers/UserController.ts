@@ -1,19 +1,14 @@
-import { User } from "data-layer/models/models"
+import { User } from "../../data-layer/models/models"
 import { Controller, Get, Route, SuccessResponse } from "tsoa"
 import { UserService } from "../../data-layer/services/UserService"
 @Route("users")
 export class UserController extends Controller {
-  private userService: UserService
-
-  constructor() {
-    super()
-    this.userService = new UserService()
-  }
-
-  @SuccessResponse("200", "Found")
-  @Get("{username}")
-  public async getUser(username: string): Promise<User | null> {
-    const user = await this.userService.getUser(username)
-    return user
+  @SuccessResponse("200", "Users retrieved successfully")
+  @Get()
+  public async getAllUsers(): Promise<User[]> {
+    console.log("Getting all users...")
+    const users = await new UserService().getAllUsers()
+    console.log(`Returning ${users.length} users`)
+    return users
   }
 }

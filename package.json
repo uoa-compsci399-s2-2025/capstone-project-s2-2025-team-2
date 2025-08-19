@@ -17,7 +17,7 @@
     "build": "pnpm --filter server build && pnpm --filter client build",
     "build:server": "pnpm --filter server build",
     "build:client": "pnpm --filter client build",
-    "tsc": "cd server && pnpm tsc"
+    "generate:types": "cd server && pnpm tsoa spec-and-routes"
   },
   "workspaces": [
     "client",

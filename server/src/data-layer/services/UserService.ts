@@ -1,15 +1,23 @@
 import FirestoreCollections from "../adapters/FirestoreCollections"
-import { User } from "data-layer/models/models"
+import { User } from "../models/models"
 
 export class UserService {
-  async getUser(username: string): Promise<User | null> {
-    const userRef = FirestoreCollections.users.doc(username)
-    const user = await userRef.get()
-    if (!user.exists) {
-      console.log(`User - ${username} is not found`)
-      return null
+  async getAllUsers(): Promise<User[]> {
+    try {
+      const snapshot = await FirestoreCollections.users.get()
+      console.log(`Found ${snapshot.size} users in collection`)
+      if (snapshot.empty) {
+        return []
+      }
+      const users: User[] = []
+      snapshot.forEach((doc) => {
+        const userData = doc.data()
+        users.push(userData as User)
+      })
+      return users
+    } catch (error) {
+      console.error("Error fetching all users:", error)
+      throw error
     }
-    console.log(user.data())
-    return user.data() as User
   }
 }

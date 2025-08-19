@@ -11,14 +11,10 @@
 				"properties": {
 					"username": {
 						"type": "string"
-					},
-					"email": {
-						"type": "string"
 					}
 				},
 				"required": [
-					"username",
-					"email"
+					"username"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -32,37 +28,26 @@
 		"contact": {}
 	},
 	"paths": {
-		"/users/{userId}": {
+		"/users": {
 			"get": {
-				"operationId": "GetUser",
+				"operationId": "GetAllUsers",
 				"responses": {
 					"200": {
-						"description": "Found",
+						"description": "Users retrieved successfully",
 						"content": {
 							"application/json": {
 								"schema": {
-									"allOf": [
-										{
-											"$ref": "#/components/schemas/User"
-										}
-									],
-									"nullable": true
+									"items": {
+										"$ref": "#/components/schemas/User"
+									},
+									"type": "array"
 								}
 							}
 						}
 					}
 				},
 				"security": [],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "userId",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
+				"parameters": []
 			}
 		}
 	},
