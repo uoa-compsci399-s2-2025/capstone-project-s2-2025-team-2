@@ -1,12 +1,12 @@
-import FirestoreCollections from "data-layer/adapters/FirestoreCollections"
+import FirestoreCollections from "../adapters/FirestoreCollections"
 import { User } from "data-layer/models/models"
 
 export class UserService {
-  async getUser(id: string): Promise<User | null> {
-    const userRef = FirestoreCollections.users.doc(id)
+  async getUser(username: string): Promise<User | null> {
+    const userRef = FirestoreCollections.users.doc(username)
     const user = await userRef.get()
     if (!user.exists) {
-      console.log(`User - ${id} is not found`)
+      console.log(`User - ${username} is not found`)
       return null
     }
     console.log(user.data())

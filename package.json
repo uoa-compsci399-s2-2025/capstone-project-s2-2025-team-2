@@ -17,7 +17,7 @@
     "build": "pnpm --filter server build && pnpm --filter client build",
     "build:server": "pnpm --filter server build",
     "build:client": "pnpm --filter client build",
-    "generate:types": "pnpm run generate:types"
+    "tsc": "cd server && pnpm tsc"
   },
   "workspaces": [
     "client",

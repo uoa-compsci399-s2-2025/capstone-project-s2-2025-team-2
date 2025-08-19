@@ -1,5 +1,5 @@
 import { User } from "data-layer/models/models"
-import { Controller, Get, Path, Route, SuccessResponse } from "tsoa"
+import { Controller, Get, Route, SuccessResponse } from "tsoa"
 import { UserService } from "../../data-layer/services/UserService"
 @Route("users")
 export class UserController extends Controller {
@@ -11,9 +11,9 @@ export class UserController extends Controller {
   }
 
   @SuccessResponse("200", "Found")
-  @Get("{userId}")
-  public async getUser(@Path() id: string): Promise<User | null> {
-    const user = await this.userService.getUser(id)
+  @Get("{username}")
+  public async getUser(username: string): Promise<User | null> {
+    const user = await this.userService.getUser(username)
     return user
   }
 }

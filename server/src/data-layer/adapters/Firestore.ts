@@ -1,4 +1,4 @@
-import { admin } from 'business-layer/security/Firebase'
+import { admin } from "../../business-layer/security/Firebase"
 
 const converter = <T>() => ({
   toFirestore: (data: any) => data,
