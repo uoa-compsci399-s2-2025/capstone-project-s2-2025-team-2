@@ -7,38 +7,32 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 // base button component w/ common styling/functionality across all variants
-const BaseButton = ({
-  backgroundColor = "#b3b3b3",
-  label,
-  className,
-  ...props
-}: ButtonProps) => {
+const BaseButton = ({ label, className, ...props }: ButtonProps) => {
   return (
     <button
       type="button"
       className={[
-        "inline-block cursor-pointer border-0 rounded-full font-bold",
+        "inline-block cursor-pointer border-0 rounded-[8px] font-sans bg-blue-primary text-white hover:bg-blue-primary/75",
         className,
       ].join(" ")}
-      style={{ backgroundColor }}
       {...props}
     >
-      {label}
+      <h5>{label}</h5>
     </button>
   )
 }
 
 // btn variants
 const SmallButton = (props: ButtonProps) => (
-  <BaseButton {...props} className="py-2.5 px-4 text-xs" />
+  <BaseButton {...props} className="py-1.5 px-3" />
 )
 
 const MediumButton = (props: ButtonProps) => (
-  <BaseButton {...props} className="py-3 px-5 text-sm" />
+  <BaseButton {...props} className="py-3 px-5" />
 )
 
 const LargeButton = (props: ButtonProps) => (
-  <BaseButton {...props} className="py-3.5 px-6 text-base" />
+  <BaseButton {...props} className="py-4.5 px-7" />
 )
 
 // exported btn component to be used

@@ -2,12 +2,12 @@ import type { Meta, StoryObj } from "@storybook/nextjs"
 
 import { fn } from "storybook/test"
 
-import Button from "./Button"
+import WarnButton from "./WarnButton"
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: "Example/Button",
-  component: Button,
+  title: "Example/Warn/Button",
+  component: WarnButton,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: "centered",
@@ -20,38 +20,24 @@ const meta = {
   },
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
   args: { onClick: fn() },
-} satisfies Meta<typeof Button>
+} satisfies Meta<typeof WarnButton>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const SmallButton: Story = {
+export const SuccessButton: Story = {
   args: {
-    size: "small",
+    size: "success",
     label: "I am a small button",
     backgroundColor: "#ff5555",
   },
 }
 
-export const MediumButton: Story = {
+export const ErrorButton: Story = {
   args: {
-    size: "medium",
+    size: "error",
     label: "I am a medium button",
     backgroundColor: "#ea49f2",
-  },
-}
-
-export const LargeButton: Story = {
-  args: {
-    size: "large",
-    label: "Ray Zhao 🥵🥵🥵🥵",
-    backgroundColor: "#34ba32",
-  },
-}
-
-export const DefaultButton: Story = {
-  args: {
-    label: "I don't have specified props",
   },
 }
