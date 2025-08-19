@@ -3,8 +3,7 @@ name: DevOps feature template
 about: Features relating to the development operations
 title: "[DevOps] "
 labels: devops
-assignees: ''
-
+assignees: ""
 ---
 
 **Is your feature request related to a problem? Please describe.**

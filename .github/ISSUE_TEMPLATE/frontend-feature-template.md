@@ -3,8 +3,7 @@ name: Frontend feature template
 about: Features relating to the frontend
 title: "[FRONTEND]"
 labels: frontend
-assignees: ''
-
+assignees: ""
 ---
 
 **Is your feature request related to a problem? Please describe.**

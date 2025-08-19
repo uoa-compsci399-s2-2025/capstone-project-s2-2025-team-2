@@ -3,8 +3,7 @@ name: Bug report
 about: Unexpecting or breaking behavior
 title: "[BUG]"
 labels: bug
-assignees: ''
-
+assignees: ""
 ---
 
 **Describe the bug**
