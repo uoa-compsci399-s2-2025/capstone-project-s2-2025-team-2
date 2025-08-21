@@ -1,11 +1,18 @@
 import { InputHTMLAttributes } from "react"
+import { useState } from "react"
 
-export interface CheckboxProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface CheckboxProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, "onClick"> {
   state?: "checked" | "unchecked" | "disabled"
-  label?: string
+  onClick?: (check: boolean) => void
 }
 
-const CheckboxBase = ({ label, className, ...props }: CheckboxProps) => {
+const CheckboxBase = ({
+  className,
+  onClick,
+  state,
+  ...inputProps
+}: CheckboxProps) => {
   return (
     <label className="inline-flex items-center cursor-pointer gap-2">
       <input
@@ -14,36 +21,38 @@ const CheckboxBase = ({ label, className, ...props }: CheckboxProps) => {
           "appearance-none h-5 w-5 rounded-md border border-muted transition-colors duration-200",
           className,
         ].join(" ")}
-        {...props}
+        {...inputProps}
       />
-      {label && <h5>{label}</h5>}
     </label>
   )
 }
+const Checkbox = ({
+  state = "unchecked",
+  onClick,
+  ...props
+}: CheckboxProps) => {
+  const [checked, setChecked] = useState(state === "checked")
 
-const Checked = (props: CheckboxProps) => (
-  <CheckboxBase {...props} checked className="bg-blue-secondary" />
-)
-
-const Unchecked = (props: CheckboxProps) => (
-  <CheckboxBase {...props} checked className="bg-white" />
-)
-
-const Disabled = (props: CheckboxProps) => (
-  <CheckboxBase {...props} checked className="bg-secondary" />
-)
-
-const Checkbox = ({ state = "unchecked", ...props }: CheckboxProps) => {
-  switch (state) {
-    case "checked":
-      return <Checked {...props} />
-    case "unchecked":
-      return <Unchecked {...props} />
-    case "disabled":
-      return <Disabled {...props} />
-    default:
-      return <Unchecked {...props} />
+  if (state === "disabled") {
+    return <CheckboxBase {...props} disabled />
   }
+
+  return (
+    <CheckboxBase
+      {...props}
+      checked={checked}
+      onClick={() => {
+        const next = !checked
+        setChecked(next)
+        onClick?.(next)
+      }}
+      className={
+        checked
+          ? "bg-blue-secondary border-blue-secondary"
+          : "bg-white border-muted"
+      }
+    />
+  )
 }
 
 export default Checkbox

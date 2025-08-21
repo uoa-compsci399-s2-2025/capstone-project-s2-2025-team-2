@@ -27,18 +27,5 @@ type Story = StoryObj<typeof meta>
 export const Unchecked: Story = {
   args: {
     state: "unchecked",
-    label: "unchecked",
-  },
-}
-export const Checked: Story = {
-  args: {
-    state: "checked",
-    label: "checked",
-  },
-}
-export const Disabled: Story = {
-  args: {
-    state: "disabled",
-    label: "disabled",
   },
 }
