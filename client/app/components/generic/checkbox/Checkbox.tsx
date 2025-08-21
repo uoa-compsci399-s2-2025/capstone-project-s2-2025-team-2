@@ -14,16 +14,14 @@ const CheckboxBase = ({
   ...inputProps
 }: CheckboxProps) => {
   return (
-    <label className="inline-flex items-center cursor-pointer gap-2">
-      <input
-        type="checkbox"
-        className={[
-          "appearance-none h-5 w-5 rounded-md border border-muted transition-colors duration-200",
-          className,
-        ].join(" ")}
-        {...inputProps}
-      />
-    </label>
+    <input
+      type="checkbox"
+      className={[
+        "appearance-none h-5 w-5 cursor-pointer rounded-md border border-muted transition-colors duration-200",
+        className,
+      ].join(" ")}
+      {...inputProps}
+    />
   )
 }
 const Checkbox = ({
@@ -41,7 +39,7 @@ const Checkbox = ({
     <CheckboxBase
       {...props}
       checked={checked}
-      onClick={() => {
+      onChange={() => {
         const next = !checked
         setChecked(next)
         onClick?.(next)
