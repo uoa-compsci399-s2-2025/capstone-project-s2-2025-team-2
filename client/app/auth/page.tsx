@@ -8,7 +8,7 @@ export default function AuthPage() {
         <div className="max-w-md w-full space-y-8 p-8 bg-primary rounded-lg shadow-lg">
         {/* Header Section */}
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-white">Sign In</h1>
+          <h2>Sign In</h2>
           <p className="mt-2 text-secondary">Sign in to your account</p>
         </div>
         
@@ -16,7 +16,7 @@ export default function AuthPage() {
         <div className="w-full flex justify-center items-center">
           <button
             type="button"
-            className="w-auto flex items-center justify-center rounded-lg bg-primary"
+            className="w-auto flex items-center justify-center rounded-lg bg-primary hover:bg-muted transition-colors"
           >
             <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
               <svg className="w-8 h-8" viewBox="0 0 24 24">
@@ -64,7 +64,7 @@ export default function AuthPage() {
                 name="email"
                 type="email"
                 required
-                className="mt-1 block w-full px-3 py-2 border border-muted rounded-md shadow-sm placeholder-secondary bg-primary text-white focus:outline-none focus:ring-blue-primary focus:border-blue-primary"
+                className="mt-1 block w-full px-3 py-2 border border-muted rounded-md shadow-sm placeholder-secondary bg-primary text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-blue-primary transition-colors"
                 placeholder="Enter your email"
               />
             </div>
@@ -78,7 +78,7 @@ export default function AuthPage() {
                 name="password"
                 type="password"
                 required
-                className="mt-1 block w-full px-3 py-2 border border-muted rounded-md shadow-sm placeholder-secondary bg-primary text-white focus:outline-none focus:ring-blue-primary focus:border-blue-primary"
+                className="mt-1 block w-full px-3 py-2 border border-muted rounded-md shadow-sm placeholder-secondary bg-primary text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-blue-primary transition-colors"
                 placeholder="Enter your password"
               />
             </div>
@@ -131,13 +131,13 @@ export default function AuthPage() {
         <div className="max-w-md w-full space-y-8 p-8 bg-gradient-to-b from-blue-400 to-purple-600 rounded-lg shadow-lg flex flex-col justify-center">
           {/* Welcome Content */}
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-white mb-2">
+            <h2 className="mb-2">
               Welcome to
-            </h1>
-            <h1 className="text-4xl font-bold text-orange-400 mb-6">
+            </h2>
+            <h1 className="text-orange-400 mb-6">
               Chemical.ly
             </h1>
-            <p className="text-lg text-white leading-relaxed mb-8">
+            <p className="mb-8">
               Join Chemical.ly today and be part of a growing community that shares, reuses, and collaborates on research reagents.
             </p>
             {/* Call to Action Button */}
