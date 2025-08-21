@@ -1,10 +1,10 @@
-enum ReagentTradingType {
+export enum ReagentTradingType {
      TRADE = "trade",
      GIVEAWAY = "giveaway",
      SELL = "sell",
 }
 
-enum ReagentCategory {
+export enum ReagentCategory {
     CHEMICAL = "chemical",
     HAZARDOUS = "hazardous",
     BIOLOGICAL = "biological",
