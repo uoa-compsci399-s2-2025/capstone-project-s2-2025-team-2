@@ -10,10 +10,8 @@ export interface CheckboxProps
 
 const CheckboxBase = ({
   className,
-  onClick,
-  state,
   ...inputProps
-}: CheckboxProps) => {
+}: Omit<CheckboxProps, "onClick" | "state">) => {
   return (
     <input
       type="checkbox"
