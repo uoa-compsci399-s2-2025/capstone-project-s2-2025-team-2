@@ -1,0 +1,21 @@
+enum ReagentTradingType {
+     TRADE = "trade",
+     GIVEAWAY = "giveaway",
+     SELL = "sell",
+}
+
+enum ReagentCategory {
+    CHEMICAL = "chemical",
+    HAZARDOUS = "hazardous",
+    BIOLOGICAL = "biological",
+}
+
+export interface Reagent {
+  name: string
+  description: string  
+  price?: number
+  expiryDate: string
+  tradingType: ReagentTradingType
+  images?: string[]
+  categories: ReagentCategory[]
+}
