@@ -11,7 +11,7 @@ const CheckboxBase = ({ label, className, ...props }: CheckboxProps) => {
       <input
         type="checkbox"
         className={[
-          "appearance-none h-5 w-5 rounded-md border border-gray-400 transition-colors duration-200",
+          "appearance-none h-5 w-5 rounded-md border border-muted transition-colors duration-200",
           className,
         ].join(" ")}
         {...props}
@@ -22,7 +22,7 @@ const CheckboxBase = ({ label, className, ...props }: CheckboxProps) => {
 }
 
 const Checked = (props: CheckboxProps) => (
-  <CheckboxBase {...props} checked className="bg-cyan-70" />
+  <CheckboxBase {...props} checked className="bg-blue-secondary" />
 )
 
 const Unchecked = (props: CheckboxProps) => (
