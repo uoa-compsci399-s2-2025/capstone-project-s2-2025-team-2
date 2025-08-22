@@ -7,17 +7,49 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 // base button component w/ common styling/functionality across all variants
-const BaseButton = ({ label, className, ...props }: ButtonProps) => {
+const BaseButton = ({
+  backgroundColor,
+  label,
+  className,
+  ...props
+}: ButtonProps) => {
+  // default blue bg when backgroundColours prop isn't specified
+  const defaultColourClasses = "border-blue-primary hover:bg-blue-primary/25"
+
+  // need to use inline styles for custom colours -- passing props to tailwind utility classes doesnt work
+  const btnColours = {
+    borderColor: backgroundColor,
+    color: backgroundColor,
+  }
+
+  const finalClasses = backgroundColor
+    ? "inline-block cursor-pointer border-2 rounded-[8px] font-sans hover:bg-opacity-25"
+    : `inline-block cursor-pointer border-2 rounded-[8px] font-sans ${defaultColourClasses}`
   return (
     <button
       type="button"
-      className={[
-        "inline-block cursor-pointer border-2 rounded-[8px] font-sans border-blue-primary hover:bg-blue-primary/25",
-        className,
-      ].join(" ")}
+      className={[finalClasses, className].join(" ")}
+      style={{
+        ...btnColours,
+      }}
+      onMouseEnter={(e) => {
+        if (backgroundColor) {
+          e.currentTarget.style.backgroundColor = `${backgroundColor}20`
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (backgroundColor) {
+          e.currentTarget.style.backgroundColor = "transparent"
+        }
+      }}
       {...props}
     >
-      <h5 className="text-blue-primary">{label}</h5>
+      <h5
+        className={backgroundColor ? "" : "text-blue-primary"}
+        style={{ color: backgroundColor }}
+      >
+        {label}
+      </h5>
     </button>
   )
 }
