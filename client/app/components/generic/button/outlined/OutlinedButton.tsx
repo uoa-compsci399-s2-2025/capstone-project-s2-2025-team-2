@@ -31,10 +31,10 @@ const BaseButton = ({
   return (
     <button
       type="button"
-      className={[finalClasses, className].join(" ")}
-      style={{
-        ...btnColours,
-      }}
+      className={[
+        "inline-block w-full cursor-pointer border-2 rounded-[8px] font-sans border-blue-primary hover:bg-blue-primary/25",
+        className,
+      ].join(" ")}
       {...props}
     >
       <h5
