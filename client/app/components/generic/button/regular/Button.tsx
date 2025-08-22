@@ -1,5 +1,4 @@
 import { ButtonHTMLAttributes } from "react"
-
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   backgroundColor?: string
   size?: "small" | "medium" | "large"
@@ -7,14 +6,31 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 // base button component w/ common styling/functionality across all variants
-const BaseButton = ({ label, className, ...props }: ButtonProps) => {
+const BaseButton = ({
+  backgroundColor,
+  label,
+  className,
+  ...props
+}: ButtonProps) => {
+  // default blue bg when backgroundColours prop isn't specified
+  const defaultColourClasses = "bg-blue-primary hover:bg-blue-primary/75"
+
+  // need to use inline styles for custom colours -- passing props to tailwind utility classes doesnt work
+  const btnColours = {
+    backgroundColor: backgroundColor,
+  }
+
+  const finalClasses = backgroundColor
+    ? "inline-block cursor-pointer border-0 rounded-[8px] font-sans hover:bg-opacity-75"
+    : `inline-block cursor-pointer border-0 rounded-[8px] font-sans ${defaultColourClasses}`
+
   return (
     <button
       type="button"
-      className={[
-        "inline-block cursor-pointer border-0 rounded-[8px] font-sans bg-blue-primary text-white hover:bg-blue-primary/75",
-        className,
-      ].join(" ")}
+      className={[finalClasses, className].join(" ")}
+      style={{
+        ...btnColours,
+      }}
       {...props}
     >
       <h5>{label}</h5>
@@ -24,15 +40,24 @@ const BaseButton = ({ label, className, ...props }: ButtonProps) => {
 
 // btn variants
 const SmallButton = (props: ButtonProps) => (
-  <BaseButton {...props} className="py-1.5 px-3" />
+  <BaseButton
+    {...props}
+    className={["py-1.5 px-3", { ...props }.className].join(" ")}
+  />
 )
 
 const MediumButton = (props: ButtonProps) => (
-  <BaseButton {...props} className="py-3 px-5" />
+  <BaseButton
+    {...props}
+    className={["py-3 px-5", { ...props }.className].join(" ")}
+  />
 )
 
 const LargeButton = (props: ButtonProps) => (
-  <BaseButton {...props} className="py-4.5 px-7" />
+  <BaseButton
+    {...props}
+    className={["py-4.5 px-7", { ...props }.className].join(" ")}
+  />
 )
 
 // exported btn component to be used

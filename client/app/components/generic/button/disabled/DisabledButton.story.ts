@@ -14,10 +14,6 @@ const meta = {
   },
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ["autodocs"],
-  // More on argTypes: https://storybook.js.org/docs/api/argtypes
-  argTypes: {
-    backgroundColor: { control: "color" },
-  },
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
   args: { onClick: fn() },
 } satisfies Meta<typeof DisabledButton>
@@ -30,7 +26,6 @@ export const SmallDisabledButton: Story = {
   args: {
     size: "small",
     label: "I am a small button",
-    backgroundColor: "#ff5555",
   },
 }
 
@@ -38,7 +33,6 @@ export const MediumDisabledButton: Story = {
   args: {
     size: "medium",
     label: "I am a medium button",
-    backgroundColor: "#ea49f2",
   },
 }
 
@@ -46,7 +40,6 @@ export const LargeDisabledButton: Story = {
   args: {
     size: "large",
     label: "Ray Zhao 🥵🥵🥵🥵",
-    backgroundColor: "#34ba32",
   },
 }
 
@@ -54,7 +47,6 @@ export const OutlinedDisabledButton: Story = {
   args: {
     size: "outline",
     label: "Ray Zhao 🥵🥵🥵🥵",
-    backgroundColor: "#34ba32",
   },
 }
 
