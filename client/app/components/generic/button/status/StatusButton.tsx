@@ -1,7 +1,6 @@
 import { ButtonHTMLAttributes } from "react"
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  backgroundColor?: string
   size?: "small" | "medium" | "large" | "success" | "error"
   label: string
 }
@@ -30,7 +29,7 @@ const ErrorButton = (props: ButtonProps) => (
 )
 
 // exported btn component to be used
-const WarnButton = ({ size = "medium", ...props }: ButtonProps) => {
+const StatusButton = ({ size = "medium", ...props }: ButtonProps) => {
   switch (size) {
     case "success":
       return <SuccessButton {...props} />
@@ -39,4 +38,4 @@ const WarnButton = ({ size = "medium", ...props }: ButtonProps) => {
   }
 }
 
-export default WarnButton
+export default StatusButton
