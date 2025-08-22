@@ -11,8 +11,10 @@ export enum ReagentCategory {
 }
 
 export interface Reagent {
+  id: string
+  userId: string
   name: string
-  description: string  
+  description: string
   price?: number
   expiryDate: string
   tradingType: ReagentTradingType
