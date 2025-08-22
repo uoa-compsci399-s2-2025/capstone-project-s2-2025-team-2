@@ -18,6 +18,71 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"ReagentTradingType": {
+				"enum": [
+					"trade",
+					"giveaway",
+					"sell"
+				],
+				"type": "string"
+			},
+			"ReagentCategory": {
+				"enum": [
+					"chemical",
+					"hazardous",
+					"biological"
+				],
+				"type": "string"
+			},
+			"Reagent": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"userId": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"expiryDate": {
+						"type": "string"
+					},
+					"tradingType": {
+						"$ref": "#/components/schemas/ReagentTradingType"
+					},
+					"images": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"categories": {
+						"items": {
+							"$ref": "#/components/schemas/ReagentCategory"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"userId",
+					"name",
+					"description",
+					"expiryDate",
+					"tradingType",
+					"categories"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {}
@@ -48,6 +113,68 @@
 				},
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/reagents": {
+			"get": {
+				"operationId": "GetAllReagents",
+				"responses": {
+					"200": {
+						"description": "Reagents retrieved successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Reagent"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "category",
+						"required": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/components/schemas/ReagentCategory"
+							}
+						}
+					}
+				]
+			}
+		},
+		"/reagents/{id}": {
+			"get": {
+				"operationId": "GetReagent",
+				"responses": {
+					"200": {
+						"description": "Reagent retrieved successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Reagent"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		}
 	},
