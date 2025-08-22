@@ -1,7 +1,6 @@
 import { ButtonHTMLAttributes } from "react"
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  backgroundColor?: string
   size?: "small" | "medium" | "large" | "outline"
   label: string
 }
