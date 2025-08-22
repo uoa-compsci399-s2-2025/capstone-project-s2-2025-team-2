@@ -1,13 +1,13 @@
 export enum ReagentTradingType {
-     TRADE = "trade",
-     GIVEAWAY = "giveaway",
-     SELL = "sell",
+  TRADE = "trade",
+  GIVEAWAY = "giveaway",
+  SELL = "sell",
 }
 
 export enum ReagentCategory {
-    CHEMICAL = "chemical",
-    HAZARDOUS = "hazardous",
-    BIOLOGICAL = "biological",
+  CHEMICAL = "chemical",
+  HAZARDOUS = "hazardous",
+  BIOLOGICAL = "biological",
 }
 
 export interface Reagent {
