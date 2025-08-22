@@ -17,7 +17,9 @@ export default function AuthWelcomeBox() {
         {/* Call to Action Button */}
         <OutlinedButton
           label="Sign Up"
-          size="medium"
+          size="small"
+          backgroundColor="white"
+          className="border-white"
         />
       </div>
     </div>
