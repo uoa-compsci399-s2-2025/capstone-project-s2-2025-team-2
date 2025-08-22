@@ -1,5 +1,4 @@
 import { ButtonHTMLAttributes } from "react"
-
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   backgroundColor?: string
   size?: "small" | "medium" | "large"
@@ -41,15 +40,24 @@ const BaseButton = ({
 
 // btn variants
 const SmallButton = (props: ButtonProps) => (
-  <BaseButton {...props} className="py-1.5 px-3" />
+  <BaseButton
+    {...props}
+    className={["py-1.5 px-3", { ...props }.className].join(" ")}
+  />
 )
 
 const MediumButton = (props: ButtonProps) => (
-  <BaseButton {...props} className="py-3 px-5" />
+  <BaseButton
+    {...props}
+    className={["py-3 px-5", { ...props }.className].join(" ")}
+  />
 )
 
 const LargeButton = (props: ButtonProps) => (
-  <BaseButton {...props} className="py-4.5 px-7" />
+  <BaseButton
+    {...props}
+    className={["py-4.5 px-7", { ...props }.className].join(" ")}
+  />
 )
 
 // exported btn component to be used
