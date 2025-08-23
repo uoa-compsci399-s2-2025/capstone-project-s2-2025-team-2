@@ -1,4 +1,5 @@
 import ReduceWaste from "./Icons/ReduceWaste";
+import SaveMoney from "./Icons/SaveMoney";
 
 const Landing = () => {
     return ( 
@@ -26,6 +27,7 @@ const Landing = () => {
             </button>
             <div>
                 <ReduceWaste/>
+                <SaveMoney/>
             </div>
         </div>
      );
