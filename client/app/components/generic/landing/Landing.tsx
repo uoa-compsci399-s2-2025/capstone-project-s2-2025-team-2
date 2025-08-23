@@ -1,4 +1,5 @@
-const buttonWidth = "10rem"
+import ReduceWaste from "./Icons/ReduceWaste";
+
 const Landing = () => {
     return ( 
         <div className="
@@ -12,17 +13,20 @@ const Landing = () => {
                 Save money, reduce waste, and strengthen academic connections.      
             </div>
             <button className="
-                px-[2.5rem] py-3 bg-blue-primary text-white font-semibold rounded-lg hover:bg-blue-secondary
+                px-[3.5rem] py-3 bg-blue-primary text-white font-semibold rounded-lg hover:bg-blue-secondary
                 mx-auto
             ">
                 Get Started
             </button>
             <button className="
-                mt-6 px-[2.5rem] py-3 bg-transparent text-black font-semibold rounded-lg
+                mt-6 px-[3.5rem] py-3 bg-transparent text-black font-semibold rounded-lg
                 mx-auto  border-black border-solid border-[2px]
             ">
                 Learn More
             </button>
+            <div>
+                <ReduceWaste/>
+            </div>
         </div>
      );
 }
