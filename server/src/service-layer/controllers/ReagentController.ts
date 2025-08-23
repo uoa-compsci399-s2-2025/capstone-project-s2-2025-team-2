@@ -1,5 +1,13 @@
 import { Reagent, ReagentCategory } from "../../data-layer/models/Reagent"
-import { Controller, Get, Path, Route, SuccessResponse, Query } from "tsoa"
+import {
+  Controller,
+  Get,
+  Post,
+  Path,
+  Route,
+  SuccessResponse,
+  Query,
+} from "tsoa"
 import { ReagentService } from "../../data-layer/services/ReagentService"
 import { CreateReagentRequest } from "service-layer/controllers/request-models/ReagentRequest"
 
@@ -42,5 +50,23 @@ export class ReagentController extends Controller {
       return undefined
     }
     return reagent
+  }
+
+  @SuccessResponse("201", "Reagent created successfully")
+  @Post("{id}")
+  public async createReagent(
+    @Query() requestObject: CreateReagentRequest,
+    @Path() id: string,
+  ): Promise<Reagent> {
+    // AuthSerice should be used to get the userId
+    const reagentToCreate: Reagent = {
+      ...requestObject,
+      categories: requestObject.categories as ReagentCategory[],
+    }
+    const newReaget = await new ReagentService().createReagent(
+      id,
+      reagentToCreate,
+    )
+    return newReaget
   }
 }
