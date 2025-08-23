@@ -6,7 +6,7 @@ const Landing = () => {
     return ( 
         <div className="
             bg-gradient-to-b from-[#FF947A]/[0.55] via-white/0 to-white mx-[1.5rem] rounded-[20px] h-full
-            text-center py-[1rem] flex flex-col
+            text-center py-[1rem] flex flex-col font-sans
         ">
             <span className="block text-blue-primary text-[50px] font-bold">Reagent</span>
             <div className="text-[20px] px-[30px] my-[2.6rem]">

@@ -4,7 +4,7 @@ import logo from "@/assets/ChemicallyLogo.webp";
 const Header = () => {
     return ( 
         <div className="
-            text-center pt-[1.2rem] text-black text-[25px] font-light mb-[1rem]
+            text-center pt-[1.2rem] text-black text-[25px] font-light mb-[1rem] font-sans
         ">
             
             <span>Chemical.ly</span>
