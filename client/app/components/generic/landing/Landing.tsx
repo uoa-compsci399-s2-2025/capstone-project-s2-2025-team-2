@@ -1,11 +1,12 @@
+import Collaborate from "./Icons/Collaborate";
 import ReduceWaste from "./Icons/ReduceWaste";
 import SaveMoney from "./Icons/SaveMoney";
 
 const Landing = () => {
     return ( 
         <div className="
-            bg-gradient-to-b from-[#FF947A]/[0.55] via-white/0 to-white mx-[1.5rem] rounded-[20px] h-[100vh]
-            text-center pt-[1rem] flex flex-col
+            bg-gradient-to-b from-[#FF947A]/[0.55] via-white/0 to-white mx-[1.5rem] rounded-[20px] h-full
+            text-center py-[1rem] flex flex-col
         ">
             <span className="block text-blue-primary text-[50px] font-bold">Reagent</span>
             <div className="text-[20px] px-[30px] my-[2.6rem]">
@@ -25,9 +26,10 @@ const Landing = () => {
             ">
                 Learn More
             </button>
-            <div>
+            <div className="mx-auto w-[13rem] mb-[2rem]">
                 <ReduceWaste/>
                 <SaveMoney/>
+                <Collaborate/>
             </div>
         </div>
      );
