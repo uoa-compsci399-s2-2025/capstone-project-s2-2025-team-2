@@ -1,7 +1,28 @@
+const buttonWidth = "10rem"
 const Landing = () => {
     return ( 
-        <div>
-            Landing
+        <div className="
+            bg-gradient-to-b from-[#FF947A]/[0.55] via-white/0 to-white mx-[1.5rem] rounded-[20px] h-[100vh]
+            text-center pt-[1rem] flex flex-col
+        ">
+            <span className="block text-blue-primary text-[50px] font-bold">Reagent</span>
+            <div className="text-[20px] px-[30px] my-[2.6rem]">
+                A collaborative platform for universities to share, trade and reuse research reagents.
+                <br/><br/>
+                Save money, reduce waste, and strengthen academic connections.      
+            </div>
+            <button className="
+                px-[2.5rem] py-3 bg-blue-primary text-white font-semibold rounded-lg hover:bg-blue-secondary
+                mx-auto
+            ">
+                Get Started
+            </button>
+            <button className="
+                mt-6 px-[2.5rem] py-3 bg-transparent text-black font-semibold rounded-lg
+                mx-auto  border-black border-solid border-[2px]
+            ">
+                Learn More
+            </button>
         </div>
      );
 }
