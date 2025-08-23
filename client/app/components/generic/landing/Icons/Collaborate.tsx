@@ -2,12 +2,22 @@ import { BsPeopleFill } from "react-icons/bs";
 const Collaborate = () => {
     
     return ( 
-        <div className="text-[#BF83FF] font-bold flex items-center mt-[1.5rem]">
-            <div className="bg-[#BF83FF]/[0.3] rounded-full p-4 inline-flex">
-                <BsPeopleFill size={30} className="text-[#BF83FF]" />
+        <div className="
+            text-[#BF83FF] font-bold flex items-center mt-[1.5rem]
+            md:m-0 md:flex-col
+        ">
+            <div className="
+                bg-[#BF83FF]/[0.3] rounded-full p-4 inline-flex
+                md:p-5
+            ">
+                <BsPeopleFill size={30} className="text-[#BF83FF] md:hidden" />
+                <BsPeopleFill size={40} className="text-[#BF83FF] hidden md:block" />
             </div>
 
-            <span className=" ml-[1rem] tracking-wider">Collaborate</span>
+            <span className="
+                ml-[1rem] tracking-wider
+                md:m-0 md:mt-[1rem] md:text-[20px]
+            ">Collaborate</span>
         </div>
      );
 }
