@@ -5,10 +5,14 @@ import SaveMoney from "./Icons/SaveMoney";
 const Landing = () => {
     return ( 
         <div className="
-            bg-gradient-to-b from-[#FF947A]/[0.55] via-white/0 to-white mx-[1.5rem] rounded-[20px] h-full
+            bg-gradient-to-b from-[#FF947A]/[0.55] from-10% via-white/0 via-70% to-white mx-[1.5rem] rounded-[20px] h-full
+            dark:from-[#51AFFF]/[0.48] dark:from-10% dark:via-black/0 dark:via-70% dark:to-primary
             text-center py-[1rem] flex flex-col font-sans
         ">
-            <span className="block text-blue-primary text-[50px] font-bold">Reagent</span>
+            <span className="
+                block text-blue-primary text-[50px] font-semibold
+                dark:text-[#FFB276]
+            ">Reagent</span>
             <div className="text-[20px] px-[30px] my-[2.6rem]">
                 A collaborative platform for universities to share, trade and reuse research reagents.
                 <br/><br/>
@@ -16,13 +20,15 @@ const Landing = () => {
             </div>
             <button className="
                 px-[3.5rem] py-3 bg-blue-primary text-white font-semibold rounded-lg hover:bg-blue-secondary
-                mx-auto
+                mx-auto dark:bg-[#FF7C5C]
             ">
                 Get Started
             </button>
             <button className="
-                mt-6 px-[3.5rem] py-3 bg-transparent text-black font-semibold rounded-lg
+                mt-6 px-[3.5rem] py-3 bg-transparent text-black font-extralight rounded-lg
                 mx-auto  border-black border-solid border-[2px]
+
+                dark:text-white dark:border-white
             ">
                 Learn More
             </button>
