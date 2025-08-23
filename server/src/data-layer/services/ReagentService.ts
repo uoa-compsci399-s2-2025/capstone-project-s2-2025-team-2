@@ -41,10 +41,9 @@ export class ReagentService {
     return reagentsSnapshot.docs.map((doc) => doc.data())
   }
 
-  /**
-   * Retrieves reagents by its categories from the Firestore database.
-   *
-   * @param categories - The category of the reagents to retrive.
-   * @returns Promise<Reagent[]> - Returns an array of reagents.
-   */
+  async createReagent(id: string, newReagent: Reagent): Promise<Reagent> {
+    const reagentRef = FirestoreCollections.reagents.doc(id)
+    await reagentRef.set(newReagent)
+    return newReagent
+  }
 }
