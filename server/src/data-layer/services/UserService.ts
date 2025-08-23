@@ -1,5 +1,5 @@
 import FirestoreCollections from "../adapters/FirestoreCollections"
-import { User } from "../models/Users"
+import { User } from "../models/User"
 
 export class UserService {
   async getAllUsers(): Promise<User[]> {

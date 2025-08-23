@@ -1,4 +1,4 @@
-import { Reagent, ReagentCategory } from "../../data-layer/models/Reagents"
+import { Reagent, ReagentCategory } from "../../data-layer/models/Reagent"
 import { Controller, Get, Path, Route, SuccessResponse, Query } from "tsoa"
 import { ReagentService } from "../../data-layer/services/ReagentService"
 

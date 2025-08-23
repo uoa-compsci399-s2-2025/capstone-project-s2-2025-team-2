@@ -20,20 +20,20 @@
 				"additionalProperties": false
 			},
 			"ReagentTradingType": {
+				"type": "string",
 				"enum": [
 					"trade",
 					"giveaway",
 					"sell"
-				],
-				"type": "string"
+				]
 			},
 			"ReagentCategory": {
+				"type": "string",
 				"enum": [
 					"chemical",
 					"hazardous",
 					"biological"
-				],
-				"type": "string"
+				]
 			},
 			"Reagent": {
 				"properties": {
@@ -133,9 +133,11 @@
 						}
 					}
 				},
+				"description": "Get all reagents with an option to filter them by category.",
 				"security": [],
 				"parameters": [
 					{
+						"description": "- The list of all categories to fetch reagents from.",
 						"in": "query",
 						"name": "category",
 						"required": false,
@@ -164,9 +166,11 @@
 						}
 					}
 				},
+				"description": "Get a reagent by its ID.",
 				"security": [],
 				"parameters": [
 					{
+						"description": "- The ID of the reagent to retrieve.",
 						"in": "path",
 						"name": "id",
 						"required": true,

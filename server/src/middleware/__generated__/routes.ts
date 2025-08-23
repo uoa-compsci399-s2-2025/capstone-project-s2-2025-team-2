@@ -23,13 +23,13 @@ const models: TsoaRoute.Models = {
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ReagentTradingType": {
-        "dataType": "refEnum",
-        "enums": ["trade","giveaway","sell"],
+        "dataType": "refAlias",
+        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["trade"]},{"dataType":"enum","enums":["giveaway"]},{"dataType":"enum","enums":["sell"]}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ReagentCategory": {
-        "dataType": "refEnum",
-        "enums": ["chemical","hazardous","biological"],
+        "dataType": "refAlias",
+        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["chemical"]},{"dataType":"enum","enums":["hazardous"]},{"dataType":"enum","enums":["biological"]}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Reagent": {
@@ -43,7 +43,7 @@ const models: TsoaRoute.Models = {
             "expiryDate": {"dataType":"string","required":true},
             "tradingType": {"ref":"ReagentTradingType","required":true},
             "images": {"dataType":"array","array":{"dataType":"string"}},
-            "categories": {"dataType":"array","array":{"dataType":"refEnum","ref":"ReagentCategory"},"required":true},
+            "categories": {"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"},"required":true},
         },
         "additionalProperties": false,
     },
@@ -95,7 +95,7 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsReagentController_getAllReagents: Record<string, TsoaRoute.ParameterSchema> = {
-                category: {"in":"query","name":"category","dataType":"array","array":{"dataType":"refEnum","ref":"ReagentCategory"}},
+                category: {"in":"query","name":"category","dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"}},
         };
         app.get('/reagents',
             ...(fetchMiddlewares<RequestHandler>(ReagentController)),
