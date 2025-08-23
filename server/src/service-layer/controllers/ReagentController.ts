@@ -59,14 +59,9 @@ export class ReagentController extends Controller {
     @Path() id: string,
   ): Promise<Reagent> {
     // AuthSerice should be used to get the userId
-    const reagentToCreate: Reagent = {
+    const newReagent = await new ReagentService().createReagent(id, {
       ...requestObject,
-      categories: requestObject.categories as ReagentCategory[],
-    }
-    const newReaget = await new ReagentService().createReagent(
-      id,
-      reagentToCreate,
-    )
-    return newReaget
+    })
+    return newReagent
   }
 }

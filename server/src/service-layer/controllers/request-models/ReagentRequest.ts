@@ -7,10 +7,9 @@ export interface CreateReagentRequest {
   userId: string
   name: string
   description: string
-  categories: string[]
+  categories: ReagentCategory[]
   price?: number
   expiryDate: string
   tradingType: ReagentTradingType
   images?: string[]
-  category: ReagentCategory[]
 }
