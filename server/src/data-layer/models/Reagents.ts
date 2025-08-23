@@ -1,6 +1,6 @@
-export type ReagentTradingType = "trade" | "giveaway" | "sell";
+export type ReagentTradingType = "trade" | "giveaway" | "sell"
 
-export type ReagentCategory = "chemical" | "hazardous" | "biological";
+export type ReagentCategory = "chemical" | "hazardous" | "biological"
 
 export interface Reagent {
   id: string
