@@ -41,9 +41,12 @@ export class ReagentService {
     return reagentsSnapshot.docs.map((doc) => doc.data())
   }
 
-  async createReagent(id: string, newReagent: Reagent): Promise<Reagent> {
-    const reagentRef = FirestoreCollections.reagents.doc(id)
-    await reagentRef.set(newReagent)
-    return newReagent
+  async createReagent(newReagent: Reagent): Promise<Reagent> {
+    const docRef = await FirestoreCollections.reagents.add(newReagent)
+    const createdReagent = {
+      ...newReagent,
+      id: docRef.id,
+    }
+    return createdReagent
   }
 }

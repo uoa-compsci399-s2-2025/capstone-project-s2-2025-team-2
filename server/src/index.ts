@@ -20,7 +20,7 @@ app.use(json())
 app.use(helmet())
 app.use(cors())
 
-app.use("/swagger", swaggerUI.serve, swaggerUI.setup(swaggerJson))
+app.use("/swagger", swaggerUI.serve as any, swaggerUI.setup(swaggerJson) as any)
 
 RegisterRoutes(app)
 

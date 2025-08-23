@@ -37,9 +37,6 @@
 			},
 			"Reagent": {
 				"properties": {
-					"id": {
-						"type": "string"
-					},
 					"userId": {
 						"type": "string"
 					},
@@ -73,13 +70,57 @@
 					}
 				},
 				"required": [
-					"id",
 					"userId",
 					"name",
 					"description",
 					"expiryDate",
 					"tradingType",
 					"categories"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateReagentRequest": {
+				"properties": {
+					"userId": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"categories": {
+						"items": {
+							"$ref": "#/components/schemas/ReagentCategory"
+						},
+						"type": "array"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"expiryDate": {
+						"type": "string"
+					},
+					"tradingType": {
+						"$ref": "#/components/schemas/ReagentTradingType"
+					},
+					"images": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"userId",
+					"name",
+					"description",
+					"categories",
+					"expiryDate",
+					"tradingType"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -179,6 +220,33 @@
 						}
 					}
 				]
+			},
+			"post": {
+				"operationId": "CreateReagent",
+				"responses": {
+					"201": {
+						"description": "Reagent created successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Reagent"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateReagentRequest"
+							}
+						}
+					}
+				}
 			}
 		}
 	},

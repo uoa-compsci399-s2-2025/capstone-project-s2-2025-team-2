@@ -35,7 +35,6 @@ const models: TsoaRoute.Models = {
     "Reagent": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"string","required":true},
             "userId": {"dataType":"string","required":true},
             "name": {"dataType":"string","required":true},
             "description": {"dataType":"string","required":true},
@@ -44,6 +43,21 @@ const models: TsoaRoute.Models = {
             "tradingType": {"ref":"ReagentTradingType","required":true},
             "images": {"dataType":"array","array":{"dataType":"string"}},
             "categories": {"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateReagentRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "userId": {"dataType":"string","required":true},
+            "name": {"dataType":"string","required":true},
+            "description": {"dataType":"string","required":true},
+            "categories": {"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"},"required":true},
+            "price": {"dataType":"double"},
+            "expiryDate": {"dataType":"string","required":true},
+            "tradingType": {"ref":"ReagentTradingType","required":true},
+            "images": {"dataType":"array","array":{"dataType":"string"}},
         },
         "additionalProperties": false,
     },
@@ -148,6 +162,36 @@ export function RegisterRoutes(app: Router) {
                 next,
                 validatedArgs,
                 successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsReagentController_createReagent: Record<string, TsoaRoute.ParameterSchema> = {
+                requestObject: {"in":"body","name":"requestObject","required":true,"ref":"CreateReagentRequest"},
+        };
+        app.post('/reagents/:id',
+            ...(fetchMiddlewares<RequestHandler>(ReagentController)),
+            ...(fetchMiddlewares<RequestHandler>(ReagentController.prototype.createReagent)),
+
+            async function ReagentController_createReagent(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsReagentController_createReagent, request, response });
+
+                const controller = new ReagentController();
+
+              await templateService.apiHandler({
+                methodName: 'createReagent',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 201,
               });
             } catch (err) {
                 return next(err);

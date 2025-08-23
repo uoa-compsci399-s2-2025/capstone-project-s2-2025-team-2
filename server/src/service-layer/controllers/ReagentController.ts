@@ -57,12 +57,13 @@ export class ReagentController extends Controller {
   @Post("{id}")
   public async createReagent(
     @Body() requestObject: CreateReagentRequest,
-    @Path() id: string,
   ): Promise<Reagent> {
     // AuthSerice should be used to get the userId
-    const newReagent = await new ReagentService().createReagent(id, {
+    const data = {
       ...requestObject,
-    })
+      // <userId> This should be replaced with the authenticated user's ID
+    }
+    const newReagent = await new ReagentService().createReagent(data as Reagent)
     return newReagent
   }
 }
