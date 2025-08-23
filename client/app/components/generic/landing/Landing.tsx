@@ -9,6 +9,7 @@ const Landing = () => {
                 bg-gradient-to-b from-[#FF947A]/[0.55] from-10% via-white/0 via-70% to-white mx-[1.5rem] rounded-[20px] h-full
                 dark:from-[#51AFFF]/[0.48] dark:from-10% dark:via-black/0 dark:via-70% dark:to-primary
                 text-center py-[1rem] flex flex-col font-sans
+                md:p-0 md:-m-0
             ">
                 <span className="
                     block text-blue-primary text-[50px] font-semibold
