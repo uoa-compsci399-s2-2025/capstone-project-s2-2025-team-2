@@ -3,6 +3,7 @@ export type ReagentTradingType = "trade" | "giveaway" | "sell"
 export type ReagentCategory = "chemical" | "hazardous" | "biological"
 
 export interface Reagent {
+  userId: string
   name: string
   description: string
   price?: number
