@@ -7,6 +7,7 @@ import {
   Route,
   SuccessResponse,
   Query,
+  Body,
 } from "tsoa"
 import { ReagentService } from "../../data-layer/services/ReagentService"
 import { CreateReagentRequest } from "service-layer/controllers/request-models/ReagentRequest"
@@ -55,7 +56,7 @@ export class ReagentController extends Controller {
   @SuccessResponse("201", "Reagent created successfully")
   @Post("{id}")
   public async createReagent(
-    @Query() requestObject: CreateReagentRequest,
+    @Body() requestObject: CreateReagentRequest,
     @Path() id: string,
   ): Promise<Reagent> {
     // AuthSerice should be used to get the userId
