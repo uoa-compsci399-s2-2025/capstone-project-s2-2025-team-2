@@ -16,6 +16,27 @@ export default function AuthPage() {
   //            state           //
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [user, setUser] = useState<any>(null)
+  const [isAuthenticated, setIsAuthenticated] = useState(false)
+
+  //            function: handleGoogleSuccess           //
+  const handleGoogleSuccess = (userData: any) => {
+    console.log("Google OAuth success:", userData)
+    setUser(userData)
+    setIsAuthenticated(true)
+    
+    // Show success message
+    alert(`Welcome, ${userData.displayName || userData.email}!`)
+    
+    // Here you can redirect or handle other actions
+    // Example: router.push('/dashboard')
+  }
+
+  //            function: handleGoogleError           //
+  const handleGoogleError = (error: any) => {
+    console.error("Google OAuth error:", error)
+    alert("Google authentication failed. Please try again.")
+  }
 
   //            function: handleSubmit           //
   const handleSubmit = async (e: React.FormEvent) => {
@@ -32,8 +53,15 @@ export default function AuthPage() {
       
       const data = await response.json()
       
+      if (data.success) {
+        alert("Login successful!")
+        // Here you can redirect or handle other actions
+      } else {
+        alert("Login failed. Please check your credentials.")
+      }
     } catch (error) {
       console.error("Error:", error)
+      alert("An error occurred during login.")
     }
   }
 
@@ -44,16 +72,29 @@ export default function AuthPage() {
 
         {/* Left side - Sign In Box */}
         <div className="max-w-md w-full space-y-8 p-8 bg-primary rounded-lg shadow-lg">
-            
+
             {/* Header Section */}
             <div className="text-center">
                 <h2>Sign In</h2>
                 <p className="mt-2 text-secondary">Sign in to your account</p>
             </div>
+
+            {/* Authentication Status */}
+            {isAuthenticated && user && (
+              <div className="mt-4 p-4 bg-green-500 border border-green-500 text-green-700 rounded">
+                <p className="font-semibold">Welcome, {user.displayName || user.email}!</p>
+                <p className="text-sm">You are now signed in with Google.</p>
+              </div>
+            )}
         
             {/* Google OAuth Button */}
             <div className="w-full flex justify-center items-center">
-                <GoogleOAuthBtn onClick={() => console.log("Google OAuth clicked")} />
+                {/* 1. Google OAuth Button Rendering */}
+                {/* 2. Pass call back functions into the GoogleOAuthBtn component */}
+                <GoogleOAuthBtn 
+                  onSuccess={handleGoogleSuccess}
+                  onError={handleGoogleError}
+                />
             </div>
 
             {/* Divider */}
