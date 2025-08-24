@@ -8,7 +8,7 @@ const Landing = () => {
     return ( 
         <div className="
             md:bg-white md:p-8 md:pl-[5rem] md:rounded-[20px]
-            dark:bg-primary
+            md:dark:bg-primary
         ">
             <div className="hidden md:block">
                 <Image
@@ -26,7 +26,7 @@ const Landing = () => {
             ">Reduce, Reuse</span>
             <div className="
                 bg-gradient-to-b from-[#FF947A]/[0.55] from-10% via-white/0 via-70% to-white mx-[1.5rem] rounded-[20px] h-full
-                dark:from-[#51AFFF]/[0.48] dark:from-10% dark:via-black/0 dark:via-70% dark:to-primary
+                dark:from-[#51AFFF]/[0.48] dark:from-10% dark:to-primary dark:to-100%
                 text-center py-[1rem] flex flex-col font-sans shadow-lg
                 
                 md:shadow-none md:rounded-[40px]
@@ -34,20 +34,20 @@ const Landing = () => {
                 md:pl-[3rem] md:items-start md:m-0
             ">
                 <span className="
-                    block text-blue-primary text-[50px] font-semibold
+                    block text-blue-primary text-[70px] font-semibold
                     dark:text-[#FFB276]
                     
                     md:text-[70px]
                 ">REAGENT</span>
                 <div className="
-                    text-[20px] px-[30px] my-[2.6rem]
+                    text-[30px] px-[30px] my-[2.6rem]
                     md:p-0 md:text-left md:text-[25px] md:w-[32rem]
                 ">
                     A collaborative platform for universities to share, trade and reuse research reagents.
                     <br/><br/>
                     Save money, reduce waste, and strengthen academic connections.      
                 </div>
-                <div className="md:pb-[2rem]">
+                <div className="flex flex-col md:pb-[2rem] text-[30px] mt-[3rem]">
                     <button className="
                         px-[3.5rem] py-3 bg-blue-primary text-white font-semibold rounded-lg hover:bg-blue-secondary
                         mx-auto dark:bg-[#FF7C5C] md:mr-[3rem] hover:cursor-pointer
@@ -55,8 +55,8 @@ const Landing = () => {
                         Get Started
                     </button>
                     <button className="
-                        mt-6 px-[3.5rem] py-3 bg-transparent text-black font-extralight rounded-lg
-                        mx-auto  border-black border-solid border-[1px] hover:cursor-pointer
+                        mt-[3rem] px-[3.9rem] py-3 bg-transparent text-black font-extralight rounded-lg
+                        mx-auto  border-black border-solid border-[2px] hover:cursor-pointer
 
                         dark:text-white dark:border-white
                     ">
@@ -64,7 +64,7 @@ const Landing = () => {
                     </button>
                 </div>
                 <div className="
-                    mx-auto w-[13rem] mb-[2rem]
+                    mx-auto w-[17rem] mb-[2rem] text-left
                     md:hidden
                 ">
                     <ReduceWaste/>

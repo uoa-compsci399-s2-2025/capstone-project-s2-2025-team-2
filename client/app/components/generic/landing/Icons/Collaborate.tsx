@@ -10,12 +10,12 @@ const Collaborate = () => {
                 bg-[#BF83FF]/[0.3] rounded-full p-4 inline-flex
                 md:p-5
             ">
-                <BsPeopleFill size={30} className="text-[#BF83FF] md:hidden" />
+                <BsPeopleFill size={40} className="text-[#BF83FF] md:hidden" />
                 <BsPeopleFill size={40} className="text-[#BF83FF] hidden md:block" />
             </div>
 
             <span className="
-                ml-[1rem] tracking-wider
+                tracking-wider text-[1.5rem] min-w-[15rem] pl-[1rem]
                 md:m-0 md:mt-[1rem] md:text-[20px]
             ">Collaborate</span>
         </div>
