@@ -12,6 +12,10 @@
     "generate:types": "openapi-typescript ../server/src/middleware/__generated__/swagger.json -o models/__generated__/schema.d.ts"
   },
   "dependencies": {
+    "@google-cloud/local-auth": "^3.0.1",
+    "@types/gapi": "^0.0.47",
+    "@types/gapi.auth2": "^0.0.61",
+    "googleapis": "^157.0.0",
     "next": "15.4.4",
     "openapi-fetch": "^0.14.0",
     "openapi-typescript": "^7.8.0",

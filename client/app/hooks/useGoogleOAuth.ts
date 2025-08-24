@@ -73,7 +73,7 @@ export const useGoogleOAuth = ({ onSuccess, onError }: GoogleOAuthBtnProps) => {
         }
 
         const data: GoogleOAuthResponse = await result.json()
-        
+
         if (data.success && onSuccess) {
           onSuccess(data.user)
         }
