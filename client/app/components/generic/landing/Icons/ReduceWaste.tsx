@@ -15,7 +15,7 @@ const ReduceWaste = () => {
 
             <span className="
                 tracking-wider text-[1.5rem] min-w-[15rem] pl-[1rem]
-                md:m-0 md:mt-[1rem] md:text-[20px]
+                md:m-0 md:p-0 md:mt-[1rem] md:text-[20px] md:text-center
             ">Reduce Waste</span>
         </div>
      );

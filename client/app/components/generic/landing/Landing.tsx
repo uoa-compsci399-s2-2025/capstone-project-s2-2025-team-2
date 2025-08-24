@@ -47,9 +47,12 @@ const Landing = () => {
                     <br/><br/>
                     Save money, reduce waste, and strengthen academic connections.      
                 </div>
-                <div className="flex flex-col md:pb-[2rem] text-[30px] mt-[3rem]">
+                <div className="
+                    flex flex-col md:pb-[2rem] text-[30px] mt-[3rem]
+                    md:flex-row
+                ">
                     <button className="
-                        px-[3.5rem] py-3 bg-blue-primary text-white font-semibold rounded-lg hover:bg-blue-secondary
+                        mt-[3rem] px-[3.5rem] py-3 bg-blue-primary text-white font-semibold rounded-lg hover:bg-blue-secondary
                         mx-auto dark:bg-[#FF7C5C] md:mr-[3rem] hover:cursor-pointer
                     ">
                         Get Started
