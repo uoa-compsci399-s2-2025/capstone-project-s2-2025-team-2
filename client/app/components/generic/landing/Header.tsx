@@ -28,7 +28,10 @@ const Header = () => {
                     width={50}
                     height={50}
                     />
-                <span className="md:ml-[1rem] md:font-bold">Chemical.ly</span>
+                <span className="
+                    md:ml-[1rem] md:font-bold md:dark:text-[#D3DAFF]
+                    md:text-[1.5rem]
+                ">Chemical.ly</span>
             </div>
         </div>
      );

@@ -6,11 +6,23 @@ import logo from "@/assets/ChemicallyLogo.webp";
 
 const Landing = () => {
     return ( 
-        <div className="md:bg-white md:p-8 md:pl-[5rem] md:rounded-[20px]">
-            
+        <div className="
+            md:bg-white md:p-8 md:pl-[5rem] md:rounded-[20px]
+            dark:bg-primary
+        ">
+            <div className="hidden md:block">
+                <Image
+                    src={logo}
+                    alt="Chemical.ly Logo"
+                    width={550}
+                    height={450}
+                    className="absolute top-[12rem] right-[5rem]"
+                />
+            </div>
             <span className="
                 hidden md:block md:font-sans md:text-[35px] md:font-light
                 md:pl-[3rem] mb-[1.5rem] md:pt-[1rem]
+                md:dark:text-[#D3DAFF]
             ">Reduce, Reuse</span>
             <div className="
                 bg-gradient-to-b from-[#FF947A]/[0.55] from-10% via-white/0 via-70% to-white mx-[1.5rem] rounded-[20px] h-full
@@ -35,7 +47,7 @@ const Landing = () => {
                     <br/><br/>
                     Save money, reduce waste, and strengthen academic connections.      
                 </div>
-                <div className="">
+                <div className="md:pb-[2rem]">
                     <button className="
                         px-[3.5rem] py-3 bg-blue-primary text-white font-semibold rounded-lg hover:bg-blue-secondary
                         mx-auto dark:bg-[#FF7C5C] md:mr-[3rem] hover:cursor-pointer
