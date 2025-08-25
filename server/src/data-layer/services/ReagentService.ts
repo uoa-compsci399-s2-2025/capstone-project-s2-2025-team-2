@@ -64,4 +64,20 @@ export class ReagentService {
       throw new Error(`Failed to delete reagent - ${id}: ${err}`)
     }
   }
+
+  async updateReagent(id: string, update: Partial<Reagent>): Promise<Reagent> {
+    try {
+      const docRef = await FirestoreCollections.reagents.doc(id)
+      const snapShot = await docRef.get()
+      if (!snapShot.exists) {
+        throw new Error(`Reagent - ${id} not found`)
+      }
+      await docRef.update(update)
+      const updatedDoc = await docRef.get()
+      return updatedDoc.data() as Reagent
+    } catch (err) {
+      console.log(err)
+      throw new Error(`Failed to update reagent - ${id}: ${err}`)
+    }
+  }
 }
