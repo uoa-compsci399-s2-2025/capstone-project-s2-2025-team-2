@@ -4,23 +4,23 @@ const ReduceWaste = () => {
     <div
       className="
             text-[#FF947A] font-bold flex items-center mt-[4rem]
-            md:m-0 md:flex-col md:align-middle
+            lg:m-0 lg:flex-col lg:align-middle
         "
     >
       <div
         className="
                 bg-[#FF947A]/[0.3] rounded-full p-4 inline-flex 
-                md:p-5
+                lg:p-5
             "
       >
-        <FaFlask size={40} className="text-[#FF947A] md:hidden" />
-        <FaFlask size={40} className="text-[#FF947A] hidden md:block" />
+        <FaFlask size={40} className="text-[#FF947A] lg:hidden" />
+        <FaFlask size={40} className="text-[#FF947A] hidden lg:block" />
       </div>
 
       <span
         className="
                 tracking-wider text-[1.5rem] min-w-[15rem] pl-[1rem]
-                md:m-0 md:p-0 md:mt-[1rem] md:text-[20px] md:text-center
+                lg:m-0 lg:p-0 lg:mt-[1rem] lg:text-[20px] lg:text-center
             "
       >
         Reduce Waste
