@@ -124,6 +124,43 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"Partial_Reagent_": {
+				"properties": {
+					"userId": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"expiryDate": {
+						"type": "string"
+					},
+					"tradingType": {
+						"$ref": "#/components/schemas/ReagentTradingType"
+					},
+					"images": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"categories": {
+						"items": {
+							"$ref": "#/components/schemas/ReagentCategory"
+						},
+						"type": "array"
+					}
+				},
+				"type": "object",
+				"description": "Make all properties in T optional"
 			}
 		},
 		"securitySchemes": {}
@@ -278,6 +315,46 @@
 						}
 					}
 				]
+			},
+			"patch": {
+				"operationId": "UpdateReagent",
+				"responses": {
+					"200": {
+						"description": "Reagent updated successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Reagent"
+								}
+							}
+						}
+					}
+				},
+				"description": "Update a reagent by its ID.\r\nCan only be done by lab_admin (who owns the reagent) and admin",
+				"security": [],
+				"parameters": [
+					{
+						"description": "- The ID of the reagent to update.",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"description": "- The updated reagent data (partial fields allowed)",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Partial_Reagent_",
+								"description": "- The updated reagent data (partial fields allowed)"
+							}
+						}
+					}
+				}
 			}
 		}
 	},

@@ -9,6 +9,7 @@ import {
   Query,
   Body,
   Delete,
+  Patch,
 } from "tsoa"
 import { ReagentService } from "../../data-layer/services/ReagentService"
 import { CreateReagentRequest } from "service-layer/controllers/request-models/ReagentRequest"
@@ -91,6 +92,33 @@ export class ReagentController extends Controller {
     } catch (error) {
       this.setStatus(404)
       throw new Error(`[ERROR] while deleting reagent ${id}: ${error}`)
+    }
+  }
+
+  /**
+   * Update a reagent by its ID.
+   * Can only be done by lab_admin (who owns the reagent) and admin
+   *
+   * @param id - The ID of the reagent to update.
+   * @param update - The updated reagent data (partial fields allowed)
+   * @returns Promise<Reagent> - The deleted reagent.
+   * @throws 400 - If the operation fails
+   */
+  @SuccessResponse("200", "Reagent updated successfully")
+  @Patch("{id}")
+  public async updateReagent(
+    @Path() id: string,
+    @Body() update: Partial<Reagent>,
+  ): Promise<Reagent> {
+    try {
+      const updatedReagent = await new ReagentService().updateReagent(
+        id,
+        update,
+      )
+      return updatedReagent
+    } catch (error) {
+      this.setStatus(400)
+      throw new Error(`[ERROR] while updating reagent ${id}: ${error}`)
     }
   }
 }
