@@ -49,4 +49,19 @@ export class ReagentService {
     }
     return createdReagent
   }
+
+  async deleteReagent(id: string): Promise<Reagent> {
+    try {
+      const docRef = await FirestoreCollections.reagents.doc(id)
+      if (docRef == null) {
+        throw new Error(`Reagent - ${id} not found`)
+      }
+      const reagent = (await docRef.get()).data() as Reagent
+      await docRef.delete()
+      return reagent
+    } catch (err) {
+      console.log(err)
+      throw new Error(`Failed to delete reagent - ${id}: ${err}`)
+    }
+  }
 }
