@@ -250,6 +250,34 @@
 						}
 					}
 				}
+			},
+			"delete": {
+				"operationId": "DeleteReagent",
+				"responses": {
+					"200": {
+						"description": "Reagent deleted successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Reagent"
+								}
+							}
+						}
+					}
+				},
+				"description": "Delete a reagent by its ID.",
+				"security": [],
+				"parameters": [
+					{
+						"description": "- The ID of the reagent to delete.",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		}
 	},
