@@ -140,7 +140,7 @@ export default class GoogleOAuthService {
       if (isNewUser) {
         try {
           await this.saveUserToFirestore(
-            userRecord.uid, 
+            userRecord.uid,
             googleUserInfo.email, 
             googleUserInfo.name
           )

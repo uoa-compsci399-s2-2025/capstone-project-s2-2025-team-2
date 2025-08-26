@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Query, Route, Tags } from "tsoa"
+import { Body, Controller, Post, Route, Tags } from "tsoa"
 import GoogleOAuthService from "../../business-layer/services/GoogleOAuthService"
 import { GoogleOAuthRequest } from "./request-models/OAuthVerifyRequest"
 import { GoogleOAuthResponse } from "./response-models/OAuthVerifyResponse"

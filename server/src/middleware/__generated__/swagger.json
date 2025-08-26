@@ -19,7 +19,29 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"GoogleAuthResponse": {
+			"GoogleOAuthUser": {
+				"properties": {
+					"uid": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"displayName": {
+						"type": "string"
+					},
+					"photoURL": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"uid",
+					"email"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GoogleOAuthResponse": {
 				"properties": {
 					"success": {
 						"type": "boolean"
@@ -31,25 +53,7 @@
 						"type": "string"
 					},
 					"user": {
-						"properties": {
-							"photoURL": {
-								"type": "string"
-							},
-							"displayName": {
-								"type": "string"
-							},
-							"email": {
-								"type": "string"
-							},
-							"uid": {
-								"type": "string"
-							}
-						},
-						"required": [
-							"email",
-							"uid"
-						],
-						"type": "object"
+						"$ref": "#/components/schemas/GoogleOAuthUser"
 					}
 				},
 				"required": [
@@ -59,7 +63,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"GoogleAuthRequest": {
+			"GoogleOAuthRequest": {
 				"properties": {
 					"idToken": {
 						"type": "string"
@@ -134,46 +138,6 @@
 				"parameters": []
 			}
 		},
-		"/auth/google/callback": {
-			"get": {
-				"operationId": "HandleCallback",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/GoogleAuthResponse"
-								}
-							}
-						}
-					}
-				},
-				"description": "Handles Google OAuth callback.",
-				"tags": [
-					"Google OAuth"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "query",
-						"name": "code",
-						"required": false,
-						"schema": {
-							"type": "string"
-						}
-					},
-					{
-						"in": "query",
-						"name": "error",
-						"required": false,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
 		"/auth/google/verify": {
 			"post": {
 				"operationId": "VerifyToken",
@@ -183,7 +147,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/GoogleAuthResponse"
+									"$ref": "#/components/schemas/GoogleOAuthResponse"
 								}
 							}
 						}
@@ -200,7 +164,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/GoogleAuthRequest"
+								"$ref": "#/components/schemas/GoogleOAuthRequest"
 							}
 						}
 					}

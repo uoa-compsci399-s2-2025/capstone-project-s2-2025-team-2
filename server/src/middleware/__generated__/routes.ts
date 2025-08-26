@@ -24,18 +24,29 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "GoogleAuthResponse": {
+    "GoogleOAuthUser": {
+        "dataType": "refObject",
+        "properties": {
+            "uid": {"dataType":"string","required":true},
+            "email": {"dataType":"string","required":true},
+            "displayName": {"dataType":"string"},
+            "photoURL": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "GoogleOAuthResponse": {
         "dataType": "refObject",
         "properties": {
             "success": {"dataType":"boolean","required":true},
             "message": {"dataType":"string","required":true},
             "token": {"dataType":"string"},
-            "user": {"dataType":"nestedObjectLiteral","nestedProperties":{"photoURL":{"dataType":"string"},"displayName":{"dataType":"string"},"email":{"dataType":"string","required":true},"uid":{"dataType":"string","required":true}}},
+            "user": {"ref":"GoogleOAuthUser"},
         },
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "GoogleAuthRequest": {
+    "GoogleOAuthRequest": {
         "dataType": "refObject",
         "properties": {
             "idToken": {"dataType":"string","required":true},
@@ -107,39 +118,8 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsGoogleOAuthController_handleCallback: Record<string, TsoaRoute.ParameterSchema> = {
-                code: {"in":"query","name":"code","dataType":"string"},
-                error: {"in":"query","name":"error","dataType":"string"},
-        };
-        app.get('/auth/google/callback',
-            ...(fetchMiddlewares<RequestHandler>(GoogleOAuthController)),
-            ...(fetchMiddlewares<RequestHandler>(GoogleOAuthController.prototype.handleCallback)),
-
-            async function GoogleOAuthController_handleCallback(request: ExRequest, response: ExResponse, next: any) {
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsGoogleOAuthController_handleCallback, request, response });
-
-                const controller = new GoogleOAuthController();
-
-              await templateService.apiHandler({
-                methodName: 'handleCallback',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: undefined,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsGoogleOAuthController_verifyToken: Record<string, TsoaRoute.ParameterSchema> = {
-                requestBody: {"in":"body","name":"requestBody","required":true,"ref":"GoogleAuthRequest"},
+                requestBody: {"in":"body","name":"requestBody","required":true,"ref":"GoogleOAuthRequest"},
         };
         app.post('/auth/google/verify',
             ...(fetchMiddlewares<RequestHandler>(GoogleOAuthController)),
