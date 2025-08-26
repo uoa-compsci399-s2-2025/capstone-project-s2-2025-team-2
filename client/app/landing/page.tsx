@@ -1,5 +1,5 @@
-import Header from "../components/composite/landing/Header";
-import Landing from "../components/composite/landing/Landing";
+import Header from "../components/composite/landing/Header"
+import Landing from "../components/composite/landing/Landing"
 
 export default function page() {
   return (
@@ -9,8 +9,8 @@ export default function page() {
     md:p-[3rem]
   "
     >
-      <Header/>
-      <Landing/>
+      <Header />
+      <Landing />
     </div>
   )
 }
