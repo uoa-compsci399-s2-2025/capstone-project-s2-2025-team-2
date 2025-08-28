@@ -4,153 +4,160 @@
  */
 
 export interface paths {
-  "/users/{userId}": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get: operations["GetUser"]
-    put?: never
-    post?: never
-    delete: operations["DeleteUser"]
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/users": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get: operations["GetAllUsers"]
-    put?: never
-    post: operations["CreateUser"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
+    "/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetAllUsers"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/google/verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Verifies Google ID token and authenticates user. */
+        post: operations["VerifyToken"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/login": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["Login"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
-export type webhooks = Record<string, never>
+export type webhooks = Record<string, never>;
 export interface components {
-  schemas: {
-    User: {
-      /** Format: double */
-      id: number
-      email: string
-      name: string
-      phoneNumbers: string[]
-    }
-    /** @description From T, pick a set of properties whose keys are in the union K */
-    "Pick_User.email-or-name-or-phoneNumbers_": {
-      email: string
-      name: string
-      phoneNumbers: string[]
-    }
-    UserCreationParams: components["schemas"]["Pick_User.email-or-name-or-phoneNumbers_"] & {
-      isAdmin?: boolean
-    }
-  }
-  responses: never
-  parameters: never
-  requestBodies: never
-  headers: never
-  pathItems: never
+    schemas: {
+        User: {
+            username: string;
+        };
+        GoogleOAuthUser: {
+            uid: string;
+            email: string;
+            displayName?: string;
+            photoURL?: string;
+        };
+        GoogleOAuthResponse: {
+            success: boolean;
+            message: string;
+            token?: string;
+            user?: components["schemas"]["GoogleOAuthUser"];
+        };
+        GoogleOAuthRequest: {
+            idToken: string;
+        };
+        LoginResponse: {
+            message: string;
+            success: boolean;
+        };
+        LoginRequest: {
+            email: string;
+            password: string;
+        };
+    };
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
-export type $defs = Record<string, never>
+export type $defs = Record<string, never>;
 export interface operations {
-  GetUser: {
-    parameters: {
-      query?: {
-        name?: string
-      }
-      header?: never
-      path: {
-        userId: number
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Ok */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["User"]
-        }
-      }
-    }
-  }
-  DeleteUser: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        userId: number
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description No content */
-      204: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  GetAllUsers: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Ok */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["User"][]
-        }
-      }
-    }
-  }
-  CreateUser: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["UserCreationParams"]
-      }
-    }
-    responses: {
-      /** @description Created */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["User"]
-        }
-      }
-    }
-  }
+    GetAllUsers: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Users retrieved successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["User"][];
+                };
+            };
+        };
+    };
+    VerifyToken: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GoogleOAuthRequest"];
+            };
+        };
+        responses: {
+            /** @description Ok */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GoogleOAuthResponse"];
+                };
+            };
+        };
+    };
+    Login: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["LoginRequest"];
+            };
+        };
+        responses: {
+            /** @description Ok */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["LoginResponse"];
+                };
+            };
+        };
+    };
 }
