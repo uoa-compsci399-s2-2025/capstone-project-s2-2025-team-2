@@ -13,7 +13,6 @@ const BaseButton = ({
   className,
   ...props
 }: ButtonProps) => {
-
   return (
     <button
       type="button"
