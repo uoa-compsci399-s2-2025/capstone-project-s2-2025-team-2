@@ -9,6 +9,7 @@ import AuthDivider from "../components/auth/AuthDivider"
 import AuthWelcomeBox from "../components/auth/AuthWelcomeBox"
 import GoogleOAuthBtn from "../components/auth/GoogleOAuthBtn"
 import { useState } from "react"
+import client from "../services/fetch-client"
 
 //            function: AuthPage           //
 export default function AuthPage() {
@@ -43,17 +44,13 @@ export default function AuthPage() {
     e.preventDefault()
     
     try {
-      const response = await fetch("http://localhost:8000/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
+      const response = await client.POST("/auth/login", {
+        body: { email, password }
       })
       
-      const data = await response.json()
+      const data = response.data
       
-      if (data.success) {
+      if (data && data.success) {
         alert("Login successful!")
         // Here you can redirect or handle other actions
       } else {
