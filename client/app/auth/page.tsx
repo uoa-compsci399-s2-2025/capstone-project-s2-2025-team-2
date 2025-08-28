@@ -66,8 +66,8 @@ export default function AuthPage() {
 
   //            render: AuthPage           //
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="flex gap-8 max-w-6xl w-full justify-center">
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-white to-white/5">
+      <div className="md:flex md:gap-8 max-w-6xl w-full justify-center">
         {/* Left side - Sign In Box */}
         <div className="max-w-md w-full space-y-8 p-8 bg-primary rounded-lg shadow-lg">
           {/* Header Section */}
