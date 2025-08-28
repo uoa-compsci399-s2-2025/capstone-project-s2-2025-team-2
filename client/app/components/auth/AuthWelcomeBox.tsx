@@ -2,7 +2,7 @@ import OutlinedButton from "../generic/button/outlined/OutlinedButton"
 
 export default function AuthWelcomeBox() {
   return (
-    <div className="max-w-md w-full space-y-8 p-8 bg-gradient-to-b from-blue-400 to-purple-600 rounded-lg shadow-lg flex flex-col justify-center transition-all">
+    <div className="max-w-md w-full space-y-8 p-8 bg-gradient-to-b from-blue-primary to-blue-primary/20 rounded-lg shadow-lg flex flex-col justify-center transition-all">
       {/* Welcome Content */}
       <div className="text-center">
         <h2 className="mb-2 text-white/40">Welcome to</h2>
