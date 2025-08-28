@@ -13,20 +13,6 @@ const BaseButton = ({
   className,
   ...props
 }: ButtonProps) => {
-  // default blue bg when backgroundColours prop isn't specified
-  const defaultColourClasses = "border-blue-primary hover:bg-blue-primary/25"
-
-  // need to use inline styles for custom colours -- passing props to tailwind utility classes doesnt work
-  const btnColours = {
-    borderColor: backgroundColor,
-    color: backgroundColor,
-    "--tw-bg-opacity": "0.25",
-    "--hover-bg-color": `${backgroundColor}40`, // 40 = 25% opacity in hex
-  }
-
-  const finalClasses = backgroundColor
-    ? "inline-block cursor-pointer border-2 rounded-[8px] font-sans hover:bg-[var(--hover-bg-color)]"
-    : `inline-block cursor-pointer border-2 rounded-[8px] font-sans ${defaultColourClasses}`
 
   return (
     <button

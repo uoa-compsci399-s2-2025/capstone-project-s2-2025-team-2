@@ -4,9 +4,5 @@ interface AuthTextProps {
 }
 
 export default function AuthText({ children, className = "" }: AuthTextProps) {
-  return (
-    <p className={`text-sm text-secondary ${className}`}>
-      {children}
-    </p>
-  )
+  return <p className={`text-sm text-secondary ${className}`}>{children}</p>
 }

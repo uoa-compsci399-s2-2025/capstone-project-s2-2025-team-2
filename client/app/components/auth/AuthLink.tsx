@@ -4,10 +4,14 @@ interface AuthLinkProps {
   className?: string
 }
 
-export default function AuthLink({ href, children, className = "" }: AuthLinkProps) {
+export default function AuthLink({
+  href,
+  children,
+  className = "",
+}: AuthLinkProps) {
   return (
-    <a 
-      href={href} 
+    <a
+      href={href}
       className={`font-medium text-blue-primary hover:text-blue-secondary ${className}`}
     >
       {children}

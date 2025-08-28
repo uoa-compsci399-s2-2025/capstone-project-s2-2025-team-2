@@ -13,17 +13,18 @@ interface LoginResponse {
 @Route("auth")
 @Tags("Authentication")
 export class AuthController extends Controller {
-  
   @Post("/login")
-  public async login(@Body() requestBody: LoginRequest): Promise<LoginResponse> {
+  public async login(
+    @Body() requestBody: LoginRequest,
+  ): Promise<LoginResponse> {
     console.log("=== Login Request Received ===")
     console.log("Email:", requestBody.email)
     console.log("Password:", requestBody.password)
     console.log("==============================")
-    
+
     return {
       message: "Login request received successfully",
-      success: true
+      success: true,
     }
   }
 }

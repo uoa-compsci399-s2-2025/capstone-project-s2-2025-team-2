@@ -6,7 +6,13 @@ interface AuthCheckboxProps {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function AuthCheckbox({ id, name, label, checked, onChange }: AuthCheckboxProps) {
+export default function AuthCheckbox({
+  id,
+  name,
+  label,
+  checked,
+  onChange,
+}: AuthCheckboxProps) {
   return (
     <div className="flex items-center">
       <input

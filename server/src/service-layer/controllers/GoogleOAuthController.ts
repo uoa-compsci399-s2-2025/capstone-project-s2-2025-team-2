@@ -17,19 +17,21 @@ export class GoogleOAuthController extends Controller {
    * Verifies Google ID token and authenticates user.
    */
   @Post("/verify")
-  public async verifyToken( @Body() requestBody: GoogleOAuthRequest
+  public async verifyToken(
+    @Body() requestBody: GoogleOAuthRequest,
   ): Promise<GoogleOAuthResponse> {
     try {
       const result = await this.googleOAuthService.verifyTokenAndAuthenticate(
-        requestBody.idToken
+        requestBody.idToken,
       )
-      
+
       return result
     } catch (error) {
       this.setStatus(401)
       return {
         success: false,
-        message: error instanceof Error ? error.message : "Authentication failed"
+        message:
+          error instanceof Error ? error.message : "Authentication failed",
       }
     }
   }

@@ -1,27 +1,36 @@
 "use client"
 
-import { useGoogleOAuth } from '../../hooks/useGoogleOAuth'
+import { useGoogleOAuth } from "../../hooks/useGoogleOAuth"
 
 interface GoogleOAuthBtnProps {
   onSuccess?: (user: any) => void
   onError?: (error: any) => void
 }
 
-export default function GoogleOAuthBtn({ onSuccess, onError }: GoogleOAuthBtnProps) {
-  {/* 3. Use the useGoogleOAuth hook to render the Google OAuth button */}
-  {/* 6. useGoogleOAuth returns buttonRef */}
+export default function GoogleOAuthBtn({
+  onSuccess,
+  onError,
+}: GoogleOAuthBtnProps) {
+  {
+    /* 3. Use the useGoogleOAuth hook to render the Google OAuth button */
+  }
+  {
+    /* 6. useGoogleOAuth returns buttonRef */
+  }
   const { buttonRef } = useGoogleOAuth({ onSuccess, onError })
 
-  {/* 7. buttonRef is rendered on virtual DOM */}
-  {/* 8. buttonRef rendered on DOM */}
-  {/* 9. ref.current is assigned to the buttonRef */}
+  {
+    /* 7. buttonRef is rendered on virtual DOM */
+  }
+  {
+    /* 8. buttonRef rendered on DOM */
+  }
+  {
+    /* 9. ref.current is assigned to the buttonRef */
+  }
   return (
     <div className="w-full flex justify-center items-center">
-      <div 
-        ref={buttonRef}
-        id="google-signin-button"
-        className="w-full"
-      />
+      <div ref={buttonRef} id="google-signin-button" className="w-full" />
     </div>
   )
 }

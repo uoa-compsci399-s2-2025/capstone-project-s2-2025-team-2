@@ -17,7 +17,7 @@ export default function AuthInputBox({
   placeholder,
   value,
   onChange,
-  required = false
+  required = false,
 }: AuthInputBoxProps) {
   return (
     <div>

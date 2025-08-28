@@ -4,160 +4,160 @@
  */
 
 export interface paths {
-    "/users": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["GetAllUsers"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/google/verify": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** @description Verifies Google ID token and authenticates user. */
-        post: operations["VerifyToken"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
-    "/auth/login": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post: operations["Login"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
+  "/users": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations["GetAllUsers"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/auth/google/verify": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** @description Verifies Google ID token and authenticates user. */
+    post: operations["VerifyToken"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/auth/login": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: operations["Login"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
 }
-export type webhooks = Record<string, never>;
+export type webhooks = Record<string, never>
 export interface components {
-    schemas: {
-        User: {
-            username: string;
-        };
-        GoogleOAuthUser: {
-            uid: string;
-            email: string;
-            displayName?: string;
-            photoURL?: string;
-        };
-        GoogleOAuthResponse: {
-            success: boolean;
-            message: string;
-            token?: string;
-            user?: components["schemas"]["GoogleOAuthUser"];
-        };
-        GoogleOAuthRequest: {
-            idToken: string;
-        };
-        LoginResponse: {
-            message: string;
-            success: boolean;
-        };
-        LoginRequest: {
-            email: string;
-            password: string;
-        };
-    };
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+  schemas: {
+    User: {
+      username: string
+    }
+    GoogleOAuthUser: {
+      uid: string
+      email: string
+      displayName?: string
+      photoURL?: string
+    }
+    GoogleOAuthResponse: {
+      success: boolean
+      message: string
+      token?: string
+      user?: components["schemas"]["GoogleOAuthUser"]
+    }
+    GoogleOAuthRequest: {
+      idToken: string
+    }
+    LoginResponse: {
+      message: string
+      success: boolean
+    }
+    LoginRequest: {
+      email: string
+      password: string
+    }
+  }
+  responses: never
+  parameters: never
+  requestBodies: never
+  headers: never
+  pathItems: never
 }
-export type $defs = Record<string, never>;
+export type $defs = Record<string, never>
 export interface operations {
-    GetAllUsers: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description Users retrieved successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["User"][];
-                };
-            };
-        };
-    };
-    VerifyToken: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["GoogleOAuthRequest"];
-            };
-        };
-        responses: {
-            /** @description Ok */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GoogleOAuthResponse"];
-                };
-            };
-        };
-    };
-    Login: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["LoginRequest"];
-            };
-        };
-        responses: {
-            /** @description Ok */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["LoginResponse"];
-                };
-            };
-        };
-    };
+  GetAllUsers: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Users retrieved successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["User"][]
+        }
+      }
+    }
+  }
+  VerifyToken: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["GoogleOAuthRequest"]
+      }
+    }
+    responses: {
+      /** @description Ok */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["GoogleOAuthResponse"]
+        }
+      }
+    }
+  }
+  Login: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["LoginRequest"]
+      }
+    }
+    responses: {
+      /** @description Ok */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["LoginResponse"]
+        }
+      }
+    }
+  }
 }

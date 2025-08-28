@@ -7,22 +7,10 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 // base button component w/ common styling/functionality across all variants
 const BaseButton = ({
-  backgroundColor,
   label,
   className,
   ...props
 }: ButtonProps) => {
-  // default blue bg when backgroundColours prop isn't specified
-  const defaultColourClasses = "bg-blue-primary hover:bg-blue-primary/75"
-
-  // need to use inline styles for custom colours -- passing props to tailwind utility classes doesnt work
-  const btnColours = {
-    backgroundColor: backgroundColor,
-  }
-
-  const finalClasses = backgroundColor
-    ? "inline-block cursor-pointer border-0 rounded-[8px] font-sans hover:bg-opacity-75"
-    : `inline-block cursor-pointer border-0 rounded-[8px] font-sans ${defaultColourClasses}`
 
   return (
     <button
