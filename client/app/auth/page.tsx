@@ -10,11 +10,12 @@ import AuthWelcomeBox from "../components/auth/AuthWelcomeBox"
 import GoogleOAuthBtn from "../components/auth/GoogleOAuthBtn"
 import { useState } from "react"
 import client from "../services/fetch-client"
-import { useRouter } from "next/router"
+import { useRouter } from "next/navigation"
 
 //            function: AuthPage           //
 export default function AuthPage() {
   //            state           //
+  const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [user, setUser] = useState<any>(null)
@@ -22,7 +23,6 @@ export default function AuthPage() {
 
   //            function: handleGoogleSuccess           //
   const handleGoogleSuccess = (userData: any) => {
-    const router = useRouter()
     console.log("Google OAuth success:", userData)
     setUser(userData)
     setIsAuthenticated(true)
