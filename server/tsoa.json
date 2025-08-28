@@ -4,12 +4,19 @@
   "controllerPathGlobs": ["src/service-layer/controllers/**"],
   "spec": {
     "outputDirectory": "src/middleware/__generated__",
-    "specVersion": 3
-  },
-  "compilerOptions": {
-    "baseUrl": "src"
-  },
-  "routes": {
-    "routesDir": "src/middleware/__generated__"
+    "specVersion": 3,
+    "securityDefinitions": {
+      "jwt": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+      }
+    },
+    "compilerOptions": {
+      "baseUrl": "src"
+    },
+    "routes": {
+      "routesDir": "src/middleware/__generated__"
+    }
   }
 }
