@@ -11,7 +11,7 @@ const BaseButton = ({ label, className, ...props }: ButtonProps) => {
     <button
       type="button"
       className={[
-        "inline-block rounded-[8px] font-sans bg-muted",
+        "inline-block w-full rounded-[8px] font-sans bg-muted",
         className,
       ].join(" ")}
       {...props}

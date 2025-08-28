@@ -19,3 +19,6 @@ const firebase = _admin.initializeApp(
 export const admin = _admin
 
 export const auth = firebase.auth()
+
+// Initialize Firestore database
+export const db = firebase.firestore()
