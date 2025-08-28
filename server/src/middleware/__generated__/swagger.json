@@ -20,20 +20,20 @@
 				"additionalProperties": false
 			},
 			"ReagentTradingType": {
-				"type": "string",
 				"enum": [
 					"trade",
 					"giveaway",
 					"sell"
-				]
+				],
+				"type": "string"
 			},
 			"ReagentCategory": {
-				"type": "string",
 				"enum": [
 					"chemical",
 					"hazardous",
 					"biological"
-				]
+				],
+				"type": "string"
 			},
 			"Reagent": {
 				"properties": {
@@ -251,7 +251,13 @@
 				"additionalProperties": false
 			}
 		},
-		"securitySchemes": {}
+		"securitySchemes": {
+			"jwt": {
+				"type": "apiKey",
+				"in": "header",
+				"name": "Authorization"
+			}
+		}
 	},
 	"info": {
 		"title": "server",
@@ -279,6 +285,46 @@
 				},
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/users/reagents": {
+			"get": {
+				"operationId": "GetReagents",
+				"responses": {
+					"200": {
+						"description": "All reagents returned successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Reagent"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get all reagents with an option to filter them by category.\r\nUser must be authenticated to access this endpoint",
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "- The list of all categories to fetch reagents from.",
+						"in": "query",
+						"name": "category",
+						"required": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/components/schemas/ReagentCategory"
+							}
+						}
+					}
+				]
 			}
 		},
 		"/reagents": {
@@ -360,7 +406,7 @@
 						}
 					}
 				},
-				"description": "Get a reagent by its ID.\r\nCan only be done by lab_admin and admin",
+				"description": "Create a reagent by its ID.\r\nCan only be done by lab_admin and admin",
 				"security": [],
 				"parameters": [],
 				"requestBody": {

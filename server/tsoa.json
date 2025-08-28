@@ -14,9 +14,9 @@
     },
     "compilerOptions": {
       "baseUrl": "src"
-    },
-    "routes": {
-      "routesDir": "src/middleware/__generated__"
     }
+  },
+  "routes": {
+    "routesDir": "src/middleware/__generated__"
   }
 }

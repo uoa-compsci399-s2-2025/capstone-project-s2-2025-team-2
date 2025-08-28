@@ -1,6 +1,14 @@
-export type ReagentTradingType = "trade" | "giveaway" | "sell"
+export enum ReagentTradingType {
+  Trade = "trade",
+  Giveaway = "giveaway",
+  Sell = "sell",
+}
 
-export type ReagentCategory = "chemical" | "hazardous" | "biological"
+export enum ReagentCategory {
+  Chemical = "chemical",
+  Hazardous = "hazardous",
+  Biological = "biological",
+}
 
 export interface Reagent {
   userId: string

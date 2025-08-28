@@ -23,7 +23,7 @@ export class UserController extends Controller {
    * @returns Promise<Reagent[]> - The list of all reagents filtered.
    */
   @SuccessResponse("200", "All reagents returned successfully")
-  @Get()
+  @Get("/reagents")
   @Security("jwt")
   public async getReagents(
     @Query() category?: ReagentCategory[],
