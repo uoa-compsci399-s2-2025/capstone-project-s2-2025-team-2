@@ -10,6 +10,7 @@ import AuthWelcomeBox from "../components/auth/AuthWelcomeBox"
 import GoogleOAuthBtn from "../components/auth/GoogleOAuthBtn"
 import { useState } from "react"
 import client from "../services/fetch-client"
+import { useRouter } from "next/router"
 
 //            function: AuthPage           //
 export default function AuthPage() {
@@ -18,6 +19,7 @@ export default function AuthPage() {
   const [password, setPassword] = useState("")
   const [user, setUser] = useState<any>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const router = useRouter()
 
   //            function: handleGoogleSuccess           //
   const handleGoogleSuccess = (userData: any) => {
@@ -30,6 +32,7 @@ export default function AuthPage() {
 
     // Here you can redirect or handle other actions
     // Example: router.push('/dashboard')
+    router.push("/landing")
   }
 
   //            function: handleGoogleError           //
