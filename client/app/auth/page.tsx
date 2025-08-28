@@ -19,10 +19,10 @@ export default function AuthPage() {
   const [password, setPassword] = useState("")
   const [user, setUser] = useState<any>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const router = useRouter()
 
   //            function: handleGoogleSuccess           //
   const handleGoogleSuccess = (userData: any) => {
+    const router = useRouter()
     console.log("Google OAuth success:", userData)
     setUser(userData)
     setIsAuthenticated(true)

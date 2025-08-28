@@ -12,7 +12,7 @@ export default function AuthLink({
   return (
     <a
       href={href}
-      className={`font-medium text-blue-primary hover:text-blue-secondary ${className}`}
+      className={`font-medium text-blue-primary hover:text-blue-primary/70 ${className}`}
     >
       {children}
     </a>
