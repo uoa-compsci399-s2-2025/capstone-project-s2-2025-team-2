@@ -56,7 +56,7 @@ export class UserController extends Controller {
    * @param id - The ID of the reagent to fetch
    * @returns Promise<Reagent> - object of type Reagent
    */
-  @SuccessResponse("200", "All reagents returned successfully")
+  @SuccessResponse("200", "reagent returned successfully")
   @Get("/reagent/{id}")
   @Security("jwt")
   public async getReagentById(@Path() id: string): Promise<Reagent | null> {
@@ -66,6 +66,26 @@ export class UserController extends Controller {
     } catch (err) {
       throw new Error(
         `Failed to fetch reagent -- id:${id} ` + (err as Error).message,
+      )
+    }
+  }
+
+  /**
+   * Delete a reagent by using its ID
+   * User **must** be authenticated to access this endpoint
+   * @param id - The ID of the reagent to delete
+   * @returns Promise<Reagent> - object of type Reagent (deleted ref)
+   */
+  @SuccessResponse("200", "reagent deleted successfully")
+  @Get("/reagent/delete/{id}")
+  @Security("jwt")
+  public async deleteReagentById(@Path() id: string): Promise<Reagent | null> {
+    try {
+      const reagent = await new ReagentService().deleteReagent(id)
+      return reagent
+    } catch (err) {
+      throw new Error(
+        `Failed to delete reagent -- id:${id} ` + (err as Error).message,
       )
     }
   }

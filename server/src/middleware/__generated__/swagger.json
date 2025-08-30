@@ -327,6 +327,45 @@
 				]
 			}
 		},
+		"/users/reagent/{id}": {
+			"get": {
+				"operationId": "GetReagentById",
+				"responses": {
+					"200": {
+						"description": "All reagents returned successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/Reagent"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a reagent by using its ID\r\nUser must be authenticated to access this endpoint",
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "- The ID of the reagent to fetch",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/reagents": {
 			"get": {
 				"operationId": "GetAllReagents",
