@@ -7,6 +7,8 @@ import {
   Security,
   Query,
   Path,
+  Patch,
+  Body,
 } from "tsoa"
 import { UserService } from "../../data-layer/services/UserService"
 import { ReagentService } from "../../data-layer/services/ReagentService"
@@ -87,6 +89,33 @@ export class UserController extends Controller {
       throw new Error(
         `Failed to delete reagent -- id:${id} ` + (err as Error).message,
       )
+    }
+  }
+
+  /**
+   * Update a reagent by its ID.
+   * User **must** be authenticated to access this endpoint
+   * @param id - The ID of the reagent to update.
+   * @param update - The updated reagent data (partial fields allowed)
+   * @returns Promise<Reagent> - object of type Reagent (updated ref)
+   * @throws 400 - If the operation fails
+   */
+  @SuccessResponse("200", "Reagent updated successfully")
+  @Patch("/reagent/update/{id}")
+  @Security("jwt")
+  public async updateReagent(
+    @Path() id: string,
+    @Body() update: Partial<Reagent>,
+  ): Promise<Reagent> {
+    try {
+      const updatedReagent = await new ReagentService().updateReagent(
+        id,
+        update,
+      )
+      return updatedReagent
+    } catch (error) {
+      this.setStatus(400)
+      throw new Error(`[ERROR] while updating reagent ${id}: ${error}`)
     }
   }
 }
