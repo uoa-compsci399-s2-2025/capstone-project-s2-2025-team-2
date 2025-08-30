@@ -112,7 +112,8 @@ export class UserController extends Controller {
     @TsoaRequest() request: Request,
     @Body() requestObject: CreateReagentRequest,
   ): Promise<Reagent> {
-    const userId = (request as any).user.id || "unknown_user"
+    const token = (request as any).user
+    const userId = token.uid || token.user_id || "unknown_user"
     const data = {
       ...requestObject,
       id,
