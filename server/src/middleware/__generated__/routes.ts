@@ -12,7 +12,7 @@ import { GoogleOAuthController } from './../../service-layer/controllers/GoogleO
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AuthController } from './../../service-layer/controllers/AuthController';
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
-
+import { expressAuthentication } from '../../data-layer/services/authentication';
 
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -434,7 +434,7 @@ export function RegisterRoutes(app: Router) {
 
                     for (const name in secMethod) {
                         secMethodAndPromises.push(
-                            expressAuthenticationRecasted(request, name, secMethod[name], response)
+                            expressAuthentication(request, name, secMethod[name], response)
                                 .catch(pushAndRethrow)
                         );
                     }
@@ -446,7 +446,7 @@ export function RegisterRoutes(app: Router) {
                 } else {
                     for (const name in secMethod) {
                         secMethodOrPromises.push(
-                            expressAuthenticationRecasted(request, name, secMethod[name], response)
+                            expressAuthentication(request, name, secMethod[name], response)
                                 .catch(pushAndRethrow)
                         );
                     }
