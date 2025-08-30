@@ -11,8 +11,11 @@ import { ReagentController } from './../../service-layer/controllers/ReagentCont
 import { GoogleOAuthController } from './../../service-layer/controllers/GoogleOAuthController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AuthController } from './../../service-layer/controllers/AuthController';
+import { expressAuthentication } from './../../data-layer/services/authentication';
+// @ts-ignore - no great way to install types from subpackage
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
-import { expressAuthentication } from '../../data-layer/services/authentication';
+
+const expressAuthenticationRecasted = expressAuthentication as (req: ExRequest, securityName: string, scopes?: string[], res?: ExResponse) => Promise<any>;
 
 
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -434,7 +437,7 @@ export function RegisterRoutes(app: Router) {
 
                     for (const name in secMethod) {
                         secMethodAndPromises.push(
-                            expressAuthentication(request, name, secMethod[name], response)
+                            expressAuthenticationRecasted(request, name, secMethod[name], response)
                                 .catch(pushAndRethrow)
                         );
                     }
@@ -446,7 +449,7 @@ export function RegisterRoutes(app: Router) {
                 } else {
                     for (const name in secMethod) {
                         secMethodOrPromises.push(
-                            expressAuthentication(request, name, secMethod[name], response)
+                            expressAuthenticationRecasted(request, name, secMethod[name], response)
                                 .catch(pushAndRethrow)
                         );
                     }
