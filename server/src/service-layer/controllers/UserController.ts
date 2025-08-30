@@ -1,5 +1,13 @@
 import { User } from "../../data-layer/models/User"
-import { Controller, Get, Route, SuccessResponse, Security, Query } from "tsoa"
+import {
+  Controller,
+  Get,
+  Route,
+  SuccessResponse,
+  Security,
+  Query,
+  Path,
+} from "tsoa"
 import { UserService } from "../../data-layer/services/UserService"
 import { ReagentService } from "../../data-layer/services/ReagentService"
 import { Reagent } from "../../data-layer/models/Reagent"
@@ -39,6 +47,26 @@ export class UserController extends Controller {
       return reagents
     } catch (err) {
       throw new Error("Failed to fetch reagents: " + (err as Error).message)
+    }
+  }
+
+  /**
+   * Get a reagent by using its ID
+   * User must be authenticated to access this endpoint
+   * @param id - The ID of the reagent to fetch
+   * @returns Promise<Reagent> - object of type Reagent
+   */
+  @SuccessResponse("200", "All reagents returned successfully")
+  @Get("/reagent/{id}")
+  @Security("jwt")
+  public async getReagentById(@Path() id: string): Promise<Reagent | null> {
+    try {
+      const reagent = await new ReagentService().getReagentsById(id)
+      return reagent
+    } catch (err) {
+      throw new Error(
+        `Failed to fetch reagent -- id:${id} ` + (err as Error).message,
+      )
     }
   }
 }
