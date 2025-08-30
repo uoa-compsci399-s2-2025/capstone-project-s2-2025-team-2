@@ -1,4 +1,4 @@
-import { Request } from "express"
+import { Request as ExpressRequest } from "express"
 import { User } from "../../data-layer/models/User"
 import {
   Controller,
@@ -12,7 +12,7 @@ import {
   Body,
   Post,
   Delete,
-  Request as TsoaRequest,
+  Request,
 } from "tsoa"
 import { UserService } from "../../data-layer/services/UserService"
 import { ReagentService } from "../../data-layer/services/ReagentService"
@@ -20,7 +20,7 @@ import { Reagent } from "../../data-layer/models/Reagent"
 import { ReagentCategory } from "../../data-layer/models/Reagent"
 import { CreateReagentRequest } from "../../service-layer/controllers/request-models/ReagentRequest"
 
-@Route("users")
+@Route("user")
 export class UserController extends Controller {
   @SuccessResponse("200", "Users retrieved successfully")
   @Get()
@@ -109,7 +109,7 @@ export class UserController extends Controller {
   @Security("jwt")
   public async createReagent(
     @Path() id: string,
-    @TsoaRequest() request: Request,
+    @Request() request: ExpressRequest,
     @Body() requestObject: CreateReagentRequest,
   ): Promise<Reagent> {
     const token = (request as any).user
