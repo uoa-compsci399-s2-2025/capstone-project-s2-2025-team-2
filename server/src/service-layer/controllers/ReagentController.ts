@@ -11,7 +11,7 @@ import {
   Delete,
   Patch,
 } from "tsoa"
-import { ReagentService } from "../../data-layer/services/ReagentService"
+import { ReagentService } from "../../data-layer/repository/ReagentRepository"
 import { CreateReagentRequest } from "service-layer/controllers/request-models/ReagentRequest"
 
 @Route("reagents")

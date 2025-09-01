@@ -3,10 +3,19 @@ import { SendVerificationCodeRequest } from "./request-models/SendVerificationCo
 import { SendVerificationCodeResponse } from "./response-models/SendVerificationCodeResponse"
 import { LoginRequest } from "./request-models/LoginRequest"
 import { LoginResponse } from "./response-models/LoginResponse"
+import AuthService from "business-layer/services/AuthService"
 
 @Route("auth")
 @Tags("Authentication")
 export class AuthController extends Controller {
+
+  private authService: AuthService
+
+  constructor() {
+    super()
+    this.authService = new AuthService()
+  }
+
   @Post("/login")
   public async login(
     @Body() requestBody: LoginRequest,
@@ -26,13 +35,7 @@ export class AuthController extends Controller {
   public async sendVerificationCode(
     @Body() requestBody: SendVerificationCodeRequest,
   ): Promise<SendVerificationCodeResponse> {
-    console.log("=== Send Verification Code Request Received ===")
-    console.log("Email:", requestBody.email)
-    console.log("==============================")
-
-    return {
-      success: true,
-      message: "Verification code sent successfully",
-    }
+    const result = await this.authService.sendVerificationCode(requestBody.email)
+    return result
   }
 }

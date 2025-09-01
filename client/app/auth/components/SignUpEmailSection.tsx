@@ -5,9 +5,6 @@ import DisabledButton from "../../components/generic/button/disabled/DisabledBut
 import AuthInputBox from "../../components/auth/AuthInputBox"
 import AuthText from "../../components/auth/AuthText"
 import AuthLink from "../../components/auth/AuthLink"
-import { sendVerificationCode } from "../../services/auth"
-import SendVerificationCodeResponseDto from "../../models/response-models/sendVerificationCodeResponseDto"
-import SendVerificationCodeRequestDto from "../../models/request-models/sendVerificationCodeRequestDto"
 
 interface SignUpEmailSectionProps {
   email: string
@@ -28,27 +25,6 @@ export default function SignUpEmailSection({
 }: SignUpEmailSectionProps) {
 
 
-  //            function: onVerifyEmail           //
-  const onClickSendVerificationCode = () => {
-    const requestBody: SendVerificationCodeRequestDto = { email }
-    sendVerificationCode(requestBody).then(handleSendVerificationCodeResponse)
-  }
-
-  //            function: handleSendVerificationCodeResponse           //
-  const handleSendVerificationCodeResponse = (response: any) => {
-    if (response.error) {
-      alert("Failed to send verification code. Please try again.")
-      return
-    }
-    
-    const responseData: SendVerificationCodeResponseDto = response.data
-    if (responseData.success) {
-      alert("Verification code sent to your email!")
-    } else {
-      alert("Failed to send verification code. Please try again.")
-    }
-  }
-
   //            render: SignUpEmailSection           //
   return (
     <div className="flex flex-col flex-1 justify-between">
@@ -66,9 +42,9 @@ export default function SignUpEmailSection({
               placeholder="Enter your email"
             />
             {(!isEmailValid) ? (
-            <DisabledButton label="Verify" size="small" className={`!w-[85px]`} />
+            <DisabledButton label="Verify" size="small" textSize="small" className={`!w-[85px]`} />
             ):(
-            <Button onClick={onClickSendVerificationCode} label="Verify" size="small" className={`!w-[85px]`} />
+            <Button onClick={onVerifyEmail} label="Verify" size="small" textSize="small" className={`!w-[85px]`} />
             )}
           </div>
         </div>

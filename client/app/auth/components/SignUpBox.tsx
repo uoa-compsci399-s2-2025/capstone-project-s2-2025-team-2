@@ -3,6 +3,9 @@
 import { useState } from "react"
 import SignUpEmailSection from "./SignUpEmailSection"
 import SignUpPasswordSection from "./SignUpPasswordSection"
+import SendVerificationCodeRequestDto from "../../models/request-models/sendVerificationCodeRequestDto"
+import SendVerificationCodeResponseDto from "../../models/response-models/sendVerificationCodeResponseDto"
+import { sendVerificationCode } from "../../services/auth"
 
 //            function: SignUpBox           //
 export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "signin" | "signup" | "forgotpassword") => void }) {
@@ -28,16 +31,25 @@ export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "si
     setIsEmailValid(emailRegex.test(emailValue))
   }
 
-  //            function: handleVerifyEmail           //
-  const handleVerifyEmail = async () => {
-    if (!isEmailValid) return
+  //            function: onVerifyEmail           //
+  const onClickSendVerificationCode = () => {
+    const requestBody: SendVerificationCodeRequestDto = { email }
+    console.log("Sending verification code to:", email)
+    sendVerificationCode(requestBody).then(handleSendVerificationCodeResponse)
+  }
+
+  //            function: handleSendVerificationCodeResponse           //
+  const handleSendVerificationCodeResponse = (response: any) => {
+    console.log("Response:", response)
+    if (response.error) {
+      alert("Failed to send verification code. Please try again.")
+      return
+    }
     
-    try {
-      // TODO: Implement email verification logic
-      console.log("Sending verification code to:", email)
+    const responseData: SendVerificationCodeResponseDto = response.data
+    if (responseData.success) {
       alert("Verification code sent to your email!")
-    } catch (error) {
-      console.error("Error sending verification code:", error)
+    } else {
       alert("Failed to send verification code. Please try again.")
     }
   }
@@ -101,7 +113,7 @@ export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "si
           isEmailValid={isEmailValid}
           onEmailChange={handleEmailChange}
           onVerificationCodeChange={(e) => setVerificationCode(e.target.value)}
-          onVerifyEmail={handleVerifyEmail}
+          onVerifyEmail={onClickSendVerificationCode}
           onNextStep={handleNextStep}
           onSignInClick={handleSignInClick}
         />
