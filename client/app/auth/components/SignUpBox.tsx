@@ -1,13 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import Button from "../../components/generic/button/regular/Button"
-import AuthInputBox from "../../components/auth/AuthInputBox"
-import AuthText from "../../components/auth/AuthText"
-import AuthLink from "../../components/auth/AuthLink"
+import SignUpEmailSection from "./SignUpEmailSection"
+import SignUpPasswordSection from "./SignUpPasswordSection"
 
 //            function: SignUpBox           //
-export default function SignUpBox() {
+export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "signin" | "signup" | "forgotpassword") => void }) {
   //            state           //
   const [currentStep, setCurrentStep] = useState(1)
   const [email, setEmail] = useState("")
@@ -15,6 +13,11 @@ export default function SignUpBox() {
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [isEmailValid, setIsEmailValid] = useState(false)
+
+  //            function: handleSignInClick           //
+  const handleSignInClick = () => {
+    setAuthType("signin")
+  }
 
   //            function: handleEmailChange           //
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -92,120 +95,26 @@ export default function SignUpBox() {
       </div>
 
       {currentStep === 1 ? (
-        /* Step 1: Email and Verification */
-        <div className="flex flex-col flex-1 justify-between">
-          {/* Email Input and Verify Button */}
-          <div className="space-y-4">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-white">
-                Email
-              </label>
-              <div className="mt-1 flex space-x-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  value={email}
-                  onChange={handleEmailChange}
-                  className="flex-1 px-3 py-2 border border-muted rounded-md shadow-sm placeholder-secondary bg-primary text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-blue-primary transition-colors"
-                  placeholder="Enter your email"
-                />
-                <button
-                  onClick={handleVerifyEmail}
-                  disabled={!isEmailValid}
-                  className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                    isEmailValid
-                      ? 'bg-blue-primary text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-primary focus:ring-offset-2'
-                      : 'bg-muted text-secondary cursor-not-allowed'
-                  }`}
-                >
-                  Verify
-                </button>
-              </div>
-            </div>
-
-            <AuthInputBox
-              id="verificationCode"
-              name="verificationCode"
-              type="text"
-              label="Verification Code"
-              placeholder="Enter verification code"
-              value={verificationCode}
-              onChange={(e) => setVerificationCode(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="mt-auto space-y-6">
-          {/* Next Step Button */}
-          <div className="flex justify-center w-full">
-            <Button 
-              type="button" 
-              label="Next Page" 
-              size="small"
-              onClick={handleNextStep}
-            />
-          </div>
-
-          {/* Sign In Link */}
-          <AuthText className="text-center">
-            Already have an account?{" "}
-            <AuthLink href="/auth"> Sign in </AuthLink>
-          </AuthText>
-          </div>
-        </div>
+        <SignUpEmailSection
+          email={email}
+          verificationCode={verificationCode}
+          isEmailValid={isEmailValid}
+          onEmailChange={handleEmailChange}
+          onVerificationCodeChange={(e) => setVerificationCode(e.target.value)}
+          onVerifyEmail={handleVerifyEmail}
+          onNextStep={handleNextStep}
+          onSignInClick={handleSignInClick}
+        />
       ) : (
-        /* Step 2: Password and Confirm Password */
-        <div className="flex flex-col flex-1 justify-between">
-          <div className="space-y-4">
-            <AuthInputBox
-              id="password"
-              name="password"
-              type="password"
-              label="Password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-
-            <AuthInputBox
-              id="confirmPassword"
-              name="confirmPassword"
-              type="password"
-              label="Confirm Password"
-              placeholder="Confirm your password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="mt-auto space-y-6">
-            {/* Action Buttons */}
-            <div className="flex space-x-3">
-              <Button 
-                type="button" 
-                label="Back" 
-                size="small"
-                onClick={handleBackToStep1}
-              />
-              <Button 
-                type="button" 
-                label="Confirm" 
-                size="small"
-                onClick={handleSignUp}
-              />
-            </div>
-
-            {/* Sign In Link */}
-            <AuthText className="text-center">
-              Already have an account?{" "}
-              <AuthLink href="/auth"> Sign in </AuthLink>
-            </AuthText>
-          </div>
-        </div>
+        <SignUpPasswordSection
+          password={password}
+          confirmPassword={confirmPassword}
+          onPasswordChange={(e) => setPassword(e.target.value)}
+          onConfirmPasswordChange={(e) => setConfirmPassword(e.target.value)}
+          onBackToStep1={handleBackToStep1}
+          onSignUp={handleSignUp}
+          onSignInClick={handleSignInClick}
+        />
       )}
     </div>
   )

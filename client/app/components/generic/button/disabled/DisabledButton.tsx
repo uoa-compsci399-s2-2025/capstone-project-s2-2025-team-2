@@ -23,21 +23,21 @@ const BaseButton = ({ label, className, ...props }: ButtonProps) => {
 
 // btn variants
 const SmallButton = (props: ButtonProps) => (
-  <BaseButton {...props} className="py-1.5 px-3" />
+  <BaseButton {...props} className={["py-1.5 px-3", { ...props }.className].join(" ")} />
 )
 
 const MediumButton = (props: ButtonProps) => (
-  <BaseButton {...props} className="py-3 px-5" />
+  <BaseButton {...props} className={["py-3 px-5", { ...props }.className].join(" ")} />
 )
 
 const LargeButton = (props: ButtonProps) => (
-  <BaseButton {...props} className="py-4.5 px-7" />
+  <BaseButton {...props} className={["py-4.5 px-7", { ...props }.className].join(" ")} />
 )
 
 const OutlinedButton = (props: ButtonProps) => (
   <BaseButton
     {...props}
-    className="py-4.5 px-7 bg-transparent border-2 border-muted"
+    className={["py-4.5 px-7 bg-transparent border-2 border-muted", { ...props }.className].join(" ")}
   />
 )
 

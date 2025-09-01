@@ -11,12 +11,22 @@ import { useState } from "react"
 import client from "../../services/fetch-client"
 
 //            function: SignIn           //
-export default function SignInBox() {   
+export default function SignInBox({ setAuthType }: { setAuthType: (authType: "signin" | "signup" | "forgotpassword") => void }) {   
   //            state           //
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [user, setUser] = useState<any>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+
+  //            function: handleSignUp           //
+  const handleSignUpClick = () => {
+    setAuthType("signup")
+  }
+
+  //            function: handleForgotPasswordClick           //
+  const handleForgotPasswordClick = () => {
+    setAuthType("forgotpassword")
+  }
 
   //            function: handleGoogleSuccess           //
   const handleGoogleSuccess = (userData: any) => {
@@ -120,9 +130,7 @@ export default function SignInBox() {
             name="remember-me"
             label="Remember me"
           />
-          <AuthLink href="#" className="text-sm">
-            Forgot your password?
-          </AuthLink>
+          <AuthLink onClick={handleForgotPasswordClick} children="Forgot your password?" />
         </div>
 
         {/* 3. Submit Button */}
@@ -133,7 +141,7 @@ export default function SignInBox() {
         {/* 4. Sign Up Link */}
         <AuthText className="text-center">
           Don&apos;t have an account?{" "}
-          <AuthLink href="/auth/signup"> Sign up </AuthLink>
+          <AuthLink onClick={handleSignUpClick} children="Sign up" />
         </AuthText>
       </form>
     </div>
