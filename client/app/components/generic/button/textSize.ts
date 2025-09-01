@@ -1,7 +1,7 @@
 export const getTextSizeClass = (size?: "small" | "medium" | "large") => {
   switch (size) {
     case "small":
-      return "text-sm"
+      return "text-[0.95rem]"
     case "medium":
       return "text-base"
     case "large":
