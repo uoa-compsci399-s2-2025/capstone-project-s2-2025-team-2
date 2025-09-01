@@ -4,6 +4,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   backgroundColor?: string
   size?: "small" | "medium" | "large"
   label: string
+  textSize?: "small" | "medium" | "large"
 }
 
 // base button component w/ common styling/functionality across all variants
