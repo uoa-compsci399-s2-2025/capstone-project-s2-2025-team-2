@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react"
-import { GoogleOAuthRequest } from "../models/request-models/GoogleOAuthRequest"
-import { GoogleOAuthResponse } from "../models/response-models/GoogleOAuthResponse"
+import GoogleOAuthRequestDto from "../models/request-models/GoogleOAuthRequestDto"
+import GoogleOAuthResponseDto from "../models/response-models/GoogleOAuthResponseDto"
 import { oauthVerify } from "../services/auth"
 
 declare global {
@@ -57,7 +57,7 @@ export const useGoogleOAuth = ({ onSuccess, onError }: GoogleOAuthBtnProps) => {
     const handleCredentialResponse = async (response: any) => {
       try {
         // Send ID token to server for verification
-        const requestData: GoogleOAuthRequest = {
+        const requestData: GoogleOAuthRequestDto = {
           idToken: response.credential,
         }
 
@@ -67,10 +67,10 @@ export const useGoogleOAuth = ({ onSuccess, onError }: GoogleOAuthBtnProps) => {
           throw new Error("Authentication failed")
         }
 
-        const data = result.data
+        const responseData: GoogleOAuthResponseDto = result.data
 
-        if (data.success && onSuccess) {
-          onSuccess(data.user)
+        if (responseData.success && onSuccess) {
+          onSuccess(responseData.user)
         }
       } catch (error) {
         console.error("Google authentication error:", error)

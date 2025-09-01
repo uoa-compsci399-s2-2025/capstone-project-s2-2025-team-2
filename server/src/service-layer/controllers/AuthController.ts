@@ -1,14 +1,8 @@
 import { Body, Controller, Post, Route, Tags } from "tsoa"
-
-interface LoginRequest {
-  email: string
-  password: string
-}
-
-interface LoginResponse {
-  message: string
-  success: boolean
-}
+import { SendVerificationCodeRequest } from "./request-models/SendVerificationCodeRequest"
+import { SendVerificationCodeResponse } from "./response-models/SendVerificationCodeResponse"
+import { LoginRequest } from "./request-models/LoginRequest"
+import { LoginResponse } from "./response-models/LoginResponse"
 
 @Route("auth")
 @Tags("Authentication")
@@ -25,6 +19,20 @@ export class AuthController extends Controller {
     return {
       message: "Login request received successfully",
       success: true,
+    }
+  }
+
+  @Post("/send-verification-code")
+  public async sendVerificationCode(
+    @Body() requestBody: SendVerificationCodeRequest,
+  ): Promise<SendVerificationCodeResponse> {
+    console.log("=== Send Verification Code Request Received ===")
+    console.log("Email:", requestBody.email)
+    console.log("==============================")
+
+    return {
+      success: true,
+      message: "Verification code sent successfully",
     }
   }
 }

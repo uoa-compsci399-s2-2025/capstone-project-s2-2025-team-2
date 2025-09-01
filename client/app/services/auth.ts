@@ -1,10 +1,21 @@
+import SendVerificationCodeRequestDto from "../models/request-models/sendVerificationCodeRequestDto"
 import client from "./fetch-client"
 
-const VERIFY_GOOGLE_OAUTH_URL = "/auth/google/verify"
+const AUTH_BASE = "/auth"
+
+const VERIFY_GOOGLE_OAUTH_URL = `${AUTH_BASE}/google/verify`
+const SEND_VERIFICATION_CODE_URL = `${AUTH_BASE}/send-verification-code`
 
 export const oauthVerify = async (idToken: string) => {
   const response = await client.POST(VERIFY_GOOGLE_OAUTH_URL, {
     body: { idToken },
+  })
+  return response
+}
+
+export const sendVerificationCode = async (requestBody: SendVerificationCodeRequestDto) => {
+  const response = await client.POST(SEND_VERIFICATION_CODE_URL, {
+    body: requestBody,
   })
   return response
 }
