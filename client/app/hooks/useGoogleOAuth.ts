@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react"
 import { GoogleOAuthRequest } from "../models/request-models/GoogleOAuthRequest"
 import { GoogleOAuthResponse } from "../models/response-models/GoogleOAuthResponse"
+import { oauthVerify } from "../services/auth"
 
 declare global {
   interface Window {
@@ -60,19 +61,13 @@ export const useGoogleOAuth = ({ onSuccess, onError }: GoogleOAuthBtnProps) => {
           idToken: response.credential,
         }
 
-        const result = await fetch("http://localhost:8000/auth/google/verify", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestData),
-        })
+        const result = await oauthVerify(requestData.idToken)
 
-        if (!result.ok) {
+        if (result.error) {
           throw new Error("Authentication failed")
         }
 
-        const data: GoogleOAuthResponse = await result.json()
+        const data = result.data
 
         if (data.success && onSuccess) {
           onSuccess(data.user)

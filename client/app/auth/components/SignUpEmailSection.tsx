@@ -23,6 +23,13 @@ export default function SignUpEmailSection({
   onEmailChange, onVerificationCodeChange, onVerifyEmail,
   onNextStep, onSignInClick
 }: SignUpEmailSectionProps) {
+
+
+  //            function: onVerifyEmail           //
+  const onClickVerifyEmail = () => {
+    
+  }
+
   //            render: SignUpEmailSection           //
   return (
     <div className="flex flex-col flex-1 justify-between">
@@ -42,7 +49,7 @@ export default function SignUpEmailSection({
             {(!isEmailValid) ? (
             <DisabledButton label="Verify" size="small" className={`!w-[85px]`} />
             ):(
-            <Button onClick={onVerifyEmail} label="Verify" size="small" className={`!w-[85px]`} />
+            <Button onClick={onClickVerifyEmail} label="Verify" size="small" className={`!w-[85px]`} />
             )}
           </div>
         </div>
