@@ -5,7 +5,9 @@ import SignUpEmailSection from "./SignUpEmailSection"
 import SignUpPasswordSection from "./SignUpPasswordSection"
 import SendVerificationCodeRequestDto from "../../models/request-models/sendVerificationCodeRequestDto"
 import SendVerificationCodeResponseDto from "../../models/response-models/sendVerificationCodeResponseDto"
-import { sendVerificationCode } from "../../services/auth"
+import { sendVerificationCode, verifyCode } from "../../services/auth"
+import VerifyCodeRequestDto from "@/app/models/request-models/verifyCodeRequestDto"
+import VerifyCodeResponseDto from "@/app/models/response-models/VerifyCodeResponseDto"
 
 //            function: SignUpBox           //
 export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "signin" | "signup" | "forgotpassword") => void }) {
@@ -16,6 +18,8 @@ export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "si
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [isEmailValid, setIsEmailValid] = useState(false)
+  const [isVerificationCodeSent, setIsVerificationCodeSent] = useState<boolean | null>(null)
+  const [isVerificationSuccess, setIsVerificationSuccess] = useState<boolean | null>(null)
 
   //            function: handleSignInClick           //
   const handleSignInClick = () => {
@@ -39,20 +43,31 @@ export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "si
   }
 
   //            function: handleSendVerificationCodeResponse           //
-  const handleSendVerificationCodeResponse = (response: any) => {
-    console.log("Response:", response)
-    if (response.error) {
-      alert("Failed to send verification code. Please try again.")
-      return
-    }
-    
-    const responseData: SendVerificationCodeResponseDto = response.data
-    if (responseData.success) {
-      alert("Verification code sent to your email!")
+  const handleSendVerificationCodeResponse = (response: SendVerificationCodeResponseDto) => {
+    if (response.success) {
+      setIsVerificationCodeSent(true)
     } else {
-      alert("Failed to send verification code. Please try again.")
+      setIsVerificationCodeSent(false)
     }
   }
+
+    //            function: onClickVerifyCode           //
+    const onClickValidateCode = () => {
+        const requestBody: VerifyCodeRequestDto = { email, inputCode: verificationCode }
+        console.log("Verifying code for:", email)
+        verifyCode(requestBody).then(handleValidateCodeResponse)
+    }
+
+    //            function: handleVerifyCodeResponse           //
+    const handleValidateCodeResponse = (response: VerifyCodeResponseDto) => {
+      if (response.success) {
+        setIsVerificationCodeSent(null)
+        setIsVerificationSuccess(true)
+      } else {
+        setIsVerificationCodeSent(null)
+        setIsVerificationSuccess(false)
+      }
+    }
 
   //            function: handleNextStep           //
   const handleNextStep = () => {
@@ -95,16 +110,43 @@ export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "si
   return (
     <div className="max-w-md w-full p-8 bg-primary rounded-lg shadow-lg min-h-[600px] flex flex-col">
       {/* Header Section */}
-      <div className="text-center mb-8">
+      <div className="text-center mb-4">
         <h2>Sign Up</h2>
         <p className="mt-2 text-secondary">Create your account</p>
       </div>
 
-      {/* Step Indicator */}
-      <div className="flex items-center justify-center space-x-2 mb-8">
-        <div className={`w-3 h-3 rounded-full ${currentStep >= 1 ? 'bg-blue-primary' : 'bg-muted'}`}></div>
-        <div className={`w-3 h-3 rounded-full ${currentStep >= 2 ? 'bg-blue-primary' : 'bg-muted'}`}></div>
-      </div>
+      { /* TODO: remove dupilicate code */ }
+      {isVerificationCodeSent && (
+        <div className="mb-6 p-4 bg-blue-500 border border-blue-500 text-blue-700 rounded">
+          <p className="font-medium">
+            Verification code sent to your email!
+          </p>
+        </div>
+      )}
+
+      {isVerificationCodeSent === false && (
+        <div className="mb-6 p-4 bg-red-500 border border-red-500 text-red-700 rounded">
+          <p className="font-medium">
+            Failed to send verification code. Please try again.
+          </p>
+        </div>
+      )}
+
+      {isVerificationSuccess && (
+        <div className="mb-6 p-4 bg-green-500 border border-green-500 text-green-700 rounded">
+          <p className="font-medium">
+            Verification code verified successfully!
+          </p>
+        </div>
+      )}
+
+      {isVerificationSuccess === false && (
+        <div className="mb-6 p-4 bg-red-500 border border-red-500 text-red-700 rounded">
+          <p className="font-medium">
+            Verification code is incorrect. Please try again.
+          </p>
+        </div>
+      )}
 
       {currentStep === 1 ? (
         <SignUpEmailSection
@@ -114,6 +156,7 @@ export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "si
           onEmailChange={handleEmailChange}
           onVerificationCodeChange={(e) => setVerificationCode(e.target.value)}
           onVerifyEmail={onClickSendVerificationCode}
+          onValidateCode={onClickValidateCode}
           onNextStep={handleNextStep}
           onSignInClick={handleSignInClick}
         />

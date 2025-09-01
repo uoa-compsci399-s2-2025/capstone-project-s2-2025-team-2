@@ -61,13 +61,7 @@ export const useGoogleOAuth = ({ onSuccess, onError }: GoogleOAuthBtnProps) => {
           idToken: response.credential,
         }
 
-        const result = await oauthVerify(requestData)
-
-        if (result.error) {
-          throw new Error("Authentication failed")
-        }
-
-        const responseData: GoogleOAuthResponseDto = result.data
+        const responseData: GoogleOAuthResponseDto = await oauthVerify(requestData)
 
         if (responseData.success && onSuccess) {
           onSuccess(responseData.user)

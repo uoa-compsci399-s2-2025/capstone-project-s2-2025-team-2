@@ -9,4 +9,18 @@ export class AuthRepository {
     })
   }
 
+  async verifyCode(email: string, inputCode: string): Promise<boolean> {
+    const doc = await db.collection("verificationCodes").doc(email).get();
+    if (!doc.exists) {
+      return false;
+    }
+    const data = doc.data();
+    if (!data) {
+      return false;
+    }
+    if (data.verificationCode !== inputCode) {
+      return false;
+    }
+    return true;
+  }
 }

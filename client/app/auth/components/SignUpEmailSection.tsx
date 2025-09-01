@@ -5,6 +5,7 @@ import DisabledButton from "../../components/generic/button/disabled/DisabledBut
 import AuthInputBox from "../../components/auth/AuthInputBox"
 import AuthText from "../../components/auth/AuthText"
 import AuthLink from "../../components/auth/AuthLink"
+import { useEffect, useState } from "react"
 
 interface SignUpEmailSectionProps {
   email: string
@@ -15,14 +16,25 @@ interface SignUpEmailSectionProps {
   onVerifyEmail: () => void
   onNextStep: () => void
   onSignInClick: () => void
+  onValidateCode: () => void
 }
 
 //            function: SignUpEmailSection           //
 export default function SignUpEmailSection({
   email, verificationCode, isEmailValid,
   onEmailChange, onVerificationCodeChange, onVerifyEmail,
-  onNextStep, onSignInClick
+  onNextStep, onSignInClick, onValidateCode
 }: SignUpEmailSectionProps) {
+
+  const [isVerificationCodeValid, setIsVerificationCodeValid] = useState(false)
+
+  useEffect(() => {
+    if (verificationCode.length >= 4) {
+      setIsVerificationCodeValid(true)
+    } else {
+      setIsVerificationCodeValid(false)
+    }
+  }, [verificationCode])
 
 
   //            render: SignUpEmailSection           //
@@ -42,18 +54,32 @@ export default function SignUpEmailSection({
               placeholder="Enter your email"
             />
             {(!isEmailValid) ? (
-            <DisabledButton label="Verify" size="small" textSize="small" className={`!w-[85px]`} />
+            <DisabledButton label="Verify" size="small" textSize="small" className={`!w-[92px]`} />
             ):(
-            <Button onClick={onVerifyEmail} label="Verify" size="small" textSize="small" className={`!w-[85px]`} />
+            <Button onClick={onVerifyEmail} label="Verify" size="small" textSize="small" className={`!w-[92px]`} />
             )}
           </div>
         </div>
 
-        <AuthInputBox id="verificationCode" name="verificationCode" type="text" label="Verification Code" placeholder="Enter verification code"
-          value={verificationCode}
-          onChange={onVerificationCodeChange}
-          required
-        />
+        {/* Verification Code Input */}
+        <div>
+          <label htmlFor="verificationCode" className="block text-sm font-medium text-white">
+            Verification Code
+          </label>
+          <div className="mt-1 flex space-x-2">
+            <input id="verificationCode" name="verificationCode" type="text" required
+              value={verificationCode}
+              onChange={onVerificationCodeChange}
+              className="flex-1 px-3 py-2 border border-muted rounded-md shadow-sm placeholder-secondary bg-primary text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-blue-primary transition-colors"
+              placeholder="Enter your verification code"
+            />
+            {(!isVerificationCodeValid) ? (
+            <DisabledButton label="Validate" size="small" textSize="small" className={`!w-[92px]`} />
+            ):(
+            <Button onClick={onValidateCode} label="Validate" size="small" textSize="small" className={`!w-[92px]`} />
+            )}
+          </div>
+        </div>
       </div>
 
       <div className="mt-auto space-y-6">

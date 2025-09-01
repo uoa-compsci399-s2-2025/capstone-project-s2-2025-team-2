@@ -4,6 +4,7 @@ import type { UserRecord } from "firebase-admin/auth"
 import { generateVerificationCode } from "utils/generateVerificationCode"
 import EmailService from "./EmailService"
 import { SendVerificationCodeResponse } from "../../service-layer/controllers/response-models/SendVerificationCodeResponse"
+import { VerifyCodeResponse } from "service-layer/controllers/response-models/VerifyCodeResponse"
 
 export default class AuthService {
 
@@ -52,6 +53,18 @@ export default class AuthService {
       console.error("Error sending verification code:", err)
       throw new Error("Failed to send verification code")
     }
+  }
+
+  public async verifyCode(email: string, inputCode: string): Promise<VerifyCodeResponse> {
+    // Verify code
+    const result = await this.authRepository.verifyCode(email, inputCode)
+
+    // Return response
+    const responseBody: VerifyCodeResponse = {
+      success: result,
+      message: result ? "Verification code verified successfully" : "Verification code verification failed"
+    }
+    return responseBody
   }
 
 }
