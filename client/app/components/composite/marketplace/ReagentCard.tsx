@@ -1,6 +1,8 @@
 import { FaRegClock } from "react-icons/fa";
 import { CiLocationOn } from "react-icons/ci";
 import { IoChatbubbleOutline } from "react-icons/io5";
+import { MdOutlineRemoveRedEye } from "react-icons/md";
+
 
 const ReagentCard = () => {
     return ( 
@@ -21,10 +23,20 @@ const ReagentCard = () => {
                     Image
                 </div>
                 <div className="ml-[1rem] bg-transparent md:ml-[0.5rem]">
-                    <div className="flex md:mt-[0.5rem]">
-                        <h6 className="text-secondary text-[12px]">Sell / Trade</h6>
-                        <IoChatbubbleOutline className="hidden md:block ml-[0.4rem]"/>
+
+                    <div className="flex md:mt-[0.5rem] justify-between">
+                        <div className="flex">
+                            <h6 className="text-secondary text-[12px]">Sell / Trade</h6>
+                            <IoChatbubbleOutline className="hidden md:block ml-[0.4rem]"/>
+                        </div>
+                        <div className="
+                            hidden md:flex bg-dark-gray mt-[-0.5rem] mr-[-0.6rem]
+                            w-[1.7rem] items-center justify-center rounded-bl-[14px] rounded-tr-[10px]
+                        ">
+                            <MdOutlineRemoveRedEye size={20} className="text-white"/>
+                        </div>
                     </div>
+
                     <h2 className="text-black dark:text-white text-[1.5rem]">Ethanol</h2>
                     <div className="hidden md:w-[11.2rem] md:flex md:flex-col">
                         <div className="md:flex md:justify-between">
