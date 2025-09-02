@@ -12,7 +12,7 @@ import {
   Patch,
 } from "tsoa"
 import { ReagentService } from "../../data-layer/repository/ReagentRepository"
-import { CreateReagentRequest } from "service-layer/dtos/request-models/ReagentRequest"
+import { CreateReagentRequest } from "service-layer/dtos/request/ReagentRequest"
 
 @Route("reagents")
 export class ReagentController extends Controller {

@@ -1,7 +1,7 @@
 import { OAuth2Client } from "google-auth-library"
 import { auth, db } from "../../business-layer/security/Firebase"
 import type { UserRecord } from "firebase-admin/auth"
-import { GoogleOAuthResponse } from "../dtos/response-models/OAuthVerifyResponse"
+import { GoogleOAuthResponse } from "../dtos/response/OAuthVerifyResponse"
 import GoogleOAuthUser from "../../business-layer/models/GoogleOAuthUser"
 
 export default class GoogleOAuthService {

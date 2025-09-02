@@ -1,11 +1,11 @@
 import { Body, Controller, Post, Route, Tags } from "tsoa"
-import { SendVerificationCodeRequest } from "../../service-layer/dtos/request-models/SendVerificationCodeRequest"
-import { SendVerificationCodeResponse } from "../../service-layer/dtos/response-models/SendVerificationCodeResponse"
-import { LoginRequest } from "../../service-layer/dtos/request-models/LoginRequest"
-import { LoginResponse } from "../../service-layer/dtos/response-models/LoginResponse"
+import { SendVerificationCodeRequest } from "../../service-layer/dtos/request/SendVerificationCodeRequest"
+import { SendVerificationCodeResponse } from "../../service-layer/dtos/response/SendVerificationCodeResponse"
+import { LoginRequest } from "../../service-layer/dtos/request/LoginRequest"
+import { LoginResponse } from "../../service-layer/dtos/response/LoginResponse"
 import AuthService from "service-layer/services/AuthService"
-import { VerifyCodeRequest } from "../../service-layer/dtos/request-models/VerifyCodeRequest"
-import { VerifyCodeResponse } from "../../service-layer/dtos/response-models/VerifyCodeResponse"
+import { VerifyCodeRequest } from "../../service-layer/dtos/request/VerifyCodeRequest"
+import { VerifyCodeResponse } from "../../service-layer/dtos/response/VerifyCodeResponse"
 
 @Route("auth")
 @Tags("Authentication")
