@@ -20,6 +20,7 @@
   --blue-secondary: #4c9af3;
 
   --dark-gray: #676767;
+  --gray-100: #979797;
 
   --muted: #4d4d4d;
   --accent: #f5f7fc;
@@ -84,6 +85,7 @@
   --color-success: var(--success);
   --color-warning: var(--warning);
   --color-dark-gray: var(--dark-gray);
+  --color-gray-100: var(--gray-100);
 }
 
 @media (prefers-color-scheme: dark) {
