@@ -9,6 +9,7 @@ const ReagentCard = () => {
         <div className="
             md:w-[13rem] md:h-[17rem] p-[0.2rem] 
             h-[7.5rem] mx-[2rem] mb-[1.5rem] bg-transparent
+            w-full
             border-blue-secondary dark:border-purple border-solid border-[1.5px] rounded-[15px]
         ">
             <div className="
@@ -27,7 +28,7 @@ const ReagentCard = () => {
                     <div className="flex md:mt-[0.5rem] justify-between">
                         <div className="flex">
                             <h6 className="text-secondary text-[12px]">Sell / Trade</h6>
-                            <IoChatbubbleOutline className="hidden md:block ml-[0.4rem]"/>
+                            <IoChatbubbleOutline className="hidden md:block ml-[0.4rem] dark:text-secondary"/>
                         </div>
                         <div className="
                             hidden md:flex bg-dark-gray dark:bg-gray-200 mt-[-0.5rem] mr-[-0.6rem]
@@ -66,7 +67,7 @@ const ReagentCard = () => {
                         <FaRegClock className="w-5 h-6 mr-[5px] dark:text-red-100"/> <span>25/10/2026</span>
                     </div>
                     <div className="flex text-gray-100 md:text-[0.7rem] items-center md:mt-[1.5rem] dark:text-gray-200">
-                        <CiLocationOn className="w-5 h-5 stroke-[1px] -ml-[2px] stroke-gray-100 dark:stroke-gray-200"/> <span className="ml-[0.2rem]">UoA, Auckland</span>
+                        <CiLocationOn className="w-5 h-5 stroke-[1px] -ml-[2px] dark:stroke-lightblue md:stroke-gray-100 md:dark:stroke-gray-200"/> <span className="ml-[0.2rem]">UoA, Auckland</span>
                     </div>
                 </div>
             </div>
