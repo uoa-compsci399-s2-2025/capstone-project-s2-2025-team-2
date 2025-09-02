@@ -27,9 +27,13 @@ type Story = StoryObj<typeof meta>
 export const Unchecked: Story = {
   args: {
     name: "Ethanol",
-    tradingType: "sell",
+    tradingType: "Sell",
     location: "UoA, Auckland",
+    listedDate: "25/09/2026",
     expiryDate: "25/10/2026",
     imageUrl: "Image",
+    condition: "Unopened",
+    quantity: 68,
+    purity: 99.8,
   },
 }
