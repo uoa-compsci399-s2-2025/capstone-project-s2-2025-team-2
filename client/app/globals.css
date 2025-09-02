@@ -22,6 +22,9 @@
 
   --lightblue: #62B4EE;
   --blue-100: #4282D7;
+  --blue-200: #6BABFF;
+
+  --purple-100: #865298;
 
   --green-100: #249731;
 
@@ -103,6 +106,8 @@
 
   --color-lightblue: var(--lightblue);
   --color-blue-100: var(--blue-100);
+  --color-blue-200: var(--blue-200);
+  --color-purple-100: var(--purple-100);
 
   --color-green-100: var(--green-100);
 }
