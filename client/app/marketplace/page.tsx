@@ -2,7 +2,7 @@ import ReagentCard from "../components/composite/marketplace/ReagentCard";
 
 const Marketplace = () => {
     return ( 
-        <div className="bg-white">
+        <div className="bg-black">
             Marketplace
             <ReagentCard/>
             <ReagentCard/>
