@@ -3,8 +3,8 @@ import { AuthRepository } from "data-layer/repository/AuthRepository"
 import type { UserRecord } from "firebase-admin/auth"
 import { generateVerificationCode } from "utils/generateVerificationCode"
 import EmailService from "./EmailService"
-import { SendVerificationCodeResponse } from "../../service-layer/controllers/response-models/SendVerificationCodeResponse"
-import { VerifyCodeResponse } from "service-layer/controllers/response-models/VerifyCodeResponse"
+import { SendVerificationCodeResponse } from "../dtos/response-models/SendVerificationCodeResponse"
+import { VerifyCodeResponse } from "service-layer/dtos/response-models/VerifyCodeResponse"
 
 export default class AuthService {
 

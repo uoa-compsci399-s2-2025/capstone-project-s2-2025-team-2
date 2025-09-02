@@ -1,5 +1,5 @@
 import FirestoreCollections from "../adapters/FirestoreCollections"
-import { Reagent, ReagentCategory } from "../models/Reagent"
+import { Reagent, ReagentCategory } from "../../business-layer/models/Reagent"
 
 export class ReagentService {
   /**

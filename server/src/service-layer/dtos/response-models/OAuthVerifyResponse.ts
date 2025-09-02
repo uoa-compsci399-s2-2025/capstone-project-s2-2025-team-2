@@ -1,4 +1,4 @@
-import GoogleOAuthUser from "../objects/GoogleOAuthUser"
+import GoogleOAuthUser from "../../../business-layer/models/GoogleOAuthUser"
 
 export interface GoogleOAuthResponse {
   success: boolean

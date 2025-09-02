@@ -1,4 +1,4 @@
-import { Reagent, ReagentCategory } from "../../data-layer/models/Reagent"
+import { Reagent, ReagentCategory } from "../../business-layer/models/Reagent"
 import {
   Controller,
   Get,
@@ -12,7 +12,7 @@ import {
   Patch,
 } from "tsoa"
 import { ReagentService } from "../../data-layer/repository/ReagentRepository"
-import { CreateReagentRequest } from "service-layer/controllers/request-models/ReagentRequest"
+import { CreateReagentRequest } from "service-layer/dtos/request-models/ReagentRequest"
 
 @Route("reagents")
 export class ReagentController extends Controller {

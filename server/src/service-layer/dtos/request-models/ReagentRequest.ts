@@ -1,7 +1,7 @@
 import type {
   ReagentCategory,
   ReagentTradingType,
-} from "data-layer/models/Reagent"
+} from "business-layer/models/Reagent"
 
 export interface CreateReagentRequest {
   userId: string

@@ -1,4 +1,4 @@
-import { User } from "../../data-layer/models/User"
+import { User } from "../../business-layer/models/User"
 import { Controller, Get, Route, SuccessResponse } from "tsoa"
 import { UserService } from "../../data-layer/repository/UserRepository"
 @Route("users")
