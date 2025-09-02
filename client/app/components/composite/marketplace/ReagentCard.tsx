@@ -91,7 +91,7 @@ const ReagentCard = ({
                        <FaRegClock className="w-5 h-6 mr-[5px] dark:text-red-100"/> <span>{expiryDate}</span>
                    </div>
                    <div className="flex text-gray-100 md:text-[0.7rem] items-center md:mt-[1.5rem] dark:text-gray-200">
-                       <CiLocationOn className="w-5 h-5 stroke-[1px] -ml-[2px] dark:stroke-lightblue md:stroke-gray-100 md:dark:stroke-gray-200"/> <span className="ml-[0.2rem]">{location}</span>
+                       <CiLocationOn className="w-6 h-6 stroke-[1px] -ml-[2px] dark:stroke-lightblue md:stroke-gray-100 md:dark:stroke-gray-200"/> <span className="ml-[0.2rem]">{location}</span>
                    </div>
                </div>
            </div>
