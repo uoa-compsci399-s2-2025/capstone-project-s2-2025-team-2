@@ -25,23 +25,35 @@ const ReagentCard = () => {
                         <h6 className="text-secondary text-[12px]">Sell / Trade</h6>
                         <IoChatbubbleOutline className="hidden md:block ml-[0.4rem]"/>
                     </div>
-                    <h6 className="text-black dark:text-white text-[1.5rem]">Ethanol</h6>
-                    <div className="hidden md:flex">
-                        <div className="">
-                            <h6 className="text-black">Listed on</h6>
-                            <h6 className="text-black">Expires</h6>
-                            <h6 className="text-black">Condition</h6>
+                    <h2 className="text-black dark:text-white text-[1.5rem]">Ethanol</h2>
+                    <div className="hidden md:w-[11.2rem] md:flex md:flex-col">
+                        <div className="md:flex md:justify-between">
+                            <div className="">
+                                <p className="text-blue-100">Listed on</p>
+                                <p className="text-red-200">Expires</p>
+                                <p className="text-green-100">Condition</p>
+                            </div>
+                            <div>
+                                <p className="text-dark-gray">16/12/2025</p>
+                                <p className="text-dark-gray">25/10/2026</p>
+                                <p className="text-dark-gray">Unopened</p>
+                            </div>
                         </div>
-                        <div>
-                            <h6 className="text-black">16/12/2025</h6>
-                            <h6 className="text-black">25/10/2026</h6>
-                            <h6 className="text-black">Unopened</h6>
+                        <div className="flex justify-between mt-[1rem]">
+                            <div>
+                                <p className="text-dark-gray font-extralight italic text-[0.7rem]">Quantity</p>
+                                <h2 className="text-dark-gray font-extralight italic text-[1.7rem]">68</h2>
+                            </div>
+                            <div className="text-right">
+                                <p className="text-dark-gray font-extralight italic text-[0.7rem]">Purity</p>
+                                <h2 className="text-dark-gray font-extralight italic text-[1.7rem]">99.8%</h2>
+                            </div>
                         </div>
                     </div>
                     <div className="flex items-center text-gray-100 md:hidden">
                         <FaRegClock className="w-5 h-6 mr-[5px] dark:text-red-100"/> <span>25/10/2026</span>
                     </div>
-                    <div className="flex text-gray-100">
+                    <div className="flex text-gray-100 md:mt-[1rem]">
                         <CiLocationOn className="w-6 h-6 stroke-[1px] -ml-[2px] dark:stroke-lightblue"/> <span>UoA, Auckland</span>
                     </div>
                 </div>
