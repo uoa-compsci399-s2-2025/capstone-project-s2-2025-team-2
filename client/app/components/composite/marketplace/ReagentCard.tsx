@@ -1,35 +1,60 @@
-import { FaRegClock } from "react-icons/fa";
-import { CiLocationOn } from "react-icons/ci";
-const ReagentCard = () => {
-    return ( 
-        <div className="
-            md:w-[13rem] md:h-[17rem] p-[0.2rem] 
-            h-[6.5rem] mx-[2rem] mb-[1.5rem]
-            border-blue-secondary border-solid border-[1.5px] rounded-[15px]
-        ">
-            <div className="
-                h-full flex
-                border-dark-gray border-solid border-[1.5px] rounded-[12px]
-            ">
-                <div className="
-                    bg-amber-400 w-[6rem] h-full
-                    rounded-tl-[10px] rounded-bl-[10px]
-                ">
-                    Image
-                </div>
-                <div className="ml-[1rem]">
-                    <h6 className="text-secondary text-[12px]">Sell / Trade</h6>
-                    <h6 className="text-black">Ethanol</h6>
-                    <div className="flex items-center">
-                        <FaRegClock className="w-5 h-6 mr-[5px]"/> <span>25/10/2026</span>
-                    </div>
-                    <div className="flex text-gray-100">
-                        <CiLocationOn className="w-6 h-6 stroke-[1px] -ml-[2px]"/> <span>UoA, Auckland</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-     );
+import { FaRegClock } from "react-icons/fa"
+import { CiLocationOn } from "react-icons/ci"
+import client from "@/app/services/fetch-client"
+
+interface ReagentCardProps {
+  name: string
+  tradingType: "sell" | "trade" | "giveaway"
+  location: string
+  expiryDate: string
+  imageUrl?: string
 }
- 
-export default ReagentCard;
+
+const ReagentCard = ({
+  name,
+  tradingType,
+  location,
+  expiryDate,
+  imageUrl,
+}: ReagentCardProps) => {
+  return (
+    <div
+      className="
+            w-full md:h-[17rem] p-[0.2rem] 
+            h-[6.5rem] mx-[2rem] mb-[1.5rem]
+            
+            border-blue-secondary border-solid border rounded-md
+        "
+    >
+      <div
+        className="
+                h-full flex md:flex-col
+                border-dark-gray border-solid border rounded-md
+            "
+      >
+        <div
+          className="
+                    w-[6rem] h-full
+                    rounded-tl-[10px] rounded-bl-[10px]
+                "
+        >
+          {imageUrl}
+        </div>
+        <div className="md:ml-0 ml-auto p-2">
+          <h6 className="text-secondary text-[12px]">{tradingType}</h6>
+          <h6 className="text-black">{name}</h6>
+          <div className="flex items-center">
+            <FaRegClock className="w-5 h-6 mr-[5px]" />{" "}
+            <span>{expiryDate}</span>
+          </div>
+          <div className="flex text-gray-100">
+            <CiLocationOn className="w-6 h-6 stroke-[1px] -ml-[2px]" />{" "}
+            <span>{location}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export default ReagentCard
