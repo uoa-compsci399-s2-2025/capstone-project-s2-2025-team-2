@@ -17,8 +17,6 @@ export default class AuthService {
     this.emailService = new EmailService()
   }
 
-
-
   public async sendVerificationCode(
     email: string,
   ): Promise<SendVerificationCodeResponse> {
@@ -58,10 +56,6 @@ export default class AuthService {
     }
     return responseBody
   }
-
-
-
-
 
   public async verifyIdToken(idToken: string): Promise<VerifyTokenResponse> {
     try {

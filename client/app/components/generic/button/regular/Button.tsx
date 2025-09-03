@@ -8,12 +8,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 // base button component w/ common styling/functionality across all variants
-const BaseButton = ({
-  label,
-  className,
-  textSize,
-  ...props
-}: ButtonProps) => {
+const BaseButton = ({ label, className, textSize, ...props }: ButtonProps) => {
   return (
     <button
       type="button"

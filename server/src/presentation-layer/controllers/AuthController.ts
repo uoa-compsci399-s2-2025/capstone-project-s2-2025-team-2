@@ -19,8 +19,6 @@ export class AuthController extends Controller {
     this.authService = new AuthService()
   }
 
-
-
   @Post("/send-verification-code")
   public async sendVerificationCode(
     @Body() requestBody: SendVerificationCodeRequest,
@@ -41,8 +39,6 @@ export class AuthController extends Controller {
     )
     return result
   }
-
-
 
   @Post("/verify-token")
   public async verifyToken(

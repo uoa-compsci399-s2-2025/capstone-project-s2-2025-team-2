@@ -1,5 +1,4 @@
-import { Response } from "./ResponseDto"
-
-export default interface VerifyCodeResponseDto extends Response {
-  // Add specific properties here if needed
+export default interface VerifyCodeResponseDto {
+  success: boolean
+  message: string
 }
