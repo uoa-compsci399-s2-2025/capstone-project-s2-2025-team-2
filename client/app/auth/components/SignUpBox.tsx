@@ -80,8 +80,7 @@ export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "si
       setNotificationState("not-displaying")
       setCurrentStep(2)
     } else {
-    //   alert("Please fill in all required fields.")
-    setCurrentStep(2)
+      alert("Please fill in all required fields.")
     }
   }
 
