@@ -1,3 +1,3 @@
 export interface VerifyTokenRequest {
-    idToken: string
+  idToken: string
 }

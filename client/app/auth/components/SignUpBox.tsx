@@ -3,7 +3,9 @@
 import { useState } from "react"
 import SignUpEmailSection from "./SignUpEmailSection"
 import SignUpPasswordSection from "./SignUpPasswordSection"
-import AuthNotificationBox, { AuthNotificationState } from "./AuthNotificationBox"
+import AuthNotificationBox, {
+  AuthNotificationState,
+} from "./AuthNotificationBox"
 import SendVerificationCodeRequestDto from "../../models/request-models/SendVerificationCodeRequestDto"
 import SendVerificationCodeResponseDto from "../../models/response-models/SendVerificationCodeResponseDto"
 import { sendVerificationCode, verifyCode } from "../../services/auth"
@@ -16,7 +18,11 @@ import { verifyToken } from "../../services/auth"
 import { useRouter } from "next/navigation"
 
 //            function: SignUpBox           //
-export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "signin" | "signup" | "forgotpassword") => void }) {
+export default function SignUpBox({
+  setAuthType,
+}: {
+  setAuthType: (authType: "signin" | "signup" | "forgotpassword") => void
+}) {
   //            state           //
   const [currentStep, setCurrentStep] = useState(1)
   const [email, setEmail] = useState("")
@@ -24,9 +30,10 @@ export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "si
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [isEmailValid, setIsEmailValid] = useState(false)
-  const [notificationState, setNotificationState] = useState<AuthNotificationState>("not-displaying")
+  const [notificationState, setNotificationState] =
+    useState<AuthNotificationState>("not-displaying")
   const router = useRouter()
-  
+
   //            function: handleSignInClick           //
   const handleSignInClick = () => {
     setAuthType("signin")
@@ -50,7 +57,9 @@ export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "si
   }
 
   //            function: handleSendVerificationCodeResponse           //
-  const handleSendVerificationCodeResponse = (response: SendVerificationCodeResponseDto) => {
+  const handleSendVerificationCodeResponse = (
+    response: SendVerificationCodeResponseDto,
+  ) => {
     if (response.success) {
       setNotificationState("sent")
     } else {
@@ -58,21 +67,24 @@ export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "si
     }
   }
 
-    //            function: onClickVerifyCode           //
-    const onClickValidateCode = () => {
-        const requestBody: VerifyCodeRequestDto = { email, inputCode: verificationCode }
-        console.log("Verifying code for:", email)
-        verifyCode(requestBody).then(handleValidateCodeResponse)
+  //            function: onClickVerifyCode           //
+  const onClickValidateCode = () => {
+    const requestBody: VerifyCodeRequestDto = {
+      email,
+      inputCode: verificationCode,
     }
+    console.log("Verifying code for:", email)
+    verifyCode(requestBody).then(handleValidateCodeResponse)
+  }
 
-    //            function: handleVerifyCodeResponse           //
-    const handleValidateCodeResponse = (response: VerifyCodeResponseDto) => {
-      if (response.success) {
-        setNotificationState("validated")
-      } else {
-        setNotificationState("validation-fail")
-      }
+  //            function: handleVerifyCodeResponse           //
+  const handleValidateCodeResponse = (response: VerifyCodeResponseDto) => {
+    if (response.success) {
+      setNotificationState("validated")
+    } else {
+      setNotificationState("validation-fail")
     }
+  }
 
   //            function: handleNextStep           //
   const handleNextStep = () => {
@@ -114,8 +126,11 @@ export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "si
       setNotificationState("sign-up-success")
       router.push("/")
       // User is automatically signed in after successful sign up
-      console.log("User created and signed in:", { uid: response.uid, email: response.email })
-      
+      console.log("User created and signed in:", {
+        uid: response.uid,
+        email: response.email,
+      })
+
       // Save user data to Firestore via backend
       await saveUserToFirestore()
     } else {
@@ -127,7 +142,7 @@ export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "si
   const saveUserToFirestore = async () => {
     try {
       const response = await verifyToken()
-      
+
       if (response && response.success) {
         console.log("User data saved to Firestore:", response)
       } else {

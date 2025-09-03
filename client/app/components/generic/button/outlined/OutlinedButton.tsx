@@ -28,7 +28,7 @@ const BaseButton = ({
       <h5
         className={[
           backgroundColor ? "" : "text-blue-primary",
-          getTextSizeClass(textSize)
+          getTextSizeClass(textSize),
         ].join(" ")}
         style={{ color: backgroundColor }}
       >

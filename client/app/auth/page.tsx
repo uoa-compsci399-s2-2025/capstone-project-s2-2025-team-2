@@ -7,8 +7,9 @@ import SignUpBox from "./components/SignUpBox"
 
 //            function: AuthPage           //
 export default function AuthPage() {
-
-  const [authType, setAuthType] = useState<"signin" | "signup" | "forgotpassword">("signin")
+  const [authType, setAuthType] = useState<
+    "signin" | "signup" | "forgotpassword"
+  >("signin")
 
   //            render: AuthPage           //
   return (

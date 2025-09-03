@@ -218,41 +218,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"LoginResponse": {
-				"properties": {
-					"message": {
-						"type": "string"
-					},
-					"success": {
-						"type": "boolean"
-					},
-					"token": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"message",
-					"success"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"LoginRequest": {
-				"properties": {
-					"email": {
-						"type": "string"
-					},
-					"password": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"email",
-					"password"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"SendVerificationCodeResponse": {
 				"properties": {
 					"success": {
@@ -309,38 +274,6 @@
 				"required": [
 					"email",
 					"inputCode"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"SignUpResponse": {
-				"properties": {
-					"success": {
-						"type": "boolean"
-					},
-					"message": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"success",
-					"message"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"SignUpRequest": {
-				"properties": {
-					"email": {
-						"type": "string"
-					},
-					"password": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"email",
-					"password"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -607,38 +540,6 @@
 				}
 			}
 		},
-		"/auth/login": {
-			"post": {
-				"operationId": "Login",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/LoginResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Authentication"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/LoginRequest"
-							}
-						}
-					}
-				}
-			}
-		},
 		"/auth/send-verification-code": {
 			"post": {
 				"operationId": "SendVerificationCode",
@@ -697,38 +598,6 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/VerifyCodeRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/auth/signup": {
-			"post": {
-				"operationId": "SignUp",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/SignUpResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Authentication"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/SignUpRequest"
 							}
 						}
 					}

@@ -7,7 +7,9 @@ import AuthLink from "../../components/auth/AuthLink"
 import AuthText from "../../components/auth/AuthText"
 import AuthDivider from "../../components/auth/AuthDivider"
 import GoogleOAuthBtn from "../../components/auth/GoogleOAuthBtn"
-import AuthNotificationBox, { AuthNotificationState } from "./AuthNotificationBox"
+import AuthNotificationBox, {
+  AuthNotificationState,
+} from "./AuthNotificationBox"
 import { useState } from "react"
 import { firebaseSignIn, getIdToken } from "../../services/firebase-auth"
 import FirebaseSignInRequestDto from "../../models/request-models/FirebaseSignInRequestDto"
@@ -15,13 +17,18 @@ import FirebaseSignInResponseDto from "../../models/response-models/FirebaseSign
 import { verifyToken } from "../../services/auth"
 
 //            function: SignIn           //
-export default function SignInBox({ setAuthType }: { setAuthType: (authType: "signin" | "signup" | "forgotpassword") => void }) {   
+export default function SignInBox({
+  setAuthType,
+}: {
+  setAuthType: (authType: "signin" | "signup" | "forgotpassword") => void
+}) {
   //            state           //
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
-  const [user, setUser] = useState<any>(null)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [notificationState, setNotificationState] = useState<AuthNotificationState>("not-displaying")
+  const [, setUser] = useState<any>(null)
+  const [, setIsAuthenticated] = useState(false)
+  const [notificationState, setNotificationState] =
+    useState<AuthNotificationState>("not-displaying")
 
   //            function: handleSignUp           //
   const handleSignUpClick = () => {
@@ -43,7 +50,7 @@ export default function SignInBox({ setAuthType }: { setAuthType: (authType: "si
     try {
       const idToken = await getIdToken()
       if (idToken) {
-        localStorage.setItem('authToken', idToken)
+        localStorage.setItem("authToken", idToken)
         console.log("Google OAuth ID Token stored in localStorage")
       }
     } catch (error) {
@@ -81,19 +88,22 @@ export default function SignInBox({ setAuthType }: { setAuthType: (authType: "si
       setNotificationState("login-success")
       setUser({ uid: response.uid, email: response.email })
       setIsAuthenticated(true)
-      console.log("User signed in:", { uid: response.uid, email: response.email })
-      
+      console.log("User signed in:", {
+        uid: response.uid,
+        email: response.email,
+      })
+
       // Store ID token in localStorage
       try {
         const idToken = await getIdToken()
         if (idToken) {
-          localStorage.setItem('authToken', idToken)
+          localStorage.setItem("authToken", idToken)
           console.log("ID Token stored in localStorage")
         }
       } catch (error) {
         console.error("Error storing token:", error)
       }
-      
+
       // Ensure user data exists in Firestore
       await ensureUserInFirestore()
     } else {
@@ -105,7 +115,7 @@ export default function SignInBox({ setAuthType }: { setAuthType: (authType: "si
   const ensureUserInFirestore = async () => {
     try {
       const response = await verifyToken()
-      
+
       if (response && response.success) {
         console.log("User data verified in Firestore:", response)
       } else {
@@ -173,7 +183,9 @@ export default function SignInBox({ setAuthType }: { setAuthType: (authType: "si
             name="remember-me"
             label="Remember me"
           />
-          <AuthLink onClick={handleForgotPasswordClick} children="Forgot your password?" />
+          <AuthLink onClick={handleForgotPasswordClick}>
+            Forgot your password?
+          </AuthLink>
         </div>
 
         {/* 3. Submit Button */}
@@ -184,7 +196,7 @@ export default function SignInBox({ setAuthType }: { setAuthType: (authType: "si
         {/* 4. Sign Up Link */}
         <AuthText className="text-center">
           Don&apos;t have an account?{" "}
-          <AuthLink onClick={handleSignUpClick} children="Sign up" />
+          <AuthLink onClick={handleSignUpClick}>Sign up</AuthLink>
         </AuthText>
       </form>
     </div>
