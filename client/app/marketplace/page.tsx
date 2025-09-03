@@ -5,7 +5,23 @@ const Marketplace = () => {
   return (
     <div className="bg-white dark:bg-black flex w-full flex-wrap pt-[2rem]">
       Marketplace
-      <ReagentCard {...Unchecked.args} /><ReagentCard {...Unchecked.args} /><ReagentCard {...Unchecked.args} /><ReagentCard {...Unchecked.args} /><ReagentCard {...Unchecked.args} /><ReagentCard {...Unchecked.args} /><ReagentCard {...Unchecked.args} /><ReagentCard {...Unchecked.args} /><ReagentCard {...Unchecked.args} /><ReagentCard {...Unchecked.args} /><ReagentCard {...Unchecked.args} /><ReagentCard {...Unchecked.args} /><ReagentCard {...Unchecked.args} /><ReagentCard {...Unchecked.args} /><ReagentCard {...Unchecked.args} /><ReagentCard {...Unchecked.args} /><ReagentCard {...Unchecked.args} />
+      <ReagentCard {...Unchecked.args} />
+      <ReagentCard {...Unchecked.args} />
+      <ReagentCard {...Unchecked.args} />
+      <ReagentCard {...Unchecked.args} />
+      <ReagentCard {...Unchecked.args} />
+      <ReagentCard {...Unchecked.args} />
+      <ReagentCard {...Unchecked.args} />
+      <ReagentCard {...Unchecked.args} />
+      <ReagentCard {...Unchecked.args} />
+      <ReagentCard {...Unchecked.args} />
+      <ReagentCard {...Unchecked.args} />
+      <ReagentCard {...Unchecked.args} />
+      <ReagentCard {...Unchecked.args} />
+      <ReagentCard {...Unchecked.args} />
+      <ReagentCard {...Unchecked.args} />
+      <ReagentCard {...Unchecked.args} />
+      <ReagentCard {...Unchecked.args} />
     </div>
   )
 }

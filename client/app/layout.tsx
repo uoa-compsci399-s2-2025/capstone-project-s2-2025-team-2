@@ -14,22 +14,21 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-
   //const pathname = usePathname();
   //const isLandingPage = pathname === '/';
   return (
     <html lang="en">
-        <head>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-  </head>
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body>
         <TopBar />
         <Sidebar />
 
-        <main className="ml-48 mt-12 h-[calc(100vh-3rem)] overflow-auto">
+        <main className="pl-48 pt-12 h-[calc(100vh)] overflow-auto">
           {children}
         </main>
       </body>
