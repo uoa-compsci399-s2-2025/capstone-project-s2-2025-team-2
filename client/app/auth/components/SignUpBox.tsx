@@ -6,9 +6,11 @@ import SignUpPasswordSection from "./SignUpPasswordSection"
 import AuthNotificationBox, { AuthNotificationState } from "./AuthNotificationBox"
 import SendVerificationCodeRequestDto from "../../models/request-models/sendVerificationCodeRequestDto"
 import SendVerificationCodeResponseDto from "../../models/response-models/sendVerificationCodeResponseDto"
-import { sendVerificationCode, verifyCode } from "../../services/auth"
+import { sendVerificationCode, verifyCode, signUp } from "../../services/auth"
 import VerifyCodeRequestDto from "@/app/models/request-models/verifyCodeRequestDto"
 import VerifyCodeResponseDto from "@/app/models/response-models/VerifyCodeResponseDto"
+import SignUpRequestDto from "../../models/request-models/SignUpRequestDto"
+import SignUpResponseDto from "../../models/response-models/SignUpResponseDto"
 
 //            function: SignUpBox           //
 export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "signin" | "signup" | "forgotpassword") => void }) {
@@ -92,11 +94,22 @@ export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "si
     }
 
     try {
-      // TODO: Implement sign up logic
+      setNotificationState("signing-up")
+      const requestBody: SignUpRequestDto = { email, password }
       console.log("Signing up with:", { email, password })
-      alert("Sign up successful!")
+      const response = await signUp(requestBody)
+      handleSignUpResponse(response)
     } catch (error) {
       console.error("Error during sign up:", error)
+      setNotificationState("sign-up-fail")
+    }
+  }
+
+  //            function: handleSignUpResponse           //
+  const handleSignUpResponse = (response: SignUpResponseDto) => {
+    if (response.success) {
+      setNotificationState("sign-up-success")
+    } else {
       setNotificationState("sign-up-fail")
     }
   }

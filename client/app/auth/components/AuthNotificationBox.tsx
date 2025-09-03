@@ -10,6 +10,8 @@ export type AuthNotificationState =
   | "validated"
   | "password-not-suitable"
   | "password-not-matching"
+  | "signing-up"
+  | "sign-up-success"
   | "sign-up-fail"
 
 // type: NotificationType
@@ -93,6 +95,16 @@ const getNotificationConfig = (state: AuthNotificationState): NotificationConfig
       return {
         type: "error",
         message: "Passwords do not match!"
+      }
+    case "signing-up":
+      return {
+        type: "info",
+        message: "Creating your account..."
+      }
+    case "sign-up-success":
+      return {
+        type: "success",
+        message: "Account created successfully! You can now sign in."
       }
     case "sign-up-fail":
       return {

@@ -125,6 +125,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/auth/signup": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["SignUp"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -207,6 +223,14 @@ export interface components {
         VerifyCodeRequest: {
             email: string;
             inputCode: string;
+        };
+        SignUpResponse: {
+            success: boolean;
+            message: string;
+        };
+        SignUpRequest: {
+            email: string;
+            password: string;
         };
     };
     responses: never;
@@ -451,6 +475,30 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["VerifyCodeResponse"];
+                };
+            };
+        };
+    };
+    SignUp: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SignUpRequest"];
+            };
+        };
+        responses: {
+            /** @description Ok */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SignUpResponse"];
                 };
             };
         };

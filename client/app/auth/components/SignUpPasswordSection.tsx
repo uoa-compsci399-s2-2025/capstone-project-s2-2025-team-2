@@ -18,35 +18,21 @@ interface SignUpPasswordSectionProps {
 
 //            function: SignUpPasswordSection           //
 export default function SignUpPasswordSection({
-  password,
-  confirmPassword,
-  onPasswordChange,
-  onConfirmPasswordChange,
-  onBackToStep1,
-  onSignUp,
-  onSignInClick
+  password, confirmPassword,
+  onPasswordChange, onConfirmPasswordChange, 
+  onBackToStep1, onSignUp, onSignInClick
 }: SignUpPasswordSectionProps) {
   //            render: SignUpPasswordSection           //
   return (
     <div className="flex flex-col flex-1 justify-between">
       <div className="space-y-4">
-        <AuthInputBox
-          id="password"
-          name="password"
-          type="password"
-          label="Password"
-          placeholder="Enter your password"
+        <AuthInputBox id="password" name="password" type="password" label="Password" placeholder="Enter your password"
           value={password}
           onChange={onPasswordChange}
           required
         />
 
-        <AuthInputBox
-          id="confirmPassword"
-          name="confirmPassword"
-          type="password"
-          label="Confirm Password"
-          placeholder="Confirm your password"
+        <AuthInputBox id="confirmPassword" name="confirmPassword" type="password" label="Confirm Password" placeholder="Confirm your password"
           value={confirmPassword}
           onChange={onConfirmPasswordChange}
           required
@@ -56,16 +42,10 @@ export default function SignUpPasswordSection({
       <div className="mt-auto space-y-6">
         {/* Action Buttons */}
         <div className="flex space-x-3">
-        <OutlinedButton 
-          type="button" 
-          label="Back" 
-          size="small"
+        <OutlinedButton type="button" label="Back" size="small"
           onClick={onBackToStep1}
         />
-          <Button 
-            type="button" 
-            label="Confirm" 
-            size="small"
+          <Button type="button" label="Confirm" size="small"
             onClick={onSignUp}
           />
         </div>

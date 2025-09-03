@@ -5,6 +5,7 @@ import { generateVerificationCode } from "utils/generateVerificationCode"
 import EmailService from "./EmailService"
 import { SendVerificationCodeResponse } from "../dtos/response/SendVerificationCodeResponse"
 import { VerifyCodeResponse } from "service-layer/dtos/response/VerifyCodeResponse"
+import { SignUpResponse } from "../dtos/response/SignUpResponse"
 
 export default class AuthService {
 
@@ -16,10 +17,7 @@ export default class AuthService {
     this.emailService = new EmailService()
   }
 
-  public async createUser(
-    email: string,
-    password: string,
-  ): Promise<UserRecord> {
+  public async createUser( email: string, password: string, ): Promise<UserRecord> {
     let userRecord: UserRecord
     try {
       userRecord = await auth.createUser({
@@ -65,6 +63,31 @@ export default class AuthService {
       message: result ? "Verification code verified successfully" : "Verification code verification failed"
     }
     return responseBody
+  }
+
+  public async signUp(email: string, password: string): Promise<SignUpResponse> {
+    try {
+      // Create user with Firebase Auth (password is automatically hashed by Firebase)
+      const userRecord = await this.createUser(email, password)
+      
+      // Save user data to Firestore
+      await this.authRepository.saveUser(userRecord.uid, email)
+      
+      // Return success response
+      const responseBody: SignUpResponse = {
+        success: true,
+        message: "User created successfully"
+      }
+      return responseBody
+
+    } catch (err) {
+      console.error("Error during sign up:", err)
+      const responseBody: SignUpResponse = {
+        success: false,
+        message: "Failed to create user"
+      }
+      return responseBody
+    }
   }
 
 }
