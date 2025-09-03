@@ -3,7 +3,7 @@
 import { useState } from "react"
 import SignUpEmailSection from "./SignUpEmailSection"
 import SignUpPasswordSection from "./SignUpPasswordSection"
-import SignUpNotificationBox, { SignUpNotificationState } from "./SignUpNotificationBox"
+import AuthNotificationBox, { AuthNotificationState } from "./AuthNotificationBox"
 import SendVerificationCodeRequestDto from "../../models/request-models/sendVerificationCodeRequestDto"
 import SendVerificationCodeResponseDto from "../../models/response-models/sendVerificationCodeResponseDto"
 import { sendVerificationCode, verifyCode } from "../../services/auth"
@@ -19,7 +19,7 @@ export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "si
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [isEmailValid, setIsEmailValid] = useState(false)
-  const [notificationState, setNotificationState] = useState<SignUpNotificationState>("not-displaying")
+  const [notificationState, setNotificationState] = useState<AuthNotificationState>("not-displaying")
 
   //            function: handleSignInClick           //
   const handleSignInClick = () => {
@@ -115,7 +115,7 @@ export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "si
         <p className="mt-2 text-secondary">Create your account</p>
       </div>
 
-      <SignUpNotificationBox state={notificationState} />
+      <AuthNotificationBox state={notificationState} />
 
       {currentStep === 1 ? (
         <SignUpEmailSection

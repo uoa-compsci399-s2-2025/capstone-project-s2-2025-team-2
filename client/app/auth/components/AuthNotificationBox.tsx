@@ -1,7 +1,7 @@
 "use client"
 
-//  type: SignUpNotificationState
-export type SignUpNotificationState = 
+//  type: AuthNotificationState
+export type AuthNotificationState = 
   | "not-displaying"
   | "sending"
   | "sending-fail"
@@ -15,9 +15,9 @@ export type SignUpNotificationState =
 // type: NotificationType
 type NotificationType = "info" | "success" | "error"
 
-//            interface: SignUpNotificationBoxProps           //
-interface SignUpNotificationBoxProps {
-  state: SignUpNotificationState
+//            interface: AuthNotificationBoxProps           //
+interface AuthNotificationBoxProps {
+  state: AuthNotificationState
 }
 
 //            interface: NotificationConfig           //
@@ -57,7 +57,7 @@ const getNotificationStyles = (type: NotificationType) => {
 }
 
 //            function: getNotificationConfig           //
-const getNotificationConfig = (state: SignUpNotificationState): NotificationConfig => {
+const getNotificationConfig = (state: AuthNotificationState): NotificationConfig => {
   switch (state) {
     case "sending":
       return {
@@ -107,8 +107,8 @@ const getNotificationConfig = (state: SignUpNotificationState): NotificationConf
   }
 }
 
-//            function: SignUpNotificationBox           //
-export default function SignUpNotificationBox({ state }: SignUpNotificationBoxProps) {
+//            function: AuthNotificationBox           //
+export default function AuthNotificationBox({ state }: AuthNotificationBoxProps) {
   // Don't render anything if not displaying
   if (state === "not-displaying") {
     return null
