@@ -1,4 +1,4 @@
-export default interface SendVerificationCodeResponse {
+export default interface SendVerificationCodeResponseDto {
   success: boolean
   message: string
 }
