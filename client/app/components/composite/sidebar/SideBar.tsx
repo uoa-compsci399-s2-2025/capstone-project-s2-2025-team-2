@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { ShoppingCartIcon, UserCircleIcon } from '@heroicons/react/24/outline';
 
 const Sidebar = () => {
   const links = [
