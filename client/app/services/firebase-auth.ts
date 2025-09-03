@@ -15,6 +15,13 @@ import FirebaseSignInResponseDto from "../models/response-models/FirebaseSignInR
 export const firebaseSignUp = async (
   requestBody: FirebaseSignUpRequestDto,
 ): Promise<FirebaseSignUpResponseDto> => {
+  if (!auth) {
+    return {
+      success: false,
+      message: "Firebase is not initialized. Please check your configuration.",
+    }
+  }
+
   try {
     const userCredential: UserCredential = await createUserWithEmailAndPassword(
       auth,
@@ -58,6 +65,13 @@ export const firebaseSignUp = async (
 export const firebaseSignIn = async (
   requestBody: FirebaseSignInRequestDto,
 ): Promise<FirebaseSignInResponseDto> => {
+  if (!auth) {
+    return {
+      success: false,
+      message: "Firebase is not initialized. Please check your configuration.",
+    }
+  }
+
   try {
     const userCredential: UserCredential = await signInWithEmailAndPassword(
       auth,
@@ -102,6 +116,11 @@ export const firebaseSignIn = async (
 
 //            function: firebaseSignOut           //
 export const firebaseSignOut = async (): Promise<void> => {
+  if (!auth) {
+    console.warn("Firebase is not initialized. Cannot sign out.")
+    return
+  }
+
   try {
     await signOut(auth)
   } catch (error) {
@@ -112,7 +131,7 @@ export const firebaseSignOut = async (): Promise<void> => {
 
 //            function: getCurrentUser           //
 export const getCurrentUser = (): User | null => {
-  return auth.currentUser
+  return auth?.currentUser || null
 }
 
 //            function: getIdToken           //
