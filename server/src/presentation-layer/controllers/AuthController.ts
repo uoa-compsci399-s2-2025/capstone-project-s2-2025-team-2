@@ -8,6 +8,8 @@ import { VerifyCodeRequest } from "../../service-layer/dtos/request/VerifyCodeRe
 import { VerifyCodeResponse } from "../../service-layer/dtos/response/VerifyCodeResponse"
 import { SignUpRequest } from "../../service-layer/dtos/request/SignUpRequest"
 import { SignUpResponse } from "../../service-layer/dtos/response/SignUpResponse"
+import { VerifyTokenRequest } from "../../service-layer/dtos/request/VerifyTokenRequest"
+import { VerifyTokenResponse } from "../../service-layer/dtos/response/VerifyTokenResponse"
 
 @Route("auth")
 @Tags("Authentication")
@@ -28,12 +30,9 @@ export class AuthController extends Controller {
     console.log("Email:", requestBody.email)
     console.log("Password:", requestBody.password)
     console.log("==============================")
-    // TODO: Implement login logic
-
-    return {
-      message: "Login request received successfully",
-      success: true,
-    }
+    
+    const result = await this.authService.login(requestBody.email, requestBody.password)
+    return result
   }
 
   @Post("/send-verification-code")
@@ -62,6 +61,18 @@ export class AuthController extends Controller {
     console.log("================================")
     
     const result = await this.authService.signUp(requestBody.email, requestBody.password)
+    return result
+  }
+
+  @Post("/verify-token")
+  public async verifyToken(
+    @Body() requestBody: VerifyTokenRequest,
+  ): Promise<VerifyTokenResponse> {
+    console.log("=== Token Verification Request Received ===")
+    console.log("ID Token:", requestBody.idToken.substring(0, 20) + "...")
+    console.log("===========================================")
+    
+    const result = await this.authService.verifyIdToken(requestBody.idToken)
     return result
   }
 }

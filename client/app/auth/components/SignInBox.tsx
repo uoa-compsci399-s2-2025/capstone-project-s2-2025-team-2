@@ -7,8 +7,12 @@ import AuthLink from "../../components/auth/AuthLink"
 import AuthText from "../../components/auth/AuthText"
 import AuthDivider from "../../components/auth/AuthDivider"
 import GoogleOAuthBtn from "../../components/auth/GoogleOAuthBtn"
+import AuthNotificationBox, { AuthNotificationState } from "./AuthNotificationBox"
 import { useState } from "react"
-import client from "../../services/fetch-client"
+import { firebaseSignIn } from "../../services/firebase-auth"
+import FirebaseSignInRequestDto from "../../models/request-models/FirebaseSignInRequestDto"
+import FirebaseSignInResponseDto from "../../models/response-models/FirebaseSignInResponseDto"
+import { verifyToken } from "../../services/auth"
 
 //            function: SignIn           //
 export default function SignInBox({ setAuthType }: { setAuthType: (authType: "signin" | "signup" | "forgotpassword") => void }) {   
@@ -17,6 +21,7 @@ export default function SignInBox({ setAuthType }: { setAuthType: (authType: "si
   const [password, setPassword] = useState("")
   const [user, setUser] = useState<any>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const [notificationState, setNotificationState] = useState<AuthNotificationState>("not-displaying")
 
   //            function: handleSignUp           //
   const handleSignUpClick = () => {
@@ -48,20 +53,44 @@ export default function SignInBox({ setAuthType }: { setAuthType: (authType: "si
     e.preventDefault()
 
     try {
-      const response = await client.POST("/auth/login", {
-        body: { email, password },
-      })
+      setNotificationState("signing-in")
+      const requestBody: FirebaseSignInRequestDto = { email, password }
+      console.log("Signing in with Firebase:", { email, password })
+      const response = await firebaseSignIn(requestBody)
+      handleSignInResponse(response)
+    } catch (error) {
+      console.error("Error during sign in:", error)
+      setNotificationState("login-fail")
+    }
+  }
 
-      const data = response.data
+  //            function: handleSignInResponse           //
+  const handleSignInResponse = async (response: FirebaseSignInResponseDto) => {
+    if (response.success) {
+      setNotificationState("login-success")
+      setUser({ uid: response.uid, email: response.email })
+      setIsAuthenticated(true)
+      console.log("User signed in:", { uid: response.uid, email: response.email })
+      
+      // Ensure user data exists in Firestore
+      await ensureUserInFirestore()
+    } else {
+      setNotificationState("login-fail")
+    }
+  }
 
-      if (data && data.success) {
-        alert("Login successful!")
+  //            function: ensureUserInFirestore           //
+  const ensureUserInFirestore = async () => {
+    try {
+      const response = await verifyToken()
+      
+      if (response && response.success) {
+        console.log("User data verified in Firestore:", response)
       } else {
-        alert("Login failed. Please check your credentials.")
+        console.error("Failed to verify user in Firestore:", response)
       }
     } catch (error) {
-      console.error("Error:", error)
-      alert("An error occurred during login.")
+      console.error("Error verifying user in Firestore:", error)
     }
   }
 
@@ -74,15 +103,7 @@ export default function SignInBox({ setAuthType }: { setAuthType: (authType: "si
         <p className="mt-2 text-secondary">Sign in to your account</p>
       </div>
 
-      {/* Authentication Status */}
-      {isAuthenticated && user && (
-        <div className="mt-4 p-4 bg-green-500 border border-green-500 text-green-700 rounded">
-          <p className="font-semibold">
-            Welcome, {user.displayName || user.email}!
-          </p>
-          <p className="text-sm">You are now signed in with Google.</p>
-        </div>
-      )}
+      <AuthNotificationBox state={notificationState} />
 
       {/* Google OAuth Button */}
       <div className="w-full flex justify-center items-center">

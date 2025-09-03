@@ -1,7 +1,6 @@
 "use client"
 
-import Button from "../../components/generic/button/regular/Button"
-import OutlinedButton from "../../components/generic/button/outlined/OutlinedButton"
+import Button from "../../components/generic/button/regular/Button"  
 import AuthInputBox from "../../components/auth/AuthInputBox"
 import AuthText from "../../components/auth/AuthText"
 import AuthLink from "../../components/auth/AuthLink"
@@ -11,7 +10,6 @@ interface SignUpPasswordSectionProps {
   confirmPassword: string
   onPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onConfirmPasswordChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onBackToStep1: () => void
   onSignUp: () => void
   onSignInClick: () => void
 }
@@ -20,7 +18,7 @@ interface SignUpPasswordSectionProps {
 export default function SignUpPasswordSection({
   password, confirmPassword,
   onPasswordChange, onConfirmPasswordChange, 
-  onBackToStep1, onSignUp, onSignInClick
+  onSignUp, onSignInClick
 }: SignUpPasswordSectionProps) {
   //            render: SignUpPasswordSection           //
   return (
@@ -42,12 +40,9 @@ export default function SignUpPasswordSection({
       <div className="mt-auto space-y-6">
         {/* Action Buttons */}
         <div className="flex space-x-3">
-        <OutlinedButton type="button" label="Back" size="small"
-          onClick={onBackToStep1}
+        <Button type="button" label="Confirm" size="small"
+          onClick={onSignUp}
         />
-          <Button type="button" label="Confirm" size="small"
-            onClick={onSignUp}
-          />
         </div>
 
         {/* Sign In Link */}

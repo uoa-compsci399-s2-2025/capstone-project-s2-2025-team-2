@@ -1,20 +1,19 @@
 import { FetchResponse } from "openapi-fetch"
 import GoogleOAuthRequestDto from "../models/request-models/GoogleOAuthRequestDto"
-import SendVerificationCodeRequestDto from "../models/request-models/sendVerificationCodeRequestDto"
-import SendVerificationCodeResponseDto from "../models/response-models/sendVerificationCodeResponseDto"
-import VerifyCodeRequestDto from "../models/request-models/verifyCodeRequestDto"
+import SendVerificationCodeRequestDto from "../models/request-models/SendVerificationCodeRequestDto"
+import SendVerificationCodeResponseDto from "../models/response-models/SendVerificationCodeResponseDto"
+import VerifyCodeRequestDto from "../models/request-models/VerifyCodeRequestDto"
 import VerifyCodeResponseDto from "../models/response-models/VerifyCodeResponseDto"
-import SignUpRequestDto from "../models/request-models/SignUpRequestDto"
-import SignUpResponseDto from "../models/response-models/SignUpResponseDto"
 import client from "./fetch-client"
 import GoogleOAuthResponseDto from "../models/response-models/GoogleOAuthResponseDto"
+import { getIdToken } from "./firebase-auth"
 
 const AUTH_BASE = "/auth"
 
 const VERIFY_GOOGLE_OAUTH_URL = `${AUTH_BASE}/google/verify`
 const SEND_VERIFICATION_CODE_URL = `${AUTH_BASE}/send-verification-code`
 const VERIFY_CODE_URL = `${AUTH_BASE}/verify-code`
-const SIGN_UP_URL = `${AUTH_BASE}/signup`
+const VERIFY_TOKEN_URL = `${AUTH_BASE}/verify-token`
 
 export const oauthVerify = async (requestBody: GoogleOAuthRequestDto): Promise<GoogleOAuthResponseDto> => {
   const response = await client.POST(VERIFY_GOOGLE_OAUTH_URL, {
@@ -46,12 +45,33 @@ export const verifyCode = async (requestBody: VerifyCodeRequestDto): Promise<Ver
   return response.data
 }
 
-export const signUp = async (requestBody: SignUpRequestDto): Promise<SignUpResponseDto> => {
-  const response = await client.POST(SIGN_UP_URL, {
-    body: requestBody,
-  })
+//            function: verifyToken           //
+export const verifyToken = async (): Promise<any> => {
+  try {
+    // Get ID token from Firebase Auth
+    const idToken = await getIdToken()
+    
+    if (!idToken) {
+      throw new Error("No ID token available")
+    }
+    
+    // Call backend to verify token and save/verify user in Firestore
+    const response = await client.POST(VERIFY_TOKEN_URL, {
+      body: { idToken }
+    })
 
-  if (response.error) { throw new Error("Sign up failed") }
-
-  return response.data
+    console.log("Token verification response:", response.data)
+    
+    if (response.error) {
+      throw new Error("Token verification failed")
+    }
+    
+    return response.data
+  } catch (error) {
+    console.error("Error verifying token:", error)
+    throw error
+  }
 }
+
+
+

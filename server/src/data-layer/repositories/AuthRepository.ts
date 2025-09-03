@@ -31,4 +31,12 @@ export class AuthRepository {
       createdAt: new Date(),
     })
   }
+
+  async getUserByUid(uid: string): Promise<any> {
+    const doc = await db.collection("users").doc(uid).get()
+    if (doc.exists) {
+      return doc.data()
+    }
+    return null
+  }
 }

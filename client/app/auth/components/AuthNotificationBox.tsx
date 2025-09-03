@@ -13,6 +13,9 @@ export type AuthNotificationState =
   | "signing-up"
   | "sign-up-success"
   | "sign-up-fail"
+  | "signing-in"
+  | "login-success"
+  | "login-fail"
 
 // type: NotificationType
 type NotificationType = "info" | "success" | "error"
@@ -110,6 +113,21 @@ const getNotificationConfig = (state: AuthNotificationState): NotificationConfig
       return {
         type: "error",
         message: "Sign up failed. Please try again."
+      }
+    case "signing-in":
+      return {
+        type: "info",
+        message: "Signing you in..."
+      }
+    case "login-success":
+      return {
+        type: "success",
+        message: "Login successful! Welcome back."
+      }
+    case "login-fail":
+      return {
+        type: "error",
+        message: "Login failed. Please check your credentials and try again."
       }
     default:
       return {

@@ -4,13 +4,16 @@ import { useState } from "react"
 import SignUpEmailSection from "./SignUpEmailSection"
 import SignUpPasswordSection from "./SignUpPasswordSection"
 import AuthNotificationBox, { AuthNotificationState } from "./AuthNotificationBox"
-import SendVerificationCodeRequestDto from "../../models/request-models/sendVerificationCodeRequestDto"
-import SendVerificationCodeResponseDto from "../../models/response-models/sendVerificationCodeResponseDto"
-import { sendVerificationCode, verifyCode, signUp } from "../../services/auth"
-import VerifyCodeRequestDto from "@/app/models/request-models/verifyCodeRequestDto"
+import SendVerificationCodeRequestDto from "../../models/request-models/SendVerificationCodeRequestDto"
+import SendVerificationCodeResponseDto from "../../models/response-models/SendVerificationCodeResponseDto"
+import { sendVerificationCode, verifyCode } from "../../services/auth"
+import VerifyCodeRequestDto from "@/app/models/request-models/VerifyCodeRequestDto"
 import VerifyCodeResponseDto from "@/app/models/response-models/VerifyCodeResponseDto"
-import SignUpRequestDto from "../../models/request-models/SignUpRequestDto"
-import SignUpResponseDto from "../../models/response-models/SignUpResponseDto"
+import { firebaseSignUp } from "../../services/firebase-auth"
+import FirebaseSignUpRequestDto from "../../models/request-models/FirebaseSignUpRequestDto"
+import FirebaseSignUpResponseDto from "../../models/response-models/FirebaseSignUpResponseDto"
+import { verifyToken } from "../../services/auth"
+import { useRouter } from "next/navigation"
 
 //            function: SignUpBox           //
 export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "signin" | "signup" | "forgotpassword") => void }) {
@@ -22,7 +25,8 @@ export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "si
   const [confirmPassword, setConfirmPassword] = useState("")
   const [isEmailValid, setIsEmailValid] = useState(false)
   const [notificationState, setNotificationState] = useState<AuthNotificationState>("not-displaying")
-
+  const router = useRouter()
+  
   //            function: handleSignInClick           //
   const handleSignInClick = () => {
     setAuthType("signin")
@@ -95,9 +99,9 @@ export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "si
 
     try {
       setNotificationState("signing-up")
-      const requestBody: SignUpRequestDto = { email, password }
-      console.log("Signing up with:", { email, password })
-      const response = await signUp(requestBody)
+      const requestBody: FirebaseSignUpRequestDto = { email, password }
+      console.log("Signing up with Firebase:", { email, password })
+      const response = await firebaseSignUp(requestBody)
       handleSignUpResponse(response)
     } catch (error) {
       console.error("Error during sign up:", error)
@@ -106,17 +110,33 @@ export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "si
   }
 
   //            function: handleSignUpResponse           //
-  const handleSignUpResponse = (response: SignUpResponseDto) => {
+  const handleSignUpResponse = async (response: FirebaseSignUpResponseDto) => {
     if (response.success) {
       setNotificationState("sign-up-success")
+      router.push("/")
+      // User is automatically signed in after successful sign up
+      console.log("User created and signed in:", { uid: response.uid, email: response.email })
+      
+      // Save user data to Firestore via backend
+      await saveUserToFirestore()
     } else {
       setNotificationState("sign-up-fail")
     }
   }
 
-  //            function: handleBackToStep1           //
-  const handleBackToStep1 = () => {
-    setCurrentStep(1)
+  //            function: saveUserToFirestore           //
+  const saveUserToFirestore = async () => {
+    try {
+      const response = await verifyToken()
+      
+      if (response && response.success) {
+        console.log("User data saved to Firestore:", response)
+      } else {
+        console.error("Failed to save user to Firestore:", response)
+      }
+    } catch (error) {
+      console.error("Error saving user to Firestore:", error)
+    }
   }
 
   //            render: SignUpBox           //
@@ -149,7 +169,6 @@ export default function SignUpBox({ setAuthType }: { setAuthType: (authType: "si
           confirmPassword={confirmPassword}
           onPasswordChange={(e) => setPassword(e.target.value)}
           onConfirmPasswordChange={(e) => setConfirmPassword(e.target.value)}
-          onBackToStep1={handleBackToStep1}
           onSignUp={handleSignUp}
           onSignInClick={handleSignInClick}
         />
