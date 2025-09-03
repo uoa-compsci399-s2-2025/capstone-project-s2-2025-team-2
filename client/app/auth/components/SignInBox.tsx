@@ -34,10 +34,21 @@ export default function SignInBox({ setAuthType }: { setAuthType: (authType: "si
   }
 
   //            function: handleGoogleSuccess           //
-  const handleGoogleSuccess = (userData: any) => {
+  const handleGoogleSuccess = async (userData: any) => {
     console.log("Google OAuth success:", userData)
     setUser(userData)
     setIsAuthenticated(true)
+
+    // Store ID token in localStorage for Google OAuth
+    try {
+      const idToken = await getIdToken()
+      if (idToken) {
+        localStorage.setItem('authToken', idToken)
+        console.log("Google OAuth ID Token stored in localStorage")
+      }
+    } catch (error) {
+      console.error("Error storing Google OAuth token:", error)
+    }
 
     alert(`Welcome, ${userData.displayName || userData.email}!`)
   }
