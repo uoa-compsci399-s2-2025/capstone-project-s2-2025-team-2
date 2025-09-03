@@ -1,6 +1,6 @@
 import { User } from "../../business-layer/models/User"
 import { Controller, Get, Route, SuccessResponse } from "tsoa"
-import { UserService } from "../../data-layer/repository/UserRepository"
+import { UserService } from "../../data-layer/repositories/UserRepository"
 @Route("users")
 export class UserController extends Controller {
   @SuccessResponse("200", "Users retrieved successfully")

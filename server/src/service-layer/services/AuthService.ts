@@ -1,5 +1,5 @@
 import { auth } from "business-layer/security/Firebase"
-import { AuthRepository } from "data-layer/repository/AuthRepository"
+import { AuthRepository } from "data-layer/repositories/AuthRepository"
 import type { UserRecord } from "firebase-admin/auth"
 import { generateVerificationCode } from "utils/generateVerificationCode"
 import EmailService from "./EmailService"
