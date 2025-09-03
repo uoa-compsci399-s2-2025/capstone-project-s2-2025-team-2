@@ -11,6 +11,7 @@ interface SignUpEmailSectionProps {
   email: string
   verificationCode: string
   isEmailValid: boolean
+  isVerificationSuccess: boolean
   onEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onVerificationCodeChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onVerifyEmail: () => void
@@ -21,7 +22,7 @@ interface SignUpEmailSectionProps {
 
 //            function: SignUpEmailSection           //
 export default function SignUpEmailSection({
-  email, verificationCode, isEmailValid,
+  email, verificationCode, isEmailValid, isVerificationSuccess,
   onEmailChange, onVerificationCodeChange, onVerifyEmail,
   onNextStep, onSignInClick, onValidateCode
 }: SignUpEmailSectionProps) {
@@ -85,7 +86,11 @@ export default function SignUpEmailSection({
       <div className="mt-auto space-y-6">
       {/* Next Step Button */}
       <div className="flex justify-center w-full">
+        {(!isVerificationSuccess || !isEmailValid) ? (
+        <DisabledButton label="Next Page" size="small"/>
+        ):(
         <Button type="button" label="Next Page" size="small" onClick={onNextStep} />
+        )}
       </div>
 
       {/* Sign In Link */}
