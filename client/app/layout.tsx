@@ -1,5 +1,8 @@
+//"use client";
+
 import type { Metadata } from "next"
 import "./globals.css"
+//import { usePathname } from 'next/navigation';
 import Sidebar from "./components/composite/sidebar/SideBar"
 import TopBar from "./components/composite/topbar/TopBar"
 
@@ -11,9 +14,18 @@ export const metadata: Metadata = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+
+  //const pathname = usePathname();
+  //const isLandingPage = pathname === '/';
   return (
     <html lang="en">
-      <body className="bg-gray-100">
+        <head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+      <body>
         <TopBar />
         <Sidebar />
 
