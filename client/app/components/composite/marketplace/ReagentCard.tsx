@@ -30,7 +30,7 @@ const ReagentCard = ({
            md:w-[20rem] md:h-[22rem] 
            w-[15rem] h-[25rem]
            border-white border-solid border-[1.5px] rounded-xl
-           bg-primary
+           bg-primary/80
        "
     >
       <div className="m-4 border border-white/50 rounded-lg overflow-hidden relative h-32">
