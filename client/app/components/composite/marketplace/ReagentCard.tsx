@@ -51,7 +51,7 @@ const ReagentCard = ({
       <span className="flex mx-4 items-center gap-8">
         {" "}
         <h3 className="text-white italic">{name}</h3>
-        <p className="text-white font-light italic mt-1">[{formula}]</p>
+        <p className="text-white/60 italic mt-1">[{formula}]</p>
       </span>
       <p className="text-light-gray mx-4">{description}</p>
       <span className="flex flex-col gap-.5 mx-4 mt-1">

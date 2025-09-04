@@ -30,7 +30,8 @@ export const Unchecked: Story = {
     tags: ["liquid", "safe", "alchohol", "flammable"],
     location: "UoA, Auckland",
     expiryDate: "25/10/2026",
-    imageUrl: "https://www.tmkpackers.co.nz/wp-content/uploads/SDA3A4.png",
+    imageUrl:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4R4SrdU7Rbyr3DqFDmKBsFH9t9lqjLcJetw&s",
     quantity: "1L",
     formula: "C2H6O",
     description: "This is an example reagent",
