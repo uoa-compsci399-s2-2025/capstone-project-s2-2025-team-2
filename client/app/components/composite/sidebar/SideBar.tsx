@@ -5,23 +5,21 @@ import Button from "../../generic/button/regular/Button"
 
 const Sidebar = () => {
   const links = [
-    { href: "/userprofile", label: "User Profile", icon: UserCircleIcon, isButton: true },
+    { href: "/userprofile", label: "Profile", icon: UserCircleIcon, isButton: true },
     { href: "/marketplace", label: "Marketplace", icon: ShoppingCartIcon },
   ];
 
   return (
     <div className="fixed pt-12 w-48 h-full bg-[var(--primary)]">
-      {links.map(({ href, label, icon: Icon, isButton }) => (
+      {links.map(({ href, label, icon: Icon, isButton }, index) => (
         <div key={href} className="mb-2">
           {isButton ? (
             <Link href={href}>
-              <Button
-                size = "small"
-                label={label}
-                className="flex items-center gap-2 justify-center"
-              >
-                <Icon className="h-5 w-5" />
-              </Button>
+          <div className="w-[8.5rem] mx-auto">
+        <Button className="py-1" size="small" icon={Icon} label={label} iconPosition="left"   />
+
+          </div>
+
             </Link>
           ) : (
             <Link
@@ -32,6 +30,9 @@ const Sidebar = () => {
               {label}
             </Link>
           )}
+          {index === 0 && (
+        <div className="my-2 h-[2px] w-full bg-gradient-to-r bg-gradient-to-r from-transparent from-15% via-blue-primary via-50% to-transparent to-85%" />
+      )}
         </div>
       ))}
 

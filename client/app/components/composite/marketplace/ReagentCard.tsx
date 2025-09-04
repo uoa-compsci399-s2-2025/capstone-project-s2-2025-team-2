@@ -1,7 +1,8 @@
-import { CiLocationOn } from "react-icons/ci"
+"use client"
+import { MapPinIcon } from '@heroicons/react/24/outline'
 import Image from "next/image"
 import Button from "../../generic/button/regular/Button"
-import { BiArrowFromLeft } from "react-icons/bi"
+import { ChevronDoubleRightIcon } from "@heroicons/react/24/outline"
 
 interface ReagentCardProps {
   name: string
@@ -62,11 +63,11 @@ const ReagentCard = ({
       <div className="items-center flex justify-between md:m-4 m-6">
         {" "}
         <p className="underline-offset-2 text-light-gray underline text-xs flex gap-1">
-          <CiLocationOn className="md:w-4 md:h-4 w-6 h-6" />
+          <MapPinIcon className="md:w-4 md:h-4 w-6 h-6" />
           {location}
         </p>
-        <div className="w-[6rem] ml-auto translate-x-2">
-          <Button label="Request" size="small" />
+        <div className="w-[8rem] ml-auto translate-x-2">
+          <Button label="Request" size="small" icon={ChevronDoubleRightIcon} iconPosition="right" />
         </div>
       </div>
     </div>
