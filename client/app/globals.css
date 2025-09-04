@@ -6,6 +6,7 @@
   /* --foreground: #171717; */
   --primary: #252525;
   --secondary: #787879;
+  --gray: #8b8b8b;
   --tint: #f5f5f5;
   --tint2: #f4f4f4;
   --white: #ffffff;
@@ -83,6 +84,7 @@
   --color-secondary: var(--secondary);
   --color-tint: var(--tint);
   --color-white: var(--white);
+  --color-gray: var(--gray);
 
   /* color palette */
   --color-red-70: var(--red-70);
