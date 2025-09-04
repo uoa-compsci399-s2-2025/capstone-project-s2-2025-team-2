@@ -1,28 +1,37 @@
 "use client"
 import Link from "next/link"
 import { ShoppingCartIcon, UserCircleIcon, ArrowLeftStartOnRectangleIcon } from "@heroicons/react/24/outline"
-import BaseButton from "../../generic/button/regular/Button"
+import Button from "../../generic/button/regular/Button"
 
 const Sidebar = () => {
   const links = [
-    { href: "/userprofile", label: "User Profile", icon: UserCircleIcon },
+    { href: "/userprofile", label: "User Profile", icon: UserCircleIcon, isButton: true },
     { href: "/marketplace", label: "Marketplace", icon: ShoppingCartIcon },
-  ]
+  ];
 
   return (
     <div className="fixed pt-12 w-48 h-full bg-[var(--primary)]">
-     
-      {links.map(({ href, label, icon: Icon }) => (
+      {links.map(({ href, label, icon: Icon, isButton }) => (
         <div key={href} className="mb-2">
-          <Link
-            href={href}
-            className="flex items-center gap-2 text-[var(--white)] hover:underline"
-          >
-            <Icon className="h-5 w-5" />
-            {label}
-          </Link>
-
-
+          {isButton ? (
+            <Link href={href}>
+              <Button
+                size = "small"
+                label={label}
+                className="flex items-center gap-2 justify-center"
+              >
+                <Icon className="h-5 w-5" />
+              </Button>
+            </Link>
+          ) : (
+            <Link
+              href={href}
+              className="flex items-center gap-2 text-[var(--white)] hover:underline"
+            >
+              <Icon className="h-5 w-5" />
+              {label}
+            </Link>
+          )}
         </div>
       ))}
 
