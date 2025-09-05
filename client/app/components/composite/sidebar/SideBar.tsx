@@ -21,7 +21,7 @@ const Sidebar = () => {
   ]
 
   return (
-    <div className="fixed pt-12 w-48 h-full bg-primary">
+    <div className="pt-12 w-48 h-full bg-primary">
       {links.map(({ href, label, icon: Icon, isButton }, index) => (
         <div key={href} className="mb-2">
           {isButton ? (
@@ -51,15 +51,15 @@ const Sidebar = () => {
         </div>
       ))}
 
-      <button
-        onClick={() => alert("Signing out...")}
-        className="fixed bottom-0 text-white hover:bg-red-600"
-      >
-        <div className="flex items-center gap-2 p-2">
-          <ArrowLeftStartOnRectangleIcon className="w-5 h-5" />
+      <div className=" bottom-0 w-full flex justify-center">
+        <div className="flex items-center mt-20 p-2 text-red-700 cursor-pointer hover:text-red-700/80">
+          <ArrowLeftStartOnRectangleIcon
+            className="w-5 h-5"
+            onClick={() => alert("Signing out...")}
+          />
           Sign Out
         </div>
-      </button>
+      </div>
     </div>
   )
 }
