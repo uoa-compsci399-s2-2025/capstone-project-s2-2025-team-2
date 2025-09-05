@@ -22,20 +22,21 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@google-cloud/local-auth": "^3.0.1",
+    "@heroicons/react": "^2.2.0",
     "@storybook/nextjs": "9.0.18",
     "@tailwindcss/postcss": "^4",
+    "@types/gapi": "^0.0.47",
+    "@types/gapi.auth2": "^0.0.61",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.4.4",
     "eslint-plugin-storybook": "9.0.18",
+    "googleapis": "^157.0.0",
     "storybook": "9.0.18",
     "tailwindcss": "^4",
-    "typescript": "^5",
-    "@google-cloud/local-auth": "^3.0.1",
-    "@types/gapi": "^0.0.47",
-    "@types/gapi.auth2": "^0.0.61",
-    "googleapis": "^157.0.0"
+    "typescript": "^5"
   }
 }
