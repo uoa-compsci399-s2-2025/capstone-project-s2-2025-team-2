@@ -52,7 +52,7 @@ const Sidebar = () => {
       ))}
 
       <div className=" bottom-0 w-full flex justify-center">
-        <div className="flex items-center mt-20 p-2 text-red-700 cursor-pointer hover:text-red-700/80">
+        <div className="flex items-center mt-20 p-2 text-red-70 cursor-pointer hover:text-red-70/80">
           <ArrowLeftStartOnRectangleIcon
             className="w-5 h-5"
             onClick={() => alert("Signing out...")}
