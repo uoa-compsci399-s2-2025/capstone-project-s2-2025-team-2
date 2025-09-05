@@ -1,16 +1,16 @@
 import ReagentCard from "../components/composite/marketplace/ReagentCard"
 import { DefaultReagentCard } from "../components/composite/marketplace/ReagentCard.story"
-import SidebarLayout from '../components/sidebarLayout'
+import Overlay from "../components/composite/sidebar/Overlay"
 
 const Marketplace = () => {
   return (
-    <SidebarLayout>
+    <Overlay>
     <div className="bg-white dark:bg-black flex w-full flex-wrap pt-[2rem]">
       Marketplace
       <ReagentCard {...DefaultReagentCard.args} />
 
     </div>
-    </SidebarLayout>
+    </Overlay>
   )
 }
 
