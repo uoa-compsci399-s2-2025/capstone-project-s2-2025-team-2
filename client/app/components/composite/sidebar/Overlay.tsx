@@ -1,7 +1,7 @@
-import Sidebar from "../components/composite/sidebar/SideBar";
-import TopBar from "../components/composite/topbar/TopBar";
+import Sidebar from "@/app/components/composite/sidebar/SideBar"
+import TopBar from "@/app/components/composite/topbar/TopBar"
 
-export default function WithLayout({
+export default function Overlay({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
@@ -12,5 +12,5 @@ export default function WithLayout({
         {children}
       </main>
     </body>
-  );
+  )
 }
