@@ -94,6 +94,9 @@
 					},
 					"createdAt": {
 						"$ref": "#/components/schemas/FirebaseFirestore.Timestamp"
+					},
+					"location": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -104,7 +107,8 @@
 					"expiryDate",
 					"tradingType",
 					"categories",
-					"createdAt"
+					"createdAt",
+					"location"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -192,6 +196,9 @@
 					},
 					"createdAt": {
 						"$ref": "#/components/schemas/FirebaseFirestore.Timestamp"
+					},
+					"location": {
+						"type": "string"
 					}
 				},
 				"type": "object",

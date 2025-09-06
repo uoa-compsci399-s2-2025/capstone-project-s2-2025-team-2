@@ -16,15 +16,13 @@ const reagentService = new ReagentService();
 
 router.get("/api/getAllReagents", async (req, res) => {
   try {
-    // Get raw Firestore snapshot
-    const snapshot = await reagentService.getAllReagentsRaw(); // see note below
+    const snapshot = await reagentService.getAllReagentsRaw();
 
-    // Map each doc to include id and createdAt
     const reagents = snapshot.docs.map((doc) => {
       const data = doc.data();
       return {
-        id: doc.id,                   // unique key for React
-        createdAt: data.createdAt || null, // fallback if missing
+        id: doc.id,
+        createdAt: data.createdAt ? data.createdAt.toDate().toISOString() : null,
         ...data,
       };
     });
@@ -35,5 +33,8 @@ router.get("/api/getAllReagents", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+
+
 
 export default router;

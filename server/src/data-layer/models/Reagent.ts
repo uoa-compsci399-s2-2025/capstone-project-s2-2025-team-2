@@ -14,5 +14,6 @@ export interface Reagent {
   images?: string[]
   categories: ReagentCategory[]
   createdAt: Timestamp
+  location: string
 
 }

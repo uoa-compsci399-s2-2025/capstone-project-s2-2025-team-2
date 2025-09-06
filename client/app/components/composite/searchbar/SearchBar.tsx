@@ -1,4 +1,3 @@
-// SearchBar.tsx
 "use client"
 import { FaSearch } from "react-icons/fa"
 
@@ -7,11 +6,18 @@ interface SearchBarProps {
   setSearch: (val: string) => void
   filter: string
   setFilter: (val: string) => void
-  sort: "newest" | "oldest" | "name"
-  setSort: (val: "newest" | "oldest" | "name") => void
+  sort: "newest" | "oldest" | "name" | ""
+  setSort: (val: "newest" | "oldest" | "name" | "") => void
 }
 
-export default function SearchBar({ search, setSearch, filter, setFilter, sort, setSort }: SearchBarProps) {
+export default function SearchBar({
+  search,
+  setSearch,
+  filter,
+  setFilter,
+  sort,
+  setSort
+}: SearchBarProps) {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
     console.log("Search:", search, "Filter:", filter, "Sort:", sort)
@@ -19,6 +25,7 @@ export default function SearchBar({ search, setSearch, filter, setFilter, sort, 
 
   return (
     <form onSubmit={handleSearch} className="flex items-center bg-neutral-900 text-gray-300 rounded-md px-2 py-1 w-full max-w-4xl">
+      {/* Filter */}
       <select value={filter} onChange={(e) => setFilter(e.target.value)} className="bg-transparent text-gray-400 px-2 py-1 outline-none cursor-pointer">
         <option value="all">Filter by...</option>
         <option value="category">Category</option>
@@ -26,6 +33,7 @@ export default function SearchBar({ search, setSearch, filter, setFilter, sort, 
         <option value="tag">Tag</option>
       </select>
 
+      {/* Search input */}
       <div className="flex items-center flex-1 mx-2 bg-neutral-800 rounded-md px-2">
         <FaSearch className="text-gray-400 mr-2" />
         <input
@@ -37,8 +45,13 @@ export default function SearchBar({ search, setSearch, filter, setFilter, sort, 
         />
       </div>
 
-      <select value={sort} onChange={(e) => setSort(e.target.value as "newest" | "oldest" | "name")} className="bg-transparent text-gray-400 px-2 py-1 outline-none cursor-pointer">
-        <option value="newest">Sort by...</option>
+      {/* Sort */}
+      <select
+        value={sort}
+        onChange={(e) => setSort(e.target.value as "newest" | "oldest" | "name" | "")}
+        className="bg-transparent text-gray-400 px-2 py-1 outline-none cursor-pointer"
+      >
+        <option value="">Sort by...</option>
         <option value="newest">Newest</option>
         <option value="oldest">Oldest</option>
         <option value="name">Name</option>
