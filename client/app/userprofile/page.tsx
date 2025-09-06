@@ -5,10 +5,11 @@ import Overlay from "../components/composite/sidebar/Overlay"
 const UserProfile = () => {
   return (
     <Overlay>
-    <div className="bg-white dark:bg-black flex flex-wrap pt-[2rem]">
+    <div className="dark:bg-black flex flex-wrap pt-[2rem]">
       User Profile
-      <ReagentCard {...DefaultReagentCard.args} />
+
     </div>
+          <ReagentCard {...DefaultReagentCard.args} />
     </Overlay>
   )
 }

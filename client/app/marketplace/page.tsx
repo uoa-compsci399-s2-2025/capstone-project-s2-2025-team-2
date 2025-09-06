@@ -39,6 +39,11 @@ const Marketplace = () => {
 
   return (
     <Overlay>
+      <p className="text-4xl text-white mt-8 ml-8 tracking-[0.1em]">Marketplace</p>
+      <p className="ml-8 text-warning italic font-bold inline mr-2 tracking-[0.05em]">Buy, Sell & Exchange</p> 
+      <p className="text-gray-100 italic inline">Laboratory Reagents</p>
+      
+      <div className="mt-5">
       <SearchBar
         search={search}
         setSearch={setSearch}
@@ -47,6 +52,8 @@ const Marketplace = () => {
         sort={sort}
         setSort={setSort}
       />
+      </div>
+
       <div className="bg-white dark:bg-black flex flex-wrap pt-[2rem] gap-[2rem] mx-[2rem]">
         {sorted.map(r => (
           <ReagentCard
