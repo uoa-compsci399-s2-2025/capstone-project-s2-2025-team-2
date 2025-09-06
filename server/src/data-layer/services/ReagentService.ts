@@ -26,6 +26,11 @@ export class ReagentService {
     return reagentSnapshot.data()
   }
 
+  async getAllReagentsRaw() {
+  return FirestoreCollections.reagents.get();
+}
+
+
   /**
    * Retrieves reagents by its categories from the Firestore database.
    *

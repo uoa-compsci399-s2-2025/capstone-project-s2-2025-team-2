@@ -35,7 +35,7 @@ const ReagentCard = ({
        "
     >
       <div className="m-4 border border-white/50 rounded-lg overflow-hidden relative h-32">
-        <Image src={imageUrl} fill className="object-cover" alt="" />
+        {imageUrl ? <Image src={imageUrl} fill className="object-cover" alt="" /> : null}
         <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
           <div className="flex flex-wrap gap-1">
             {tags.map((tag, idx) => (

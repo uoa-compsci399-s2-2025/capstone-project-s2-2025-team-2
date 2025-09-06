@@ -5,10 +5,13 @@ import { RegisterRoutes } from "./middleware/__generated__/routes"
 import helmet from "helmet"
 import { json, urlencoded } from "body-parser"
 
+import getAllReagentsRoute from "./routes/getAllReagents";
+
 import * as swaggerJson from "./middleware/__generated__/swagger.json"
 import * as swaggerUI from "swagger-ui-express"
 
 const app: Express = express()
+app.use(express.json());
 
 // Use body parser to read sent json payloads
 app.use(
@@ -19,6 +22,9 @@ app.use(
 app.use(json())
 app.use(helmet())
 app.use(cors())
+
+// routes
+app.use(getAllReagentsRoute);
 
 app.use("/swagger", swaggerUI.serve as any, swaggerUI.setup(swaggerJson) as any)
 
