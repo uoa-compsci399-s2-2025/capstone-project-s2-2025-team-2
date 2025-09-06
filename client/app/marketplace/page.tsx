@@ -32,7 +32,10 @@ const Marketplace = () => {
   return (
     <Overlay>
       <SearchBar search={search} setSearch={setSearch} filter={filter} setFilter={setFilter} sort={sort} setSort={setSort} />
-      <div className="bg-white dark:bg-black flex flex-wrap pt-[2rem]">
+      <div className="
+        bg-white dark:bg-black flex flex-wrap pt-[2rem] gap-[2rem]
+        mx-[2rem]
+      ">
         {sorted.map(r => (
           <ReagentCard
             key={r.id}
