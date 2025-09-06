@@ -5,12 +5,12 @@ export default function Overlay({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <body>
+    <div className="min-h-screen">
       <TopBar />
       <Sidebar />
       <main className="ml-60 pt-14 h-[calc(100vh)] overflow-auto">
         {children}
       </main>
-    </body>
+    </div>
   )
 }
