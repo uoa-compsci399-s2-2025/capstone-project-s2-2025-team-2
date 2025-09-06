@@ -5,7 +5,7 @@ import Overlay from "../components/composite/sidebar/Overlay"
 const Marketplace = () => {
   return (
     <Overlay>
-    <div className="bg-white dark:bg-black flex w-full flex-wrap pt-[2rem]">
+    <div className="bg-white dark:bg-black flex flex-wrap pt-[2rem]">
       Marketplace
       <ReagentCard {...DefaultReagentCard.args} />
 

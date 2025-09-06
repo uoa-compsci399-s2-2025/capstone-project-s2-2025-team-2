@@ -21,14 +21,14 @@ const Sidebar = () => {
   ]
 
   return (
-    <div className="fixed pt-12 w-48 h-full bg-primary">
+    <div className="fixed pt-12 w-60 h-full bg-primary">
       <div className="flex flex-col justify-between h-full">
         <div>
           {links.map(({ href, label, icon: Icon, isButton }, index) => (
             <div className="mb-2" key={href}>
               {isButton ? (
                 <Link href={href}>
-                  <div className="w-[8.5rem] mx-auto">
+                  <div className="mt-5 w-[8.5rem] mx-auto">
                     <Button
                       className="py-1 gap-2 duration-300"
                       icon={Icon}
@@ -48,7 +48,7 @@ const Sidebar = () => {
                 </Link>
               )}
               {index === 0 && (
-                <div className="my-2 h-[2px] w-full bg-gradient-to-r from-transparent from-15% via-blue-primary via-50% to-transparent to-85%" />
+                <div className="mt-5 h-[2px] w-full bg-gradient-to-r from-transparent from-15% via-blue-primary via-50% to-transparent to-85%" />
               )}
             </div>
           ))}

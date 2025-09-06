@@ -8,7 +8,7 @@ export default function Overlay({
     <body>
       <TopBar />
       <Sidebar />
-      <main className="pl-48 pt-12 h-[calc(100vh)] overflow-auto">
+      <main className="ml-60 pt-14 h-[calc(100vh)] overflow-auto">
         {children}
       </main>
     </body>

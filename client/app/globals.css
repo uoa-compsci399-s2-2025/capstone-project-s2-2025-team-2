@@ -128,17 +128,3 @@ body {
   color: var(--foreground);
   font-family: "Poppins", sans-serif;
 }
-
-main::-webkit-scrollbar {
-  width: 8px;
-}
-
-main::-webkit-scrollbar-track {
-  background: #bababa;
-  margin-top: 48px;
-}
-
-main::-webkit-scrollbar-thumb {
-  background: #252525;
-  border-radius: 4px;
-}
