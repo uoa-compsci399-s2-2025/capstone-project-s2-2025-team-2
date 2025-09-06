@@ -1,10 +1,10 @@
-import { auth } from "business-layer/security/Firebase"
-import { AuthRepository } from "data-layer/repositories/AuthRepository"
+import { auth } from "../../business-layer/security/Firebase"
+import { AuthRepository } from "../../data-layer/repositories/AuthRepository"
 
-import { generateVerificationCode } from "utils/generateVerificationCode"
+import { generateVerificationCode } from "../../utils/generateVerificationCode"
 import EmailService from "./EmailService"
 import { SendVerificationCodeResponse } from "../dtos/response/SendVerificationCodeResponse"
-import { VerifyCodeResponse } from "service-layer/dtos/response/VerifyCodeResponse"
+import { VerifyCodeResponse } from "../dtos/response/VerifyCodeResponse"
 
 import { VerifyTokenResponse } from "../dtos/response/VerifyTokenResponse"
 
