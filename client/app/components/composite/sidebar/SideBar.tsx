@@ -10,18 +10,18 @@ import Button from "../../generic/button/regular/Button"
 const Sidebar = () => {
   const links = [
     {
-      href: '/userprofile',
-      label: 'Profile',
+      href: "/userprofile",
+      label: "Profile",
       icon: UserCircleIcon,
       isButton: true,
     },
-    { href: '/marketplace', label: 'Marketplace', icon: ShoppingCartIcon },
-    { href: '/inbox', label: 'Inbox', icon: ShoppingCartIcon },
-    { href: '/orders', label: 'Orders', icon: ShoppingCartIcon },
+    { href: "/marketplace", label: "Marketplace", icon: ShoppingCartIcon },
+    { href: "/inbox", label: "Inbox", icon: ShoppingCartIcon },
+    { href: "/orders", label: "Orders", icon: ShoppingCartIcon },
   ]
 
   return (
-    <div className="fixed pt-12 w-60 h-full bg-primary">
+    <div className="fixed pt-12 w-60 h-full bg-primary mt-4">
       <div className="flex flex-col justify-between h-full">
         <div>
           {links.map(({ href, label, icon: Icon, isButton }, index) => (
@@ -57,7 +57,7 @@ const Sidebar = () => {
           <div className="flex items-center mb-20 p-2 text-red-70 cursor-pointer hover:text-red-70/80">
             <ArrowLeftStartOnRectangleIcon
               className="w-5 h-5"
-              onClick={() => alert('Signing out...')}
+              onClick={() => alert("Signing out...")}
             />
             Sign Out
           </div>
