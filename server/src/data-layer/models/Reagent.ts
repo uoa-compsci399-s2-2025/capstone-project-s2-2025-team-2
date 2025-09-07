@@ -15,5 +15,4 @@ export interface Reagent {
   categories: ReagentCategory[]
   createdAt: Timestamp
   location: string
-
 }

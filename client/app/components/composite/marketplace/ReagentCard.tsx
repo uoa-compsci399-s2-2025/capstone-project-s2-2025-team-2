@@ -11,7 +11,7 @@ interface ReagentCardProps {
   location: string
   expiryDate: string
   imageUrl: string
-  quantity: string
+  // quantity: string
   formula?: string
 }
 
@@ -22,7 +22,7 @@ const ReagentCard = ({
   location,
   expiryDate,
   imageUrl,
-  quantity,
+  // quantity,
   formula,
 }: ReagentCardProps) => {
   return (

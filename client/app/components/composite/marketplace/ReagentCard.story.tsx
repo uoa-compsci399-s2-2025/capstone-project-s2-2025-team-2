@@ -1,7 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/nextjs"
-
-import { fn } from "storybook/test"
-
 import ReagentCard from "./ReagentCard"
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
@@ -32,7 +29,7 @@ export const DefaultReagentCard: Story = {
     expiryDate: "25/10/2026",
     imageUrl:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4R4SrdU7Rbyr3DqFDmKBsFH9t9lqjLcJetw&s",
-    quantity: "1L",
+    // quantity: "1L",
     formula: "C2H6O",
     description: "This is an example reagent",
   },

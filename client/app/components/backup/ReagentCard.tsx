@@ -1,6 +1,6 @@
 import { FaRegClock } from "react-icons/fa"
 import { CiLocationOn } from "react-icons/ci"
-import client from "@/app/services/fetch-client"
+// import client from "@/app/services/fetch-client"
 import { IoChatbubbleOutline } from "react-icons/io5"
 import { MdOutlineRemoveRedEye } from "react-icons/md"
 

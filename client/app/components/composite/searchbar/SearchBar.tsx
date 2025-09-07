@@ -16,7 +16,7 @@ export default function SearchBar({
   filter,
   setFilter,
   sort,
-  setSort
+  setSort,
 }: SearchBarProps) {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -24,9 +24,16 @@ export default function SearchBar({
   }
 
   return (
-    <form onSubmit={handleSearch} className="flex items-center mx-auto px-10 py-1 w-full shadow-md">
+    <form
+      onSubmit={handleSearch}
+      className="flex items-center mx-auto px-10 py-1 w-full shadow-md"
+    >
       {/* Filter */}
-      <select value={filter} onChange={(e) => setFilter(e.target.value)} className="bg-primary text-secondary px-2 py-1 outline-none cursor-pointer w-1/5">
+      <select
+        value={filter}
+        onChange={(e) => setFilter(e.target.value)}
+        className="bg-primary text-secondary px-2 py-1 outline-none cursor-pointer w-1/5"
+      >
         <option value="all">Filter by...</option>
         <option value="category">Category</option>
         <option value="date">Date</option>
@@ -48,7 +55,9 @@ export default function SearchBar({
       {/* Sort */}
       <select
         value={sort}
-        onChange={(e) => setSort(e.target.value as "newest" | "oldest" | "name" | "")}
+        onChange={(e) =>
+          setSort(e.target.value as "newest" | "oldest" | "name" | "")
+        }
         className="bg-primary text-secondary px-2 py-1 outline-none cursor-pointer w-1/5"
       >
         <option value="">Sort by...</option>
