@@ -30,11 +30,11 @@ const ReagentCard = ({
       className="
            md:w-[20rem] md:h-[22rem] 
            w-[15rem] h-[25rem]
-           border-white border-solid border-[1.5px] rounded-xl
+           border-white/30 border-solid border-[1.5px] rounded-xl
            bg-primary/80
        "
     >
-      <div className="m-4 border border-white/50 rounded-lg overflow-hidden relative h-32">
+      <div className="m-4 border border-white/30 rounded-lg overflow-hidden relative h-32 drop-shadow-xl">
         {imageUrl ? (
           <Image src={imageUrl} fill className="object-cover" alt="" />
         ) : null}
