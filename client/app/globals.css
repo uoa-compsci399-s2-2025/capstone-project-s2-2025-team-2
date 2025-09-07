@@ -4,7 +4,7 @@
 :root {
   --background: #171717;
   /* --foreground: #171717; */
-  --background-fade: #4c4c4c;
+  --background-fade: #2f2f2f;
   --primary: #252525;
   --secondary: #787879;
   --tertiary: #333333;
@@ -128,8 +128,9 @@
 body {
   background: linear-gradient(
     to bottom,
-    var(--background),
-    var(--background-fade)
+  var(--background) 0%,
+  var(--background) 30%,
+  var(--background-fade) 100%
   );
   font-family: "Poppins", sans-serif;
 }

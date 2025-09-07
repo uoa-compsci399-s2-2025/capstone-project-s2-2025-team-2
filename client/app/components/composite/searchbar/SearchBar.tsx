@@ -26,14 +26,14 @@ export default function SearchBar({
   return (
     <form
       onSubmit={handleSearch}
-      className="flex items-center mx-auto px-10 py-5 w-full"
+      className="flex items-center mx-auto py-1 w-[calc(100vw-19rem)]"
     >
       {/* Filter */}
       <div className="relative w-1/5 min-w-27"> 
       <select
         value={filter}
         onChange={(e) => setFilter(e.target.value)}
-        className="appearance-none bg-primary rounded-tl-lg rounded-bl-lg text-secondary px-2 py-1 outline-none cursor-pointer w-full shadow-lg"
+        className="appearance-none bg-primary rounded-tl-md rounded-bl-md text-secondary px-2 py-1 outline-none cursor-pointer w-full shadow-lg"
       >
         <option value="all">Filter by...</option>
         <option value="category">Category</option>
@@ -47,7 +47,7 @@ export default function SearchBar({
 
 
       {/* Search input */}
-      <div className="bg-primary flex items-center flex-1 mx-2 px-2 py-1 shadow-md">
+      <div className="bg-primary flex items-center flex-1 mx-2 px-2 py-1 shadow-lg">
         <MagnifyingGlassIcon className="h-5 w-5 text-secondary mr-2" />
         <input
           type="text"
@@ -59,13 +59,13 @@ export default function SearchBar({
       </div>
 
       {/* Sort */}
-      <div className="relative w-1/5 min-w-25">
+      <div className="relative w-1/5 min-w-27">
       <select
         value={sort}
         onChange={(e) =>
           setSort(e.target.value as "newest" | "oldest" | "name" | "")
         }
-        className="appearance-none bg-primary rounded-tr-lg rounded-br-lg text-secondary px-2 py-1 outline-none cursor-pointer w-full shadow-lg"
+        className="appearance-none bg-primary rounded-tr-md rounded-br-md text-secondary px-2 py-1 outline-none cursor-pointer w-full shadow-lg"
       >
         <option value="">Sort by...</option>
         <option value="newest">Newest</option>
