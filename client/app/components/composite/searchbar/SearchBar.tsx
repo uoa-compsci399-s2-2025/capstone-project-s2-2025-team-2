@@ -1,5 +1,5 @@
 "use client"
-import { MagnifyingGlassIcon } from "@heroicons/react/24/solid"
+import { MagnifyingGlassIcon, ChevronDownIcon } from "@heroicons/react/24/solid"
 
 interface SearchBarProps {
   search: string
@@ -29,16 +29,22 @@ export default function SearchBar({
       className="flex items-center mx-auto px-10 py-1 w-full shadow-md"
     >
       {/* Filter */}
+      <div className="relative w-1/5"> 
       <select
         value={filter}
         onChange={(e) => setFilter(e.target.value)}
-        className="bg-primary text-secondary px-2 py-1 outline-none cursor-pointer w-1/5"
+        className="appearance-none bg-primary text-secondary px-2 py-1 outline-none cursor-pointer w-full"
       >
         <option value="all">Filter by...</option>
         <option value="category">Category</option>
         <option value="date">Date</option>
         <option value="tag">Tag</option>
       </select>
+      <ChevronDownIcon
+    className="absolute right-2 top-1/2 -translate-y-1/2 h-5 w-5 text-secondary pointer-events-none"
+  />        
+      </div>
+
 
       {/* Search input */}
       <div className="bg-primary flex items-center flex-1 mx-2 px-2 py-1">
@@ -53,18 +59,24 @@ export default function SearchBar({
       </div>
 
       {/* Sort */}
+      <div className="relative w-1/5">
       <select
         value={sort}
         onChange={(e) =>
           setSort(e.target.value as "newest" | "oldest" | "name" | "")
         }
-        className="bg-primary text-secondary px-2 py-1 outline-none cursor-pointer w-1/5"
+        className="appearance-none bg-primary text-secondary px-2 py-1 outline-none cursor-pointer w-full"
       >
         <option value="">Sort by...</option>
         <option value="newest">Newest</option>
         <option value="oldest">Oldest</option>
         <option value="name">Name</option>
       </select>
+            <ChevronDownIcon
+    className="absolute right-2 top-1/2 -translate-y-1/2 h-5 w-5 text-secondary pointer-events-none"
+  />         
+      </div>
+ 
     </form>
   )
 }
