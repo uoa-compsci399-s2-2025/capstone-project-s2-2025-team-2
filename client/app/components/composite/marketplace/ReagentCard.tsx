@@ -1,5 +1,5 @@
 "use client"
-import { MapPinIcon } from '@heroicons/react/24/outline'
+import { MapPinIcon } from "@heroicons/react/24/outline"
 import Image from "next/image"
 import Button from "../../generic/button/regular/Button"
 import { ChevronDoubleRightIcon } from "@heroicons/react/24/outline"
@@ -35,7 +35,9 @@ const ReagentCard = ({
        "
     >
       <div className="m-4 border border-white/50 rounded-lg overflow-hidden relative h-32">
-        {imageUrl ? <Image src={imageUrl} fill className="object-cover" alt="" /> : null}
+        {imageUrl ? (
+          <Image src={imageUrl} fill className="object-cover" alt="" />
+        ) : null}
         <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
           <div className="flex flex-wrap gap-1">
             {tags.map((tag, idx) => (
@@ -62,12 +64,17 @@ const ReagentCard = ({
       <div className="bg-light-gray h-[1px] mx-6 my-2"></div>{" "}
       <div className="items-center flex justify-between md:m-4 m-6">
         {" "}
-        <p className="underline-offset-2 text-light-gray underline text-xs flex gap-1">
-          <MapPinIcon className="md:w-4 md:h-4 w-6 h-6" />
+        <p className="underline-offset-2 text-light-gray underline flex text-xs gap-1">
+          <MapPinIcon className="md:w-4 md:h-4 w-3 h-3" />
           {location}
         </p>
-        <div className="w-[8rem] ml-auto translate-x-2">
-          <Button label="Request" size="small" icon={ChevronDoubleRightIcon} iconPosition="right" />
+        <div className="md:w-[8rem] ml-auto md:translate-x-2">
+          <Button
+            label="Request"
+            size="small"
+            icon={ChevronDoubleRightIcon}
+            iconPosition="right"
+          />
         </div>
       </div>
     </div>
