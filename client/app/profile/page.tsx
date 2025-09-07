@@ -1,15 +1,16 @@
 import ReagentCard from "../components/composite/marketplace/ReagentCard"
 import { DefaultReagentCard } from "../components/composite/marketplace/ReagentCard.story"
-import Overlay from "../components/composite/sidebar/Overlay"
+import Overlay from "../components/composite/Overlay"
+
+// interface needed for auth + content to render
 
 const UserProfile = () => {
   return (
     <Overlay>
-    <div className="dark:bg-black flex flex-wrap pt-[2rem]">
-      User Profile
-
-    </div>
-          <ReagentCard {...DefaultReagentCard.args} />
+      <div>
+        <h2 className="text-white/80 m-4">User Profile</h2>
+      </div>
+      <ReagentCard {...DefaultReagentCard.args} />
     </Overlay>
   )
 }
