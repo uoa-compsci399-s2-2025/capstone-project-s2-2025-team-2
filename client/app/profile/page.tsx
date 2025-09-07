@@ -10,7 +10,17 @@ const UserProfile = () => {
       <div>
         <h2 className="text-white/80 m-4">User Profile</h2>
       </div>
-      <ReagentCard {...DefaultReagentCard.args} />
+      <div className="m-4 flex flex-col gap-4">
+        <ReagentCard {...DefaultReagentCard.args} />
+        <ReagentCard {...DefaultReagentCard.args} />
+        <ReagentCard {...DefaultReagentCard.args} />
+        <ReagentCard {...DefaultReagentCard.args} />
+        <ReagentCard {...DefaultReagentCard.args} />
+        <ReagentCard {...DefaultReagentCard.args} />
+        <ReagentCard {...DefaultReagentCard.args} />
+        <ReagentCard {...DefaultReagentCard.args} />
+        <ReagentCard {...DefaultReagentCard.args} />
+      </div>
     </Overlay>
   )
 }
