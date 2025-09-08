@@ -128,9 +128,9 @@
 body {
   background: linear-gradient(
     to bottom,
-  var(--background) 0%,
-  var(--background) 30%,
-  var(--background-fade) 100%
+    var(--background) 0%,
+    var(--background) 30%,
+    var(--background-fade) 100%
   );
   font-family: "Poppins", sans-serif;
 }
