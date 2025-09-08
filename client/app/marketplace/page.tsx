@@ -69,7 +69,6 @@ const Marketplace = () => {
             location={r.location ?? "Unknown"}
             expiryDate={r.expiryDate ?? "N/A"}
             imageUrl={r.images?.[0] ?? "/placeholder.png"}
-            quantity={r.price?.toString() ?? "N/A"}
             formula={r.tradingType ?? ""}
           />
         ))}
