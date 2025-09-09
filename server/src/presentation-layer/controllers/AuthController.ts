@@ -2,7 +2,7 @@ import { Body, Controller, Post, Route, Tags } from "tsoa"
 import { SendVerificationCodeRequest } from "../../service-layer/dtos/request/SendVerificationCodeRequest"
 import { SendVerificationCodeResponse } from "../../service-layer/dtos/response/SendVerificationCodeResponse"
 
-import AuthService from "service-layer/services/AuthService"
+import AuthService from "../../service-layer/services/AuthService"
 import { VerifyCodeRequest } from "../../service-layer/dtos/request/VerifyCodeRequest"
 import { VerifyCodeResponse } from "../../service-layer/dtos/response/VerifyCodeResponse"
 

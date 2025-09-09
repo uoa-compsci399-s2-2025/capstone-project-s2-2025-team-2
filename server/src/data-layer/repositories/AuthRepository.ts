@@ -1,4 +1,4 @@
-import { db } from "business-layer/security/Firebase"
+import { db } from "../../business-layer/security/Firebase"
 
 export class AuthRepository {
   async saveVerificationCode(
