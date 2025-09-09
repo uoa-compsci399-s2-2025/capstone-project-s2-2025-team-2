@@ -65,34 +65,35 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
         />
       </div>
 
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-white">Listing Type</label>
-        <select
-          value={tradingType}
-          onChange={(e) => setTradingType(e.target.value as ReagentTradingType)}
-          className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
-        >
-          {TRADING_TYPES.map((type) => (
-            <option key={type} value={type} className="bg-primary">
-              {type}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-white">Visibility</label>
-        <select
-          value={visibility}
-          onChange={(e) => setVisibility(e.target.value as ReagentVisibility)}
-          className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
-        >
-          {VISIBILITY_OPTIONS.map((v) => (
-            <option key={v} value={v} className="bg-primary">
-              {v}
-            </option>
-          ))}
-        </select>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-white">Listing Type</label>
+          <select
+            value={tradingType}
+            onChange={(e) => setTradingType(e.target.value as ReagentTradingType)}
+            className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
+          >
+            {TRADING_TYPES.map((type) => (
+              <option key={type} value={type} className="bg-primary">
+                {type}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-white">Visibility</label>
+          <select
+            value={visibility}
+            onChange={(e) => setVisibility(e.target.value as ReagentVisibility)}
+            className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
+          >
+            {VISIBILITY_OPTIONS.map((v) => (
+              <option key={v} value={v} className="bg-primary">
+                {v}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       <div className="space-y-2">
