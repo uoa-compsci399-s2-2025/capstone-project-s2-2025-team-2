@@ -50,7 +50,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       <div className="space-y-2">
         <label className="block text-sm font-medium text-white">Reagent Name</label>
         <input
-          className="w-full px-3 py-2 rounded-lg bg-primary/50 text-white"
+          className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -63,10 +63,10 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
         <select
           value={tradingType}
           onChange={(e) => setTradingType(e.target.value as ReagentTradingType)}
-          className="w-full px-3 py-2 rounded-lg bg-primary/50 text-white"
+          className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
         >
           {TRADING_TYPES.map((type) => (
-            <option key={type} value={type}>
+            <option key={type} value={type} className="bg-primary">
               {type}
             </option>
           ))}
@@ -80,7 +80,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
           value={condition}
           onChange={(e) => setCondition(e.target.value)}
           placeholder="new, used, expired"
-          className="w-full px-3 py-2 rounded-lg bg-primary/50 text-white"
+          className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
         />
       </div>
 
@@ -91,8 +91,8 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
             type="number"
             value={quantity}
             onChange={(e) => setQuantity(e.target.value)}
-            placeholder="100"
-            className="w-full px-3 py-2 rounded-lg bg-primary/50 text-white"
+            placeholder="10"
+            className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
           />
         </div>
         <div className="space-y-2">
@@ -102,13 +102,13 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
             value={unit}
             onChange={(e) => setUnit(e.target.value)}
             placeholder="mL, g, bottles"
-            className="w-full px-3 py-2 rounded-lg bg-primary/50 text-white"
+            className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
           />
         </div>
       </div>
 
       <div className="flex justify-between">
-        <button type="button" onClick={onCancel} className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700">Cancel</button>
+        <button type="button" onClick={onCancel} className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-red-400">Cancel</button>
         <button type="submit" className="px-4 py-2 bg-blue-primary text-white rounded-lg hover:bg-blue-primary/75">Create</button>
       </div>
     </form>
