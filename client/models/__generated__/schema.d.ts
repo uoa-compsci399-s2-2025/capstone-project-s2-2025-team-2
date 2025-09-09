@@ -167,6 +167,7 @@ export interface components {
             unit: string;
             expiryDate: string;
             tradingType: components["schemas"]["ReagentTradingType"];
+            location: string;
             images?: string[];
         };
         /** @description Make all properties in T optional */

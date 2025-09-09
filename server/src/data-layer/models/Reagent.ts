@@ -11,13 +11,13 @@ export interface Reagent {
   name: string
   description: string
   price?: number
+  quantity: number
+  unit: string
   expiryDate: string
   tradingType: ReagentTradingType
   images?: string[]
   categories: ReagentCategory[]
+  visibility: ReagentVisibility
   createdAt: Timestamp
   location: string
-  visibility: ReagentVisibility
-  quantity: number
-  unit: string
 }

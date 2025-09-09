@@ -35,6 +35,14 @@
 					"biological"
 				]
 			},
+			"ReagentVisibility": {
+				"type": "string",
+				"enum": [
+					"everyone",
+					"region",
+					"institution"
+				]
+			},
 			"Reagent": {
 				"properties": {
 					"userId": {
@@ -49,6 +57,13 @@
 					"price": {
 						"type": "number",
 						"format": "double"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"unit": {
+						"type": "string"
 					},
 					"expiryDate": {
 						"type": "string"
@@ -67,15 +82,25 @@
 							"$ref": "#/components/schemas/ReagentCategory"
 						},
 						"type": "array"
+					},
+					"visibility": {
+						"$ref": "#/components/schemas/ReagentVisibility"
+					},
+					"location": {
+						"type": "string"
 					}
 				},
 				"required": [
 					"userId",
 					"name",
 					"description",
+					"quantity",
+					"unit",
 					"expiryDate",
 					"tradingType",
-					"categories"
+					"categories",
+					"visibility",
+					"location"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -97,15 +122,28 @@
 						},
 						"type": "array"
 					},
+					"visibility": {
+						"$ref": "#/components/schemas/ReagentVisibility"
+					},
 					"price": {
 						"type": "number",
 						"format": "double"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"unit": {
+						"type": "string"
 					},
 					"expiryDate": {
 						"type": "string"
 					},
 					"tradingType": {
 						"$ref": "#/components/schemas/ReagentTradingType"
+					},
+					"location": {
+						"type": "string"
 					},
 					"images": {
 						"items": {
@@ -119,8 +157,12 @@
 					"name",
 					"description",
 					"categories",
+					"visibility",
+					"quantity",
+					"unit",
 					"expiryDate",
-					"tradingType"
+					"tradingType",
+					"location"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -140,6 +182,13 @@
 						"type": "number",
 						"format": "double"
 					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"unit": {
+						"type": "string"
+					},
 					"expiryDate": {
 						"type": "string"
 					},
@@ -157,6 +206,12 @@
 							"$ref": "#/components/schemas/ReagentCategory"
 						},
 						"type": "array"
+					},
+					"visibility": {
+						"$ref": "#/components/schemas/ReagentVisibility"
+					},
+					"location": {
+						"type": "string"
 					}
 				},
 				"type": "object",

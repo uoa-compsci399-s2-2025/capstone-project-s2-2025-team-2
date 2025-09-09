@@ -46,6 +46,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       categories: tags,
       expiryDate,
       images: undefined,
+      location,
       price: tradingType === "sell" && price ? Number(price) : undefined,
       quantity: Number(quantity),
       unit,
