@@ -81,7 +81,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
               ))}
             </select>
           </div>
-          
+
         <div className="space-y-2">
           <label className="block text-sm font-medium text-white">Visibility</label>
             <select
@@ -99,32 +99,25 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       </div>
 
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-white">Reagent Tags</label>
-        <div className="flex flex-wrap gap-2">
-          {TAGS.map((tag) => {
-            const checked = tags.includes(tag)
-            return (
-              <label
-                key={tag}
-                className="flex items-center gap-2 px-3 py-2 border border-muted rounded-lg"
-              >
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 border-muted"
-                  checked={checked}
-                  onChange={() =>
-                    setTags((currentTags) =>
-                      currentTags.includes(tag)
-                        ? currentTags.filter((t) => t !== tag)
-                        : [...currentTags, tag]
-                    )
-                  }
-                />
-                <span className="text-white text-sm">{tag}</span>
-              </label>
-            )
-          })}
-        </div>
+        <label className="block text-sm font-medium text-white">Condition</label>
+        <input
+          type="text"
+          value={condition}
+          onChange={(e) => setCondition(e.target.value)}
+          placeholder="Condition"
+          className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
+        />
+      </div>
+
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-white">Description</label>
+        <input
+          type="text"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Description"
+          className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
+        />
       </div>
 
       {tradingType === "sell" && (
@@ -164,14 +157,32 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       </div>
 
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-white">Description</label>
-        <input
-          type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Description"
-          className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
-        />
+        <label className="block text-sm font-medium text-white">Reagent Tags</label>
+        <div className="flex flex-wrap gap-2">
+          {TAGS.map((tag) => {
+            const checked = tags.includes(tag)
+            return (
+              <label
+                key={tag}
+                className="flex items-center gap-2 px-3 py-2 border border-muted rounded-lg"
+              >
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 border-muted"
+                  checked={checked}
+                  onChange={() =>
+                    setTags((currentTags) =>
+                      currentTags.includes(tag)
+                        ? currentTags.filter((t) => t !== tag)
+                        : [...currentTags, tag]
+                    )
+                  }
+                />
+                <span className="text-white text-sm">{tag}</span>
+              </label>
+            )
+          })}
+        </div>
       </div>
 
       <div className="flex justify-between">
