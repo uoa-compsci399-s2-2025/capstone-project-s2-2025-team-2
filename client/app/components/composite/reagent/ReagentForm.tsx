@@ -27,11 +27,13 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
   const [quantity, setQuantity] = useState("")
   const [unit, setUnit] = useState("")
   const [price, setPrice] = useState("")
+  const [expiryDate, setExpiryDate] = useState("")
+  const [location, setLocation] = useState("")
 
   const sendForm = (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!name || !condition || !quantity || !unit) {
+    if (!name || !condition || !quantity || !unit || !expiryDate || !location) {
       alert("Please fill in every required field!")
       return
     }
@@ -42,7 +44,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       description,
       tradingType,
       categories: tags,
-      expiryDate: "2029-09-09",
+      expiryDate,
       images: undefined,
       price: tradingType === "sell" && price ? Number(price) : undefined,
       quantity: Number(quantity),
@@ -84,17 +86,17 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
 
         <div className="space-y-2">
           <label className="block text-sm font-medium text-white">Visibility</label>
-            <select
-              value={visibility}
-              onChange={(e) => setVisibility(e.target.value as ReagentVisibility)}
-              className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
-            >
-              {VISIBILITY_OPTIONS.map((v) => (
-                <option key={v} value={v} className="bg-primary">
-                  {v}
-                </option>
-              ))}
-            </select>
+          <select
+            value={visibility}
+            onChange={(e) => setVisibility(e.target.value as ReagentVisibility)}
+            className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
+          >
+            {VISIBILITY_OPTIONS.map((v) => (
+              <option key={v} value={v} className="bg-primary">
+                {v}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 
@@ -107,6 +109,28 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
           placeholder="Condition"
           className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
         />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-white">Expiry Date</label>
+          <input
+            type="date"
+            value={expiryDate}
+            onChange={(e) => setExpiryDate(e.target.value)}
+            className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
+          />
+        </div>
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-white">Location</label>
+          <input
+            type="text"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            placeholder="Current Reagent Location"
+            className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
+          />
+        </div>
       </div>
 
       <div className="space-y-2">
