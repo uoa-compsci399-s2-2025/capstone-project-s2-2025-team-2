@@ -270,7 +270,7 @@ export function RegisterRoutes(app: Router) {
         const argsUserController_getReagentById: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
         };
-        app.get('/users/reagent/:id',
+        app.get('/users/reagents/:id',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(UserController)),
             ...(fetchMiddlewares<RequestHandler>(UserController.prototype.getReagentById)),
@@ -301,7 +301,7 @@ export function RegisterRoutes(app: Router) {
         const argsUserController_deleteReagentById: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
         };
-        app.delete('/users/reagent/delete/:id',
+        app.delete('/users/reagents/:id',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(UserController)),
             ...(fetchMiddlewares<RequestHandler>(UserController.prototype.deleteReagentById)),
@@ -330,11 +330,10 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsUserController_createReagent: Record<string, TsoaRoute.ParameterSchema> = {
-                id: {"in":"path","name":"id","required":true,"dataType":"string"},
                 request: {"in":"request","name":"request","required":true,"dataType":"object"},
                 requestObject: {"in":"body","name":"requestObject","required":true,"ref":"CreateReagentRequest"},
         };
-        app.post('/users/reagent/:id',
+        app.post('/users/reagents',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(UserController)),
             ...(fetchMiddlewares<RequestHandler>(UserController.prototype.createReagent)),
@@ -366,7 +365,7 @@ export function RegisterRoutes(app: Router) {
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
                 update: {"in":"body","name":"update","required":true,"ref":"Partial_Reagent_"},
         };
-        app.patch('/users/reagent/update/:id',
+        app.patch('/users/reagents/:id',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(UserController)),
             ...(fetchMiddlewares<RequestHandler>(UserController.prototype.updateReagent)),
