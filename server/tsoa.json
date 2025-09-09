@@ -4,7 +4,16 @@
   "controllerPathGlobs": ["src/presentation-layer/controllers/**"],
   "spec": {
     "outputDirectory": "src/middleware/__generated__",
-    "specVersion": 3
+    "specVersion": 3,
+    "securityDefinitions": {
+      "jwt": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "enter 'Bearer {Firebase ID token}'"
+      }
+    },
+    "security": [{ "jwt": [] }]
   },
   "compilerOptions": {
     "baseUrl": "src"

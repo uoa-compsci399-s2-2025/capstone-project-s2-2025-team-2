@@ -313,7 +313,14 @@
 				"additionalProperties": false
 			}
 		},
-		"securitySchemes": {}
+		"securitySchemes": {
+			"jwt": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT",
+				"description": "enter 'Bearer {Firebase ID token}'"
+			}
+		}
 	},
 	"info": {
 		"title": "server",
@@ -339,6 +346,9 @@
 						}
 					}
 				},
+				"tags": [
+					"Authentication"
+				],
 				"security": [],
 				"parameters": []
 			}
@@ -367,6 +377,9 @@
 					}
 				},
 				"description": "Get email of the current logged in user",
+				"tags": [
+					"Authentication"
+				],
 				"security": [
 					{
 						"jwt": []
@@ -403,6 +416,9 @@
 					}
 				},
 				"description": "Get all reagents with an option to filter them by category.\r\nUser must be authenticated to access this endpoint",
+				"tags": [
+					"Authentication"
+				],
 				"security": [
 					{
 						"jwt": []
@@ -445,6 +461,9 @@
 					}
 				},
 				"description": "Get a reagent by using its ID\r\nUser must be authenticated to access this endpoint",
+				"tags": [
+					"Authentication"
+				],
 				"security": [
 					{
 						"jwt": []
@@ -477,6 +496,9 @@
 					}
 				},
 				"description": "Create a reagent by its ID.\r\nUser **must** be authenticated to access this endpoint",
+				"tags": [
+					"Authentication"
+				],
 				"security": [
 					{
 						"jwt": []
@@ -528,6 +550,9 @@
 					}
 				},
 				"description": "Delete a reagent by using its ID\r\nUser **must** be authenticated to access this endpoint",
+				"tags": [
+					"Authentication"
+				],
 				"security": [
 					{
 						"jwt": []
@@ -562,6 +587,9 @@
 					}
 				},
 				"description": "Update a reagent by its ID.\r\nUser **must** be authenticated to access this endpoint",
+				"tags": [
+					"Authentication"
+				],
 				"security": [
 					{
 						"jwt": []

@@ -12,6 +12,7 @@ import {
   Query,
   Body,
   Patch,
+  Tags,
 } from "tsoa"
 import { UserService } from "../../data-layer/repositories/UserRepository"
 import { Reagent } from "../../business-layer/models/Reagent"
@@ -19,6 +20,8 @@ import { ReagentService } from "../../data-layer/repositories/ReagentRepository"
 import { ReagentCategory } from "business-layer/models/Reagent"
 import { CreateReagentRequest } from "../../service-layer/dtos/request/ReagentRequest"
 import { AuthRequest } from "../../service-layer/dtos/request/AuthRequest"
+
+@Tags("Authentication")
 @Route("users")
 export class UserController extends Controller {
   @SuccessResponse("200", "Users retrieved successfully")
@@ -55,8 +58,8 @@ export class UserController extends Controller {
    * @returns Promise<Reagent[]> - The list of all reagents filtered.
    */
   @SuccessResponse("200", "All reagents returned successfully")
-  @Get("/reagents")
   @Security("jwt")
+  @Get("/reagents")
   public async getReagents(
     @Query() category?: ReagentCategory[],
   ): Promise<Reagent[]> {
@@ -101,8 +104,8 @@ export class UserController extends Controller {
    * @returns Promise<Reagent> - object of type Reagent (deleted ref)
    */
   @SuccessResponse("200", "reagent deleted successfully")
-  @Delete("/reagent/delete/{id}")
   @Security("jwt")
+  @Delete("/reagent/delete/{id}")
   public async deleteReagentById(@Path() id: string): Promise<Reagent | null> {
     try {
       const reagent = await new ReagentService().deleteReagent(id)
@@ -122,8 +125,8 @@ export class UserController extends Controller {
    * @returns Promise<Reagent> - object of type Reagent (created ref)
    */
   @SuccessResponse("201", "Reagent created successfully")
-  @Post("/reagent/{id}")
   @Security("jwt")
+  @Post("/reagent/{id}")
   public async createReagent(
     @Path() id: string,
     @Request() request: Request,
@@ -149,8 +152,8 @@ export class UserController extends Controller {
    * @throws 400 - If the operation fails
    */
   @SuccessResponse("200", "Reagent updated successfully")
-  @Patch("/reagent/update/{id}")
   @Security("jwt")
+  @Patch("/reagent/update/{id}")
   public async updateReagent(
     @Path() id: string,
     @Body() update: Partial<Reagent>,
