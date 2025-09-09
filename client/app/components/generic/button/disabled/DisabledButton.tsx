@@ -1,12 +1,14 @@
 import { ButtonHTMLAttributes } from "react"
+import { getTextSizeClass } from "../textSize"
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: "small" | "medium" | "large" | "outline"
   label: string
+  textSize?: "small" | "medium" | "large"
 }
 
 // base button component w/ common styling/functionality across all variants
-const BaseButton = ({ label, className, ...props }: ButtonProps) => {
+const BaseButton = ({ label, className, textSize, ...props }: ButtonProps) => {
   return (
     <button
       type="button"
@@ -16,28 +18,42 @@ const BaseButton = ({ label, className, ...props }: ButtonProps) => {
       ].join(" ")}
       {...props}
     >
-      <h5 className="text-secondary">{label}</h5>
+      <h5 className={["text-secondary", getTextSizeClass(textSize)].join(" ")}>
+        {label}
+      </h5>
     </button>
   )
 }
 
 // btn variants
 const SmallButton = (props: ButtonProps) => (
-  <BaseButton {...props} className="py-1.5 px-3" />
+  <BaseButton
+    {...props}
+    className={["py-1.5 px-3", { ...props }.className].join(" ")}
+  />
 )
 
 const MediumButton = (props: ButtonProps) => (
-  <BaseButton {...props} className="py-3 px-5" />
+  <BaseButton
+    {...props}
+    className={["py-3 px-5", { ...props }.className].join(" ")}
+  />
 )
 
 const LargeButton = (props: ButtonProps) => (
-  <BaseButton {...props} className="py-4.5 px-7" />
+  <BaseButton
+    {...props}
+    className={["py-4.5 px-7", { ...props }.className].join(" ")}
+  />
 )
 
 const OutlinedButton = (props: ButtonProps) => (
   <BaseButton
     {...props}
-    className="py-4.5 px-7 bg-transparent border-2 border-muted"
+    className={[
+      "py-4.5 px-7 bg-transparent border-2 border-muted",
+      { ...props }.className,
+    ].join(" ")}
   />
 )
 

@@ -1,9 +1,4 @@
-export interface GoogleOAuthUser {
-  uid: string
-  email: string
-  displayName?: string
-  photoURL?: string
-}
+import GoogleOAuthUser from "../../../business-layer/models/GoogleOAuthUser"
 
 export interface GoogleOAuthResponse {
   success: boolean

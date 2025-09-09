@@ -1,20 +1,20 @@
 interface AuthLinkProps {
-  href: string
   children: React.ReactNode
   className?: string
+  onClick?: () => void
 }
 
 export default function AuthLink({
-  href,
   children,
   className = "",
+  onClick,
 }: AuthLinkProps) {
   return (
-    <a
-      href={href}
+    <button
       className={`font-medium text-blue-primary hover:text-blue-secondary ${className}`}
+      onClick={onClick}
     >
       {children}
-    </a>
+    </button>
   )
 }

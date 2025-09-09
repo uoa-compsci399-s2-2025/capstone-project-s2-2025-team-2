@@ -1,7 +1,7 @@
 import { Body, Controller, Post, Route, Tags } from "tsoa"
-import GoogleOAuthService from "../../business-layer/services/GoogleOAuthService"
-import { GoogleOAuthRequest } from "./request-models/OAuthVerifyRequest"
-import { GoogleOAuthResponse } from "./response-models/OAuthVerifyResponse"
+import GoogleOAuthService from "../../service-layer/services/GoogleOAuthService"
+import { GoogleOAuthRequest } from "../../service-layer/dtos/request/OAuthVerifyRequest"
+import { GoogleOAuthResponse } from "../../service-layer/dtos/response/OAuthVerifyResponse"
 
 @Route("auth/google")
 @Tags("Google OAuth")

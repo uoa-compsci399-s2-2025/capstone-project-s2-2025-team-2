@@ -218,34 +218,96 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"LoginResponse": {
+			"SendVerificationCodeResponse": {
 				"properties": {
-					"message": {
-						"type": "string"
-					},
 					"success": {
 						"type": "boolean"
+					},
+					"message": {
+						"type": "string"
 					}
 				},
 				"required": [
-					"message",
-					"success"
+					"success",
+					"message"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
-			"LoginRequest": {
+			"SendVerificationCodeRequest": {
+				"properties": {
+					"email": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"VerifyCodeResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"success",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"VerifyCodeRequest": {
 				"properties": {
 					"email": {
 						"type": "string"
 					},
-					"password": {
+					"inputCode": {
 						"type": "string"
 					}
 				},
 				"required": [
 					"email",
-					"password"
+					"inputCode"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"VerifyTokenResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"message": {
+						"type": "string"
+					},
+					"uid": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"success",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"VerifyTokenRequest": {
+				"properties": {
+					"idToken": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"idToken"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -478,16 +540,16 @@
 				}
 			}
 		},
-		"/auth/login": {
+		"/auth/send-verification-code": {
 			"post": {
-				"operationId": "Login",
+				"operationId": "SendVerificationCode",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/LoginResponse"
+									"$ref": "#/components/schemas/SendVerificationCodeResponse"
 								}
 							}
 						}
@@ -503,7 +565,71 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/LoginRequest"
+								"$ref": "#/components/schemas/SendVerificationCodeRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/verify-code": {
+			"post": {
+				"operationId": "VerifyCode",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VerifyCodeResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/VerifyCodeRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/verify-token": {
+			"post": {
+				"operationId": "VerifyToken",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VerifyTokenResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/VerifyTokenRequest"
 							}
 						}
 					}

@@ -1,5 +1,5 @@
-import type { User } from "data-layer/models/User"
-import type { Reagent } from "data-layer/models/Reagent"
+import type { User } from "business-layer/models/User"
+import type { Reagent } from "business-layer/models/Reagent"
 
 import { REAGENTS_COLLECTION, USERS_COLLECTION } from "./CollectionNames"
 import firestore from "./Firestore"
