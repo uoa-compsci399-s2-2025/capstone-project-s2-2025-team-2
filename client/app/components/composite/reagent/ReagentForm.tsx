@@ -6,9 +6,11 @@ import type { components } from "@/models/__generated__/schema"
 type ReagentTradingType = components["schemas"]["ReagentTradingType"]
 type ReagentCategory = components["schemas"]["ReagentCategory"]
 type CreateReagentRequest = components["schemas"]["CreateReagentRequest"]
+type ReagentVisibility = components["schemas"]["ReagentVisibility"]
 
 const TRADING_TYPES: ReagentTradingType[] = ["trade","giveaway","sell"]
 const TAGS: ReagentCategory[] = ["chemical","hazardous","biological"]
+const VISIBILITY_OPTIONS: ReagentVisibility[] = ["everyone","region","institution"]
 
 interface ReagentFormProps {
     onSubmit: (data: CreateReagentRequest) => void
@@ -19,10 +21,11 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
   const [name, setName] = useState("")
   const [tradingType, setTradingType] = useState<ReagentTradingType>("trade")
   const [tags, setTags] = useState<ReagentCategory[]>(["chemical"])
+  const [visibility, setVisibility] = useState<ReagentVisibility>("everyone")
+  const [description, setDescription] = useState("")
   const [condition, setCondition] = useState("")
   const [quantity, setQuantity] = useState("")
   const [unit, setUnit] = useState("")
-  const [description, setDescription] = useState("")
 
   const sendForm = (e: React.FormEvent) => {
     e.preventDefault()
@@ -37,10 +40,13 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       name,
       description,
       tradingType,
-      categories: tags, 
+      categories: tags,
       expiryDate: "2029-09-09",
       images: undefined,
       price: undefined,
+      quantity: Number(quantity),
+      unit,
+      visibility,
     }
 
     onSubmit(reagentData)
@@ -69,6 +75,21 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
           {TRADING_TYPES.map((type) => (
             <option key={type} value={type} className="bg-primary">
               {type}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-white">Visibility</label>
+        <select
+          value={visibility}
+          onChange={(e) => setVisibility(e.target.value as ReagentVisibility)}
+          className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
+        >
+          {VISIBILITY_OPTIONS.map((v) => (
+            <option key={v} value={v} className="bg-primary">
+              {v}
             </option>
           ))}
         </select>
