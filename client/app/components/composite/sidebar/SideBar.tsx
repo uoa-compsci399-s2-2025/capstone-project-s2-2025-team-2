@@ -26,18 +26,23 @@ const Sidebar = () => {
 
   return (
     <>
-      <button
+    <header className="md:hidden fixed top-0 w-full h-14 bg-primary text-white flex items-center px-4 z-10">
+      <h2 className="m-5">Chemical.ly</h2>
+            <button
         className="md:hidden absolute top-4 left-4 p-2 rounded-md text-secondary hover:bg-secondary/20 duration-300"
         onClick={() => setIsOpen(true)}
       >
         <Bars3Icon className="h-6 w-6" />
       </button>
+    </header>
 
 
-    <div className={`fixed pt-12 w-60 h-full bg-primary mt-4 z-40 transform transition-transform duration-300 
+
+    <div className={`fixed pt-12 md:pt-0 w-60 h-full bg-primary z-40 mt-4 md:mt-0 transform transition-transform duration-300 
       ${isOpen ? "translate-x-0" : "-translate-x-full"}
       md:translate-x-0 md:block`}
       >
+      <h2 className="hidden md:block m-5 mt-7">Chemical.ly</h2>
 
 
       <div className="absolute top-4 right-4 md:hidden">
@@ -48,12 +53,12 @@ const Sidebar = () => {
 
       <div className="flex flex-col justify-between h-full">
         <div>
-        
+
           {links.map(({ href, label, icon: Icon, isButton }, index) => (
             <div className="mb-2" key={href}>
               {isButton ? (
                 <Link href={href}>
-                  <div className="mt-5 w-[8.5rem] mx-auto">
+                  <div className="mt-1 w-[8.5rem] mx-auto">
                     <Button
                       className="py-1 gap-2 duration-300"
                       icon={Icon}
