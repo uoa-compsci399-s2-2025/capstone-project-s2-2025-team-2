@@ -8,7 +8,7 @@ const meta = {
     layout: "centered",
   },
   args: {
-    onSubmit: (data) => alert(`listing submitted: ${JSON.stringify(data)}`),
+    onSubmit: (data) => alert(`listing submitted: ${JSON.stringify(data, null, 2)}`),
     onCancel: () => alert("user pressed cancel"),
   },
 } satisfies Meta<typeof ReagentForm>

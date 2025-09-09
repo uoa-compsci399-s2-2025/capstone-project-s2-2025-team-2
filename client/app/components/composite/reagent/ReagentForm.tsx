@@ -96,6 +96,17 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       </div>
 
       <div className="space-y-2">
+        <label className="block text-sm font-medium text-white">Condition</label>
+        <input
+          type="text"
+          value={condition}
+          onChange={(e) => setCondition(e.target.value)}
+          placeholder="Condition"
+          className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
+        />
+      </div>
+
+      <div className="space-y-2">
         <label className="block text-sm font-medium text-white">Reagent Tags</label>
         <div className="flex flex-wrap gap-2">
           {TAGS.map((tag) => {
