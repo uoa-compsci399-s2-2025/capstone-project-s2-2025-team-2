@@ -6,9 +6,8 @@ export default function Overlay({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <div className="min-h-screen">
-      <TopBar />
       <Sidebar />
-      <main className="ml-60 pt-14 h-[calc(100vh)] overflow-auto">
+      <main className="md:ml-60 pt-14 h-[calc(100vh)] overflow-auto">
         {children}
       </main>
     </div>

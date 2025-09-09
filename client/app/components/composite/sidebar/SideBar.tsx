@@ -1,13 +1,17 @@
 "use client"
 import Link from "next/link"
+import { useState } from "react"
 import {
   ShoppingCartIcon,
   UserCircleIcon,
   ArrowLeftStartOnRectangleIcon,
+  Bars3Icon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline"
 import Button from "../../generic/button/regular/Button"
 
 const Sidebar = () => {
+  const [isOpen, setIsOpen] = useState(false)
   const links = [
     {
       href: "/userprofile",
@@ -21,9 +25,30 @@ const Sidebar = () => {
   ]
 
   return (
-    <div className="fixed pt-12 w-60 h-full bg-primary mt-4">
+    <>
+      <button
+        className="md:hidden absolute top-4 left-4 p-2 rounded-md text-secondary hover:bg-secondary/20 duration-300"
+        onClick={() => setIsOpen(true)}
+      >
+        <Bars3Icon className="h-6 w-6" />
+      </button>
+
+
+    <div className={`fixed pt-12 w-60 h-full bg-primary mt-4 z-40 transform transition-transform duration-300 
+      ${isOpen ? "translate-x-0" : "-translate-x-full"}
+      md:translate-x-0 md:block`}
+      >
+
+
+      <div className="absolute top-4 right-4 md:hidden">
+        <button onClick={() => setIsOpen(false)} >
+        <XMarkIcon className="h-6 w-6" />
+        </button>
+      </div>  
+
       <div className="flex flex-col justify-between h-full">
         <div>
+        
           {links.map(({ href, label, icon: Icon, isButton }, index) => (
             <div className="mb-2" key={href}>
               {isButton ? (
@@ -64,6 +89,13 @@ const Sidebar = () => {
         </div>
       </div>
     </div>
+        {isOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          onClick={() => setIsOpen(false)}
+        />
+      )}
+      </>
   )
 }
 
