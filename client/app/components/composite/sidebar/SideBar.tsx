@@ -26,30 +26,27 @@ const Sidebar = () => {
 
   return (
     <>
-    <header className="md:hidden fixed top-0 w-full h-14 bg-primary text-white flex items-center px-4 z-10">
+    <header className="fixed z-50 shadow-lg md:hidden fixed top-0 w-full h-14 bg-primary text-white flex items-center px-4 z-10">
       <h2 className="m-5">Chemical.ly</h2>
-            <button
-        className="md:hidden absolute top-4 left-4 p-2 rounded-md text-secondary hover:bg-secondary/20 duration-300"
-        onClick={() => setIsOpen(true)}
-      >
-        <Bars3Icon className="h-6 w-6" />
-      </button>
+<button
+  className="md:hidden absolute top-4 left-4 p-2 rounded-md text-secondary hover:bg-secondary/20 duration-300"
+  onClick={() => setIsOpen(!isOpen)} 
+>
+  {isOpen ? (
+    <XMarkIcon className="h-6 w-6 text-white" />
+  ) : (
+    <Bars3Icon className="h-6 w-6 text-white" />
+  )}
+</button>
     </header>
 
 
 
-    <div className={`fixed pt-12 md:pt-0 w-60 h-full bg-primary z-40 mt-4 md:mt-0 transform transition-transform duration-300 
+    <div className={`fixed pt-12 shadow-lg md:pt-0 w-60 h-full bg-primary z-40 mt-14 md:mt-0 transform transition-transform duration-300 
       ${isOpen ? "translate-x-0" : "-translate-x-full"}
       md:translate-x-0 md:block`}
       >
-      <h2 className="hidden md:block m-5 mt-7">Chemical.ly</h2>
-
-
-      <div className="absolute top-4 right-4 md:hidden">
-        <button onClick={() => setIsOpen(false)} >
-        <XMarkIcon className="h-6 w-6" />
-        </button>
-      </div>  
+      <h2 className="hidden md:block ml-7 mt-7 mb-4">Chemical.ly</h2>
 
       <div className="flex flex-col justify-between h-full">
         <div>
