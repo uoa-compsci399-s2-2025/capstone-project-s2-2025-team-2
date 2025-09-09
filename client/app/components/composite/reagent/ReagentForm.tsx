@@ -8,7 +8,7 @@ type ReagentCategory = components["schemas"]["ReagentCategory"]
 type CreateReagentRequest = components["schemas"]["CreateReagentRequest"]
 
 const TRADING_TYPES: ReagentTradingType[] = ["trade","giveaway","sell"]
-const CATEGORIES: ReagentCategory[] = ["chemical","hazardous","biological"]
+const TAGS: ReagentCategory[] = ["chemical","hazardous","biological"]
 
 interface ReagentFormProps {
     onSubmit: (data: CreateReagentRequest) => void
@@ -18,10 +18,11 @@ interface ReagentFormProps {
 export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
   const [name, setName] = useState("")
   const [tradingType, setTradingType] = useState<ReagentTradingType>("trade")
-  const [categories, setCategories] = useState<ReagentCategory[]>(["chemical"])
+  const [tags, setTags] = useState<ReagentCategory[]>(["chemical"])
   const [condition, setCondition] = useState("")
   const [quantity, setQuantity] = useState("")
   const [unit, setUnit] = useState("")
+  const [description, setDescription] = useState("")
 
   const sendForm = (e: React.FormEvent) => {
     e.preventDefault()
@@ -34,9 +35,9 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
     const reagentData: CreateReagentRequest = {
       userId: "placeholder-id",
       name,
-      description: ``,
+      description,
       tradingType,
-      categories,
+      categories: tags, 
       expiryDate: "2029-09-09",
       images: undefined,
       price: undefined,
@@ -74,14 +75,32 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       </div>
 
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-white">Condition</label>
-        <input
-          type="text"
-          value={condition}
-          onChange={(e) => setCondition(e.target.value)}
-          placeholder="new, used, expired"
-          className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
-        />
+        <label className="block text-sm font-medium text-white">Reagent Tags</label>
+        <div className="flex flex-wrap gap-2">
+          {TAGS.map((tag) => {
+            const checked = tags.includes(tag)
+            return (
+              <label
+                key={tag}
+                className="flex items-center gap-2 px-3 py-2 border border-muted rounded-lg"
+              >
+                <input
+                  type="checkbox"
+                  className="w-4 h-4 border-muted"
+                  checked={checked}
+                  onChange={() =>
+                    setTags((currentTags) =>
+                      currentTags.includes(tag)
+                        ? currentTags.filter((t) => t !== tag)
+                        : [...currentTags, tag]
+                    )
+                  }
+                />
+                <span className="text-white text-sm">{tag}</span>
+              </label>
+            )
+          })}
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
@@ -105,6 +124,17 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
             className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
           />
         </div>
+      </div>
+
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-white">Description</label>
+        <input
+          type="text"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Description"
+          className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
+        />
       </div>
 
       <div className="flex justify-between">
