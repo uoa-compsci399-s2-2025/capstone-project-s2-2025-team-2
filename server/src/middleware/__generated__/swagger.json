@@ -366,6 +366,7 @@
 						}
 					}
 				},
+				"description": "Get email of the current logged in user",
 				"security": [
 					{
 						"jwt": []
