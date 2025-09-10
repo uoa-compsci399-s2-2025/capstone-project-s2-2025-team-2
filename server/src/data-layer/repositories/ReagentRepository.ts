@@ -101,14 +101,14 @@ export class ReagentService {
   }
 
   /**
-   * Retrieves reagents by its categories from the Firestore database.
+   * Retrieves reagents by its owner from the Firestore database.
    *
-   * @param categories - The category of the reagents to retrive.
+   * @param user_id - The user id used to get its reagents.
    * @returns Promise<Reagent[]> - Returns an array of reagents.
    */
   async getReagentsByUserId(user_id: string): Promise<Reagent[]> {
     const reagentsSnapshot = await FirestoreCollections.reagents
-      .where("user_id", "array-contains-any", user_id)
+      .where("user_id", "==", user_id)
       .get()
     return reagentsSnapshot.docs.map((doc) => doc.data())
   }

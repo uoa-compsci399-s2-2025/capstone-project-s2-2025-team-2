@@ -19,7 +19,7 @@ import { ReagentService } from "../../data-layer/repositories/ReagentRepository"
 import { CreateReagentRequest } from "../../service-layer/dtos/request/ReagentRequest"
 import { AuthRequest } from "../../service-layer/dtos/request/AuthRequest"
 
-@Tags("Authentication")
+@Tags("User")
 @Route("users")
 export class UserController extends Controller {
   @SuccessResponse("200", "Users retrieved successfully")
@@ -57,9 +57,13 @@ export class UserController extends Controller {
    */
   @SuccessResponse("200", "All reagents returned successfully")
   @Security("jwt")
-  @Get("/{user_id}/reagents")
-  public async getReagents(@Path() user_id?: string): Promise<Reagent[]> {
+  @Get("/reagents")
+  public async getReagents(
+    @Request() request: AuthRequest,
+  ): Promise<Reagent[]> {
     try {
+      const user = request.user
+      const user_id = user.uid
       if (user_id) {
         const reagents = await new ReagentService().getReagentsByUserId(user_id)
         return reagents
@@ -121,14 +125,14 @@ export class UserController extends Controller {
   @Security("jwt")
   @Post("/reagents")
   public async createReagent(
-    @Request() request: Request,
+    @Request() request: AuthRequest,
     @Body() requestObject: CreateReagentRequest,
   ): Promise<Reagent> {
-    const token = (request as any).user
-    const userId = token.uid || token.user_id || "unknown_user"
+    const user = request.user
+    const user_id = user.uid
     const data = {
       ...requestObject,
-      userId,
+      user_id,
     }
     const newReagent = await new ReagentService().createReagent(data as Reagent)
     return newReagent
