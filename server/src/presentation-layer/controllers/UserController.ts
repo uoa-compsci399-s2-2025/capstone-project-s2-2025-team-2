@@ -152,13 +152,20 @@ export class UserController extends Controller {
   public async updateReagent(
     @Path() id: string,
     @Body() update: Partial<Reagent>,
+    @Request() request: AuthRequest,
   ): Promise<Reagent> {
     try {
-      const updatedReagent = await new ReagentService().updateReagent(
-        id,
-        update,
-      )
-      return updatedReagent
+      const reagent = await new ReagentService().getReagentsById(id)
+      const uid =
+        request.admin.uid || request.lab_manager.uid || request.user.uid
+      if (reagent.user_id == uid) {
+        const updatedReagent = await new ReagentService().updateReagent(
+          id,
+          update,
+        )
+        return updatedReagent
+      }
+      return null
     } catch (error) {
       this.setStatus(400)
       throw new Error(`[ERROR] while updating reagent ${id}: ${error}`)
