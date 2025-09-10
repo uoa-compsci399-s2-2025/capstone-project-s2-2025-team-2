@@ -63,6 +63,7 @@
   --red-200: #e86f6f;
   --purple: #5e60ff;
 
+  --midnight: #151D48;
   --lightblue: #62b4ee;
   --blue-100: #4282d7;
   --blue-200: #6babff;
@@ -83,6 +84,8 @@
   --red-100: #ff8888;
   --red-200: #e86f6f;
   --red-300: #E5595B;
+
+  --gold: #FF9500;
 
   --muted: #4d4d4d;
   --accent: #f5f7fc;
@@ -196,6 +199,9 @@
   --color-red-200: var(--red-200);
   --color-red-300: var(--red-300);
 
+  --color-gold: var(--gold);
+
+  --color-midnight: var(--midnight);
   --color-lightblue: var(--lightblue);
   --color-blue-100: var(--blue-100);
   --color-blue-200: var(--blue-200);
