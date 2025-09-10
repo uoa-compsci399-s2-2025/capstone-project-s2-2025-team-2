@@ -151,10 +151,14 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
              <button
                type="button"
                onClick={() => {
-                 if (images.length < 5) {
-                   setImages((currentImages) => [...currentImages, imageUrl])
-                   setImageUrl("")
-                 }
+                 const url = imageUrl.trim()
+                
+                 if (!url || images.length >= 5) return
+                 if (images.includes(url)) return alert("URL has already been added")
+                 try { new URL(url) } catch { return alert("Invalid URL") }
+
+                 setImages((currentImages) => [...currentImages, url])
+                 setImageUrl("")
                }}
                disabled={images.length >= 5}
                className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-400 disabled:bg-red-400 disabled:cursor-not-allowed"
