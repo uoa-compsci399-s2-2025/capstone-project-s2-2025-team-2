@@ -157,11 +157,32 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
                  }
                }}
                disabled={images.length >= 5}
-               className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-400 disabled:bg-red-500 disabled:cursor-not-allowed"
+               className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-400 disabled:bg-red-400 disabled:cursor-not-allowed"
              >
                Add
              </button>
         </div>
+        {images.length > 0 && (
+          <div className="flex flex-wrap gap-2 mt-2">
+            {images.map((url, i) => (
+              <div
+                key={i}
+                className="flex items-center gap-2 px-3 py-2 border border-muted rounded-lg bg-primary/50 max-w-[200px]"
+              >
+                <span className="text-white text-sm truncate flex-1">
+                  {url}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setImages((currentImages) => currentImages.filter((img) => img !== url))}
+                  className="text-red-400 hover:text-red-300 text-sm flex-shrink-0"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       
       <div className="space-y-2">
