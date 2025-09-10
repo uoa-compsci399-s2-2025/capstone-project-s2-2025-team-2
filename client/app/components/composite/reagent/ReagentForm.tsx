@@ -20,7 +20,7 @@ interface ReagentFormProps {
 export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
   const [name, setName] = useState("")
   const [tradingType, setTradingType] = useState<ReagentTradingType>("trade")
-  const [tags, setTags] = useState<ReagentCategory[]>(["chemical"]) // maps to categories
+  const [tags, setTags] = useState<ReagentCategory[]>(["chemical"]) // del note: change to category or tag, pick one 
   const [visibility, setVisibility] = useState<ReagentVisibility>("everyone")
   const [description, setDescription] = useState("")
   const [condition, setCondition] = useState("")
@@ -29,6 +29,9 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
   const [price, setPrice] = useState("")
   const [expiryDate, setExpiryDate] = useState("")
   const [location, setLocation] = useState("")
+  const [images, setImages] = useState<string[]>([])
+  const [imageUrl, setImageUrl] = useState("")
+
 
   const sendForm = (e: React.FormEvent) => {
     e.preventDefault()
@@ -45,7 +48,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       tradingType,
       categories: tags,
       expiryDate,
-      images: undefined,
+      images: images.length > 0 ? images : undefined,
       location,
       price: tradingType === "sell" && price ? Number(price) : undefined,
       quantity: Number(quantity),
@@ -133,7 +136,31 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
           />
         </div>
       </div>
+      
+      <div className="space-y-2">
+        <label className="block text-sm font-medium text-white">Listing Images</label>
+        <div className="flex gap-2">
+           <input
+             type="text"
+             value={imageUrl}
+             onChange={(e) => setImageUrl(e.target.value)}
+             placeholder="Image URL"
+             className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
+           />
 
+           <button
+             type="button"
+             onClick={() => {
+                setImages((currentImages) => [...currentImages, imageUrl])
+                setImageUrl("")
+             }}
+             className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-blue-primary"
+           >
+             Add
+           </button>
+        </div>
+      </div>
+      
       <div className="space-y-2">
         <label className="block text-sm font-medium text-white">Description</label>
         <input
