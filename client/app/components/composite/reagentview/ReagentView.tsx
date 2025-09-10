@@ -3,10 +3,12 @@ import { LuClockAlert } from "react-icons/lu";
 import { LuHouse } from "react-icons/lu";
 import Tag from "./Tag";
 import SellerContact from "./SellerContact";
+import ReagentBreadcrumb from "./ReagentBreadcrumb";
 
 const ReagentView = () => {
     return ( 
-        <div className="bg-white h-[100vh] font-family-sans">
+        <div className="bg-white h-[100vh] font-family-sans  p-[2rem]">
+            <ReagentBreadcrumb/>
             <div className="flex flex-col items-center">
                 <h1 className="text-black tracking-wider">Hydrogen Peroxide 5%</h1>
                 <div className="flex justify-around w-[43rem] mx-auto mt-[1rem]">
@@ -15,9 +17,9 @@ const ReagentView = () => {
                     <h5 className="flex text-blue-300 items-center text-[0.8rem]"><LuHouse className="text-blue-300 mr-[0.3rem] w-5 h-5" /> Location - University of Auckland</h5>
                 </div>
             </div>
-            <div className="flex m-[2rem]">
+            <div className="flex mt-[2rem]">
                 <div className="bg-amber-300 flex-[1]">Images</div>
-                <div className="flex-[1.5] px-[2rem]">
+                <div className="flex-[1.5] ml-[2rem]">
                     <div className="bg-green-300 rounded-[10px] shadow-[0_4px_6px_rgba(0,0,0,0.4)]">
                         <div className="text-center py-[1rem]">
                             <h4 className="text-green-400 font-bold">Current price</h4>
