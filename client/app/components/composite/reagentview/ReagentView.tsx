@@ -2,6 +2,7 @@ import { FaRegClock } from "react-icons/fa";
 import { LuClockAlert } from "react-icons/lu";
 import { LuHouse } from "react-icons/lu";
 import Tag from "./Tag";
+import SellerContact from "./SellerContact";
 
 const ReagentView = () => {
     return ( 
@@ -35,6 +36,9 @@ const ReagentView = () => {
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="text-black flex justify-center">
+                <SellerContact/>
             </div>
         </div>
      );
