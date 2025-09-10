@@ -103,10 +103,20 @@ export class UserController extends Controller {
   @SuccessResponse("200", "reagent deleted successfully")
   @Security("jwt")
   @Delete("/reagents/{id}")
-  public async deleteReagentById(@Path() id: string): Promise<Reagent | null> {
+  public async deleteReagentById(
+    @Path() id: string,
+    @Request() request: AuthRequest,
+  ): Promise<Reagent | null> {
     try {
-      const reagent = await new ReagentService().deleteReagent(id)
-      return reagent
+      const user = request.user
+      const user_id = user.uid
+      const reagent = await new ReagentService().getReagentsById(id)
+      if (user_id !== reagent.user_id) {
+        console.log("You cannot delete a reagent that you don't own")
+        return null
+      }
+      const reagentToDelete = await new ReagentService().deleteReagent(id)
+      return reagentToDelete
     } catch (err) {
       throw new Error(
         `Failed to delete reagent -- id:${id} ` + (err as Error).message,
