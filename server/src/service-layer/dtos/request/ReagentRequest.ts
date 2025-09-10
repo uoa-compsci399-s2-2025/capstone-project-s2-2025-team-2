@@ -5,7 +5,6 @@ import type {
 } from "business-layer/models/Reagent"
 
 export interface CreateReagentRequest {
-  userId: string
   name: string
   description: string
   categories: ReagentCategory[]

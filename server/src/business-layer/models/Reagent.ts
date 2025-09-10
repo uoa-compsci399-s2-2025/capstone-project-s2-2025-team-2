@@ -5,7 +5,7 @@ export type ReagentCategory = "chemical" | "hazardous" | "biological"
 export type ReagentVisibility = "everyone" | "region" | "institution"
 
 export interface Reagent {
-  userId: string
+  user_id: string
   name: string
   description: string
   price?: number
