@@ -5,15 +5,18 @@ const SellerContact = () => {
     return ( 
         <div className="flex flex-row items-center">
             <div className="bg-yellow-600 rounded-[50%] flex flex-col justify-center items-center h-[4rem] w-[4rem]">PFP</div>
-            <div className="ml-[1rem]">
+            <div className="mx-[1.5rem]">
                 <h4 className="text-midnight text-[1rem] font-bold">Violet Chen</h4>
-                <span className="flex items-center text-[0.8rem] text-midnight font-bold"><LuHouse/>
+                <span className="flex items-center text-[0.8rem] text-midnight font-bold"><LuHouse className="mr-[0.3rem]"/>
                     University of Auckland, City Centre
                 </span>
-                <span className="text-gold items-center flex text-[0.8rem] font-bold"><FaRegStar />
-                    99(99.9% Positive Feedback)
+                <span className="text-gold items-center flex text-[0.8rem] font-bold"><FaRegStar className="mr-[0.3rem]" />
+                    99 (99.9% Positive Feedback)
                 </span>
             </div>
+            <button className="bg-blue-primary text-white font-sans rounded-[5px]">
+                <h4 className="text-[0.8rem] font-semibold px-[2.5rem] py-[0.5rem]">Contact Violet</h4>
+            </button>
         </div>
      );
 }

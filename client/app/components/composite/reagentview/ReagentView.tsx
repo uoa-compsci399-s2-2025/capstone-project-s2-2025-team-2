@@ -15,10 +15,10 @@ const ReagentView = () => {
                     <h5 className="flex text-blue-300 items-center text-[0.8rem]"><LuHouse className="text-blue-300 mr-[0.3rem] w-5 h-5" /> Location - University of Auckland</h5>
                 </div>
             </div>
-            <div className="flex mt-[2rem]">
+            <div className="flex m-[2rem]">
                 <div className="bg-amber-300 flex-[1]">Images</div>
-                <div className="flex-[1.5] p-[1rem]">
-                    <div className="m-1 bg-green-300 rounded-[10px] shadow-[0_4px_6px_rgba(0,0,0,0.4)]">
+                <div className="flex-[1.5] px-[2rem]">
+                    <div className="bg-green-300 rounded-[10px] shadow-[0_4px_6px_rgba(0,0,0,0.4)]">
                         <div className="text-center py-[1rem]">
                             <h4 className="text-green-400 font-bold">Current price</h4>
                             <h2 className="text-green-400">$30</h2>
@@ -37,6 +37,7 @@ const ReagentView = () => {
                     </div>
                 </div>
             </div>
+            <div className="w-[60vw] mx-auto my-[2rem] h-[1px] bg-gradient-to-r from-transparent via-gray-400 to-transparent" />
             <div className="text-black flex justify-center">
                 <SellerContact/>
             </div>
