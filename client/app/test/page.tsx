@@ -4,4 +4,4 @@ const Test = () => {
   return <LoginPage />
 }
 
-export default LoginPage
+export default Test
