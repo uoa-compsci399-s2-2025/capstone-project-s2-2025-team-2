@@ -157,7 +157,7 @@ export class UserController extends Controller {
     try {
       const reagent = await new ReagentService().getReagentsById(id)
       const uid =
-        request.admin.uid || request.lab_manager.uid || request.user.uid
+        request.admin?.uid || request.lab_manager?.uid || request.user?.uid
       if (reagent.user_id == uid) {
         const updatedReagent = await new ReagentService().updateReagent(
           id,

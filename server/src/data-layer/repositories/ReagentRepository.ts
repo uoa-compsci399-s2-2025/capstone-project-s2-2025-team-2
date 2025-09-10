@@ -91,7 +91,9 @@ export class ReagentService {
       if (!snapShot.exists) {
         throw new Error(`Reagent - ${id} not found`)
       }
-      await docRef.update(update)
+      const { user_id, ...SafeUpdate } = update
+      console.log(`User updating reagent- ${id}`, user_id)
+      await docRef.update(SafeUpdate)
       const updatedDoc = await docRef.get()
       return updatedDoc.data() as Reagent
     } catch (err) {

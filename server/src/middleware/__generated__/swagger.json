@@ -9,11 +9,15 @@
 		"schemas": {
 			"User": {
 				"properties": {
+					"email": {
+						"type": "string"
+					},
 					"username": {
 						"type": "string"
 					}
 				},
 				"required": [
+					"email",
 					"username"
 				],
 				"type": "object",

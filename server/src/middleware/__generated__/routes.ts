@@ -24,6 +24,7 @@ const models: TsoaRoute.Models = {
     "User": {
         "dataType": "refObject",
         "properties": {
+            "email": {"dataType":"string","required":true},
             "username": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
@@ -363,6 +364,7 @@ export function RegisterRoutes(app: Router) {
         const argsUserController_updateReagent: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
                 update: {"in":"body","name":"update","required":true,"ref":"Partial_Reagent_"},
+                request: {"in":"request","name":"request","required":true,"dataType":"object"},
         };
         app.patch('/users/reagents/:id',
             authenticateMiddleware([{"jwt":[]}]),
