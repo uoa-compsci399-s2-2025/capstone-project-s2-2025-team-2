@@ -40,6 +40,7 @@ export class ReagentService {
       .get()
     return reagentsSnapshot.docs.map((doc) => doc.data())
   }
+
   /**
    * Creates a new reagent in the Firestore database.
    *
@@ -90,12 +91,27 @@ export class ReagentService {
       if (!snapShot.exists) {
         throw new Error(`Reagent - ${id} not found`)
       }
-      await docRef.update(update)
+      const { user_id, ...SafeUpdate } = update
+      console.log(`User updating reagent- ${id}`, user_id)
+      await docRef.update(SafeUpdate)
       const updatedDoc = await docRef.get()
       return updatedDoc.data() as Reagent
     } catch (err) {
       console.log(err)
       throw new Error(`Failed to update reagent - ${id}: ${err}`)
     }
+  }
+
+  /**
+   * Retrieves reagents by its owner from the Firestore database.
+   *
+   * @param user_id - The user id used to get its reagents.
+   * @returns Promise<Reagent[]> - Returns an array of reagents.
+   */
+  async getReagentsByUserId(user_id: string): Promise<Reagent[]> {
+    const reagentsSnapshot = await FirestoreCollections.reagents
+      .where("user_id", "==", user_id)
+      .get()
+    return reagentsSnapshot.docs.map((doc) => doc.data())
   }
 }
