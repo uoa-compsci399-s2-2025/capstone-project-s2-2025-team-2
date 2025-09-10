@@ -4,7 +4,7 @@ import { LuHouse } from "react-icons/lu";
 
 const ReagentView = () => {
     return ( 
-        <div className="bg-white">
+        <div className="bg-white ">
             Reagent View
             <div className="flex flex-col items-center">
                 <h1 className="text-black tracking-wider">Hydrogen Peroxide 5%</h1>
@@ -12,6 +12,28 @@ const ReagentView = () => {
                     <h5 className="flex text-green-200 items-center text-[0.8rem]"><FaRegClock className="text-green-200 mr-[0.3rem] w-5 h-5" /> Listed - 25/20/2025</h5>
                     <h5 className="flex text-red-300 items-center text-[0.8rem]"><LuClockAlert className="text-red-300 mr-[0.3rem] w-5 h-5" /> Expires - 25/20/2025</h5>
                     <h5 className="flex text-blue-300 items-center text-[0.8rem]"><LuHouse className="text-blue-300 mr-[0.3rem] w-5 h-5" /> Location - University of Auckland</h5>
+                </div>
+            </div>
+            <div className="flex mt-[2rem]">
+                <div className="bg-amber-300 flex-[1]">Images</div>
+                <div className="border-red-600 border-2 flex-[1.5] p-[1rem]">
+                    <div className="m-1 bg-green-300 rounded-[10px]">
+                        <div className="text-center py-[1rem]">
+                            <h4 className="text-green-400 font-bold">Current price</h4>
+                            <h2 className="text-green-400">$30</h2>
+                        </div>
+                        <div className="flex bg-gray-300 p-[2rem]">
+                            <div className="flex-[0.25]">
+                                <p className="text-dark-gray font-bold">Category - Chemical</p>
+                                <p className="text-dark-gray font-bold">Condition - New</p>
+                                <p className="text-dark-gray font-bold">Quantity - 500ml</p>
+                            </div>
+                            <div className="flex-[0.75]">
+                                <p className="text-dark-gray">Selling a 500 mL bottle of hydrogen peroxide (H₂O₂) reagent, 5% solution. It’s Sigma-Aldrich brand, still sealed and completely full. I originally bought it for a project but ended up not needing it, so it’s brand new and has been stored properly in a cool, dark space since purchase. Expiry is 2026, so plenty of shelf life left. lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem</p>
+                                Tag1 Tag2 Tag3
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

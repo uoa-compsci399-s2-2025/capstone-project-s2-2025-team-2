@@ -33,10 +33,13 @@
 
   --green-100: #249731;
   --green-200: #43C05A;
+  --green-300: #9AE39C;
+  --green-400: #428B44;
 
   --dark-gray: #676767;
   --gray-100: #979797;
   --gray-200: #bababa;
+  --gray-300: #e6e6e6;
 
   --red-100: #ff8888;
   --red-200: #e86f6f;
@@ -110,6 +113,8 @@
   --color-gray-100: var(--gray-100);
   --color-purple: var(--purple);
 
+  --color-gray-300: var(--gray-300);
+
   --color-red-100: var(--red-100);
   --color-red-200: var(--red-200);
   --color-red-300: var(--red-300);
@@ -122,6 +127,8 @@
 
   --color-green-100: var(--green-100);
   --color-green-200: var(--green-200);
+  --color-green-300: var(--green-300);
+  --color-green-400: var(--green-400);
 }
 
 @media (prefers-color-scheme: dark) {
