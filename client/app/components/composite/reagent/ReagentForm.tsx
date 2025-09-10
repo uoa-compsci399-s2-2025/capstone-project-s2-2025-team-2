@@ -138,7 +138,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       </div>
       
       <div className="space-y-2">
-        <label className="block text-sm font-medium text-white">Listing Images</label>
+        <label className="block text-sm font-medium text-white">Listing Images (5 max)</label>
         <div className="flex gap-2">
            <input
              type="text"
@@ -148,16 +148,19 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
              className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
            />
 
-           <button
-             type="button"
-             onClick={() => {
-                setImages((currentImages) => [...currentImages, imageUrl])
-                setImageUrl("")
-             }}
-             className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-blue-primary"
-           >
-             Add
-           </button>
+             <button
+               type="button"
+               onClick={() => {
+                 if (images.length < 5) {
+                   setImages((currentImages) => [...currentImages, imageUrl])
+                   setImageUrl("")
+                 }
+               }}
+               disabled={images.length >= 5}
+               className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-400 disabled:bg-red-500 disabled:cursor-not-allowed"
+             >
+               Add
+             </button>
         </div>
       </div>
       
