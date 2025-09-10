@@ -33,7 +33,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
   const [imageUrl, setImageUrl] = useState("")
 
 
-  const sendForm = (e: React.FormEvent) => {
+  const sendForm = async (e: React.FormEvent) => {
     e.preventDefault()
 
     if (!name || !condition || !quantity || !unit || !expiryDate || !location) {
@@ -42,7 +42,6 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
     }
 
     const reagentData: CreateReagentRequest = {
-      userId: "placeholder-id",
       name,
       description,
       tradingType,
@@ -56,11 +55,28 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       visibility,
     }
 
-    onSubmit(reagentData)
+    try {
+      const response = await fetch('http://localhost:8000/users/reagents', {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer PUT_YOUR_TOKEN_RIGHT_HERE'
+        },
+        body: JSON.stringify(reagentData)
+      })
+      
+      if (!response.ok) throw new Error('Failed to create reagent!')
+      
+      alert('Reagent created successfully!')
+      onSubmit(reagentData)
+    } catch (error) {
+      alert('Failed to create reagent!')
+    }
   }
 
   return (
-    <form onSubmit={sendForm} className="space-y-6">
+    <div className="space-y-6">
+      <form onSubmit={sendForm} className="space-y-6">
       <div className="space-y-2">
         <label className="block text-sm font-medium text-white">Reagent Name</label>
         <input
@@ -269,7 +285,8 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
         <button type="button" onClick={onCancel} className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-red-400">Cancel</button>
         <button type="submit" className="px-4 py-2 bg-blue-primary text-white rounded-lg hover:bg-blue-primary/75">Create</button>
       </div>
-    </form>
+      </form>
+    </div>
   )
 }
 
