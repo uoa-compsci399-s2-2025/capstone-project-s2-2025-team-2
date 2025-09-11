@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import Overlay from "../components/composite/Overlay"
 import SearchBar from "../components/composite/searchbar/SearchBar"
-import ReagentCard from "../components/composite/marketplace/ReagentCard"
+import ReagentCard from "../components/composite/reagent/ReagentCard"
 import { Reagent } from "../../../server/src/data-layer/models/Reagent"
 
 const Marketplace = () => {
@@ -59,7 +59,7 @@ const Marketplace = () => {
         />
       </div>
 
-      <div className="bg-white dark:bg-black flex flex-wrap pt-[2rem] gap-[2rem] mx-[2rem]">
+      <div className="bg-background dark:bg-black flex flex-wrap pt-[2rem] gap-[2rem] mx-[2rem]">
         {sorted.map((r) => (
           <ReagentCard
             key={r.id}
