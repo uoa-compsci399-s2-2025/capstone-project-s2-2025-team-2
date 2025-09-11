@@ -92,6 +92,10 @@
 					},
 					"location": {
 						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
 					}
 				},
 				"required": [
@@ -104,7 +108,8 @@
 					"tradingType",
 					"categories",
 					"visibility",
-					"location"
+					"location",
+					"createdAt"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -212,6 +217,10 @@
 					},
 					"location": {
 						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
 					}
 				},
 				"type": "object",

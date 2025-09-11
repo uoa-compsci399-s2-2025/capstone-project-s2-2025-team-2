@@ -133,6 +133,7 @@ export class UserController extends Controller {
     const data = {
       ...requestObject,
       user_id,
+      createdAt: new Date(),
     }
     const newReagent = await new ReagentService().createReagent(data as Reagent)
     return newReagent

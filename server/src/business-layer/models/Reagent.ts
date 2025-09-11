@@ -17,4 +17,5 @@ export interface Reagent {
   categories: ReagentCategory[]
   visibility: ReagentVisibility
   location: string
+  createdAt: Date
 }
