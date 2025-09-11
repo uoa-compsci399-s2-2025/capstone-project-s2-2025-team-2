@@ -4,6 +4,7 @@ import Overlay from "../components/composite/Overlay"
 import SearchBar from "../components/composite/searchbar/SearchBar"
 import ReagentCard from "../components/composite/reagent/ReagentCard"
 import { Reagent } from "../../../server/src/data-layer/models/Reagent"
+import client from "../services/fetch-client"
 
 const Marketplace = () => {
   const [reagents, setReagents] = useState<Reagent[]>([])
@@ -13,9 +14,10 @@ const Marketplace = () => {
 
   useEffect(() => {
     const fetchReagents = async () => {
-      const res = await fetch("http://localhost:8000/api/getAllReagents")
-      const data: Reagent[] = await res.json()
-      console.log("Fetched reagents:", data)
+      const { data } = await client.GET(
+        "/reagents" as any, {}
+      )
+      console.log(data)
       setReagents(data)
     }
     fetchReagents()
