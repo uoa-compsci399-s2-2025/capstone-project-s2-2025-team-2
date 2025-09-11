@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import type { components } from "@/models/__generated__/schema"
+import client from "../../../services/fetch-client"
 
 type ReagentTradingType = components["schemas"]["ReagentTradingType"]
 type ReagentCategory = components["schemas"]["ReagentCategory"]
@@ -56,16 +57,17 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
     }
 
     try {
-      const response = await fetch('http://localhost:8000/users/reagents', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer PUT_YOUR_TOKEN_RIGHT_HERE'
-        },
-        body: JSON.stringify(reagentData)
-      })
+      const { data: responseBody, response, error } = await client.POST(
+        '/users/reagents' as any,
+        {
+          body: reagentData,
+          headers: {
+            'Authorization': 'Bearer PUT_YOUR_TOKEN_RIGHT_HERE'
+          }
+        }
+      )
       
-      if (!response.ok) throw new Error('Failed to create reagent!')
+      if (error) throw new Error('Failed to create reagent!')
       
       alert('Reagent created successfully!')
       onSubmit(reagentData)
