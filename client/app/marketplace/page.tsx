@@ -5,6 +5,7 @@ import SearchBar from "../components/composite/searchbar/SearchBar"
 import ReagentCard from "../components/composite/reagent/ReagentCard"
 import { Reagent } from "../../../server/src/data-layer/models/Reagent"
 import client from "../services/fetch-client"
+import { v4 as uuidv4 } from "uuid"
 
 const Marketplace = () => {
   const [reagents, setReagents] = useState<Reagent[]>([])
@@ -64,7 +65,7 @@ const Marketplace = () => {
       <div className="bg-background dark:bg-black flex flex-wrap pt-[2rem] gap-[2rem] mx-[2rem]">
         {sorted.map((r) => (
           <ReagentCard
-            key={r.id}
+            key={uuidv4()}
             name={r.name}
             description={r.description}
             tags={Array.isArray(r.categories) ? r.categories : []}
