@@ -49,7 +49,11 @@ const Marketplace = () => {
       <p className="text-gray-100 italic inline">Laboratory Reagents</p>
 
       <div className="mt-5">
-        <SearchBar
+
+      </div>
+
+      <div className="bg-transparent dark:bg-black flex flex-wrap pt-[2rem] gap-[2rem] mx-[2rem]">
+                <SearchBar
           search={search}
           setSearch={setSearch}
           filter={filter}
@@ -57,9 +61,6 @@ const Marketplace = () => {
           sort={sort}
           setSort={setSort}
         />
-      </div>
-
-      <div className="bg-white dark:bg-black flex flex-wrap pt-[2rem] gap-[2rem] mx-[2rem]">
         {sorted.map((r) => (
           <ReagentCard
             key={r.id}
