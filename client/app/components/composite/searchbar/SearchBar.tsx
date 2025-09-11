@@ -6,8 +6,8 @@ interface SearchBarProps {
   setSearch: (val: string) => void
   filter: string
   setFilter: (val: string) => void
-  sort: "newest" | "oldest" | "name" | ""
-  setSort: (val: "newest" | "oldest" | "name" | "") => void
+  sort: "newest" | "oldest" | "nameAZ" | "nameZA" | ""
+  setSort: (val: "newest" | "oldest" | "nameAZ" | "nameZA" | "") => void
 }
 
 export default function SearchBar({
@@ -60,14 +60,15 @@ export default function SearchBar({
         <select
           value={sort}
           onChange={(e) =>
-            setSort(e.target.value as "newest" | "oldest" | "name" | "")
+            setSort(e.target.value as "newest" | "oldest" | "nameAZ" | "nameZA" | "")
           }
           className="appearance-none bg-primary rounded-tr-md rounded-br-md text-white px-2 py-1 outline-none cursor-pointer w-full shadow-lg"
         >
           <option value="">Sort by...</option>
           <option value="newest">Newest</option>
           <option value="oldest">Oldest</option>
-          <option value="name">Name</option>
+          <option value="nameAZ">Name [A - Z]</option>
+          <option value="nameZA">Name [Z - A]</option>
         </select>
         <ChevronDownIcon className="absolute right-2 top-1/2 -translate-y-1/2 h-5 w-5 text-secondary pointer-events-none" />
       </div>

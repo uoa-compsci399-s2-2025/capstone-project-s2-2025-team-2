@@ -11,7 +11,7 @@ const Marketplace = () => {
   const [reagents, setReagents] = useState<Reagent[]>([])
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState("all")
-  const [sort, setSort] = useState<"newest" | "oldest" | "name" | "">("newest")
+  const [sort, setSort] = useState<"newest" | "oldest" | "nameAZ" | "nameZA" | "">("newest")
 
   useEffect(() => {
     const fetchReagents = async () => {
@@ -34,8 +34,10 @@ const Marketplace = () => {
         return a.expiryDate.localeCompare(b.expiryDate)
       case "oldest":
         return b.expiryDate.localeCompare(a.expiryDate)
-      case "name":
+      case "nameAZ":
         return a.name.localeCompare(b.name)
+      case "nameZA":
+        return b.name.localeCompare(a.name)
       default:
         return 0
     }
