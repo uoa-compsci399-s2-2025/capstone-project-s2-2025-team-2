@@ -1,4 +1,3 @@
-import { Timestamp } from "firebase-admin/firestore"
 export type ReagentTradingType = "trade" | "giveaway" | "sell"
 
 export type ReagentCategory = "chemical" | "hazardous" | "biological"
@@ -12,6 +11,6 @@ export interface Reagent {
   tradingType: ReagentTradingType
   images?: string[]
   categories: ReagentCategory[]
-  createdAt: Timestamp
+  createdAt: Date
   location: string
 }

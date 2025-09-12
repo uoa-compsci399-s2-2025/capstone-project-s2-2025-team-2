@@ -5,8 +5,6 @@ import { RegisterRoutes } from "./middleware/__generated__/routes"
 import helmet from "helmet"
 import { json, urlencoded } from "body-parser"
 
-import getAllReagentsRoute from "./routes/getAllReagents"
-
 import * as swaggerJson from "./middleware/__generated__/swagger.json"
 import * as swaggerUI from "swagger-ui-express"
 
