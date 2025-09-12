@@ -34,7 +34,7 @@ const ReagentCard = ({
            bg-primary/80
        "
     >
-      <div className="flex flex-row md:flex-col m-2 md:m-4 rounded-lg overflow-hidden drop-shadow-xl">
+      <div className="flex flex-row md:flex-col m-2 md:m-3 rounded-lg overflow-hidden drop-shadow-xl">
         <div className="relative w-[7rem] h-[6.5rem] md:w-[18rem] md:h-[8rem]">
           {imageUrl ? (
             <Image src={imageUrl} fill className="object-cover" alt="" />
@@ -53,7 +53,7 @@ const ReagentCard = ({
           </div>
         </div>
 
-        <div className="flex flex-col justify-between flex-1 gap-1 px-4 py-1 md:py-2">
+        <div className="flex flex-col justify-between flex-1 gap-1 px-4 md:py-4">
           <span className="flex items-center gap-3 md:gap-4">
             <h4 className="text-white text-lg md:text-xl italic">{name}</h4>
             <p className="text-white/60 text-sm md:text-sm italic mt-1">
@@ -61,46 +61,45 @@ const ReagentCard = ({
             </p>
           </span>
 
-            <div className="md:hidden flex flex-wrap gap-1">
-              {tags.map((tag, idx) => (
-                <span
-                  key={idx}
-                  className="bg-white/20 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm"
-                >
-                  {tag}
-                </span>
-              ))}
+          <div className="md:hidden flex flex-wrap gap-1">
+            {tags.map((tag, idx) => (
+              <span
+                key={idx}
+                className="bg-white/20 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm"
+              >
+                {tag}
+              </span>
+            ))}
           </div>
 
+          <p className="hidden md:flex flex-row text-warning text-base">
+            <ClockIcon className="w-5 h-5 mt-0.5 text-warning" />
+            {expiryDate}
+          </p>
 
-            <p className="hidden md:flex flex-row text-warning text-base">
-              <ClockIcon className="w-5 h-5 mt-0.5 text-warning" />
-              {expiryDate}
-            </p>
+          <div className="hidden md:block bg-light-gray h-[1px] my-2"></div>
 
-            <div className="hidden md:block bg-light-gray h-[1px] my-2"></div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex flex-col">
+          <div className="flex items-center justify-between">
+            <div className="flex flex-col">
               <p className="md:hidden flex text-warning text-sm md:text-base">
-              <ClockIcon className="w-5 h-5 md:mt-0.5 text-warning" />
-              {expiryDate}
-            </p>
+                <ClockIcon className="w-5 h-5 md:mt-0.5 text-warning" />
+                {expiryDate}
+              </p>
               <p className="underline-offset-2 text-light-gray underline flex text-xs gap-0.5">
                 <MapPinIcon className="w-4 h-4 mt-0.5" />
                 {location}
               </p>
-              </div>
-
-              <div className="ml-auto w-[6rem] d:translate-x-2">
-                <Button
-                  label="View"
-                  size="small"
-                  icon={ChevronDoubleRightIcon}
-                  iconPosition="right"
-                />
-              </div>
             </div>
+
+            <div className="ml-auto w-[6rem] md:translate-x-4 translate-x-3">
+              <Button
+                label="View"
+                size="small"
+                icon={ChevronDoubleRightIcon}
+                iconPosition="right"
+              />
+            </div>
+          </div>
         </div>
       </div>
     </div>
