@@ -1,14 +1,14 @@
 import { ButtonHTMLAttributes } from "react"
-import { getTextSizeClass } from "../textSize"
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   backgroundColor?: string
   size?: "small" | "medium" | "large"
   label: string
-  textSize?: "small" | "medium" | "large"
+  icon?: React.ElementType;
+  iconPosition?: "left" | "right"
 }
 
 // base button component w/ common styling/functionality across all variants
-const BaseButton = ({ label, className, textSize, ...props }: ButtonProps) => {
+const BaseButton = ({ label, className, iconPosition = "left", ...props }: ButtonProps) => {
   return (
     <button
       type="button"
@@ -18,7 +18,9 @@ const BaseButton = ({ label, className, textSize, ...props }: ButtonProps) => {
       ].join(" ")}
       {...props}
     >
-      <h5 className={getTextSizeClass(textSize)}>{label}</h5>
+      {props.icon && iconPosition === "left" && <props.icon className="w-5.5" />}
+      <h5>{label}</h5>
+      {props.icon && iconPosition === "right" && <props.icon className="w-5.5" />}
     </button>
   )
 }
