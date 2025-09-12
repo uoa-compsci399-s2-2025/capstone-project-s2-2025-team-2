@@ -1,11 +1,13 @@
 import { ButtonHTMLAttributes } from "react"
 import { getTextSizeClass } from "../textSize"
+import { getFontWeightClass } from "../font-weight"
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   backgroundColor?: string
   size?: "small" | "medium" | "large"
   label: string
-  textSize?: "small" | "medium" | "large"
+  textSize?: "xsmall" | "small" | "medium" | "large"
+  fontWeight?: "normal" | "medium" | "semibold" | "bold"
 }
 
 // base button component w/ common styling/functionality across all variants
@@ -14,6 +16,7 @@ const BaseButton = ({
   label,
   className,
   textSize,
+  fontWeight,
   ...props
 }: ButtonProps) => {
   return (
@@ -29,6 +32,7 @@ const BaseButton = ({
         className={[
           backgroundColor ? "" : "text-blue-primary",
           getTextSizeClass(textSize),
+          getFontWeightClass(fontWeight),
         ].join(" ")}
         style={{ color: backgroundColor }}
       >
