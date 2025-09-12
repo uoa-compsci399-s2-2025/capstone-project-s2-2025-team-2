@@ -13,7 +13,7 @@ const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const links = [
     {
-      href: "/userprofile",
+      href: "/profile",
       label: "Profile",
       icon: UserCircleIcon,
       isButton: true,
