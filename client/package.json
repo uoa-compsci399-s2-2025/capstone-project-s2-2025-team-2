@@ -37,6 +37,7 @@
     "googleapis": "^157.0.0",
     "storybook": "9.0.18",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "uuid": "^13.0.0"
   }
 }

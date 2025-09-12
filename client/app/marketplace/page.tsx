@@ -71,12 +71,10 @@ const Marketplace = () => {
       </p>
       <p className="text-gray-100 italic inline">Laboratory Reagents</p>
 
-      <div className="mt-5">
-
-      </div>
+      <div className="mt-5"></div>
 
       <div className="bg-transparent dark:bg-black flex flex-wrap pt-[2rem] gap-[2rem] mx-[2rem]">
-                <SearchBar
+        <SearchBar
           search={search}
           setSearch={setSearch}
           filter={filter}
@@ -86,7 +84,7 @@ const Marketplace = () => {
         />
       </div>
 
-      <div className="bg-background dark:bg-black flex flex-wrap pt-[2rem] gap-[2rem] mx-[2rem]">
+      <div className="bg-transparent dark:bg-black flex flex-wrap pt-[2rem] gap-[2rem] mx-[2rem]">
         {sorted.map((r) => (
           <ReagentCard
             key={uuidv4()}
