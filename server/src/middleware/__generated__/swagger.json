@@ -9,11 +9,15 @@
 		"schemas": {
 			"User": {
 				"properties": {
+					"email": {
+						"type": "string"
+					},
 					"username": {
 						"type": "string"
 					}
 				},
 				"required": [
+					"email",
 					"username"
 				],
 				"type": "object",
@@ -58,10 +62,7 @@
 			},
 			"Reagent": {
 				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"userId": {
+					"user_id": {
 						"type": "string"
 					},
 					"name": {
@@ -100,8 +101,7 @@
 					}
 				},
 				"required": [
-					"id",
-					"userId",
+					"user_id",
 					"name",
 					"description",
 					"expiryDate",
@@ -115,9 +115,6 @@
 			},
 			"CreateReagentRequest": {
 				"properties": {
-					"userId": {
-						"type": "string"
-					},
 					"name": {
 						"type": "string"
 					},
@@ -148,7 +145,6 @@
 					}
 				},
 				"required": [
-					"userId",
 					"name",
 					"description",
 					"categories",
@@ -160,10 +156,7 @@
 			},
 			"Partial_Reagent_": {
 				"properties": {
-					"id": {
-						"type": "string"
-					},
-					"userId": {
+					"user_id": {
 						"type": "string"
 					},
 					"name": {
@@ -260,40 +253,109 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"LoginResponse": {
+			"SendVerificationCodeResponse": {
 				"properties": {
-					"message": {
-						"type": "string"
-					},
 					"success": {
 						"type": "boolean"
+					},
+					"message": {
+						"type": "string"
 					}
 				},
 				"required": [
-					"message",
-					"success"
+					"success",
+					"message"
 				],
 				"type": "object",
 				"additionalProperties": false
 			},
-			"LoginRequest": {
+			"SendVerificationCodeRequest": {
+				"properties": {
+					"email": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"VerifyCodeResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"success",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"VerifyCodeRequest": {
 				"properties": {
 					"email": {
 						"type": "string"
 					},
-					"password": {
+					"inputCode": {
 						"type": "string"
 					}
 				},
 				"required": [
 					"email",
-					"password"
+					"inputCode"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"VerifyTokenResponse": {
+				"properties": {
+					"success": {
+						"type": "boolean"
+					},
+					"message": {
+						"type": "string"
+					},
+					"uid": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"success",
+					"message"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"VerifyTokenRequest": {
+				"properties": {
+					"idToken": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"idToken"
 				],
 				"type": "object",
 				"additionalProperties": false
 			}
 		},
-		"securitySchemes": {}
+		"securitySchemes": {
+			"jwt": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT",
+				"description": "enter 'Bearer {Firebase ID token}'"
+			}
+		}
 	},
 	"info": {
 		"title": "server",
@@ -319,8 +381,251 @@
 						}
 					}
 				},
+				"tags": [
+					"User"
+				],
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/users/{user_id}/email": {
+			"get": {
+				"operationId": "GetEmail",
+				"responses": {
+					"200": {
+						"description": "User email retrieved successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"email": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"email"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get email of the current logged in user",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "user_id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/users/reagents": {
+			"get": {
+				"operationId": "GetReagents",
+				"responses": {
+					"200": {
+						"description": "All reagents returned successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Reagent"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get all reagents under a user\r\nUser must be authenticated to access this endpoint",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			},
+			"post": {
+				"operationId": "CreateReagent",
+				"responses": {
+					"201": {
+						"description": "Reagent created successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Reagent"
+								}
+							}
+						}
+					}
+				},
+				"description": "Create a reagent by passing in all the required props.\r\nUser **must** be authenticated to access this endpoint (lab manager / admin) [seller]",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"description": "- the request object containing the data of the reagent (id generated by db)",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateReagentRequest",
+								"description": "- the request object containing the data of the reagent (id generated by db)"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users/reagents/{id}": {
+			"get": {
+				"operationId": "GetReagentById",
+				"responses": {
+					"200": {
+						"description": "reagent returned successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/Reagent"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a reagent by using its ID\r\nUser must be authenticated to access this endpoint",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "- The ID of the reagent to fetch",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"delete": {
+				"operationId": "DeleteReagentById",
+				"responses": {
+					"200": {
+						"description": "reagent deleted successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/Reagent"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"description": "Delete a reagent by using its ID\r\nUser **must** be authenticated to access this endpoint",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "- The ID of the reagent to delete",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			},
+			"patch": {
+				"operationId": "UpdateReagent",
+				"responses": {
+					"200": {
+						"description": "Reagent updated successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Reagent"
+								}
+							}
+						}
+					}
+				},
+				"description": "Update a reagent by its ID.\r\nUser **must** be authenticated to access this endpoint",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "- The ID of the reagent to update.",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"description": "- The updated reagent data (partial fields allowed)",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Partial_Reagent_",
+								"description": "- The updated reagent data (partial fields allowed)"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/reagents": {
@@ -520,16 +825,16 @@
 				}
 			}
 		},
-		"/auth/login": {
+		"/auth/send-verification-code": {
 			"post": {
-				"operationId": "Login",
+				"operationId": "SendVerificationCode",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/LoginResponse"
+									"$ref": "#/components/schemas/SendVerificationCodeResponse"
 								}
 							}
 						}
@@ -545,7 +850,71 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/LoginRequest"
+								"$ref": "#/components/schemas/SendVerificationCodeRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/verify-code": {
+			"post": {
+				"operationId": "VerifyCode",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VerifyCodeResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/VerifyCodeRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/verify-token": {
+			"post": {
+				"operationId": "VerifyToken",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/VerifyTokenResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/VerifyTokenRequest"
 							}
 						}
 					}

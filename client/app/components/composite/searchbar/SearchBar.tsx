@@ -6,7 +6,7 @@ interface SearchBarProps {
   setSearch: (val: string) => void
   filter: string
   setFilter: (val: string) => void
-  sort: "newest" | "oldest" | "nameAZ" | "nameZA" | ""
+  sort: "oldest" | "newest" | "nameAZ" | "nameZA" | ""
   setSort: (val: "newest" | "oldest" | "nameAZ" | "nameZA" | "") => void
 }
 
@@ -67,8 +67,8 @@ export default function SearchBar({
           className="appearance-none bg-primary rounded-tr-md rounded-br-md text-white px-2 py-1 outline-none cursor-pointer w-full shadow-lg"
         >
           <option value="">Sort by...</option>
-          <option value="newest">Newest</option>
-          <option value="oldest">Oldest</option>
+          <option value="newest">Oldest</option>
+          <option value="oldest">Newest</option>
           <option value="nameAZ">Name [A - Z]</option>
           <option value="nameZA">Name [Z - A]</option>
         </select>

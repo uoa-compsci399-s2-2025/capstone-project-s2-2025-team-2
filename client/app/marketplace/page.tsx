@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import Overlay from "../components/composite/Overlay"
 import SearchBar from "../components/composite/searchbar/SearchBar"
 import ReagentCard from "../components/composite/reagent/ReagentCard"
-import { Reagent } from "../../../server/src/data-layer/models/Reagent"
+import { Reagent } from "../../../server/src/business-layer/models/Reagent"
 import client from "../services/fetch-client"
 import { v4 as uuidv4 } from "uuid"
 
