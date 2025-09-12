@@ -24,9 +24,26 @@ const Marketplace = () => {
     fetchReagents()
   }, [])
 
-  const filtered = reagents.filter((r) =>
-    r.name.toLowerCase().includes(search.toLowerCase()),
-  )
+  const filtered = reagents.filter((r) => {
+    const query = search.trim().toLowerCase()
+    if (!query) return true
+
+    switch (filter) {
+      case "tag":
+        return Array.isArray(r.categories) && r.categories.some((c) =>
+          c.toLowerCase().includes(query),
+        )
+      case "category":
+        return Array.isArray(r.categories) && r.categories.some((c) =>
+          c.toLowerCase().includes(query),
+        )
+      case "date":
+        return (r.expiryDate ?? "").toLowerCase().includes(query)
+      default: 
+        return (r.name ?? "").toLowerCase().includes(query)
+    }
+  })
+
 
   const sorted = [...filtered].sort((a, b) => {
     switch (sort) {
