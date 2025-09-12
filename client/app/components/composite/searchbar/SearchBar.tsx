@@ -60,7 +60,9 @@ export default function SearchBar({
         <select
           value={sort}
           onChange={(e) =>
-            setSort(e.target.value as "newest" | "oldest" | "nameAZ" | "nameZA" | "")
+            setSort(
+              e.target.value as "newest" | "oldest" | "nameAZ" | "nameZA" | "",
+            )
           }
           className="appearance-none bg-primary rounded-tr-md rounded-br-md text-white px-2 py-1 outline-none cursor-pointer w-full shadow-lg"
         >

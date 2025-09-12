@@ -11,13 +11,13 @@ const Marketplace = () => {
   const [reagents, setReagents] = useState<Reagent[]>([])
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState("all")
-  const [sort, setSort] = useState<"newest" | "oldest" | "nameAZ" | "nameZA" | "">("newest")
+  const [sort, setSort] = useState<
+    "newest" | "oldest" | "nameAZ" | "nameZA" | ""
+  >("newest")
 
   useEffect(() => {
     const fetchReagents = async () => {
-      const { data } = await client.GET(
-        "/reagents" as any, {}
-      )
+      const { data } = await client.GET("/reagents" as any, {})
       console.log(data)
       setReagents(data)
     }
@@ -30,20 +30,21 @@ const Marketplace = () => {
 
     switch (filter) {
       case "tag":
-        return Array.isArray(r.categories) && r.categories.some((c) =>
-          c.toLowerCase().includes(query),
+        return (
+          Array.isArray(r.categories) &&
+          r.categories.some((c) => c.toLowerCase().includes(query))
         )
       case "category":
-        return Array.isArray(r.categories) && r.categories.some((c) =>
-          c.toLowerCase().includes(query),
+        return (
+          Array.isArray(r.categories) &&
+          r.categories.some((c) => c.toLowerCase().includes(query))
         )
       case "date":
         return (r.expiryDate ?? "").toLowerCase().includes(query)
-      default: 
+      default:
         return (r.name ?? "").toLowerCase().includes(query)
     }
   })
-
 
   const sorted = [...filtered].sort((a, b) => {
     switch (sort) {
