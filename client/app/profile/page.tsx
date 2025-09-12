@@ -1,5 +1,5 @@
-import ReagentCard from "../components/composite/marketplace/ReagentCard"
-import { DefaultReagentCard } from "../components/composite/marketplace/ReagentCard.story"
+import ReagentCard from "../components/composite/reagent/ReagentCard"
+import { DefaultReagentCard } from "../components/composite/reagent/ReagentCard.story"
 import Overlay from "../components/composite/Overlay"
 
 // interface needed for auth + content to render

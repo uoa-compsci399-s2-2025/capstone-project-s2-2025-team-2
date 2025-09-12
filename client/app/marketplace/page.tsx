@@ -2,28 +2,49 @@
 import { useEffect, useState } from "react"
 import Overlay from "../components/composite/Overlay"
 import SearchBar from "../components/composite/searchbar/SearchBar"
-import ReagentCard from "../components/composite/marketplace/ReagentCard"
+import ReagentCard from "../components/composite/reagent/ReagentCard"
 import { Reagent } from "../../../server/src/data-layer/models/Reagent"
+import client from "../services/fetch-client"
+import { v4 as uuidv4 } from "uuid"
 
 const Marketplace = () => {
   const [reagents, setReagents] = useState<Reagent[]>([])
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState("all")
-  const [sort, setSort] = useState<"newest" | "oldest" | "name" | "">("newest")
+  const [sort, setSort] = useState<
+    "newest" | "oldest" | "nameAZ" | "nameZA" | ""
+  >("newest")
 
   useEffect(() => {
     const fetchReagents = async () => {
-      const res = await fetch("http://localhost:8000/api/getAllReagents")
-      const data: Reagent[] = await res.json()
-      console.log("Fetched reagents:", data)
+      const { data } = await client.GET("/reagents" as any, {})
+      console.log(data)
       setReagents(data)
     }
     fetchReagents()
   }, [])
 
-  const filtered = reagents.filter((r) =>
-    r.name.toLowerCase().includes(search.toLowerCase()),
-  )
+  const filtered = reagents.filter((r) => {
+    const query = search.trim().toLowerCase()
+    if (!query) return true
+
+    switch (filter) {
+      case "tag":
+        return (
+          Array.isArray(r.categories) &&
+          r.categories.some((c) => c.toLowerCase().includes(query))
+        )
+      case "category":
+        return (
+          Array.isArray(r.categories) &&
+          r.categories.some((c) => c.toLowerCase().includes(query))
+        )
+      case "date":
+        return (r.expiryDate ?? "").toLowerCase().includes(query)
+      default:
+        return (r.name ?? "").toLowerCase().includes(query)
+    }
+  })
 
   const sorted = [...filtered].sort((a, b) => {
     switch (sort) {
@@ -31,8 +52,10 @@ const Marketplace = () => {
         return a.expiryDate.localeCompare(b.expiryDate)
       case "oldest":
         return b.expiryDate.localeCompare(a.expiryDate)
-      case "name":
+      case "nameAZ":
         return a.name.localeCompare(b.name)
+      case "nameZA":
+        return b.name.localeCompare(a.name)
       default:
         return 0
     }
@@ -61,15 +84,18 @@ const Marketplace = () => {
           sort={sort}
           setSort={setSort}
         />
+      </div>
+
+      <div className="bg-background dark:bg-black flex flex-wrap pt-[2rem] gap-[2rem] mx-[2rem]">
         {sorted.map((r) => (
           <ReagentCard
-            key={r.id}
+            key={uuidv4()}
             name={r.name}
             description={r.description}
             tags={Array.isArray(r.categories) ? r.categories : []}
             location={r.location ?? "Unknown"}
             expiryDate={r.expiryDate ?? "N/A"}
-            imageUrl={r.images?.[0] ?? "/placeholder.png"}
+            imageUrl={r.images?.[0] ?? "/placeholder.webp"}
             formula={r.tradingType ?? ""}
           />
         ))}

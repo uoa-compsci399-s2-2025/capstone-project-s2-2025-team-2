@@ -59,7 +59,7 @@ const ReagentCard = ({
       <p className="text-light-gray mx-4">{description}</p>
       <span className="flex flex-col gap-.5 mx-4 mt-1">
         <p className="text-gray">Expires</p>
-        <h4 className="text-red-700 font-light">{expiryDate}</h4>
+        <h5 className="text-warning font-bold">{expiryDate}</h5>
       </span>
       <div className="bg-light-gray h-[1px] mx-6 my-2"></div>{" "}
       <div className="items-center flex justify-between md:m-4 m-6">
