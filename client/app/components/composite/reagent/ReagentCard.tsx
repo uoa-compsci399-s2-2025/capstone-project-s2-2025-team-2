@@ -57,17 +57,17 @@ const ReagentCard = ({
   <div className="flex flex-col justify-between flex-1 px-4 py-2">
 
     <span className="flex items-center gap-2 md:gap-4">
-      <h3 className="text-white text-xl md:text-2xl italic">{name}</h3>
-      <p className="text-white/60 text-sm md:text-base italic mt-1">[{formula}]</p>
+      <h4 className="text-white text-lg md:text-xl italic">{name}</h4>
+      <p className="text-white/60 text-sm md:text-sm italic mt-1">[{formula}]</p>
     </span>
 
-    <span className="flex flex-col mt-1">
-      <p className="flex text-warning text-base md:text-lg">
-      <ClockIcon className="w-5 h-5 mt-0.5 md:mt-1 text-warning" />
+    <div className="flex flex-col mt-1">
+      <p className="flex text-warning text-sm md:text-base">
+      <ClockIcon className="w-5 h-5 md:mt-0.5 text-warning" />
       {expiryDate}      
       </p>
 
-    </span>
+
 
     <div className="hidden md:block bg-light-gray h-[1px] my-2"></div>
 
@@ -76,15 +76,16 @@ const ReagentCard = ({
         <MapPinIcon className="w-4 h-4 mt-0.5" />
         {location}
       </p>
-      <div className="w-[8rem] md:translate-x-2">
+      <div className="ml-auto w-[6rem] d:translate-x-2">
         <Button
-          label="Request"
+          label="View"
           size="small"
           icon={ChevronDoubleRightIcon}
           iconPosition="right"
         />
       </div>
     </div>
+        </div>
   </div>
 </div>
 
