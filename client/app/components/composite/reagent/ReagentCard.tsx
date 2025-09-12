@@ -17,7 +17,7 @@ interface ReagentCardProps {
 
 const ReagentCard = ({
   name,
-  description,
+  // description,
   tags,
   location,
   expiryDate,

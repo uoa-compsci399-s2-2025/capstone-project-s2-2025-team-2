@@ -3,12 +3,17 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   backgroundColor?: string
   size?: "small" | "medium" | "large"
   label: string
-  icon?: React.ElementType;
+  icon?: React.ElementType
   iconPosition?: "left" | "right"
 }
 
 // base button component w/ common styling/functionality across all variants
-const BaseButton = ({ label, className, iconPosition = "left", ...props }: ButtonProps) => {
+const BaseButton = ({
+  label,
+  className,
+  iconPosition = "left",
+  ...props
+}: ButtonProps) => {
   return (
     <button
       type="button"
@@ -18,9 +23,13 @@ const BaseButton = ({ label, className, iconPosition = "left", ...props }: Butto
       ].join(" ")}
       {...props}
     >
-      {props.icon && iconPosition === "left" && <props.icon className="w-5.5" />}
+      {props.icon && iconPosition === "left" && (
+        <props.icon className="w-5.5" />
+      )}
       <h5>{label}</h5>
-      {props.icon && iconPosition === "right" && <props.icon className="w-5.5" />}
+      {props.icon && iconPosition === "right" && (
+        <props.icon className="w-5.5" />
+      )}
     </button>
   )
 }
