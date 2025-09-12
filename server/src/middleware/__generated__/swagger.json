@@ -39,27 +39,6 @@
 					"biological"
 				]
 			},
-			"FirebaseFirestore.Timestamp": {
-				"description": "A Timestamp represents a point in time independent of any time zone or\ncalendar, represented as seconds and fractions of seconds at nanosecond\nresolution in UTC Epoch time. It is encoded using the Proleptic Gregorian\nCalendar which extends the Gregorian calendar backwards to year one. It is\nencoded assuming all minutes are 60 seconds long, i.e. leap seconds are\n\"smeared\" so that no leap second table is needed for interpretation. Range\nis from 0001-01-01T00:00:00Z to 9999-12-31T23:59:59.999999999Z.",
-				"properties": {
-					"seconds": {
-						"type": "number",
-						"format": "double",
-						"description": "The number of seconds of UTC time since Unix epoch 1970-01-01T00:00:00Z."
-					},
-					"nanoseconds": {
-						"type": "number",
-						"format": "double",
-						"description": "The non-negative fractions of a second at nanosecond resolution."
-					}
-				},
-				"required": [
-					"seconds",
-					"nanoseconds"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"Reagent": {
 				"properties": {
 					"user_id": {
@@ -94,7 +73,8 @@
 						"type": "array"
 					},
 					"createdAt": {
-						"$ref": "#/components/schemas/FirebaseFirestore.Timestamp"
+						"type": "string",
+						"format": "date-time"
 					},
 					"location": {
 						"type": "string"
@@ -188,7 +168,8 @@
 						"type": "array"
 					},
 					"createdAt": {
-						"$ref": "#/components/schemas/FirebaseFirestore.Timestamp"
+						"type": "string",
+						"format": "date-time"
 					},
 					"location": {
 						"type": "string"
