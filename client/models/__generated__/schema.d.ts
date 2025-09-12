@@ -20,6 +20,46 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  "/reagents": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description Get all reagents with an option to filter them by category. */
+    get: operations["GetAllReagents"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/reagents/{id}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description Get a reagent by its ID. */
+    get: operations["GetReagent"]
+    put?: never
+    /** @description Get a reagent by its ID.
+     *     Can only be done by lab_admin and admin */
+    post: operations["CreateReagent"]
+    /** @description Delete a reagent by its ID.
+     *     Can only be done by lab_admin (who owns the reagent) and admin */
+    delete: operations["DeleteReagent"]
+    options?: never
+    head?: never
+    /** @description Update a reagent by its ID.
+     *     Can only be done by lab_admin (who owns the reagent) and admin */
+    patch: operations["UpdateReagent"]
+    trace?: never
+  }
   "/auth/google/verify": {
     parameters: {
       query?: never
@@ -37,7 +77,7 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  "/auth/login": {
+  "/auth/send-verification-code": {
     parameters: {
       query?: never
       header?: never
@@ -46,7 +86,39 @@ export interface paths {
     }
     get?: never
     put?: never
-    post: operations["Login"]
+    post: operations["SendVerificationCode"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/auth/verify-code": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: operations["VerifyCode"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/auth/verify-token": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: operations["VerifyToken"]
     delete?: never
     options?: never
     head?: never
@@ -59,6 +131,44 @@ export interface components {
   schemas: {
     User: {
       username: string
+    }
+    /** @enum {string} */
+    ReagentTradingType: "trade" | "giveaway" | "sell"
+    /** @enum {string} */
+    ReagentCategory: "chemical" | "hazardous" | "biological"
+    Reagent: {
+      userId: string
+      name: string
+      description: string
+      /** Format: double */
+      price?: number
+      expiryDate: string
+      tradingType: components["schemas"]["ReagentTradingType"]
+      images?: string[]
+      categories: components["schemas"]["ReagentCategory"][]
+    }
+    CreateReagentRequest: {
+      userId: string
+      name: string
+      description: string
+      categories: components["schemas"]["ReagentCategory"][]
+      /** Format: double */
+      price?: number
+      expiryDate: string
+      tradingType: components["schemas"]["ReagentTradingType"]
+      images?: string[]
+    }
+    /** @description Make all properties in T optional */
+    Partial_Reagent_: {
+      userId?: string
+      name?: string
+      description?: string
+      /** Format: double */
+      price?: number
+      expiryDate?: string
+      tradingType?: components["schemas"]["ReagentTradingType"]
+      images?: string[]
+      categories?: components["schemas"]["ReagentCategory"][]
     }
     GoogleOAuthUser: {
       uid: string
@@ -75,13 +185,29 @@ export interface components {
     GoogleOAuthRequest: {
       idToken: string
     }
-    LoginResponse: {
-      message: string
+    SendVerificationCodeResponse: {
       success: boolean
+      message: string
     }
-    LoginRequest: {
+    SendVerificationCodeRequest: {
       email: string
-      password: string
+    }
+    VerifyCodeResponse: {
+      success: boolean
+      message: string
+    }
+    VerifyCodeRequest: {
+      email: string
+      inputCode: string
+    }
+    VerifyTokenResponse: {
+      success: boolean
+      message: string
+      uid?: string
+      email?: string
+    }
+    VerifyTokenRequest: {
+      idToken: string
     }
   }
   responses: never
@@ -112,6 +238,128 @@ export interface operations {
       }
     }
   }
+  GetAllReagents: {
+    parameters: {
+      query?: {
+        /** @description - The list of all categories to fetch reagents from. */
+        category?: components["schemas"]["ReagentCategory"][]
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Reagents retrieved successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Reagent"][]
+        }
+      }
+    }
+  }
+  GetReagent: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description - The ID of the reagent to retrieve. */
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Reagent retrieved successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Reagent"]
+        }
+      }
+    }
+  }
+  CreateReagent: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description - the request object containing the data of the reagent (id generated by db) */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateReagentRequest"]
+      }
+    }
+    responses: {
+      /** @description Reagent created successfully */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Reagent"]
+        }
+      }
+    }
+  }
+  DeleteReagent: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description - The ID of the reagent to delete. */
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Reagent deleted successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Reagent"]
+        }
+      }
+    }
+  }
+  UpdateReagent: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description - The ID of the reagent to update. */
+        id: string
+      }
+      cookie?: never
+    }
+    /** @description - The updated reagent data (partial fields allowed) */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Partial_Reagent_"]
+      }
+    }
+    responses: {
+      /** @description Reagent updated successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Reagent"]
+        }
+      }
+    }
+  }
   VerifyToken: {
     parameters: {
       query?: never
@@ -136,7 +384,7 @@ export interface operations {
       }
     }
   }
-  Login: {
+  SendVerificationCode: {
     parameters: {
       query?: never
       header?: never
@@ -145,7 +393,7 @@ export interface operations {
     }
     requestBody: {
       content: {
-        "application/json": components["schemas"]["LoginRequest"]
+        "application/json": components["schemas"]["SendVerificationCodeRequest"]
       }
     }
     responses: {
@@ -155,7 +403,55 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["LoginResponse"]
+          "application/json": components["schemas"]["SendVerificationCodeResponse"]
+        }
+      }
+    }
+  }
+  VerifyCode: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["VerifyCodeRequest"]
+      }
+    }
+    responses: {
+      /** @description Ok */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["VerifyCodeResponse"]
+        }
+      }
+    }
+  }
+  VerifyToken: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["VerifyTokenRequest"]
+      }
+    }
+    responses: {
+      /** @description Ok */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["VerifyTokenResponse"]
         }
       }
     }

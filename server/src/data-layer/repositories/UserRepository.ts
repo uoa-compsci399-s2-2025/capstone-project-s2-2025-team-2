@@ -1,0 +1,23 @@
+import FirestoreCollections from "../adapters/FirestoreCollections"
+import { User } from "../../business-layer/models/User"
+
+export class UserService {
+  async getAllUsers(): Promise<User[]> {
+    try {
+      const snapshot = await FirestoreCollections.users.get()
+      console.log(`Found ${snapshot.size} users in collection`)
+      if (snapshot.empty) {
+        return []
+      }
+      const users: User[] = []
+      snapshot.forEach((doc) => {
+        const userData = doc.data()
+        users.push(userData as User)
+      })
+      return users
+    } catch (error) {
+      console.error("Error fetching all users:", error)
+      throw error
+    }
+  }
+}
