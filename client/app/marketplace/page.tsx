@@ -90,7 +90,7 @@ const Marketplace = () => {
             tags={Array.isArray(r.categories) ? r.categories : []}
             location={r.location ?? "Unknown"}
             expiryDate={r.expiryDate ?? "N/A"}
-            imageUrl={r.images?.[0] ?? "/placeholder.png"}
+            imageUrl={r.images?.[0] ?? "/placeholder.webp"}
             formula={r.tradingType ?? ""}
           />
         ))}

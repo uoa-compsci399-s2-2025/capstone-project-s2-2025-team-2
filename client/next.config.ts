@@ -2,7 +2,20 @@ import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["encrypted-tbn0.gstatic.com", "tse2.mm.bing.net"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "encrypted-tbn0.gstatic.com",
+        port: "",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "tse2.mm.bing.net",
+        port: "",
+        pathname: "/**",
+      },
+    ],
   },
 }
 
