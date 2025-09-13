@@ -43,7 +43,7 @@ const ReagentView = () => {
                 </p>
                 <p className="text-dark-gray font-bold">Quantity - 500ml</p>
               </div>
-              <div className="flex-[0.75]">
+              <div className="flex-[0.75] ml-[1rem]">
                 <p className="text-dark-gray">
                   Selling a 500 mL bottle of hydrogen peroxide (H₂O₂) reagent,
                   5% solution. It’s Sigma-Aldrich brand, still sealed and
