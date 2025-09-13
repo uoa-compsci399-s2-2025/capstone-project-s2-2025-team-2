@@ -7,7 +7,7 @@ import ReagentBreadcrumb from "./ReagentBreadcrumb"
 
 const ReagentView = () => {
   return (
-    <div className="bg-white h-[100vh] font-family-sans  p-[2rem]">
+    <div className="bg-white h-full font-family-sans p-[2rem]">
       <ReagentBreadcrumb />
       <div className="flex flex-col items-center">
         <h1 className="text-black tracking-wider">Hydrogen Peroxide 5%</h1>
@@ -17,7 +17,7 @@ const ReagentView = () => {
             - 25/20/2025
           </h5>
           <h5 className="flex text-red-300 items-center text-[0.8rem]">
-            <LuClockAlert className="text-red-300 mr-[0.3rem] w-5 h-5" />{" "}
+            <LuClockAlert className="text-red-300 mr-[0.3rem] w-5 h-5" />
             Expires - 25/20/2025
           </h5>
           <h5 className="flex text-blue-300 items-center text-[0.8rem]">
