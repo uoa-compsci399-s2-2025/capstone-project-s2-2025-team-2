@@ -3,17 +3,6 @@ export interface AuthRequest {
     uid: string
     name: string
     email?: string
-  }
-  lab_manager?: {
-    uid: string
-    name: string
-    email?: string
-    role: "lab_manager"
-  }
-  admin?: {
-    uid: string
-    name: string
-    email?: string
-    role: "admin"
+    role: "user" | "lab_manager" | "admin"
   }
 }
