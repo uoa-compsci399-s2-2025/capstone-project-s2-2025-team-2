@@ -2,6 +2,7 @@ import FireBaseError from "../../business-layer/errors/FirebaseError"
 import type * as express from "express"
 import { StatusCodes } from "http-status-codes"
 import { auth } from "./Firebase"
+import { UserService } from "../../data-layer/repositories/UserRepository"
 
 export function expressAuthentication(
   request: express.Request,
@@ -44,7 +45,37 @@ export function expressAuthentication(
                   )
                 }
               }
-              resolve(user)
+              let role: "user" | "lab_manager" | "admin" = "user"
+              try {
+                const userService = new UserService()
+
+                // this function needs to be written
+                const userFromDB = userService.getUserById()
+
+                if (userFromDB && userFromDB.role) {
+                  role = userFromDB.role
+                  console.log(`User ${user.uid} has role: ${role}`)
+                } else {
+                  console.log(
+                    `User ${user.uid} not found in database, using default role: user`,
+                  )
+                }
+              } catch (dbError) {
+                console.log(
+                  "Failed to fetch user role from database, using default 'user'",
+                  dbError,
+                )
+              }
+              const authUser = {
+                user: {
+                  uid: user.uid,
+                  name: user.displayName,
+                  email: user.email,
+                  role: role,
+                },
+              }
+
+              resolve(authUser)
             })
             .catch((reason) => {
               if (!(reason instanceof FireBaseError)) {
