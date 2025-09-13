@@ -1,4 +1,6 @@
-export const getTextSizeClass = (size?: "xsmall" | "small" | "medium" | "large") => {
+export const getTextSizeClass = (
+  size?: "xsmall" | "small" | "medium" | "large",
+) => {
   switch (size) {
     case "xsmall":
       return "text-[0.8rem]"

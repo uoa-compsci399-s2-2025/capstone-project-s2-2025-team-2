@@ -55,28 +55,28 @@ const ReagentCard = ({
 
         <div className="flex flex-col justify-between flex-1 gap-1 md:py-4">
           <div className="flex flex-col justify-between">
-          <span className="flex items-center gap-3 md:gap-4">
-            <h4 className="text-white text-base md:text-xl italic">{name}</h4>
-            <p className="text-white/60 text-sm md:text-sm italic mt-1">
-              [{formula}]
+            <span className="flex items-center gap-3 md:gap-4">
+              <h4 className="text-white text-base md:text-xl italic">{name}</h4>
+              <p className="text-white/60 text-sm md:text-sm italic mt-1">
+                [{formula}]
+              </p>
+            </span>
+
+            <div className="md:hidden flex flex-wrap gap-1">
+              {tags.map((tag, idx) => (
+                <span
+                  key={idx}
+                  className="bg-white/20 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+
+            <p className="hidden md:flex flex-row gap-0.5 text-warning text-base">
+              <ClockIcon className="w-4.5 h-4.5 mt-0.75 text-warning" />
+              {expiryDate}
             </p>
-          </span>
-
-          <div className="md:hidden flex flex-wrap gap-1">
-            {tags.map((tag, idx) => (
-              <span
-                key={idx}
-                className="bg-white/20 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-
-          <p className="hidden md:flex flex-row gap-0.5 text-warning text-base">
-            <ClockIcon className="w-4.5 h-4.5 mt-0.75 text-warning" />
-            {expiryDate}
-          </p>
           </div>
 
           <div className="hidden md:block bg-light-gray h-[1px] my-2"></div>
@@ -95,14 +95,14 @@ const ReagentCard = ({
 
             <div className="">
               <div className="md:hidden">
-              <Button
-                label="View"
-                size="small"
-                textSize="xsmall"
-                icon={ChevronDoubleRightIcon}
-                iconPosition="right"
-                fontWeight="semibold"
-              />
+                <Button
+                  label="View"
+                  size="small"
+                  textSize="xsmall"
+                  icon={ChevronDoubleRightIcon}
+                  iconPosition="right"
+                  fontWeight="semibold"
+                />
               </div>
               <div className="hidden md:block">
                 <Button

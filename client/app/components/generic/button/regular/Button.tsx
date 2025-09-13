@@ -32,7 +32,14 @@ const BaseButton = ({
       {props.icon && iconPosition === "left" && (
         <props.icon className="w-4.5" />
       )}
-      <h5 className={[getTextSizeClass(textSize), getFontWeightClass(fontWeight)].join(" ")}>{label}</h5>
+      <h5
+        className={[
+          getTextSizeClass(textSize),
+          getFontWeightClass(fontWeight),
+        ].join(" ")}
+      >
+        {label}
+      </h5>
       {props.icon && iconPosition === "right" && (
         <props.icon className="w-4.5" />
       )}

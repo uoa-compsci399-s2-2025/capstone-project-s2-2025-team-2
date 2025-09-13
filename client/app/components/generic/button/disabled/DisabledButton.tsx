@@ -10,7 +10,13 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 // base button component w/ common styling/functionality across all variants
-const BaseButton = ({ label, className, textSize, fontWeight, ...props }: ButtonProps) => {
+const BaseButton = ({
+  label,
+  className,
+  textSize,
+  fontWeight,
+  ...props
+}: ButtonProps) => {
   return (
     <button
       type="button"
@@ -20,7 +26,13 @@ const BaseButton = ({ label, className, textSize, fontWeight, ...props }: Button
       ].join(" ")}
       {...props}
     >
-      <h5 className={["text-secondary", getTextSizeClass(textSize), getFontWeightClass(fontWeight)].join(" ")}>
+      <h5
+        className={[
+          "text-secondary",
+          getTextSizeClass(textSize),
+          getFontWeightClass(fontWeight),
+        ].join(" ")}
+      >
         {label}
       </h5>
     </button>
