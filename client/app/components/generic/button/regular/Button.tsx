@@ -1,10 +1,14 @@
 import { ButtonHTMLAttributes } from "react"
+import { getTextSizeClass } from "../textSize"
+import { getFontWeightClass } from "../font-weight"
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   backgroundColor?: string
   size?: "small" | "medium" | "large"
   label: string
   icon?: React.ElementType
   iconPosition?: "left" | "right"
+  textSize?: "xsmall" | "small" | "medium" | "large"
+  fontWeight?: "normal" | "medium" | "semibold" | "bold"
 }
 
 // base button component w/ common styling/functionality across all variants
@@ -12,6 +16,8 @@ const BaseButton = ({
   label,
   className,
   iconPosition = "left",
+  textSize,
+  fontWeight,
   ...props
 }: ButtonProps) => {
   return (
@@ -24,11 +30,18 @@ const BaseButton = ({
       {...props}
     >
       {props.icon && iconPosition === "left" && (
-        <props.icon className="w-5.5" />
+        <props.icon className="w-4.5" />
       )}
-      <h5>{label}</h5>
+      <h5
+        className={[
+          getTextSizeClass(textSize),
+          getFontWeightClass(fontWeight),
+        ].join(" ")}
+      >
+        {label}
+      </h5>
       {props.icon && iconPosition === "right" && (
-        <props.icon className="w-5.5" />
+        <props.icon className="w-4.5" />
       )}
     </button>
   )
