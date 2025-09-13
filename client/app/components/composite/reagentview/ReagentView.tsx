@@ -1,7 +1,6 @@
 import { FaRegClock } from "react-icons/fa"
 import { LuClockAlert } from "react-icons/lu"
 import { LuHouse } from "react-icons/lu"
-import Tag from "./Tag"
 import SellerContact from "./SellerContact"
 import ReagentBreadcrumb from "./ReagentBreadcrumb"
 
@@ -56,9 +55,18 @@ const ReagentView = () => {
                   ipsum lorem ipsum lorem ipsum lorem
                 </p>
                 <div className="mt-[3rem] flex">
-                  <Tag />
-                  <Tag />
-                  <Tag />
+                  <div
+                    className="mx-[0.4rem] bg-light-gray text-dark-gray px-[0.8rem] rounded-[0.7rem] font-family-sans tracking-widest">
+                    Tag
+                  </div>
+                  <div
+                    className="mx-[0.4rem] bg-light-gray text-dark-gray px-[0.8rem] rounded-[0.7rem] font-family-sans tracking-widest">
+                    Tag
+                  </div>
+                  <div
+                    className="mx-[0.4rem] bg-light-gray text-dark-gray px-[0.8rem] rounded-[0.7rem] font-family-sans tracking-widest">
+                    Tag
+                  </div>
                 </div>
               </div>
             </div>
