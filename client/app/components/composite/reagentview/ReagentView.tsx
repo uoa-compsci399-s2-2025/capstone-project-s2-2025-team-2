@@ -43,7 +43,7 @@ const ReagentView = ({
           className="object-cover"
         />
       </div>
-      <div className="bg-primary -mt-8 relative z-10 rounded-t-2xl md:mt-0 md:rounded-none md:z-auto md:bg-transparent">
+      <div className="bg-primary -mt-[1rem] mb-[1rem] relative z-10 rounded-t-3xl md:mt-0 md:mb-0 md:rounded-none md:z-auto md:bg-transparent">
         <div className="pt-[2rem] md:pt-0 px-[2rem] md:px-0">
           <ReagentBreadcrumb />
         </div>
@@ -70,7 +70,7 @@ const ReagentView = ({
               <LuHouse className="text-blue-300 mr-[0.3rem] w-5 h-5" /> Location
               -{location}
             </h5>
-            <div className="flex">
+            <div className="mt-[1rem] flex">
               {categories?.map((tag) => {
                 return (
                   <div
@@ -130,8 +130,18 @@ const ReagentView = ({
           </div>
         </div>
       </div>
+      <div className="md:hidden bg-background -mt-[2rem] relative z-10 rounded-t-3xl md:mt-0 md:rounded-none md:z-auto md:bg-transparent">
+        <div className="flex h-[8rem] justify-between">
+        <span className="flex flex-col justify-center ml-[2rem]">
+            <p className="text-white text-[0.8rem]">Price</p>
+              <h2 className="text-green-500">${price}</h2>
+        </span>
+        <div className="flex items-center mr-[2rem]">
+          <SellerContact />
 
-      
+        </div>
+        </div>
+      </div>
 
       <div className="hidden md:block">
         <div className="w-[60vw] mx-auto my-[2rem] h-[1px] bg-gradient-to-r from-transparent via-gray-400 to-transparent" />
