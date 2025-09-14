@@ -31,12 +31,21 @@ const ReagentView = ({
   return (
     <div
       className="
-        h-full font-family-sans p-[2rem]
-        bg-black
+        h-full font-family-sans md:p-[2rem]
+        md:bg-black
     "
     >
-      <ReagentBreadcrumb />
-      <div className="flex flex-col items-center">
+      <div className="md:hidden relative overflow-hidden h-[35rem] md:h-[15rem] w-full md:mb-[1rem]">
+          <Image
+            src={image ?? "/placeholder.webp"}
+            alt="Reagent"
+            fill
+            className="object-cover"
+          />
+        </div>
+      <div className="bg-primary -mt-8 relative z-10 rounded-t-4xl md:mt-0 md:rounded-none md:z-auto md:bg-transparent">
+        <ReagentBreadcrumb />
+              <div className="flex flex-col items-center">
         <h1 className="text-white tracking-wider">{name}</h1>
         <div className="flex justify-around w-[43rem] mx-auto mt-[1rem]">
           <h5 className="flex text-green-200 items-center text-[0.8rem]">
@@ -54,7 +63,7 @@ const ReagentView = ({
         </div>
       </div>
       <div className="flex mt-[2rem]">
-        <div className="flex-[1] relative">
+        <div className="md:flex-[1] relative">
           <Image
             src={image ?? "/placeholder.webp"}
             alt="Reagent"
@@ -94,7 +103,9 @@ const ReagentView = ({
           </div>
         </div>
       </div>
-      <div className="w-[60vw] mx-auto my-[2rem] h-[1px] bg-gradient-to-r from-transparent via-gray-400 to-transparent" />
+      </div>
+
+      <div className="hidden md:block w-[60vw] mx-auto my-[2rem] h-[1px] bg-gradient-to-r from-transparent via-gray-400 to-transparent" />
       <div className="flex flex-col items-center gap-5">
         <h3 className="text-[1.1rem] font-bold text-black dark:text-white">
           Reagent Owner
