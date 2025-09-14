@@ -11,7 +11,7 @@ interface SellerContactProps {
 const SellerContact = ({ name, location, rating }: SellerContactProps) => {
   return (
     <div className="flex flex-row items-center">
-      <div className="relative bg-yellow-600 rounded-full border-2 border-white h-[4rem] w-[4rem] overflow-hidden">
+      <div className="hidden md:block relative bg-yellow-600 rounded-full border-2 border-white h-[4rem] w-[4rem] overflow-hidden">
         <Image
           src="/placeholder.webp"
           alt="Reagent"
@@ -20,7 +20,7 @@ const SellerContact = ({ name, location, rating }: SellerContactProps) => {
         />
       </div>
 
-      <div className="mx-[1.5rem]">
+      <div className="hidden md:block  mx-[1.5rem]">
         <h4 className="text-[1rem] font-boldtext-white">{name || "text"}</h4>
         <span className="flex items-center text-[0.8rem] font-bold text-white">
           <LuHouse className="mr-[0.3rem]" />
