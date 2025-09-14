@@ -19,6 +19,6 @@ export const DefaultSellerContact: Story = {
   args: {
     name: "Violet Chen",
     location: "University of Auckland",
-    rating: 99
+    rating: 99,
   },
 }
