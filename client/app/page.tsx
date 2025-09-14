@@ -1,6 +1,5 @@
 import Header from "./components/composite/landing/Header"
 import Landing from "./components/composite/landing/Landing"
-import ReagentView from "./components/composite/reagentview/ReagentView"
 
 export default function Home() {
   return (
@@ -12,7 +11,6 @@ export default function Home() {
     >
       <Header />
       <Landing />
-      <ReagentView/>
     </div>
   )
 }
