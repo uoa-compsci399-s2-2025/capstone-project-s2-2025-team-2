@@ -15,11 +15,11 @@ const SellerContact = ({ name, location, rating }: SellerContactProps) => {
       </div>
       <div className="mx-[1.5rem]">
         <h4 className="text-midnight text-[1rem] font-bold dark:text-white">
-          {name || "Violet Chen"}
+          {name}
         </h4>
         <span className="flex items-center text-[0.8rem] text-midnight font-bold dark:text-white">
           <LuHouse className="mr-[0.3rem]" />
-          {location || "University of Auckland"}
+          {location}
         </span>
         <span className="text-gold items-center flex text-[0.8rem] font-bold">
           <FaRegStar className="mr-[0.3rem]" />
@@ -28,7 +28,7 @@ const SellerContact = ({ name, location, rating }: SellerContactProps) => {
       </div>
       <button className="bg-blue-primary text-white font-sans rounded-[5px]">
         <h4 className="text-[0.8rem] font-semibold px-[2.5rem] py-[0.5rem]">
-          Contact {name || "Violet"}
+          Contact {name}
         </h4>
       </button>
     </div>

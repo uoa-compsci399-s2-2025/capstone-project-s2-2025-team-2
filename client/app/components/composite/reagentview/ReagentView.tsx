@@ -3,6 +3,7 @@ import { LuClockAlert } from "react-icons/lu"
 import { LuHouse } from "react-icons/lu"
 import SellerContact from "./SellerContact"
 import ReagentBreadcrumb from "./ReagentBreadcrumb"
+import Image from "next/image"
 
 interface ReagentView {
     name?: string
@@ -15,6 +16,7 @@ interface ReagentView {
     quantity?: string
     description?: string
     tags?: string[]
+    image: string
 }
 
 const ReagentView = ({ 
@@ -27,7 +29,8 @@ const ReagentView = ({
   condition, 
   quantity, 
   description, 
-  tags 
+  tags,
+  image 
 }: ReagentView) => {
   return (
     <div className="
@@ -53,7 +56,11 @@ const ReagentView = ({
         </div>
       </div>
       <div className="flex mt-[2rem]">
-        <div className="bg-amber-300 flex-[1]">Images</div>
+        <div className="flex-[1] relative">
+            <Image src={image ?? "/placeholder.webp"} alt="Reagent"
+                fill
+                className="object-cover"/>
+        </div>
         <div className="flex-[1.5] ml-[2rem]">
           <div className="bg-green-300 dark:bg-green-600/40 rounded-[10px] shadow-[0_4px_6px_rgba(0,0,0,0.4)]">
             <div className="text-center py-[1rem]">
