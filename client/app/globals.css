@@ -29,6 +29,7 @@
   --blue-100: #4282d7;
   --blue-200: #6babff;
   --blue-300: #58a3e2;
+  --blue-400: #C8DCFF;
 
   --purple-100: #865298;
 
@@ -36,6 +37,8 @@
   --green-200: #43c05a;
   --green-300: #9ae39c;
   --green-400: #428b44;
+  --green-500: #AFFFB2;
+  --green-600: #7AD47D;
 
   --dark-gray: #676767;
   --gray-100: #979797;
@@ -129,12 +132,16 @@
   --color-blue-100: var(--blue-100);
   --color-blue-200: var(--blue-200);
   --color-blue-300: var(--blue-300);
+  --color-blue-400: var(--blue-400);
+
   --color-purple-100: var(--purple-100);
 
   --color-green-100: var(--green-100);
   --color-green-200: var(--green-200);
   --color-green-300: var(--green-300);
   --color-green-400: var(--green-400);
+  --color-green-500: var(--green-500);
+  --color-green-600: var(--green-600);
 
   --color-red-100: var(--red-100);
   --color-red-200: var(--red-200);
