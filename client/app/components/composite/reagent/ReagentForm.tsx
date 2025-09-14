@@ -110,10 +110,12 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
     }
 
     try {
+      const idToken = "INSERT_TOKEN_HERE"
+      
       const { error } = await client.POST("/users/reagents" as any, {
         body: reagentData,
         headers: {
-          Authorisation: "Bearer TOKEN_GOES_HERE",
+          Authorization: `Bearer ${idToken}`,
         },
       })
 
@@ -374,3 +376,4 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
 }
 
 export default ReagentForm
+
