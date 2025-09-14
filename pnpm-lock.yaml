@@ -7,6 +7,9 @@ settings:
 importers:
   .:
     dependencies:
+      "@heroicons/react":
+        specifier: ^2.2.0
+        version: 2.2.0(react@19.1.0)
       firebase-admin:
         specifier: ^13.4.0
         version: 13.4.0(encoding@0.1.13)
@@ -132,6 +135,9 @@ importers:
       typescript:
         specifier: ^5
         version: 5.8.3
+      uuid:
+        specifier: ^13.0.0
+        version: 13.0.0
 
   server:
     dependencies:
@@ -202,6 +208,9 @@ importers:
       concurrently:
         specifier: ^9.2.0
         version: 9.2.0
+      firebase:
+        specifier: ^12.2.1
+        version: 12.2.1
       firebase-tools:
         specifier: ^14.14.0
         version: 14.14.0(@types/node@22.16.5)(encoding@0.1.13)
@@ -2380,6 +2389,14 @@ packages:
       {
         integrity: sha512-0z6ZRCmFEfV/MQqkQomJ7sl/hyxvcZM7LtuVqN3vdAO4vM9eBbowl0kaqQj9EJJQab+3Uuh1GxbGIBFy4NfJ4w==,
       }
+
+  "@heroicons/react@2.2.0":
+    resolution:
+      {
+        integrity: sha512-LMcepvRaS9LYHJGsF0zzmgKCUim/X3N/DQKc4jepAXJ7l8QxJ1PmxJzqplF2Z3FE4PqBAIGyJAQ/w4B5dsqbtQ==,
+      }
+    peerDependencies:
+      react: ">= 16 || ^19.0.0-rc"
 
   "@humanfs/core@0.19.1":
     resolution:
@@ -12237,6 +12254,13 @@ packages:
       }
     hasBin: true
 
+  uuid@13.0.0:
+    resolution:
+      {
+        integrity: sha512-XQegIaBTVUjSHliKqcnFqYypAd4S+WCYt5NIeRs6w/UAry7z8Y9j5ZwRRL4kzq9U3sD6v+85er9FvkEaBpji2w==,
+      }
+    hasBin: true
+
   uuid@8.3.2:
     resolution:
       {
@@ -14638,6 +14662,10 @@ snapshots:
       "@hapi/boom": 10.0.1
       "@hapi/bourne": 3.0.0
       "@hapi/hoek": 11.0.7
+
+  "@heroicons/react@2.2.0(react@19.1.0)":
+    dependencies:
+      react: 19.1.0
 
   "@humanfs/core@0.19.1": {}
 
@@ -21389,6 +21417,8 @@ snapshots:
   utils-merge@1.0.1: {}
 
   uuid@11.1.0: {}
+
+  uuid@13.0.0: {}
 
   uuid@8.3.2: {}
 

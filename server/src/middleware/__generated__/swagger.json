@@ -79,12 +79,12 @@
 						},
 						"type": "array"
 					},
-					"location": {
-						"type": "string"
-					},
 					"createdAt": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"location": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -96,8 +96,8 @@
 					"expiryDate",
 					"tradingType",
 					"categories",
-					"location",
-					"createdAt"
+					"createdAt",
+					"location"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -196,12 +196,12 @@
 						},
 						"type": "array"
 					},
-					"location": {
-						"type": "string"
-					},
 					"createdAt": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"location": {
+						"type": "string"
 					}
 				},
 				"type": "object",

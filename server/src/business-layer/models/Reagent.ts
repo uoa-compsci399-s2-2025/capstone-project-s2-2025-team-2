@@ -13,6 +13,6 @@ export interface Reagent {
   tradingType: ReagentTradingType
   images?: string[]
   categories: ReagentCategory[]
-  location: string
   createdAt: Date
+  location: string
 }

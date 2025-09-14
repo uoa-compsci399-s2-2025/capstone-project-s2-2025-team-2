@@ -78,7 +78,6 @@ export default function SignUpEmailSection({
                 onClick={onVerifyEmail}
                 label="Verify"
                 size="small"
-                textSize="small"
                 className={`!w-[92px]`}
               />
             )}
@@ -116,7 +115,6 @@ export default function SignUpEmailSection({
                 onClick={onValidateCode}
                 label="Validate"
                 size="small"
-                textSize="small"
                 className={`!w-[92px]`}
               />
             )}

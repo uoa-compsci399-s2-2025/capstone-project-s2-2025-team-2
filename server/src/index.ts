@@ -9,6 +9,7 @@ import * as swaggerJson from "./middleware/__generated__/swagger.json"
 import * as swaggerUI from "swagger-ui-express"
 
 const app: Express = express()
+app.use(express.json())
 
 // Use body parser to read sent json payloads
 app.use(
