@@ -123,7 +123,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
 
       alert("Reagent created successfully!")
       onSubmit(reagentData)
-    } catch (err) {
+    } catch {
       alert("Failed to create reagent!")
     }
   }

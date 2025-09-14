@@ -4,8 +4,4 @@ const Test = () => {
   return <LoginPage />
 }
 
-<<<<<<< HEAD
-export default LoginPage
-=======
 export default Test
->>>>>>> origin/main
