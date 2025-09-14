@@ -1,5 +1,6 @@
 import { LuHouse } from "react-icons/lu"
 import { FaRegStar } from "react-icons/fa"
+import Image from "next/image"
 
 interface SellerContactProps {
   name?: string
@@ -10,9 +11,15 @@ interface SellerContactProps {
 const SellerContact = ({ name, location, rating }: SellerContactProps) => {
   return (
     <div className="flex flex-row items-center">
-      <div className="bg-yellow-600 rounded-[50%] border-2 border-black dark:border-white flex flex-col justify-center items-center h-[4rem] w-[4rem]">
-        PFP
-      </div>
+        <div className="relative bg-yellow-600 rounded-full border-2 border-black dark:border-white h-[4rem] w-[4rem] overflow-hidden">
+            <Image
+                src="/placeholder.webp"
+                alt="Reagent"
+                fill
+                className="object-cover"
+            />
+        </div>
+
       <div className="mx-[1.5rem]">
         <h4 className="text-midnight text-[1rem] font-bold dark:text-white">
           {name}
