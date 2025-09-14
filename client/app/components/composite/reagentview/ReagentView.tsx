@@ -43,15 +43,15 @@ const ReagentView = ({
         <div className="flex justify-around w-[43rem] mx-auto mt-[1rem]">
           <h5 className="flex text-green-200 items-center text-[0.8rem]">
             <FaRegClock className="text-green-200 mr-[0.3rem] w-5 h-5" /> Listed
-            - {listedDate || "text text texttext text text texttext text text texttext text text texttext text text texttext"}
+            - {listedDate}
           </h5>
           <h5 className="flex text-red-300 items-center text-[0.8rem]">
             <LuClockAlert className="text-red-300 mr-[0.3rem] w-5 h-5" />
-            Expires - {expiryDate || "text text texttext text text texttext text text texttext text text texttext text text texttext"}
+            Expires - {expiryDate}
           </h5>
           <h5 className="flex text-blue-300 items-center text-[0.8rem]">
             <LuHouse className="text-blue-300 mr-[0.3rem] w-5 h-5" /> Location -
-            {location || "text text texttext text text texttext text text texttext text text texttext text text texttext"}
+            {location}
           </h5>
         </div>
       </div>
@@ -65,21 +65,21 @@ const ReagentView = ({
           <div className="bg-green-600/40 rounded-[10px] shadow-[0_4px_6px_rgba(0,0,0,0.4)]">
             <div className="text-center py-[1rem]">
               <h4 className="text-green-500 font-bold">Current price</h4>
-              <h2 className="text-green-500">${price || "text text texttext text text texttext text text texttext text text texttext text text texttext"}</h2>
+              <h2 className="text-green-500">${price}</h2>
             </div>
             <div className="flex bg-primary p-[2rem] rounded-b-[10px]">
               <div className="flex-[0.25]">
                 <p className="font-bold mb-[0.7rem] text-white">
-                  Category - {category || "text text texttext text text texttext text text texttext text text texttext text text texttext"}
+                  Category - {category}
                 </p>
                 <p className="font-bold mb-[0.7rem] text-white">
-                  Condition - {condition || "text text texttext text text texttext text text texttext text text texttext text text texttext"}
+                  Condition - {condition}
                 </p>
-                <p className="font-bold text-white">Quantity - {quantity || "text text texttext text text texttext text text texttext text text texttext text text texttext"}</p>
+                <p className="font-bold text-white">Quantity - {quantity}</p>
               </div>
               <div className="flex-[0.75] ml-[1rem]">
                 <p className="text-white">
-                  {description || "text text texttext text text texttext text text texttext text text texttext text text texttext"}
+                  {description}
                 </p>
                 <div className="mt-[3rem] flex">
                     {categories?.map((tag)=> {
