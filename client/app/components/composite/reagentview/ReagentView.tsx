@@ -4,15 +4,13 @@ import { LuHouse } from "react-icons/lu"
 import SellerContact from "./SellerContact"
 import ReagentBreadcrumb from "./ReagentBreadcrumb"
 import Image from "next/image"
-
+ 
 interface ReagentView {
     name?: string
     listedDate?: string
     expiryDate?: string
     location?: string
     price?: number
-    category?: string
-    condition?: string
     quantity?: string
     description?: string
     categories?: string[]
@@ -24,9 +22,7 @@ const ReagentView = ({
   listedDate, 
   expiryDate, 
   location, 
-  price, 
-  category, 
-  condition, 
+  price,
   quantity, 
   description, 
   categories,
@@ -70,10 +66,10 @@ const ReagentView = ({
             <div className="flex bg-primary p-[2rem] rounded-b-[10px]">
               <div className="flex-[0.25]">
                 <p className="font-bold mb-[0.7rem] text-white">
-                  Category - {category}
+                  Category - Chemical
                 </p>
                 <p className="font-bold mb-[0.7rem] text-white">
-                  Condition - {condition}
+                  Condition - New
                 </p>
                 <p className="font-bold text-white">Quantity - {quantity}</p>
               </div>
