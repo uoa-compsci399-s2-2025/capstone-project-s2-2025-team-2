@@ -54,10 +54,11 @@ const ReagentView = ({
           </h1>
 
           <div className="md:hidden px-[2rem] mt-[1rem]">
+            <p className=" text-white mb-1"><b>Quantity: </b> {quantity}</p>
             <p className="text-white">{description}</p>
           </div>
 
-          <div className="px-[1.5rem] mt-[1rem] md:px-0 md:mt-0 gap-2 flex flex-col md:flex-row justify-around w-[43rem] mx-auto mt-[1rem]">
+          <div className="px-[1.5rem] mt-[2rem] mb-[2rem] md:mb-0 md:px-0 md:mt-0 gap-3 flex flex-col md:flex-row justify-around w-[43rem] mx-auto mt-[1rem]">
             <h5 className="flex text-green-200 items-center text-[0.8rem]">
               <FaRegClock className="text-green-200 mr-[0.3rem] w-5 h-5" />{" "}
               Listed - {listedDate}
@@ -70,7 +71,7 @@ const ReagentView = ({
               <LuHouse className="text-blue-300 mr-[0.3rem] w-5 h-5" /> Location
               -{location}
             </h5>
-            <div className="mt-[1rem] flex">
+            <div className="md:hidden mt-[1rem] flex">
               {categories?.map((tag) => {
                 return (
                   <div
@@ -133,7 +134,7 @@ const ReagentView = ({
       <div className="md:hidden bg-background -mt-[2rem] relative z-10 rounded-t-3xl md:mt-0 md:rounded-none md:z-auto md:bg-transparent">
         <div className="flex h-[8rem] justify-between">
         <span className="flex flex-col justify-center ml-[2rem]">
-            <p className="text-white text-[0.8rem]">Price</p>
+            <p className="text-white/60 text-[1.3rem]">Price</p>
               <h2 className="text-green-500">${price}</h2>
         </span>
         <div className="flex items-center mr-[2rem]">

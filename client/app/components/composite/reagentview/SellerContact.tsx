@@ -1,6 +1,7 @@
 import { LuHouse } from "react-icons/lu"
 import { FaRegStar } from "react-icons/fa"
 import Image from "next/image"
+import Button from "../../generic/button/regular/Button"
 
 interface SellerContactProps {
   name?: string
@@ -33,11 +34,15 @@ const SellerContact = ({ name, location, rating }: SellerContactProps) => {
             : "No rating yet"}
         </span>
       </div>
-      <button className="bg-blue-primary text-white font-sans rounded-[5px]">
-        <h4 className="text-[0.8rem] font-semibold px-[2.5rem] py-[0.5rem]">
-          Contact {name || "text"}
-        </h4>
-      </button>
+
+<Button
+  label={`Contact ${name || "Seller"}`}
+                    size="small"
+                  textSize="medium"
+  fontWeight="semibold"
+  className="px-20 py-8 rounded-[18px] md:rounded-[8px] md:text-sm md:px-6 md:w-auto md:py-1.5 md:justify-center"
+/>
+
     </div>
   )
 }
