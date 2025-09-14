@@ -1,4 +1,4 @@
-import FireBaseError from "business-layer/errors/FirebaseError"
+import FireBaseError from "../../business-layer/errors/FirebaseError"
 import type * as express from "express"
 import { StatusCodes } from "http-status-codes"
 import { auth } from "./Firebase"

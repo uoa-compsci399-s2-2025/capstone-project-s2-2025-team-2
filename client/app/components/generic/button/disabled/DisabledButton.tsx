@@ -1,14 +1,22 @@
 import { ButtonHTMLAttributes } from "react"
 import { getTextSizeClass } from "../textSize"
+import { getFontWeightClass } from "../font-weight"
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: "small" | "medium" | "large" | "outline"
   label: string
-  textSize?: "small" | "medium" | "large"
+  textSize?: "xsmall" | "small" | "medium" | "large"
+  fontWeight?: "normal" | "medium" | "semibold" | "bold"
 }
 
 // base button component w/ common styling/functionality across all variants
-const BaseButton = ({ label, className, textSize, ...props }: ButtonProps) => {
+const BaseButton = ({
+  label,
+  className,
+  textSize,
+  fontWeight,
+  ...props
+}: ButtonProps) => {
   return (
     <button
       type="button"
@@ -18,7 +26,13 @@ const BaseButton = ({ label, className, textSize, ...props }: ButtonProps) => {
       ].join(" ")}
       {...props}
     >
-      <h5 className={["text-secondary", getTextSizeClass(textSize)].join(" ")}>
+      <h5
+        className={[
+          "text-secondary",
+          getTextSizeClass(textSize),
+          getFontWeightClass(fontWeight),
+        ].join(" ")}
+      >
         {label}
       </h5>
     </button>

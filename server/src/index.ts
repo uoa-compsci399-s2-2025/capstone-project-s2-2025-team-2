@@ -9,6 +9,7 @@ import * as swaggerJson from "./middleware/__generated__/swagger.json"
 import * as swaggerUI from "swagger-ui-express"
 
 const app: Express = express()
+app.use(express.json())
 
 // Use body parser to read sent json payloads
 app.use(
@@ -20,7 +21,7 @@ app.use(json())
 app.use(helmet())
 app.use(cors())
 
-app.use("/swagger", swaggerUI.serve as any, swaggerUI.setup(swaggerJson) as any)
+app.use("/swagger", swaggerUI.serve, swaggerUI.setup(swaggerJson))
 
 RegisterRoutes(app)
 

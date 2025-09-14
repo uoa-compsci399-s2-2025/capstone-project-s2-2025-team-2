@@ -3,7 +3,7 @@ export type ReagentTradingType = "trade" | "giveaway" | "sell"
 export type ReagentCategory = "chemical" | "hazardous" | "biological"
 
 export interface Reagent {
-  userId: string
+  user_id: string
   name: string
   description: string
   price?: number
@@ -11,4 +11,6 @@ export interface Reagent {
   tradingType: ReagentTradingType
   images?: string[]
   categories: ReagentCategory[]
+  createdAt: Date
+  location: string
 }

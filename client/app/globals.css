@@ -30,12 +30,14 @@
   --blue-200: #6babff;
   --blue-300: #58a3e2;
 
+
   --purple-100: #865298;
 
   --green-100: #249731;
   --green-200: #43c05a;
   --green-300: #9ae39c;
   --green-400: #428b44;
+
 
   --dark-gray: #676767;
   --gray-100: #979797;
@@ -47,6 +49,7 @@
   --red-300: #e5595b;
 
   --gold: #ff9500;
+
 
   --muted: #4d4d4d;
   --accent: #f5f7fc;
@@ -135,6 +138,10 @@
   --color-green-200: var(--green-200);
   --color-green-300: var(--green-300);
   --color-green-400: var(--green-400);
+
+  --color-red-100: var(--red-100);
+  --color-red-200: var(--red-200);
+
 }
 
 @media (prefers-color-scheme: dark) {
