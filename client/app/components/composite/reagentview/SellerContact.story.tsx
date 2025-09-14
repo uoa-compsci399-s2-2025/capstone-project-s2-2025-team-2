@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/nextjs"
 import SellerContact from "./SellerContact"
 
-const meta = {
+const meta: Meta<typeof SellerContact> = {
   title: "Example/SellerContact",
   component: SellerContact,
   parameters: {
@@ -9,11 +9,11 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {},
-  args: {},
-} satisfies Meta<typeof SellerContact>
+}
 
 export default meta
-type Story = StoryObj<typeof meta>
+
+type Story = StoryObj<typeof SellerContact>
 
 export const DefaultSellerContact: Story = {
   args: {
