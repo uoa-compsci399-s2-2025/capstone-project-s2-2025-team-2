@@ -2,21 +2,21 @@ import { LuHouse } from "react-icons/lu"
 import { FaRegStar } from "react-icons/fa"
 
 interface SellerContact {
-    name?: string
-    location?: string
-    rating?: number
+  name?: string
+  location?: string
+  rating?: number
 }
 
-const SellerContact = ({
-  name, location, rating
-}: SellerContact) => {
+const SellerContact = ({ name, location, rating }: SellerContact) => {
   return (
     <div className="flex flex-row items-center">
       <div className="bg-yellow-600 rounded-[50%] flex flex-col justify-center items-center h-[4rem] w-[4rem]">
         PFP
       </div>
       <div className="mx-[1.5rem]">
-        <h4 className="text-midnight text-[1rem] font-bold">{name || "Violet Chen"}</h4>
+        <h4 className="text-midnight text-[1rem] font-bold">
+          {name || "Violet Chen"}
+        </h4>
         <span className="flex items-center text-[0.8rem] text-midnight font-bold">
           <LuHouse className="mr-[0.3rem]" />
           {location || "University of Auckland"}
