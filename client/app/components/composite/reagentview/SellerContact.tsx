@@ -11,7 +11,7 @@ interface SellerContactProps {
 const SellerContact = ({ name, location, rating }: SellerContactProps) => {
   return (
     <div className="flex flex-row items-center">
-        <div className="relative bg-yellow-600 rounded-full border-2 border-black dark:border-white h-[4rem] w-[4rem] overflow-hidden">
+        <div className="relative bg-yellow-600 rounded-full border-2 border-white h-[4rem] w-[4rem] overflow-hidden">
             <Image
                 src="/placeholder.webp"
                 alt="Reagent"
@@ -21,12 +21,12 @@ const SellerContact = ({ name, location, rating }: SellerContactProps) => {
         </div>
 
       <div className="mx-[1.5rem]">
-        <h4 className="text-midnight text-[1rem] font-bold dark:text-white">
-          {name}
+        <h4 className="text-[1rem] font-boldtext-white">
+          {name || "text"}
         </h4>
-        <span className="flex items-center text-[0.8rem] text-midnight font-bold dark:text-white">
+        <span className="flex items-center text-[0.8rem] font-bold text-white">
           <LuHouse className="mr-[0.3rem]" />
-          {location}
+          {location || "text"}
         </span>
         <span className="text-gold items-center flex text-[0.8rem] font-bold">
           <FaRegStar className="mr-[0.3rem]" />
@@ -35,7 +35,7 @@ const SellerContact = ({ name, location, rating }: SellerContactProps) => {
       </div>
       <button className="bg-blue-primary text-white font-sans rounded-[5px]">
         <h4 className="text-[0.8rem] font-semibold px-[2.5rem] py-[0.5rem]">
-          Contact {name}
+          Contact {name || "text"}
         </h4>
       </button>
     </div>
