@@ -34,24 +34,24 @@ const ReagentView = ({
 }: ReagentView) => {
   return (
     <div className="
-        bg-white h-full font-family-sans p-[2rem]
-        dark:bg-black
+        h-full font-family-sans p-[2rem]
+        bg-black
     ">
       <ReagentBreadcrumb />
       <div className="flex flex-col items-center">
-        <h1 className="text-black dark:text-white tracking-wider">{name}</h1>
+        <h1 className="text-white tracking-wider">{name}</h1>
         <div className="flex justify-around w-[43rem] mx-auto mt-[1rem]">
           <h5 className="flex text-green-200 items-center text-[0.8rem]">
             <FaRegClock className="text-green-200 mr-[0.3rem] w-5 h-5" /> Listed
-            - {listedDate}
+            - {listedDate || "text text texttext text text texttext text text texttext text text texttext text text texttext"}
           </h5>
           <h5 className="flex text-red-300 items-center text-[0.8rem]">
             <LuClockAlert className="text-red-300 mr-[0.3rem] w-5 h-5" />
-            Expires - {expiryDate}
+            Expires - {expiryDate || "text text texttext text text texttext text text texttext text text texttext text text texttext"}
           </h5>
           <h5 className="flex text-blue-300 items-center text-[0.8rem]">
             <LuHouse className="text-blue-300 mr-[0.3rem] w-5 h-5" /> Location -
-            {location}
+            {location || "text text texttext text text texttext text text texttext text text texttext text text texttext"}
           </h5>
         </div>
       </div>
@@ -62,29 +62,29 @@ const ReagentView = ({
                 className="object-cover"/>
         </div>
         <div className="flex-[1.5] ml-[2rem]">
-          <div className="bg-green-300 dark:bg-green-600/40 rounded-[10px] shadow-[0_4px_6px_rgba(0,0,0,0.4)]">
+          <div className="bg-green-600/40 rounded-[10px] shadow-[0_4px_6px_rgba(0,0,0,0.4)]">
             <div className="text-center py-[1rem]">
-              <h4 className="text-green-400 dark:text-green-500 font-bold">Current price</h4>
-              <h2 className="text-green-400 dark:text-green-500">${price}</h2>
+              <h4 className="text-green-500 font-bold">Current price</h4>
+              <h2 className="text-green-500">${price || "text text texttext text text texttext text text texttext text text texttext text text texttext"}</h2>
             </div>
-            <div className="flex bg-gray-300 dark:bg-primary p-[2rem] rounded-b-[10px]">
+            <div className="flex bg-primary p-[2rem] rounded-b-[10px]">
               <div className="flex-[0.25]">
-                <p className="text-dark-gray font-bold mb-[0.7rem] dark:text-white">
-                  Category - {category}
+                <p className="font-bold mb-[0.7rem] text-white">
+                  Category - {category || "text text texttext text text texttext text text texttext text text texttext text text texttext"}
                 </p>
-                <p className="text-dark-gray font-bold mb-[0.7rem] dark:text-white">
-                  Condition - {condition}
+                <p className="font-bold mb-[0.7rem] text-white">
+                  Condition - {condition || "text text texttext text text texttext text text texttext text text texttext text text texttext"}
                 </p>
-                <p className="text-dark-gray font-bold dark:text-white">Quantity - {quantity}</p>
+                <p className="font-bold text-white">Quantity - {quantity || "text text texttext text text texttext text text texttext text text texttext text text texttext"}</p>
               </div>
               <div className="flex-[0.75] ml-[1rem]">
-                <p className="text-dark-gray dark:text-white">
-                  {description}
+                <p className="text-white">
+                  {description || "text text texttext text text texttext text text texttext text text texttext text text texttext"}
                 </p>
                 <div className="mt-[3rem] flex">
                     {tags?.map((tag)=> {
                         return (
-                            <div className="mx-[0.4rem] bg-light-gray text-dark-gray px-[0.8rem] rounded-[0.7rem] font-family-sans tracking-widest dark:text-white dark:bg-secondary">
+                            <div className="mx-[0.4rem] px-[0.8rem] rounded-[0.7rem] font-family-sans tracking-widest text-white bg-secondary">
                                 {tag}
                             </div>
                         )
