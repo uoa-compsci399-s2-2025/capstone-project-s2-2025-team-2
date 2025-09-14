@@ -196,33 +196,32 @@ export interface components {
         ReagentTradingType: "trade" | "giveaway" | "sell";
         /** @enum {string} */
         ReagentCategory: "chemical" | "hazardous" | "biological";
-        /** @enum {string} */
-        ReagentVisibility: "everyone" | "region" | "institution";
         Reagent: {
+            user_id: string;
             name: string;
             description: string;
+            condition: string;
             /** Format: double */
             price?: number;
             /** Format: double */
             quantity: number;
-            unit: string;
             expiryDate: string;
             tradingType: components["schemas"]["ReagentTradingType"];
             images?: string[];
             categories: components["schemas"]["ReagentCategory"][];
-            visibility: components["schemas"]["ReagentVisibility"];
             location: string;
+            /** Format: date-time */
+            createdAt: string;
         };
         CreateReagentRequest: {
             name: string;
             description: string;
+            condition: string;
             categories: components["schemas"]["ReagentCategory"][];
-            visibility: components["schemas"]["ReagentVisibility"];
             /** Format: double */
             price?: number;
             /** Format: double */
             quantity: number;
-            unit: string;
             expiryDate: string;
             tradingType: components["schemas"]["ReagentTradingType"];
             location: string;
@@ -230,19 +229,21 @@ export interface components {
         };
         /** @description Make all properties in T optional */
         Partial_Reagent_: {
+            user_id?: string;
             name?: string;
             description?: string;
+            condition?: string;
             /** Format: double */
             price?: number;
             /** Format: double */
             quantity?: number;
-            unit?: string;
             expiryDate?: string;
             tradingType?: components["schemas"]["ReagentTradingType"];
             images?: string[];
             categories?: components["schemas"]["ReagentCategory"][];
-            visibility?: components["schemas"]["ReagentVisibility"];
             location?: string;
+            /** Format: date-time */
+            createdAt?: string;
         };
         GoogleOAuthUser: {
             uid: string;

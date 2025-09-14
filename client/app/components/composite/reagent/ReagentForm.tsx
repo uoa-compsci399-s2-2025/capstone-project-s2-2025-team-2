@@ -1,294 +1,357 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useCallback, useMemo } from "react"
 import type { components } from "@/models/__generated__/schema"
 import client from "../../../services/fetch-client"
 
 type ReagentTradingType = components["schemas"]["ReagentTradingType"]
 type ReagentCategory = components["schemas"]["ReagentCategory"]
 type CreateReagentRequest = components["schemas"]["CreateReagentRequest"]
-type ReagentVisibility = components["schemas"]["ReagentVisibility"]
 
-const TRADING_TYPES: ReagentTradingType[] = ["trade","giveaway","sell"]
-const TAGS: ReagentCategory[] = ["chemical","hazardous","biological"]
-const VISIBILITY_OPTIONS: ReagentVisibility[] = ["everyone","region","institution"]
+//note: hardcoded for now?
+const TRADING_TYPES: ReagentTradingType[] = ["trade", "giveaway", "sell"]
+const CATEGORIES: ReagentCategory[] = ["chemical", "hazardous", "biological"]
+const MAX_IMAGES = 5
 
 interface ReagentFormProps {
-    onSubmit: (data: CreateReagentRequest) => void
-    onCancel: () => void
+  onSubmit: (data: CreateReagentRequest) => void
+  onCancel: () => void
 }
 
+interface FormData {
+  name: string
+  tradingType: ReagentTradingType
+  categories: ReagentCategory[]
+  description: string
+  condition: string
+  quantity: string
+  price: string
+  expiryDate: string
+  location: string
+  images: string[]
+}
+
+//reusable styling classes
+const inputStyles = "w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
+const labelStyles = "block text-sm font-medium text-white"
+const buttonStyles = "px-4 py-2 text-white rounded-lg"
+
+//input fields wrapper
+const FormField = ({ 
+  label, 
+  required = false, 
+  input, 
+  className = "" 
+}: { 
+  label: string
+  required?: boolean
+  input: React.ReactNode
+  className?: string 
+}) => (
+  <div className={`space-y-2 ${className}`}>
+    <label className={labelStyles}>
+      {label} {required && <span className="text-red-400">*</span>}
+    </label>
+    {input}
+  </div>
+)
+
 export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
-  const [name, setName] = useState("")
-  const [tradingType, setTradingType] = useState<ReagentTradingType>("trade")
-  const [tags, setTags] = useState<ReagentCategory[]>(["chemical"]) // del note: change to category or tag, pick one 
-  const [visibility, setVisibility] = useState<ReagentVisibility>("everyone")
-  const [description, setDescription] = useState("")
-  const [condition, setCondition] = useState("")
-  const [quantity, setQuantity] = useState("")
-  const [unit, setUnit] = useState("")
-  const [price, setPrice] = useState("")
-  const [expiryDate, setExpiryDate] = useState("")
-  const [location, setLocation] = useState("")
-  const [images, setImages] = useState<string[]>([])
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    tradingType: "trade",
+    categories: ["chemical"], 
+    description: "",
+    condition: "",
+    quantity: "1",
+    price: "",
+    expiryDate: "",
+    location: "",
+    images: []
+  })
   const [imageUrl, setImageUrl] = useState("")
 
+  //today date calc
+  const todaysDate = useMemo(() => new Date().toISOString().split('T')[0], [])
 
-  const sendForm = async (e: React.FormEvent) => {
+  //update field data
+  const handleFieldChange = useCallback(<K extends keyof FormData>(
+    field: K,
+    value: FormData[K]
+  ) => {
+    setFormData(current => ({ ...current, [field]: value }))
+  }, [])
+
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
-    if (!name || !condition || !quantity || !unit || !expiryDate || !location) {
-      alert("Please fill in every required field!")
+    //at least one category selected
+    if (!formData.categories.length) {
+      alert("Please select at least one tag")
       return
     }
 
     const reagentData: CreateReagentRequest = {
-      name,
-      description,
-      tradingType,
-      categories: tags,
-      expiryDate,
-      images: images.length > 0 ? images : undefined,
-      location,
-      price: tradingType === "sell" && price ? Number(price) : undefined,
-      quantity: Number(quantity),
-      unit,
-      visibility,
+      name: formData.name,
+      description: formData.description,
+      condition: formData.condition,
+      tradingType: formData.tradingType,
+      categories: formData.categories,
+      expiryDate: formData.expiryDate,
+      images: formData.images.length ? formData.images : undefined,
+      location: formData.location,
+      //only include price if selling
+      price: formData.tradingType === "sell" && formData.price 
+        ? Number(formData.price) 
+        : undefined,
+      quantity: Number(formData.quantity),
     }
 
     try {
-      const { data: responseBody, response, error } = await client.POST(
+      const { error } = await client.POST(
         '/users/reagents' as any,
         {
           body: reagentData,
           headers: {
-            'Authorization': 'Bearer PUT_YOUR_TOKEN_RIGHT_HERE'
+            'Authorisation': 'Bearer TOKEN_GOES_HERE'
           }
         }
       )
       
-      if (error) throw new Error('Failed to create reagent!')
+      if (error) {
+        throw new Error('Failed to create reagent')
+      }
       
       alert('Reagent created successfully!')
       onSubmit(reagentData)
-    } catch (error) {
+    } catch (err) {
       alert('Failed to create reagent!')
     }
   }
 
+  const addImage = () => {
+    const url = imageUrl.trim()
+    
+    //validation checks
+    if (!url) return
+    if (formData.images.length >= MAX_IMAGES) return
+    if (formData.images.includes(url)) {
+      alert("URL has already been added")
+      return
+    }
+    try { 
+      new URL(url) 
+    } catch { 
+      alert("Invalid URL")
+      return
+    }
+
+    handleFieldChange("images", [...formData.images, url])
+    setImageUrl("")
+  }
+
+  const removeImage = (url: string) => {
+    const filtered = formData.images.filter(img => img !== url)
+    handleFieldChange("images", filtered)
+  }
+
+  const selectCategory = (category: ReagentCategory) => {
+    const selected = formData.categories.includes(category)
+    const updated = selected
+      ? formData.categories.filter(c => c !== category)
+      : [...formData.categories, category]
+    handleFieldChange("categories", updated)
+  }
+
+  const formInput = (
+    field: keyof FormData, 
+    props: React.InputHTMLAttributes<HTMLInputElement> = {}
+  ) => (
+    <input
+      value={formData[field]}
+      onChange={e => handleFieldChange(field, e.target.value)}
+      className={inputStyles}
+      {...props}
+    />
+  )
+
   return (
-    <div className="space-y-6">
-      <form onSubmit={sendForm} className="space-y-6">
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-white">Reagent Name</label>
-        <input
-          className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Reagent Name"
-        />
-      </div>
+    <form onSubmit={handleFormSubmit} className="space-y-6">
+      <FormField 
+        label="Reagent Name" 
+        required 
+        input={formInput("name", { 
+          placeholder: "Reagent name", 
+          required: true 
+        })} 
+      />
+
+      <FormField label="Listing Type" input={
+        <select
+          value={formData.tradingType}
+          onChange={e => handleFieldChange("tradingType", e.target.value as ReagentTradingType)}
+          className={inputStyles}
+        >
+          {TRADING_TYPES.map(type => (
+            <option key={type} value={type} className="bg-primary">
+              {type.charAt(0).toUpperCase() + type.slice(1)}
+            </option>
+          ))}
+        </select>
+      } />
+
+      <FormField 
+        label="Condition" 
+        required 
+        input={formInput("condition", { 
+          placeholder: "e.g. New, Opened and unused", 
+          required: true 
+        })} 
+      />
 
       <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-white">Listing Type</label>
-            <select
-              value={tradingType}
-              onChange={(e) => setTradingType(e.target.value as ReagentTradingType)}
-              className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
-            >
-              {TRADING_TYPES.map((type) => (
-                <option key={type} value={type} className="bg-primary">
-                  {type}
-                </option>
-              ))}
-            </select>
-          </div>
-
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-white">Visibility</label>
-          <select
-            value={visibility}
-            onChange={(e) => setVisibility(e.target.value as ReagentVisibility)}
-            className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
-          >
-            {VISIBILITY_OPTIONS.map((v) => (
-              <option key={v} value={v} className="bg-primary">
-                {v}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-white">Condition</label>
-        <input
-          type="text"
-          value={condition}
-          onChange={(e) => setCondition(e.target.value)}
-          placeholder="Condition"
-          className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
+        <FormField 
+          label="Expiry Date" 
+          required 
+          input={formInput("expiryDate", { 
+            type: "date", 
+            min: todaysDate, 
+            required: true 
+          })} 
+        />
+        <FormField 
+          label="Location" 
+          required 
+          input={formInput("location", { 
+            placeholder: "Current location", 
+            required: true 
+          })} 
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-white">Expiry Date</label>
-          <input
-            type="date"
-            value={expiryDate}
-            onChange={(e) => setExpiryDate(e.target.value)}
-            className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
-          />
-        </div>
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-white">Location</label>
-          <input
-            type="text"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            placeholder="Current Reagent Location"
-            className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
-          />
-        </div>
-      </div>
-      
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-white">Listing Images (5 max)</label>
-        <div className="flex gap-2">
-           <input
-             type="text"
-             value={imageUrl}
-             onChange={(e) => setImageUrl(e.target.value)}
-             placeholder="Image URL"
-             className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
-           />
+      <FormField 
+        label="Quantity" 
+        required 
+        input={formInput("quantity", { 
+          type: "number", 
+          placeholder: "10", 
+          min: "0", 
+          required: true 
+        })} 
+      />
 
-             <button
-               type="button"
-               onClick={() => {
-                 const url = imageUrl.trim()
-                
-                 if (!url || images.length >= 5) return
-                 if (images.includes(url)) return alert("URL has already been added")
-                 try { new URL(url) } catch { return alert("Invalid URL") }
-
-                 setImages((currentImages) => [...currentImages, url])
-                 setImageUrl("")
-               }}
-               disabled={images.length >= 5}
-               className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-400 disabled:bg-red-400 disabled:cursor-not-allowed"
-             >
-               Add
-             </button>
-        </div>
-        {images.length > 0 && (
-          <div className="flex flex-wrap gap-2 mt-2">
-            {images.map((url, i) => (
-              <div
-                key={i}
-                className="flex items-center gap-2 px-3 py-2 border border-muted rounded-lg bg-primary/50 max-w-[200px]"
-              >
-                <span className="text-white text-sm truncate flex-1">
-                  {url}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => setImages((currentImages) => currentImages.filter((img) => img !== url))}
-                  className="text-red-400 hover:text-red-300 text-sm flex-shrink-0"
-                >
-                  Remove
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-      
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-white">Description</label>
-        <input
-          type="text"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Description"
-          className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
+      {formData.tradingType === "sell" && (
+        <FormField 
+          label="Unit Price" 
+          input={formInput("price", { 
+            type: "number", 
+            placeholder: "0.00", 
+            min: "0" 
+          })} 
         />
-      </div>
-
-      {tradingType === "sell" && (
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-white">Unit Price</label>
-          <input
-            type="number"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            placeholder="$0.00"
-            className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
-          />
-        </div>
       )}
 
-      <div className="grid grid-cols-2 gap-4">
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-white">Quantity</label>
-          <input
-            type="number"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-            placeholder="10"
-            className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
-          />
-        </div>
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-white">Unit</label>
-          <input
-            type="text"
-            value={unit}
-            onChange={(e) => setUnit(e.target.value)}
-            placeholder="mL, g, bottles"
-            className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
-          />
-        </div>
-      </div>
+      <FormField label="Description" input={
+        <textarea
+          value={formData.description}
+          onChange={e => handleFieldChange("description", e.target.value)}
+          placeholder="Additional reagent details"
+          rows={3}
+          className={`${inputStyles} min-h-[80px] resize-y`}
+        />
+      } />
 
-      <div className="space-y-2">
-        <label className="block text-sm font-medium text-white">Reagent Tags</label>
+      <FormField label="Categories" input={
         <div className="flex flex-wrap gap-2">
-          {TAGS.map((tag) => {
-            const checked = tags.includes(tag)
+          {CATEGORIES.map(cat => {
+            const selected = formData.categories.includes(cat)
             return (
               <label
-                key={tag}
-                className="flex items-center gap-2 px-3 py-2 border border-muted rounded-lg"
+                key={cat}
+                className={`flex items-center gap-2 px-3 py-2 border rounded-lg cursor-pointer ${
+                  selected
+                    ? "border-blue-primary bg-blue-primary/20"
+                    : "border-muted hover:border-gray-400"
+                }`}
               >
                 <input
                   type="checkbox"
-                  className="w-4 h-4 border-muted"
-                  checked={checked}
-                  onChange={() =>
-                    setTags((currentTags) =>
-                      currentTags.includes(tag)
-                        ? currentTags.filter((t) => t !== tag)
-                        : [...currentTags, tag]
-                    )
-                  }
+                  className="w-4 h-4"
+                  checked={selected}
+                  onChange={() => selectCategory(cat)}
                 />
-                <span className="text-white text-sm">{tag}</span>
+                <span className="text-white text-sm capitalize">{cat}</span>
               </label>
             )
           })}
         </div>
-      </div>
+      } />
 
-      <div className="flex justify-between">
-        <button type="button" onClick={onCancel} className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-red-400">Cancel</button>
-        <button type="submit" className="px-4 py-2 bg-blue-primary text-white rounded-lg hover:bg-blue-primary/75">Create</button>
+      <FormField 
+        label={`Images (${formData.images.length}/${MAX_IMAGES})`} 
+        input={
+          <>
+            <div className="flex gap-2">
+              <input
+                type="url"
+                value={imageUrl}
+                onChange={e => setImageUrl(e.target.value)}
+                placeholder="https://example.com/image.jpg"
+                 disabled={formData.images.length >= MAX_IMAGES}
+                className={inputStyles}
+              />
+              <button
+                type="button"
+                onClick={addImage}
+                 disabled={formData.images.length >= MAX_IMAGES || !imageUrl.trim()}
+                className={`${buttonStyles} min-w-[80px] bg-gray-600 hover:bg-gray-500`}
+              >
+                Add
+              </button>
+            </div>
+            
+            {/* image list */}
+            {formData.images.length > 0 && (
+              <div className="flex flex-wrap gap-2 mt-3">
+                {formData.images.map((url, i) => (
+                  <div
+                    key={`img-${i}`}
+                    className="flex items-center gap-2 px-3 py-1.5 border border-muted rounded-lg bg-primary/30 max-w-xs group hover:bg-primary/40 transition-colors"
+                  >
+                    <span className="text-white text-sm truncate flex-1" title={url}>
+                      {url}
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => removeImage(url)}
+                      className="text-red-400 hover:text-red-300 text-sm"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        } 
+      />
+
+      <div className="flex justify-between pt-4 border-t border-muted">
+        <button
+          type="button"
+          onClick={onCancel}
+          className={`${buttonStyles} bg-gray-600 hover:bg-red-500`}
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          className={`${buttonStyles} min-w-[120px] bg-blue-primary hover:bg-blue-primary/80`}
+        >
+          Create Reagent
+        </button>
       </div>
-      </form>
-    </div>
+    </form>
   )
 }
 

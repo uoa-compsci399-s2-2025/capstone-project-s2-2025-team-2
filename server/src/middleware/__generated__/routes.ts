@@ -40,25 +40,19 @@ const models: TsoaRoute.Models = {
         "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["chemical"]},{"dataType":"enum","enums":["hazardous"]},{"dataType":"enum","enums":["biological"]}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "ReagentVisibility": {
-        "dataType": "refAlias",
-        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["everyone"]},{"dataType":"enum","enums":["region"]},{"dataType":"enum","enums":["institution"]}],"validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Reagent": {
         "dataType": "refObject",
         "properties": {
             "user_id": {"dataType":"string","required":true},
             "name": {"dataType":"string","required":true},
             "description": {"dataType":"string","required":true},
+            "condition": {"dataType":"string","required":true},
             "price": {"dataType":"double"},
             "quantity": {"dataType":"double","required":true},
-            "unit": {"dataType":"string","required":true},
             "expiryDate": {"dataType":"string","required":true},
             "tradingType": {"ref":"ReagentTradingType","required":true},
             "images": {"dataType":"array","array":{"dataType":"string"}},
             "categories": {"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"},"required":true},
-            "visibility": {"ref":"ReagentVisibility","required":true},
             "location": {"dataType":"string","required":true},
             "createdAt": {"dataType":"datetime","required":true},
         },
@@ -70,11 +64,10 @@ const models: TsoaRoute.Models = {
         "properties": {
             "name": {"dataType":"string","required":true},
             "description": {"dataType":"string","required":true},
+            "condition": {"dataType":"string","required":true},
             "categories": {"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"},"required":true},
-            "visibility": {"ref":"ReagentVisibility","required":true},
             "price": {"dataType":"double"},
             "quantity": {"dataType":"double","required":true},
-            "unit": {"dataType":"string","required":true},
             "expiryDate": {"dataType":"string","required":true},
             "tradingType": {"ref":"ReagentTradingType","required":true},
             "location": {"dataType":"string","required":true},
@@ -85,7 +78,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Partial_Reagent_": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"user_id":{"dataType":"string"},"name":{"dataType":"string"},"description":{"dataType":"string"},"price":{"dataType":"double"},"quantity":{"dataType":"double"},"unit":{"dataType":"string"},"expiryDate":{"dataType":"string"},"tradingType":{"ref":"ReagentTradingType"},"images":{"dataType":"array","array":{"dataType":"string"}},"categories":{"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"}},"visibility":{"ref":"ReagentVisibility"},"location":{"dataType":"string"},"createdAt":{"dataType":"datetime"}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"user_id":{"dataType":"string"},"name":{"dataType":"string"},"description":{"dataType":"string"},"condition":{"dataType":"string"},"price":{"dataType":"double"},"quantity":{"dataType":"double"},"expiryDate":{"dataType":"string"},"tradingType":{"ref":"ReagentTradingType"},"images":{"dataType":"array","array":{"dataType":"string"}},"categories":{"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"}},"location":{"dataType":"string"},"createdAt":{"dataType":"datetime"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "GoogleOAuthUser": {
