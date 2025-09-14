@@ -26,6 +26,6 @@ export const DefaultReagentView: Story = {
     description:
       "Selling a 500 mL bottle of hydrogen peroxide (H₂O₂) reagent, 5% solution. It’s Sigma-Aldrich brand, still sealed and completely full. I originally bought it for a project but ended up not needing it, so it’s brand new and has been stored properly in a cool, dark space since purchase. Expiry is 2026, so plenty of shelf life left. lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem",
     categories: ["Category 1", "Category 2", "Category 3"],
-    image: "./placeholder.webp"
+    image: "./placeholder.webp",
   },
 }

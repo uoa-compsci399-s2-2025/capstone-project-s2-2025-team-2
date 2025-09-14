@@ -3,7 +3,7 @@ import { MapPinIcon } from "@heroicons/react/24/outline"
 import Image from "next/image"
 import Button from "../../generic/button/regular/Button"
 import { ChevronDoubleRightIcon, ClockIcon } from "@heroicons/react/24/outline"
- 
+
 interface ReagentCardProps {
   name: string
   description: string
