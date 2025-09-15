@@ -101,14 +101,14 @@ const UserProfile = () => {
             alt="User Profile Photo"
             className="w-25 h-25 rounded-full border-3 border-[#6C6C6C] dark:border-white"
           />
-          <div className="flex flex-col gap-2">
+          <div className="">
             <h1 className="font-light">Welcome back, NAME</h1>
             <p className="flex items-center gap-2 text-orange-200">
               <HomeIcon className="w-6 h-6" /> University of Auckland
             </p>
             <OutlinedButton
               label="Edit Profile"
-              size="small"
+              textSize="text-sm"
               className="mt-6"
             />
           </div>
