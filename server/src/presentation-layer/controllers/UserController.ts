@@ -16,12 +16,16 @@ import {
 import { UserService } from "../../data-layer/repositories/UserRepository"
 import { Reagent } from "../../business-layer/models/Reagent"
 import { ReagentService } from "../../data-layer/repositories/ReagentRepository"
+import { OrderService } from "../../data-layer/repositories/OrderRepository"
 import { CreateReagentRequest } from "../../service-layer/dtos/request/ReagentRequest"
 import { AuthRequest } from "../../service-layer/dtos/request/AuthRequest"
+import { Order } from "../../business-layer/models/Order"
+import { CreateOrderRequest } from "../../service-layer/dtos/request/CreateOrderRequest"
 
 @Tags("User")
 @Route("users")
 export class UserController extends Controller {
+  orderService = new OrderService()
   @SuccessResponse("200", "Users retrieved successfully")
   @Get()
   public async getAllUsers(): Promise<User[]> {
@@ -85,7 +89,7 @@ export class UserController extends Controller {
   @Security("jwt")
   public async getReagentById(@Path() id: string): Promise<Reagent | null> {
     try {
-      const reagent = await new ReagentService().getReagentsById(id)
+      const reagent = await new ReagentService().getReagentById(id)
       return reagent
     } catch (err) {
       throw new Error(
@@ -110,7 +114,7 @@ export class UserController extends Controller {
     try {
       const user = request.user
       const user_id = user.uid
-      const reagent = await new ReagentService().getReagentsById(id)
+      const reagent = await new ReagentService().getReagentById(id)
       if (user_id !== reagent.user_id) {
         console.log("You cannot delete a reagent that you don't own")
         return null
@@ -171,7 +175,7 @@ export class UserController extends Controller {
     @Request() request: AuthRequest,
   ): Promise<Reagent> {
     try {
-      const reagent = await new ReagentService().getReagentsById(id)
+      const reagent = await new ReagentService().getReagentById(id)
       const uid = request.user?.uid
       if (reagent.user_id == uid) {
         const updatedReagent = await new ReagentService().updateReagent(
@@ -184,6 +188,31 @@ export class UserController extends Controller {
     } catch (error) {
       this.setStatus(400)
       throw new Error(`[ERROR] while updating reagent ${id}: ${error}`)
+    }
+  }
+
+  @SuccessResponse("201", "Order created successfully")
+  @Security("jwt")
+  @Post("/orders")
+  public async createOrder(req: CreateOrderRequest): Promise<Order> {
+    const order = await this.orderService.createOrder(req)
+    return order
+  }
+
+  @SuccessResponse("200", "All reagents returned successfully")
+  @Security("jwt")
+  @Get("/orders")
+  public async getOrders(@Request() request: AuthRequest): Promise<Order[]> {
+    try {
+      const user = request.user
+      const user_id = user.uid
+      if (user_id) {
+        const orders = await this.orderService.getAllOrders(user_id)
+        return orders
+      }
+      return []
+    } catch (err) {
+      throw new Error("Failed to fetch orders: " + (err as Error).message)
     }
   }
 }
