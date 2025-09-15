@@ -15,4 +15,5 @@ export interface Reagent {
   location: string
   id: string
   quantity: number
+  condition: string
 }

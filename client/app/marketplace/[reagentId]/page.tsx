@@ -107,15 +107,17 @@ export default function ReagentView({ params }: ReagentViewProps) {
             <div className="bg-green-600/40 rounded-[10px] shadow-[0_4px_6px_rgba(0,0,0,0.4)]">
               <div className="text-center py-[1rem]">
                 <h4 className="text-green-500 font-bold">Current price</h4>
-                <h2 className="text-green-500">${reagent.price ?? "0"}</h2>
+                <h2 className="text-green-500">
+                  {reagent.price ? `$ ${reagent.price}` : "Not listed as Sale"}
+                </h2>
               </div>
               <div className="flex bg-primary p-[2rem] rounded-b-[10px]">
                 <div className="flex-[0.25]">
                   <p className="font-bold mb-[0.7rem] text-white">
-                    Category - Chemical
+                    Category - {reagent.categories}
                   </p>
                   <p className="font-bold mb-[0.7rem] text-white">
-                    Condition - New
+                    Condition - {reagent.condition}
                   </p>
                   <p className="font-bold text-white">
                     Quantity - {reagent.quantity}

@@ -32,6 +32,6 @@ export const DefaultReagentCard: Story = {
     // quantity: "1L",
     formula: "C2H6O",
     description: "This is an example reagent",
-    id: "abcd"
+    id: "abcd",
   },
 }
