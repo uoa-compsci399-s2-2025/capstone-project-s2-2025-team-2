@@ -196,8 +196,8 @@ Can only be done by admin*
 
   @SuccessResponse("200", "All reagents returned successfully")
   @Security("jwt")
-  @Get("/reagents/viewing/{id}")
-  public async getReagentsById(
+  @Get("/{id}/reagents")
+  public async getReagentsByUserId(
     @Path() id: string,
     @Request() request: AuthRequest,
   ): Promise<Reagent[]> {
