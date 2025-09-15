@@ -85,7 +85,7 @@ export class UserController extends Controller {
   @Security("jwt")
   public async getReagentById(@Path() id: string): Promise<Reagent | null> {
     try {
-      const reagent = await new ReagentService().getReagentsById(id)
+      const reagent = await new ReagentService().getReagentById(id)
       return reagent
     } catch (err) {
       throw new Error(
@@ -110,7 +110,7 @@ export class UserController extends Controller {
     try {
       const user = request.user
       const user_id = user.uid
-      const reagent = await new ReagentService().getReagentsById(id)
+      const reagent = await new ReagentService().getReagentById(id)
       if (user_id !== reagent.user_id) {
         console.log("You cannot delete a reagent that you don't own")
         return null
@@ -171,7 +171,7 @@ export class UserController extends Controller {
     @Request() request: AuthRequest,
   ): Promise<Reagent> {
     try {
-      const reagent = await new ReagentService().getReagentsById(id)
+      const reagent = await new ReagentService().getReagentById(id)
       const uid = request.user?.uid
       if (reagent.user_id == uid) {
         const updatedReagent = await new ReagentService().updateReagent(
@@ -184,6 +184,31 @@ export class UserController extends Controller {
     } catch (error) {
       this.setStatus(400)
       throw new Error(`[ERROR] while updating reagent ${id}: ${error}`)
+    }
+  }
+
+  /**
+ 
+Get all reagents under another user by their user id
+Can only be done by admin*
+@param user_id - user id to query with
+@returns Promise<Reagent[]> - The list of all reagents filtered.*/
+
+  @SuccessResponse("200", "All reagents returned successfully")
+  @Security("jwt")
+  @Get("/{id}/reagents")
+  public async getReagentsByUserId(
+    @Path() id: string,
+    @Request() request: AuthRequest,
+  ): Promise<Reagent[]> {
+    try {
+      if (request.user.role !== "admin") {
+        throw new Error("You don't have permission to access this endpoint")
+      }
+      const reagents = await new ReagentService().getReagentsByUserId(id)
+      return reagents
+    } catch (err) {
+      throw new Error("Failed to fetch reagents: " + (err as Error).message)
     }
   }
 }

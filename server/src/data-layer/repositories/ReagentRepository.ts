@@ -17,7 +17,7 @@ export class ReagentService {
    * @param id - The ID of the reagent to retrieve.
    * @returns Promise<Reagent | null> - Returns the reagent if found, otherwise null.
    */
-  async getReagentsById(id: string): Promise<Reagent | null> {
+  async getReagentById(id: string): Promise<Reagent | null> {
     const reagentSnapshot = await FirestoreCollections.reagents.doc(id).get()
     if (!reagentSnapshot.exists) {
       return null
