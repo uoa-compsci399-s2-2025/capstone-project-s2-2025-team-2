@@ -86,34 +86,28 @@ const ReagentView = ({
           </div>
         </div>
 
-        <div className="flex mt-[2rem]">
-          <div className="md:flex-[1] relative">
+        <div className="flex mt-[2rem] justify-center">
+          <div className="md:flex-[1.3] relative">
             <Image
               src={image ?? "/placeholder.webp"}
               alt="Reagent"
               fill
-              className="object-cover"
+              className="object-cover rounded-l-[8px]"
             />
           </div>
-          <div className="hidden md:block flex-[1.5] ml-[2rem]">
-            <div className="bg-green-600/40 rounded-[10px] shadow-[0_4px_6px_rgba(0,0,0,0.4)]">
-              <div className="text-center py-[1rem]">
+          <div className="hidden md:block flex-[1.3] ml-[1rem] ">
+            <div className="rounded-r-[8px] overflow-hidden shadow-[0_4px_6px_rgba(0,0,0,0.4)]">
+              <div className="bg-green-600/40 text-center py-[1rem]">
                 <h4 className="text-green-500 font-bold">Current price</h4>
                 <h2 className="text-green-500">${price}</h2>
               </div>
-              <div className="flex bg-primary p-[2rem] rounded-b-[10px]">
-                <div className="flex-[0.25]">
-                  <p className="font-bold mb-[0.7rem] text-white">
-                    Category - Chemical
-                  </p>
-                  <p className="font-bold mb-[0.7rem] text-white">
-                    Condition - New
-                  </p>
-                  <p className="font-bold text-white">Quantity - {quantity}</p>
+              <div className="flex flex-col bg-primary p-[2rem]">
+                <div className="mb-[1rem]">
+                  <p className="text-white"><b>Quantity: </b>{quantity}</p>
                 </div>
-                <div className="flex-[0.75] ml-[1rem]">
+                <div className="">
                   <p className="text-white">{description}</p>
-                  <div className="mt-[3rem] flex">
+                  <div className="mt-[2rem] flex">
                     {categories?.map((tag) => {
                       return (
                         <div
