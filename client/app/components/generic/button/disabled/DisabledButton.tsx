@@ -1,30 +1,32 @@
 import { ButtonHTMLAttributes } from "react"
-import { getTextSizeClass } from "../textSize"
 import { getFontWeightClass } from "../font-weight"
+import { getTextSizeClass, type textSize } from "../textSize"
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  size?: "small" | "medium" | "large" | "outline"
   label: string
-  textSize?: "xsmall" | "small" | "medium" | "large"
+  outlined?: boolean
+  textSize?: textSize
   fontWeight?: "normal" | "medium" | "semibold" | "bold"
 }
 
 // base button component w/ common styling/functionality across all variants
 const BaseButton = ({
   label,
-  className,
-  textSize,
+  outlined = false,
+  textSize = "text-base",
   fontWeight,
   ...props
 }: ButtonProps) => {
+  const { className, ...rest } = props
+
   return (
     <button
       type="button"
       className={[
-        "inline-block w-full rounded-[8px] font-sans bg-muted",
+        "py-2 px-2 inline-block rounded-[8px] font-sans bg-muted",
         className,
       ].join(" ")}
-      {...props}
+      {...rest}
     >
       <h5
         className={[
@@ -39,51 +41,22 @@ const BaseButton = ({
   )
 }
 
-// btn variants
-const SmallButton = (props: ButtonProps) => (
-  <BaseButton
-    {...props}
-    className={["py-1.5 px-3", { ...props }.className].join(" ")}
-  />
-)
-
-const MediumButton = (props: ButtonProps) => (
-  <BaseButton
-    {...props}
-    className={["py-3 px-5", { ...props }.className].join(" ")}
-  />
-)
-
-const LargeButton = (props: ButtonProps) => (
-  <BaseButton
-    {...props}
-    className={["py-4.5 px-7", { ...props }.className].join(" ")}
-  />
-)
-
 const OutlinedButton = (props: ButtonProps) => (
   <BaseButton
     {...props}
     className={[
-      "py-4.5 px-7 bg-transparent border-2 border-muted",
+      "bg-transparent border-2 border-muted",
       { ...props }.className,
     ].join(" ")}
   />
 )
 
 // exported btn component to be used
-const DisabledButton = ({ size = "medium", ...props }: ButtonProps) => {
-  switch (size) {
-    case "small":
-      return <SmallButton {...props} />
-    case "medium":
-      return <MediumButton {...props} />
-    case "large":
-      return <LargeButton {...props} />
-    case "outline":
-      return <OutlinedButton {...props} />
-    default:
-      return <MediumButton {...props} />
+const DisabledButton = ({ ...props }: ButtonProps) => {
+  if ({ ...props }.outlined) {
+    return <OutlinedButton {...props} />
+  } else {
+    return <BaseButton {...props} />
   }
 }
 

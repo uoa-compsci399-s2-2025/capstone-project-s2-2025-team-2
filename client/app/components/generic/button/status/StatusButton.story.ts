@@ -24,14 +24,14 @@ type Story = StoryObj<typeof meta>
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const SuccessButton: Story = {
   args: {
-    size: "success",
-    label: "I am a small button",
+    status: "success",
+    label: "I am a success button",
   },
 }
 
 export const ErrorButton: Story = {
   args: {
-    size: "error",
-    label: "I am a medium button",
+    status: "error",
+    label: "I am a error button",
   },
 }
