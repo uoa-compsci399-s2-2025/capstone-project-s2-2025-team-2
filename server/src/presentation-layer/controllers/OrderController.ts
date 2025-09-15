@@ -62,10 +62,7 @@ export class OrderController extends Controller {
       this.setStatus(404)
       throw new Error("Order not found")
     }
-    if (
-      user.uid !== (await order).owner_id &&
-      user.uid !== (await order).req_id
-    ) {
+    if (user.uid !== (await order).owner_id) {
       this.setStatus(403)
       throw new Error("Unauthorized to approve this order request")
     }
