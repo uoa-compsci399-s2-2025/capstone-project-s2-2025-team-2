@@ -59,7 +59,14 @@
 					"description": {
 						"type": "string"
 					},
+					"condition": {
+						"type": "string"
+					},
 					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"quantity": {
 						"type": "number",
 						"format": "double"
 					},
@@ -93,6 +100,8 @@
 					"user_id",
 					"name",
 					"description",
+					"condition",
+					"quantity",
 					"expiryDate",
 					"tradingType",
 					"categories",
@@ -110,6 +119,9 @@
 					"description": {
 						"type": "string"
 					},
+					"condition": {
+						"type": "string"
+					},
 					"categories": {
 						"items": {
 							"$ref": "#/components/schemas/ReagentCategory"
@@ -120,11 +132,18 @@
 						"type": "number",
 						"format": "double"
 					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
 					"expiryDate": {
 						"type": "string"
 					},
 					"tradingType": {
 						"$ref": "#/components/schemas/ReagentTradingType"
+					},
+					"location": {
+						"type": "string"
 					},
 					"images": {
 						"items": {
@@ -136,9 +155,12 @@
 				"required": [
 					"name",
 					"description",
+					"condition",
 					"categories",
+					"quantity",
 					"expiryDate",
-					"tradingType"
+					"tradingType",
+					"location"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -154,7 +176,14 @@
 					"description": {
 						"type": "string"
 					},
+					"condition": {
+						"type": "string"
+					},
 					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"quantity": {
 						"type": "number",
 						"format": "double"
 					},
@@ -440,7 +469,7 @@
 						}
 					}
 				},
-				"description": "Get all reagents under a user\r\nUser must be authenticated to access this endpoint",
+				"description": "Get all reagents under a user\nUser must be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -465,7 +494,7 @@
 						}
 					}
 				},
-				"description": "Create a reagent by passing in all the required props.\r\nUser **must** be authenticated to access this endpoint (lab manager / admin) [seller]",
+				"description": "Create a reagent by passing in all the required props.\nUser **must** be authenticated to access this endpoint (lab manager / admin) [seller]",
 				"tags": [
 					"User"
 				],
@@ -509,7 +538,7 @@
 						}
 					}
 				},
-				"description": "Get a reagent by using its ID\r\nUser must be authenticated to access this endpoint",
+				"description": "Get a reagent by using its ID\nUser must be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -549,7 +578,7 @@
 						}
 					}
 				},
-				"description": "Delete a reagent by using its ID\r\nUser **must** be authenticated to access this endpoint",
+				"description": "Delete a reagent by using its ID\nUser **must** be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -584,7 +613,7 @@
 						}
 					}
 				},
-				"description": "Update a reagent by its ID.\r\nUser **must** be authenticated to access this endpoint",
+				"description": "Update a reagent by its ID.\nUser **must** be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],

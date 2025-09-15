@@ -20,6 +20,65 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  "/users/{user_id}/email": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description Get email of the current logged in user */
+    get: operations["GetEmail"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/users/reagents": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description Get all reagents under a user
+     *     User must be authenticated to access this endpoint */
+    get: operations["GetReagents"]
+    put?: never
+    /** @description Create a reagent by passing in all the required props.
+     *     User **must** be authenticated to access this endpoint (lab manager / admin) [seller] */
+    post: operations["CreateReagent"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/users/reagents/{id}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description Get a reagent by using its ID
+     *     User must be authenticated to access this endpoint */
+    get: operations["GetReagentById"]
+    put?: never
+    post?: never
+    /** @description Delete a reagent by using its ID
+     *     User **must** be authenticated to access this endpoint */
+    delete: operations["DeleteReagentById"]
+    options?: never
+    head?: never
+    /** @description Update a reagent by its ID.
+     *     User **must** be authenticated to access this endpoint */
+    patch: operations["UpdateReagent"]
+    trace?: never
+  }
   "/reagents": {
     parameters: {
       query?: never
@@ -130,6 +189,7 @@ export type webhooks = Record<string, never>
 export interface components {
   schemas: {
     User: {
+      email: string
       username: string
     }
     /** @enum {string} */
@@ -137,38 +197,53 @@ export interface components {
     /** @enum {string} */
     ReagentCategory: "chemical" | "hazardous" | "biological"
     Reagent: {
-      userId: string
+      user_id: string
       name: string
       description: string
+      condition: string
       /** Format: double */
       price?: number
+      /** Format: double */
+      quantity: number
       expiryDate: string
       tradingType: components["schemas"]["ReagentTradingType"]
       images?: string[]
       categories: components["schemas"]["ReagentCategory"][]
+      location: string
+      /** Format: date-time */
+      createdAt: string
     }
     CreateReagentRequest: {
-      userId: string
       name: string
       description: string
+      condition: string
       categories: components["schemas"]["ReagentCategory"][]
       /** Format: double */
       price?: number
+      /** Format: double */
+      quantity: number
       expiryDate: string
       tradingType: components["schemas"]["ReagentTradingType"]
+      location: string
       images?: string[]
     }
     /** @description Make all properties in T optional */
     Partial_Reagent_: {
-      userId?: string
+      user_id?: string
       name?: string
       description?: string
+      condition?: string
       /** Format: double */
       price?: number
+      /** Format: double */
+      quantity?: number
       expiryDate?: string
       tradingType?: components["schemas"]["ReagentTradingType"]
       images?: string[]
       categories?: components["schemas"]["ReagentCategory"][]
+      location?: string
+      /** Format: date-time */
+      createdAt?: string
     }
     GoogleOAuthUser: {
       uid: string
@@ -234,6 +309,149 @@ export interface operations {
         }
         content: {
           "application/json": components["schemas"]["User"][]
+        }
+      }
+    }
+  }
+  GetEmail: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        user_id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description User email retrieved successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": {
+            email: string
+          }
+        }
+      }
+    }
+  }
+  GetReagents: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description All reagents returned successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Reagent"][]
+        }
+      }
+    }
+  }
+  CreateReagent: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description - the request object containing the data of the reagent (id generated by db) */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateReagentRequest"]
+      }
+    }
+    responses: {
+      /** @description Reagent created successfully */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Reagent"]
+        }
+      }
+    }
+  }
+  GetReagentById: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description - The ID of the reagent to fetch */
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description reagent returned successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Reagent"] | null
+        }
+      }
+    }
+  }
+  DeleteReagentById: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description - The ID of the reagent to delete */
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description reagent deleted successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Reagent"] | null
+        }
+      }
+    }
+  }
+  UpdateReagent: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description - The ID of the reagent to update. */
+        id: string
+      }
+      cookie?: never
+    }
+    /** @description - The updated reagent data (partial fields allowed) */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Partial_Reagent_"]
+      }
+    }
+    responses: {
+      /** @description Reagent updated successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Reagent"]
         }
       }
     }
