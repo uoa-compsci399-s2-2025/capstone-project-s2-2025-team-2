@@ -36,13 +36,23 @@ const UserDisplay = ({
   reagentName?: string
   showIcon?: boolean 
 }) => (
-  <div className="flex flex-col items-center flex-1">
+  <div className="flex flex-col items-center flex-1 min-w-0">
     <div className="flex items-center gap-3">
-      <div className="text-white text-3xl font-semibold">{name}</div>
+      <div 
+        className="text-white text-3xl font-semibold truncate max-w-[120px]" 
+        title={name}
+      >
+        {name}
+      </div>
       {showIcon && <ChemIcon />}
     </div>
     {reagentName && (
-      <div className="text-gray-400 text-base font-light mt-2">{reagentName}</div>
+      <div 
+        className="text-gray-400 text-base font-light mt-2 truncate max-w-[140px]" 
+        title={reagentName}
+      >
+        {reagentName}
+      </div>
     )}
   </div>
 )
@@ -65,9 +75,16 @@ export const ReagentRequest = ({
 
   useEffect(() => {
     if (isOpen && reagent?.user_id) {
+        
+      const user = getCurrentUser()
+      if (user && reagent.user_id === user.uid) {
+        alert("You cannot request your own reagent!")
+        onClose()
+        return
+      }
       fetchOwnerInfo(reagent.user_id)
     }
-  }, [isOpen, reagent?.user_id])
+  }, [isOpen, reagent?.user_id, onClose])
 
   const fetchOwnerInfo = async (userId: string) => {
     try {
@@ -93,12 +110,6 @@ export const ReagentRequest = ({
       }
       
       const currentUserId = currentUser.uid
-      
-      //user cannot request their own reagent
-      if (reagent.user_id === currentUserId) {
-        alert("You cannot request your own reagent!")
-        return
-      }
 
       const { error } = await client.POST("/orders" as any, {
         body: { 
