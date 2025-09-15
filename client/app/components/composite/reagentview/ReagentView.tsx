@@ -117,7 +117,7 @@ const ReagentView = ({
                       {categories?.map((tag) => {
                         return (
                           <div
-                            className="mx-[0.4rem] px-[0.8rem] rounded-[0.7rem] font-family-sans tracking-widest text-white bg-secondary"
+                            className="px-4 py-2 mx-[0.4rem] px-[0.8rem] rounded-[0.7rem] font-family-sans tracking-widest text-white bg-background"
                             key={tag}
                           >
                             {tag}
