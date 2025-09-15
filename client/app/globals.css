@@ -2,16 +2,43 @@
 @import "tailwindcss";
 
 :root {
-  --background: #171717;
-  /* --foreground: #171717; */
+  /* MONOTONE COLOURS */
+  /* dark theme */
   --background-fade: #2f2f2f;
-  --primary: #252525;
-  --secondary: #787879;
+  --background: #171717; /* dark:charcoal [monotone] */
+  --primary: #252525; /* dark:dark gray [monotone] */
+  --secondary: #787879; /* dark:medium gray [monotone] */
+  --gray: #787879; /* dark:medium gray [monotone] */
+  --light-gray: #bababa; /* dark:light gray [monotone] */
+  --tint: #f5f5f5; /* dark:offwhite [monotone] */
   --tertiary: #333333;
-  --gray: #8b8b8b;
-  --light-gray: #bababa;
-  --tint: #f5f5f5;
-  --tint2: #f4f4f4;
+  /* light theme */
+  --midnight: #151d48; /* midnight [monotone] */
+  --dark-gray: #676767; /* dark gray [monotone] */
+  --gray-100: #979797; /* gray [monotone] */
+  --gray-50: #e6e6e6; /* light gray [monotone] */
+  --soft-gray: #f6f6f6; /* soft gray [monotone] */
+  --pearl: #fafbfc; /* pearl [monotone] */
+
+  /* COLOURS */
+  /* dark theme */
+  --purple: #5e60ff; /* dark:violet [primary] */
+  --purple-100: #a86cff; /* dark:purple [primary] */
+  --magenta: #d64d89; /* dark:magenta [primary] */
+  --orange-200: #ff7c5c; /* dark:orange [secondary] */
+  --succ-green-dark: #7afb83; /* dark:green [status] */
+  --warn-red-dark: #ef4b52; /* dark:red [status] */
+
+  /* light theme */
+  --blue-primary: #5d5fef; /* blue [primary] */
+  --blue-secondary: #4c9af3; /* light blue [primary] */
+  --salmon: #fa5a7d; /* salmon [secondary] */
+  --orange-100: #ff947a; /* orange [secondary] */
+  --green-100: #3cd856; /* green [secondary] */
+  --purple-50: #bf83ff; /* purple [secondary] */
+  --succ-green-light: #53be5a; /* green [status] */
+  --warn-red-light: #da5d5d; /* red [status] */
+
   --white: #ffffff;
   --red-70: #a2191f;
   --magenta-70: #9f1853;
@@ -20,20 +47,12 @@
   --teal-70: #005d5d;
 
   /* component */
-  --blue-primary: #5d5fef;
-  --blue-secondary: #4c9af3;
-  --purple: #5e60ff;
-
   --lightblue: #62b4ee;
   --blue-100: #4282d7;
   --blue-200: #6babff;
 
-  --purple-100: #865298;
+  --green-300: #249731;
 
-  --green-100: #249731;
-
-  --dark-gray: #676767;
-  --gray-100: #979797;
   --gray-200: #bababa;
 
   --red-100: #ff8888;
@@ -80,16 +99,45 @@
 }
 
 @theme inline {
-  --color-background: var(--background);
-
-  /* primary */
-  --color-primary: var(--primary);
-  --color-secondary: var(--secondary);
-  --color-tint: var(--tint);
+  /* dark theme -- monotone */
+  --color-background: var(--background); /* dark:charcoal [monotone] */
   --color-white: var(--white);
-  --color-gray: var(--gray);
-  --color-light-gray: var(--light-gray);
+  --color-primary: var(--primary); /* dark:dark gray [monotone] */
+  --color-secondary: var(--secondary); /* dark:medium gray [monotone] */
+  --color-tint: var(--tint); /* dark:offwhite [monotone] */
+  --color-gray: var(--gray); /* dark:medium gray [monotone] */
+  --color-light-gray: var(--light-gray); /* dark:light gray [monotone] */
 
+  /* light theme -- monotone */
+  --color-midnight: var(--midnight); /* midnight [monotone] */
+  --color-dark-gray: var(--dark-gray); /* dark gray [monotone] */
+  --color-gray-100: var(--gray-100); /* gray [monotone] */
+  --color-gray-50: var(--gray-50); /* light gray [monotone] */
+  --color-soft-gray: var(--soft-gray); /* soft gray [monotone] */
+  --color-pearl: var(--pearl); /* pearl [monotone] */
+
+  /* dark theme -- colours */
+  --color-purple: var(--purple); /* dark:violet [primary] */
+  --color-purple-100: var(--purple-100); /* dark:purple [primary] */
+  --color-magenta: var(--magenta); /* dark:magenta [primary] */
+  --color-orange-200: var(--orange-200); /* dark:orange [secondary] */
+
+  /* light theme -- colours */
+  --color-blue-primary: var(--blue-primary); /* blue [primary] */
+  --color-blue-secondary: var(--blue-secondary); /* light blue [primary] */
+  --color-salmon: var(--salmon); /* salmon [secondary] */
+  --color-orange-100: var(--orange-100); /* orange [secondary] */
+  --color-green-100: var(--green-100); /* green [secondary] */
+  --color-purple-50: var(--purple-50); /* purple [secondary] */
+
+  /* dark theme -- status colours */
+  --color-green-100-success: var(--succ-green-dark); /* dark:green [status] */
+  --color-red-100-warning: var(--warn-red-dark); /* dark:red [status] */
+  /* light theme -- status colours */
+  --color-green-200-success: var(--succ-green-light); /* green [status] */
+  --color-red-200-warning: var(--warn-red-light); /* red [status] */
+
+  /* NOT IN USE BY FIGMA */
   /* color palette */
   --color-red-70: var(--red-70);
   --color-magenta-70: var(--magenta-70);
@@ -98,14 +146,9 @@
   --color-teal-70: var(--teal-70);
 
   /* component setting */
-  --color-blue-primary: var(--blue-primary);
-  --color-blue-secondary: var(--blue-secondary);
   --color-muted: var(--muted);
   --color-success: var(--success);
   --color-warning: var(--warning);
-  --color-dark-gray: var(--dark-gray);
-  --color-gray-100: var(--gray-100);
-  --color-purple: var(--purple);
 
   --color-red-100: var(--red-100);
   --color-red-200: var(--red-200);
@@ -113,9 +156,8 @@
   --color-lightblue: var(--lightblue);
   --color-blue-100: var(--blue-100);
   --color-blue-200: var(--blue-200);
-  --color-purple-100: var(--purple-100);
 
-  --color-green-100: var(--green-100);
+  --color-green-300: var(--green-300);
 }
 
 @media (prefers-color-scheme: dark) {

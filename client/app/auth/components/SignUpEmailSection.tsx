@@ -69,15 +69,14 @@ export default function SignUpEmailSection({
             {!isEmailValid ? (
               <DisabledButton
                 label="Verify"
-                size="small"
-                textSize="small"
+                textSize="text-sm"
                 className={`!w-[92px]`}
               />
             ) : (
               <Button
                 onClick={onVerifyEmail}
                 label="Verify"
-                size="small"
+                textSize="text-sm"
                 className={`!w-[92px]`}
               />
             )}
@@ -106,15 +105,14 @@ export default function SignUpEmailSection({
             {!isVerificationCodeValid ? (
               <DisabledButton
                 label="Validate"
-                size="small"
-                textSize="small"
+                textSize="text-sm"
                 className={`!w-[92px]`}
               />
             ) : (
               <Button
                 onClick={onValidateCode}
                 label="Validate"
-                size="small"
+                textSize="text-sm"
                 className={`!w-[92px]`}
               />
             )}
@@ -126,12 +124,12 @@ export default function SignUpEmailSection({
         {/* Next Step Button */}
         <div className="flex justify-center w-full">
           {!isVerificationSuccess || !isEmailValid ? (
-            <DisabledButton label="Next Page" size="small" />
+            <DisabledButton label="Next Page" textSize="text-sm" />
           ) : (
             <Button
               type="button"
               label="Next Page"
-              size="small"
+              textSize="text-sm"
               onClick={onNextStep}
             />
           )}
