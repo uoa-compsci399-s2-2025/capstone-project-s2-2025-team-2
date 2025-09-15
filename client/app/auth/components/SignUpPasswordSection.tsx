@@ -56,7 +56,7 @@ export default function SignUpPasswordSection({
           <Button
             type="button"
             label="Confirm"
-            size="small"
+            textSize="text-sm"
             onClick={onSignUp}
           />
         </div>
