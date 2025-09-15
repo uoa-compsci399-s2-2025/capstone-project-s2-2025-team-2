@@ -403,27 +403,27 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsUserController_getReagentsById: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsUserController_getReagentsByUserId: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
                 request: {"in":"request","name":"request","required":true,"dataType":"object"},
         };
-        app.get('/users/reagents/viewing/:id',
+        app.get('/users/:id/reagents',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(UserController)),
-            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.getReagentsById)),
+            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.getReagentsByUserId)),
 
-            async function UserController_getReagentsById(request: ExRequest, response: ExResponse, next: any) {
+            async function UserController_getReagentsByUserId(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsUserController_getReagentsById, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsUserController_getReagentsByUserId, request, response });
 
                 const controller = new UserController();
 
               await templateService.apiHandler({
-                methodName: 'getReagentsById',
+                methodName: 'getReagentsByUserId',
                 controller,
                 response,
                 next,
