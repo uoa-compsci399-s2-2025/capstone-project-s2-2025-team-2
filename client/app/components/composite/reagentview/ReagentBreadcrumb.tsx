@@ -1,4 +1,7 @@
-const ReagentBreadcrumb = () => {
+interface ReagentBreadcrumbProps {
+  reagentName: string
+}
+const ReagentBreadcrumb = ({ reagentName }: ReagentBreadcrumbProps) => {
   return (
     <div>
       <h5
@@ -7,7 +10,7 @@ const ReagentBreadcrumb = () => {
         text-blue-400
       "
       >
-        Reagents / Listings / Hydrogen Peroxide 5%
+        Reagents / Listings / {reagentName}
       </h5>
     </div>
   )

@@ -78,6 +78,13 @@
 					},
 					"location": {
 						"type": "string"
+					},
+					"id": {
+						"type": "string"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"required": [
@@ -88,7 +95,9 @@
 					"tradingType",
 					"categories",
 					"createdAt",
-					"location"
+					"location",
+					"id",
+					"quantity"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -173,6 +182,13 @@
 					},
 					"location": {
 						"type": "string"
+					},
+					"id": {
+						"type": "string"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"type": "object",

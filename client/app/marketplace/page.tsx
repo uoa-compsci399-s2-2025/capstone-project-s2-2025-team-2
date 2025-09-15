@@ -87,6 +87,7 @@ const Marketplace = () => {
       <div className="bg-transparent dark:bg-black flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
         {sorted.map((r) => (
           <ReagentCard
+            id={r.id}
             key={uuidv4()}
             name={r.name}
             description={r.description}

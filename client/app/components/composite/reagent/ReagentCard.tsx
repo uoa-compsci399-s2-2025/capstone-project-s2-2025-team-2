@@ -3,6 +3,7 @@ import { MapPinIcon } from "@heroicons/react/24/outline"
 import Image from "next/image"
 import Button from "../../generic/button/regular/Button"
 import { ChevronDoubleRightIcon, ClockIcon } from "@heroicons/react/24/outline"
+import { useRouter } from "next/navigation"
 
 interface ReagentCardProps {
   name: string
@@ -13,6 +14,7 @@ interface ReagentCardProps {
   imageUrl: string
   // quantity: string
   formula?: string
+  id:string
 }
 
 const ReagentCard = ({
@@ -24,7 +26,12 @@ const ReagentCard = ({
   imageUrl,
   // quantity,
   formula,
+  id
 }: ReagentCardProps) => {
+  const router = useRouter()
+  const handleClick = () => {
+    router.push(`/marketplace/${id}`)
+  }
   return (
     <div
       className="
@@ -37,7 +44,7 @@ const ReagentCard = ({
       <div className="flex flex-row gap-4 md:gap-0 md:flex-col m-2 md:m-3 rounded-lg overflow-hidden drop-shadow-xl">
         <div className="relative w-[7rem] h-[6.5rem] md:w-full md:h-[8rem]">
           <Image
-            src={imageUrl || "./placeholder.webp"}
+            src="/placeholder.webp"
             fill
             className="object-cover"
             alt=""
@@ -109,6 +116,7 @@ const ReagentCard = ({
               </div>
               <div className="hidden md:block">
                 <Button
+                  onClick={handleClick}
                   label="View"
                   size="small"
                   textSize="small"
