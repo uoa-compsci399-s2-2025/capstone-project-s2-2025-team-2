@@ -64,9 +64,12 @@
   --purple: #5e60ff;
 
   --midnight: #151d48;
+  --midnight: #151d48;
   --lightblue: #62b4ee;
   --blue-100: #4282d7;
   --blue-200: #6babff;
+  --blue-300: #58a3e2;
+  --blue-400: #c8dcff;
   --blue-300: #58a3e2;
   --blue-400: #c8dcff;
 
@@ -78,14 +81,23 @@
   --green-400: #428b44;
   --green-500: #afffb2;
   --green-600: #7ad47d;
+  --green-200: #43c05a;
+  --green-300: #9ae39c;
+  --green-400: #428b44;
+  --green-500: #afffb2;
+  --green-600: #7ad47d;
 
   --dark-gray: #676767;
   --gray-100: #979797;
   --gray-200: #bababa;
   --gray-300: #e6e6e6;
+  --gray-300: #e6e6e6;
 
   --red-100: #ff8888;
   --red-200: #e86f6f;
+  --red-300: #e5595b;
+
+  --gold: #ff9500;
   --red-300: #e5595b;
 
   --gold: #ff9500;
@@ -239,4 +251,13 @@ body {
     var(--background-fade) 100%
   );
   font-family: "Poppins", sans-serif;
+}
+
+.background-gradient {
+  background: linear-gradient(
+    to bottom,
+    black 0%,
+    black 90%,
+    var(--background) 100%
+  );
 }
