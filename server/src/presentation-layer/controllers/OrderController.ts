@@ -11,6 +11,7 @@ import {
   Body,
   Tags,
   Patch,
+  Path,
 } from "tsoa"
 import { AuthRequest } from "../../service-layer/dtos/request/AuthRequest"
 import { OrderService } from "../../data-layer/repositories/OrderRepository"
@@ -54,9 +55,24 @@ export class OrderController extends Controller {
   public async approveOrder(
     @Path() id: string,
     @Request() request: AuthRequest,
-    @Body() data?: { status?: string },
   ): Promise<Order> {
     const user = request.user
     const order = new OrderService().getOrderById(id)
+    if (!order) {
+      this.setStatus(404)
+      throw new Error("Order not found")
+    }
+    if (
+      user.uid !== (await order).owner_id &&
+      user.uid !== (await order).req_id
+    ) {
+      this.setStatus(403)
+      throw new Error("Unauthorized to approve this order request")
+    }
+    const updatedOrder = await new OrderService().updateOrderStatus(
+      id,
+      "approved",
+    )
+    return updatedOrder
   }
 }
