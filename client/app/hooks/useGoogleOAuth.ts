@@ -1,4 +1,6 @@
 import { useEffect, useRef } from "react"
+import { signInWithCustomToken } from "firebase/auth"
+import { auth } from "../config/firebase"
 import GoogleOAuthRequestDto from "../models/request-models/GoogleOAuthRequestDto"
 import GoogleOAuthResponseDto from "../models/response-models/GoogleOAuthResponseDto"
 import { oauthVerify } from "../services/auth"
@@ -64,8 +66,20 @@ export const useGoogleOAuth = ({ onSuccess, onError }: GoogleOAuthBtnProps) => {
         const responseData: GoogleOAuthResponseDto =
           await oauthVerify(requestData)
 
-        if (responseData.success && onSuccess) {
-          onSuccess(responseData.user)
+        //sign in to firebase client w backend token
+        if (responseData.success && responseData.token && auth) {
+          const userCredential = await signInWithCustomToken(
+            auth,
+            responseData.token,
+          )
+
+          if (onSuccess) {
+            onSuccess({
+              ...responseData.user,
+              uid: userCredential.user.uid,
+              email: userCredential.user.email,
+            })
+          }
         }
       } catch (error) {
         console.error("Google authentication error:", error)
