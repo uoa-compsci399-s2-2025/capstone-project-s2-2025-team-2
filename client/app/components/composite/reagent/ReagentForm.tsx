@@ -110,8 +110,13 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
     }
 
     try {
-      const idToken = "INSERT_TOKEN_HERE"
-      
+      //fetch token from localStorage
+      const idToken = localStorage.getItem("authToken")
+      if (!idToken) {
+        alert("Please sign in to create a reagent.")
+        return
+      }
+     
       const { error } = await client.POST("/users/reagents" as any, {
         body: reagentData,
         headers: {
@@ -376,4 +381,3 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
 }
 
 export default ReagentForm
-

@@ -8,9 +8,24 @@ import {
   Bars3Icon,
 } from "@heroicons/react/24/outline"
 import Button from "../../generic/button/regular/Button"
+import { firebaseSignOut } from "../../../services/firebase-auth"
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false)
+  
+  const handleSignOut = async () => {
+    try {
+      await firebaseSignOut()
+      // Clear localStorage token
+      localStorage.removeItem("authToken")
+      console.log("Signed out successfully and cleared localStorage")
+      alert("Signed out successfully!")
+    } catch (error) {
+      console.error("Sign out failed:", error)
+      alert("Sign out failed. Please try again.")
+    }
+  }
+  
   const links = [
     {
       href: "/profile",
@@ -77,11 +92,11 @@ const Sidebar = () => {
             ))}
           </div>
           <div className="w-full flex justify-center">
-            <div className="flex items-center mb-20 md:mb-30 p-2 text-red-70 cursor-pointer hover:text-red-70/80">
-              <ArrowLeftStartOnRectangleIcon
-                className="w-5 h-5"
-                onClick={() => alert("Signing out...")}
-              />
+            <div 
+              className="flex items-center mb-20 md:mb-30 p-2 text-red-70 cursor-pointer hover:text-red-70/80"
+              onClick={handleSignOut}
+            >
+              <ArrowLeftStartOnRectangleIcon className="w-5 h-5" />
               Sign Out
             </div>
           </div>
