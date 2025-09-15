@@ -186,4 +186,29 @@ export class UserController extends Controller {
       throw new Error(`[ERROR] while updating reagent ${id}: ${error}`)
     }
   }
+
+  /**
+ 
+Get all reagents under another user by their user id
+Can only be done by admin*
+@param user_id - user id to query with
+@returns Promise<Reagent[]> - The list of all reagents filtered.*/
+
+@SuccessResponse("200", "All reagents returned successfully")
+@Security("jwt")
+@Get("/reagents/{user_id}")
+public async getReagentsById(
+  @Path() user_id: string,
+  @Request() request: AuthRequest,
+): Promise<Reagent[]> {
+  try{
+    if (request.user.role !== "admin") {
+      throw new Error("You don't have permission to access this endpoint")
+    }
+    const reagents = await new ReagentService().getReagentsByUserId(user_id)
+    return reagents
+  } catch (err) {
+    throw new Error("Failed to fetch reagents: " + (err as Error).message)
+  }
+}
 }

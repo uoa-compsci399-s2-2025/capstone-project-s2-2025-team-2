@@ -618,6 +618,46 @@
 				}
 			}
 		},
+		"/users/Reagents/{user_id}": {
+			"get": {
+				"operationId": "GetReagentsById",
+				"responses": {
+					"200": {
+						"description": "All reagents returned successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Reagent"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "\r\nGet all reagents under another user by their user id\r\nCan only be done by admin*",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "- user id to query with",
+						"in": "path",
+						"name": "user_id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/reagents": {
 			"get": {
 				"operationId": "GetAllReagents",
