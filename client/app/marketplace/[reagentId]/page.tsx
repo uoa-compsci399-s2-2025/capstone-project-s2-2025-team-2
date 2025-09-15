@@ -55,7 +55,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
             </div>
 
             <div className="flex flex-col items-start">
-              <h1 className="ml-[2rem] mt-[1rem] md:ml-0 md:mt-[2rem] md:mb-[1rem] text-white tracking-wider">
+              <h1 className="ml-[2rem] mt-[1rem] md:ml-0 md:mt-[1rem] md:mb-[1rem] text-white tracking-wider">
                 {reagent.name}
               </h1>
 
@@ -66,7 +66,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                 <p className="text-white">{reagent.description}</p>
               </div>
 
-              <div className="px-[1.5rem] mt-[2rem] mb-[2rem] md:mb-0 md:px-0 md:mt-0 gap-5 flex flex-col md:flex-row justify-around w-[50rem] mt-[1rem]">
+              <div className="px-[1.5rem] mt-[2rem] mb-[2rem] md:mb-0 md:px-0 md:mt-0 gap-12 flex flex-col md:flex-row justify-around w-[47rem] mt-[1rem]">
                 <h5 className="flex text-green-200 items-center text-[0.8rem]">
                   <FaRegClock className="text-green-200 mr-[0.3rem] w-5 h-5" />{" "}
                   Listed - {reagent.expiryDate}
