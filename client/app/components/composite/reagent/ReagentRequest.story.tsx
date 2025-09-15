@@ -1,0 +1,69 @@
+import type { Meta, StoryObj } from "@storybook/nextjs"
+import ReagentRequest from "./ReagentRequest"
+import type { components } from "@/models/__generated__/schema"
+
+type Reagent = components["schemas"]["Reagent"]
+
+// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
+const meta = {
+  title: "Composite/Reagent/ReagentRequest",
+  component: ReagentRequest,
+  parameters: {
+    layout: "centered",
+  },
+  tags: ["autodocs"],
+  argTypes: {
+    tradingType: {
+      control: { type: "radio" },
+      options: ["trade", "giveaway"],
+    },
+  },
+
+  args: {},
+  decorators: [
+    (Story) => (
+      <div className="bg-primary min-h-screen p-8">
+        <Story />
+      </div>
+    ),
+  ],
+} satisfies Meta<typeof ReagentRequest>
+
+export default meta
+type Story = StoryObj<typeof meta>
+
+// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
+export const DefaultReagentRequest: Story = {
+  args: {
+    isOpen: true,
+    onClose: () => {},
+    onSubmit: () => {},
+    tradingType: "trade",
+    reagent: {
+      user_id: "owner123",
+      name: "Hydrochloric Acid",
+      description: "High purity hydrochloric acid for laboratory use",
+      price: 10,
+      expiryDate: "2025-12-31",
+      tradingType: "trade",
+      images: [],
+      categories: ["chemical"],
+      createdAt: "2025-01-01",
+      location: "UoA, Auckland",
+    },
+    requesterName: "Del",
+    ownerName: "Kim",
+    ownedReagent: {
+      user_id: "requester123",
+      name: "Sodium Chloride",
+      description: "Pure sodium chloride for laboratory use",
+      price: 5,
+      expiryDate: "2025-11-30",
+      tradingType: "trade",
+      images: [],
+      categories: ["chemical"],
+      createdAt: "2025-01-01",
+      location: "VUW, Wellington",
+    },
+  },
+}

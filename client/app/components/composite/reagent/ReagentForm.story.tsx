@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/nextjs"
 import ReagentForm from "./ReagentForm"
 
 const meta = {
-  title: "Composite/ReagentForm",
+  title: "Composite/Reagent/ReagentForm",
   component: ReagentForm,
   parameters: {
     layout: "centered",
