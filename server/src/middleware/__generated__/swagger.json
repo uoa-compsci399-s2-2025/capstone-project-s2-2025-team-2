@@ -97,13 +97,6 @@
 					},
 					"id": {
 						"type": "string"
-					},
-					"quantity": {
-						"type": "number",
-						"format": "double"
-					},
-					"condition": {
-						"type": "string"
 					}
 				},
 				"required": [
@@ -117,9 +110,7 @@
 					"categories",
 					"createdAt",
 					"location",
-					"id",
-					"quantity",
-					"condition"
+					"id"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -226,13 +217,6 @@
 						"type": "string"
 					},
 					"id": {
-						"type": "string"
-					},
-					"quantity": {
-						"type": "number",
-						"format": "double"
-					},
-					"condition": {
 						"type": "string"
 					}
 				},

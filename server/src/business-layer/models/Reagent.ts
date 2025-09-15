@@ -16,6 +16,4 @@ export interface Reagent {
   createdAt: Date
   location: string
   id: string
-  quantity: number
-  condition: string
 }

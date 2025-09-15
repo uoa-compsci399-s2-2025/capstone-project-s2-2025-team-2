@@ -57,8 +57,6 @@ const models: TsoaRoute.Models = {
             "createdAt": {"dataType":"datetime","required":true},
             "location": {"dataType":"string","required":true},
             "id": {"dataType":"string","required":true},
-            "quantity": {"dataType":"double","required":true},
-            "condition": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -82,7 +80,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Partial_Reagent_": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"user_id":{"dataType":"string"},"name":{"dataType":"string"},"description":{"dataType":"string"},"price":{"dataType":"double"},"expiryDate":{"dataType":"string"},"tradingType":{"ref":"ReagentTradingType"},"images":{"dataType":"array","array":{"dataType":"string"}},"categories":{"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"}},"createdAt":{"dataType":"datetime"},"location":{"dataType":"string"},"id":{"dataType":"string"},"quantity":{"dataType":"double"},"condition":{"dataType":"string"}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"user_id":{"dataType":"string"},"name":{"dataType":"string"},"description":{"dataType":"string"},"condition":{"dataType":"string"},"price":{"dataType":"double"},"quantity":{"dataType":"double"},"expiryDate":{"dataType":"string"},"tradingType":{"ref":"ReagentTradingType"},"images":{"dataType":"array","array":{"dataType":"string"}},"categories":{"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"}},"createdAt":{"dataType":"datetime"},"location":{"dataType":"string"},"id":{"dataType":"string"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "GoogleOAuthUser": {
