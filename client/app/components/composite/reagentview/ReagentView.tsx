@@ -54,7 +54,9 @@ const ReagentView = ({
           </h1>
 
           <div className="md:hidden px-[2rem] mt-[1rem]">
-            <p className=" text-white mb-1"><b>Quantity: </b> {quantity}</p>
+            <p className=" text-white mb-1">
+              <b>Quantity: </b> {quantity}
+            </p>
             <p className="text-white">{description}</p>
           </div>
 
@@ -133,14 +135,13 @@ const ReagentView = ({
       </div>
       <div className="md:hidden bg-background -mt-[2rem] relative z-10 rounded-t-3xl md:mt-0 md:rounded-none md:z-auto md:bg-transparent">
         <div className="flex h-[8rem] justify-between">
-        <span className="flex flex-col justify-center ml-[2rem]">
+          <span className="flex flex-col justify-center ml-[2rem]">
             <p className="text-white/60 text-[1.3rem]">Price</p>
-              <h2 className="text-green-500">${price}</h2>
-        </span>
-        <div className="flex items-center mr-[2rem]">
-          <SellerContact />
-
-        </div>
+            <h2 className="text-green-500">${price}</h2>
+          </span>
+          <div className="flex items-center mr-[2rem]">
+            <SellerContact />
+          </div>
         </div>
       </div>
 

@@ -181,7 +181,8 @@
   --color-green-200-success: var(--succ-green-light); /* green [status] */
   --color-red-200-warning: var(--warn-red-light); /* red [status] */
 
-  /* NOT IN USE BY FIGMA */  --color-gray: var(--gray);
+  /* NOT IN USE BY FIGMA */
+  --color-gray: var(--gray);
   --color-light-gray: var(--light-gray);
 
   /* color palette */
