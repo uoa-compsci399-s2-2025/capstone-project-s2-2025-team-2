@@ -49,6 +49,33 @@ export class OrderController extends Controller {
     }
   }
 
+  @SuccessResponse("200", "All orders returned successfully")
+  @Security("jwt")
+  @Get("{id}")
+  public async getOrderById(
+    @Path() id: string,
+    @Request() request: AuthRequest,
+  ): Promise<Order> {
+    try {
+      const user = request.user
+      const order = await new OrderService().getOrderById(id)
+      if (!order) {
+        this.setStatus(404)
+        throw new Error("Order not found")
+      }
+      if (
+        user.uid !== (await order).owner_id &&
+        user.uid !== (await order).req_id
+      ) {
+        this.setStatus(403)
+        throw new Error("Unauthorized to retrieve this order")
+      }
+      return order
+    } catch (err) {
+      throw new Error("Failed to fetch order: " + (err as Error).message)
+    }
+  }
+
   @SuccessResponse("200", "order successfully approved")
   @Security("jwt")
   @Patch("{id}/approve")
