@@ -26,8 +26,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
     fetchReagents()
   }, [])
 
-  if (!reagent) return <div>Loading...</div>
-
+  if (!reagent) return <div>Loading...</div>;
   return (
     <div
       className="
@@ -55,7 +54,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
 
           <div className="md:hidden px-[2rem] mt-[1rem]">
             <p className=" text-white mb-1"><b>Quantity: </b> {reagent.quantity}</p>
-            <p className="text-white">{reagent.description}</p>
+            <p className="text-white">{reagent.description ?? "No description for this listing"}</p>
           </div>
 
           <div className="px-[1.5rem] mt-[2rem] mb-[2rem] md:mb-0 md:px-0 md:mt-0 gap-3 flex flex-col md:flex-row justify-around w-[43rem] mx-auto mt-[1rem]">
@@ -99,7 +98,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
             <div className="bg-green-600/40 rounded-[10px] shadow-[0_4px_6px_rgba(0,0,0,0.4)]">
               <div className="text-center py-[1rem]">
                 <h4 className="text-green-500 font-bold">Current price</h4>
-                <h2 className="text-green-500">${reagent.price}</h2>
+                <h2 className="text-green-500">${reagent.price ?? "0"}</h2>
               </div>
               <div className="flex bg-primary p-[2rem] rounded-b-[10px]">
                 <div className="flex-[0.25]">
