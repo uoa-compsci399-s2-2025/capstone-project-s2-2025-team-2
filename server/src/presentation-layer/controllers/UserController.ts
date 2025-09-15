@@ -138,11 +138,14 @@ export class UserController extends Controller {
     @Request() request: AuthRequest,
     @Body() requestObject: CreateReagentRequest,
   ): Promise<Reagent> {
-    if (!request.user || !['admin', 'lab_manager'].includes(request.user.role)) {
+    console.log(request)
+    const user = request.user
+    console.log(request.user.uid)
+    console.log(user.role)
+    if (!user || !["admin", "lab_manager"].includes(user.role)) {
       throw new Error("You don't have premssion can create reagents")
     }
-    const authorizedUser = request.user
-    const user_id = authorizedUser.uid
+    const user_id = request.user.uid
     const data = {
       ...requestObject,
       user_id,

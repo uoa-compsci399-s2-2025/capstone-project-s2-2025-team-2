@@ -23,7 +23,7 @@ export class UserService {
 
   async getUserById(id: string): Promise<User> {
     try {
-      const userDoc = await FirestoreCollections.users.doc(id.toString()).get()
+      const userDoc = await FirestoreCollections.users.doc(id).get()
       if (userDoc.exists) {
         const userData = userDoc.data()
         return {

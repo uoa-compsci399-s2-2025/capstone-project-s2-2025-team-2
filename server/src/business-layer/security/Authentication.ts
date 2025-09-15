@@ -1,11 +1,11 @@
 import FireBaseError from "../../business-layer/errors/FirebaseError"
-import type * as express from "express"
 import { StatusCodes } from "http-status-codes"
 import { auth } from "./Firebase"
 import { UserService } from "../../data-layer/repositories/UserRepository"
+import { AuthRequest } from "service-layer/dtos/request/AuthRequest"
 
 export function expressAuthentication(
-  request: express.Request,
+  request: AuthRequest,
   securityName: string,
   scopes?: string[],
 ) {
@@ -45,7 +45,7 @@ export function expressAuthentication(
                   )
                 }
               }
-              let role: "user" | "lab_manager" | "admin" = "user"
+              let role: "user" | "lab_manager" | "admin"
               try {
                 const userService = new UserService()
 
@@ -66,16 +66,14 @@ export function expressAuthentication(
                   dbError,
                 )
               }
-              const authUser = {
-                user: {
-                  uid: user.uid,
-                  name: user.displayName,
-                  email: user.email,
-                  role: role,
-                },
+              request.user = {
+                uid: uid,
+                role: role,
+                email: user.email,
+                name: user.displayName || null,
               }
 
-              resolve(authUser)
+              resolve(request.user)
             })
             .catch((reason) => {
               if (!(reason instanceof FireBaseError)) {
