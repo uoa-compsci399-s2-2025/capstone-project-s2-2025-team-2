@@ -8,7 +8,7 @@ export class ReagentService {
    */
   async getAllReagents(): Promise<Reagent[]> {
     const reagentsSnapshot = await FirestoreCollections.reagents.get()
-    return reagentsSnapshot.docs.map((doc) => doc.data())
+    return reagentsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
   }
 
   /**
@@ -123,6 +123,6 @@ export class ReagentService {
     const reagentsSnapshot = await FirestoreCollections.reagents
       .where("user_id", "==", user_id)
       .get()
-    return reagentsSnapshot.docs.map((doc) => doc.data())
+    return reagentsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
   }
 }

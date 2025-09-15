@@ -20,6 +20,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/users/{user_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get user information by user ID */
+        get: operations["GetUserById"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/users/{user_id}/email": {
         parameters: {
             query?: never;
@@ -79,6 +96,25 @@ export interface paths {
         patch: operations["UpdateReagent"];
         trace?: never;
     };
+    "/users/{id}/reagents": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description
+         *     Get all reagents under another user by their user id
+         *     Can only be done by admin* */
+        get: operations["GetReagentsByUserId"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/reagents": {
         parameters: {
             query?: never;
@@ -117,6 +153,22 @@ export interface paths {
         /** @description Update a reagent by its ID.
          *     Can only be done by lab_admin (who owns the reagent) and admin */
         patch: operations["UpdateReagent"];
+        trace?: never;
+    };
+    "/orders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetOrders"];
+        put?: never;
+        post: operations["CreateOrder"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
         trace?: never;
     };
     "/auth/google/verify": {
@@ -199,6 +251,7 @@ export interface components {
         /** @enum {string} */
         ReagentCategory: "chemical" | "hazardous" | "biological";
         Reagent: {
+            id?: string;
             user_id: string;
             name: string;
             description: string;
@@ -231,6 +284,7 @@ export interface components {
         };
         /** @description Make all properties in T optional */
         Partial_Reagent_: {
+            id?: string;
             user_id?: string;
             name?: string;
             description?: string;
@@ -246,6 +300,19 @@ export interface components {
             /** Format: date-time */
             createdAt?: string;
             location?: string;
+        };
+        Order: {
+            req_id: string;
+            owner_id: string;
+            reagent_id: string;
+            /** @enum {string} */
+            status: "pending" | "approved" | "canceled";
+            /** Format: date-time */
+            createdAt: string;
+        };
+        CreateOrderRequest: {
+            req_id: string;
+            reagent_id: string;
         };
         GoogleOAuthUser: {
             uid: string;
@@ -311,6 +378,29 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["User"][];
+                };
+            };
+        };
+    };
+    GetUserById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description - The ID of the user to fetch */
+                user_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User retrieved successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["User"] | null;
                 };
             };
         };
@@ -458,6 +548,28 @@ export interface operations {
             };
         };
     };
+    GetReagentsByUserId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description All reagents returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reagent"][];
+                };
+            };
+        };
+    };
     GetAllReagents: {
         parameters: {
             query?: {
@@ -576,6 +688,50 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Reagent"];
+                };
+            };
+        };
+    };
+    GetOrders: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description All reagents returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Order"][];
+                };
+            };
+        };
+    };
+    CreateOrder: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateOrderRequest"];
+            };
+        };
+        responses: {
+            /** @description Order created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Order"];
                 };
             };
         };

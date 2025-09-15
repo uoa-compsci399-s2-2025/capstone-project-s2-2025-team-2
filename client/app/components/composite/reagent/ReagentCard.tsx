@@ -3,6 +3,11 @@ import { MapPinIcon } from "@heroicons/react/24/outline"
 import Image from "next/image"
 import Button from "../../generic/button/regular/Button"
 import { ChevronDoubleRightIcon, ClockIcon } from "@heroicons/react/24/outline"
+import { useState } from "react"
+import ReagentRequest from "./ReagentRequest"
+import type { components } from "@/models/__generated__/schema"
+
+type Reagent = components["schemas"]["Reagent"]
 
 interface ReagentCardProps {
   name: string
@@ -13,6 +18,10 @@ interface ReagentCardProps {
   imageUrl: string
   // quantity: string
   formula?: string
+  
+  reagent?: Reagent
+  requesterName?: string
+  ownerName?: string
 }
 
 const ReagentCard = ({
@@ -24,7 +33,21 @@ const ReagentCard = ({
   imageUrl,
   // quantity,
   formula,
+  reagent,
+  requesterName = "",
+  ownerName = "",
 }: ReagentCardProps) => {
+  const [isRequestOpen, setIsRequestOpen] = useState(false)
+
+  const handleViewClick = () => {
+    if (reagent) {
+      setIsRequestOpen(true)
+    }
+  }
+
+  const handleRequestSubmit = () => {
+    setIsRequestOpen(false)
+  }
   return (
     <div
       className="
@@ -104,6 +127,7 @@ const ReagentCard = ({
                   icon={ChevronDoubleRightIcon}
                   iconPosition="right"
                   fontWeight="semibold"
+                  onClick={handleViewClick}
                 />
               </div>
               <div className="hidden md:block">
@@ -113,12 +137,25 @@ const ReagentCard = ({
                   icon={ChevronDoubleRightIcon}
                   iconPosition="right"
                   fontWeight="semibold"
+                  onClick={handleViewClick}
                 />
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/*ReagentRequest window*/}
+      {reagent && (
+        <ReagentRequest
+          isOpen={isRequestOpen}
+          onClose={() => setIsRequestOpen(false)}
+          onSubmit={handleRequestSubmit}
+          reagent={reagent}
+          requesterName={requesterName}
+          ownerName={ownerName}
+        />
+      )}
     </div>
   )
 }

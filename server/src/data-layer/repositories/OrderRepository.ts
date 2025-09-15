@@ -12,6 +12,8 @@ export class OrderService {
   async createOrder(req: CreateOrderRequest): Promise<Order> {
     const user = await this.userService.getUserById(req.req_id)
     const reagent = await this.reagentService.getReagentById(req.reagent_id)
+    console.log("user", user)
+    console.log("reagent", reagent)
     if (!user || !reagent) throw new Error("No user or reagent found")
     const order: Order = {
       req_id: req.req_id,

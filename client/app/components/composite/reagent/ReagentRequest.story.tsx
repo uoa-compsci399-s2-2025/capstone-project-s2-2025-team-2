@@ -13,9 +13,14 @@ const meta = {
   },
   tags: ["autodocs"],
   argTypes: {
-    tradingType: {
-      control: { type: "radio" },
-      options: ["trade", "giveaway"],
+    isOpen: {
+      control: { type: "boolean" },
+    },
+    requesterName: {
+      control: { type: "text" },
+    },
+    ownerName: {
+      control: { type: "text" },
     },
   },
 
@@ -38,8 +43,8 @@ export const DefaultReagentRequest: Story = {
     isOpen: true,
     onClose: () => {},
     onSubmit: () => {},
-    tradingType: "trade",
     reagent: {
+      id: "reagent-123",
       user_id: "owner123",
       name: "Hydrochloric Acid",
       description: "High purity hydrochloric acid for laboratory use",
@@ -55,19 +60,5 @@ export const DefaultReagentRequest: Story = {
     },
     requesterName: "Del",
     ownerName: "Kim",
-    ownedReagent: {
-      user_id: "requester123",
-      name: "Sodium Chloride",
-      description: "Pure sodium chloride for laboratory use",
-      condition: "Opened, unused",
-      price: 5,
-      quantity: 100,
-      expiryDate: "2025-11-30",
-      tradingType: "trade",
-      images: [],
-      categories: ["chemical"],
-      createdAt: "2025-01-01",
-      location: "VUW, Wellington",
-    },
   },
 }

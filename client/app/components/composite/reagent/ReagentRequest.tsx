@@ -1,10 +1,11 @@
 "use client"
 
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { BeakerIcon } from "@heroicons/react/20/solid"
 import type { components } from "@/models/__generated__/schema"
+import client from "../../../services/fetch-client"
+import { getCurrentUser } from "../../../services/firebase-auth"
 
-type ReagentTradingType = components["schemas"]["ReagentTradingType"]
 type Reagent = components["schemas"]["Reagent"]
 
 interface ReagentRequestProps {
@@ -14,39 +15,7 @@ interface ReagentRequestProps {
   reagent: Reagent
   requesterName: string
   ownerName: string
-  tradingType: ReagentTradingType
-  ownedReagent?: Reagent 
 }
-
-const ARROWS = {
-  bidir: "↔",
-  left: "←",
-  right: "→"
-} as const
-
-//trading req types
-const TRADING_TYPES = {
-  trade: {
-    header: 'Trade',
-    arrow: 'bidir' as const,
-    requesterIcon: true,
-    ownerIcon: true,
-    showOwnedReagent: true,
-    showReqReagent: true,
-    ownedReagentLabel: 'ownedReagent.name',
-    reqReagentLabel: 'reagent.name',
-  },
-  giveaway: {
-    header: 'Giveaway',
-    arrow: 'left' as const,
-    requesterIcon: false,
-    ownerIcon: true,
-    showOwnedReagent: false,
-    showReqReagent: true,
-    ownedReagentLabel: null,
-    reqReagentLabel: 'reagent.name',
-  }
-} as const
 
 //reusable styling classes
 const buttonStyles = "px-4 py-2 text-white rounded-lg"
@@ -84,55 +53,114 @@ export const ReagentRequest = ({
   onSubmit,
   reagent,
   requesterName,
-  ownerName,
-  tradingType,
-  ownedReagent
+  ownerName
 }: ReagentRequestProps) => {
+  const [currentUser, setCurrentUser] = useState<any>(null)
+  const [ownerInfo, setOwnerInfo] = useState<any>(null)
+
+  useEffect(() => {
+    const user = getCurrentUser()
+    setCurrentUser(user)
+  }, [isOpen])
+
+  useEffect(() => {
+    if (isOpen && reagent?.user_id) {
+      fetchOwnerInfo(reagent.user_id)
+    }
+  }, [isOpen, reagent?.user_id])
+
+  const fetchOwnerInfo = async (userId: string) => {
+    try {
+      const { data, error } = await client.GET(`/users/${userId}` as any, {})
+      if (error) {
+        console.error("Failed to fetch info:", error)
+        return
+      }
+      setOwnerInfo(data)
+    } catch (err) {
+      console.error("Failed to fetch info:", err)
+    }
+  }
   
   if (!isOpen) return null
 
-  const handleSubmit = () => {
-    onSubmit()
-    onClose()
-  }
+  const handleSubmit = async () => {
+    try {
+      const token = localStorage.getItem("authToken")
+      if (!token || !currentUser) {
+        alert("Please sign in to make a request")
+        return
+      }
+      
+      const currentUserId = currentUser.uid
+      
+      //user cannot request their own reagent
+      if (reagent.user_id === currentUserId) {
+        alert("You cannot request your own reagent!")
+        return
+      }
 
-  //trading type config
-  const config = TRADING_TYPES[tradingType as keyof typeof TRADING_TYPES]
+      const { error } = await client.POST("/orders" as any, {
+        body: { 
+          req_id: currentUserId, 
+          reagent_id: reagent.id 
+        },
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      if (error) {
+        alert("Failed to create request")
+        return
+      }
+      
+      onSubmit()
+      onClose()
+    } catch{
+      alert("Failed to create request")
+    }
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70">
       <div className="relative w-full max-w-lg bg-primary rounded-2xl p-8 border border-muted">
+        {/* Close Button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl transition-colors"
+        >
+          ×
+        </button>
+        
         <h2 className="text-white text-center text-2xl font-medium mb-8">
-          {config.header}
+          Reagent Request
         </h2>
 
         <div className="flex items-center justify-center mb-8">
-           {/*Reagent Requester*/}
-           <UserDisplay 
-             name={requesterName}
-             reagentName={config.showOwnedReagent ? ownedReagent?.name : undefined}
-             showIcon={config.requesterIcon}
-           />
-
+          {/*Reagent Requester*/}
+          <UserDisplay 
+            name={currentUser?.displayName || currentUser?.email || requesterName}
+            showIcon={false}
+          />
           
           <span className="px-4 text-4xl text-gray-400">
-            {ARROWS[config.arrow]}
+            ←
           </span>
 
-           {/*Reagent Sender*/}
-           <UserDisplay 
-             name={ownerName}
-             reagentName={config.showReqReagent ? reagent.name : undefined}
-             showIcon={config.ownerIcon}
-           />
+          {/*Reagent Sender*/}
+          <UserDisplay 
+            name={ownerInfo?.displayName || ownerInfo?.email || ownerName}
+            reagentName={reagent.name}
+            showIcon={true}
+          />
         </div>
+        
         <div className="flex justify-end">
           <button 
             type="button"
             onClick={handleSubmit}
             className={`${buttonStyles} bg-blue-primary hover:bg-blue-primary/80 min-w-[120px] text-base font-medium py-1 px-3`}
           >
-            Request {ARROWS.right}
+            Request →
           </button>
         </div>
       </div>

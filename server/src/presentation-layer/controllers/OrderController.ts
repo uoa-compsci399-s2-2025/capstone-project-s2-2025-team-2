@@ -46,4 +46,5 @@ export class OrderController extends Controller {
       throw new Error("Failed to fetch orders: " + (err as Error).message)
     }
   }
+
 }

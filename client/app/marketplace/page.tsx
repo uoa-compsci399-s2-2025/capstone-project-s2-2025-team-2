@@ -112,6 +112,7 @@ const Marketplace = () => {
                 : "/placeholder.webp"
             }
             formula={r.tradingType ?? ""}
+            reagent={r as any}
           />
         ))}
       </div>
