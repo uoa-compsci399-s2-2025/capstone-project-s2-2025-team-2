@@ -51,7 +51,7 @@ export class OrderController extends Controller {
 
   @SuccessResponse("200", "order successfully approved")
   @Security("jwt")
-  @Patch("{id}")
+  @Patch("{id}/approve")
   public async approveOrder(
     @Path() id: string,
     @Request() request: AuthRequest,
@@ -78,7 +78,7 @@ export class OrderController extends Controller {
 
   @SuccessResponse("200", "order successfully canceld")
   @Security("jwt")
-  @Patch("{id}")
+  @Patch("{id}/cancel")
   public async cancelOrder(
     @Path() id: string,
     @Request() request: AuthRequest,
