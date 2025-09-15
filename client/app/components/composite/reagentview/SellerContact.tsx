@@ -12,6 +12,7 @@ interface SellerContactProps {
 const SellerContact = ({ name, location, rating }: SellerContactProps) => {
   return (
     <div className="flex flex-row items-center">
+
       <div className="hidden md:block relative bg-yellow-600 rounded-full border-2 border-white h-[4rem] w-[4rem] overflow-hidden">
         <Image
           src="/placeholder.webp"
@@ -33,14 +34,14 @@ const SellerContact = ({ name, location, rating }: SellerContactProps) => {
             ? `${rating} (${rating}% Positive Feedback)`
             : "No rating yet"}
         </span>
-      </div>
+      </div>        
 
       <Button
         label={`Contact ${name || "Seller"}`}
         size="small"
         textSize="medium"
         fontWeight="semibold"
-        className="px-20 py-8 rounded-[18px] md:rounded-[8px] md:text-sm md:px-6 md:w-auto md:py-1.5 md:justify-center"
+        className="px-20 py-8 rounded-[18px] md:ml-[4rem] md:rounded-[8px] md:text-sm md:px-6 md:w-auto md:py-1.5 md:justify-center"
       />
     </div>
   )
