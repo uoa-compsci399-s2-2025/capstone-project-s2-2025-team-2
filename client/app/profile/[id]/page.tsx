@@ -1,24 +1,31 @@
 "use client"
-// packages
 import { useEffect, useState } from "react"
 import { v4 as uuidv4 } from "uuid"
+import { onAuthStateChanged } from "firebase/auth"
 // components
-import ReagentCard from "../components/composite/reagent/ReagentCard"
-import { DefaultReagentCard } from "../components/composite/reagent/ReagentCard.story"
-import Overlay from "../components/composite/Overlay"
-import OutlinedButton from "../components/generic/button/outlined/OutlinedButton"
-import SearchBar from "../components/composite/searchbar/SearchBar"
+import ReagentCard from "../../components/composite/reagent/ReagentCard"
+import Overlay from "../../components/composite/Overlay"
+import OutlinedButton from "../../components/generic/button/outlined/OutlinedButton"
+import SearchBar from "../../components/composite/searchbar/SearchBar"
 // services
-import client from "../services/fetch-client"
+import client from "../../services/fetch-client"
+import { auth } from "@/app/config/firebase"
 // other
-import { Reagent } from "../../../server/src/business-layer/models/Reagent"
+import { Reagent } from "../../../../server/src/business-layer/models/Reagent"
 import { HomeIcon } from "@heroicons/react/24/outline"
-import { PencilIcon } from "@heroicons/react/24/outline"
-import { error } from "console"
 
-// interface needed for auth + content to render
+/**
+ * Route parameters for the profile page.
+ * `params.id` is the user id in the URL -- identifies which user's profile is being viewed.`.
+ */
+interface IUserProfile {
+  params: { id: string }
+}
 
-const UserProfile = () => {
+const UserProfile = ({ params }: IUserProfile) => {
+  const { id: idOfUserBeingViewed } = params
+
+  const [currentUserUid, setCurrentUserUid] = useState<string | null>(null)
   const [reagentSearch, setReagentSearch] = useState<string>("")
   const [reagentCategoryFilter, setReagentCategoryFilter] = useState<
     "all" | "on marketplace" | "expiring soon" | "private"
@@ -29,12 +36,23 @@ const UserProfile = () => {
   >("newest")
   const [reagents, setReagents] = useState<Reagent[]>([])
 
+  console.log(currentUserUid)
+  console.log(idOfUserBeingViewed)
+
+  useEffect(() => {
+    if (!auth) return
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUserUid(user?.uid ?? null)
+    })
+
+    return () => unsubscribe()
+  }, [])
+
   // REMINDER - move data fetching to its own hook later - logan calls dibs on this :)
   useEffect(() => {
     const getReagents = async () => {
       try {
         const authToken = localStorage.getItem("authToken")
-        console.log(authToken)
         if (!authToken) return
 
         const { data, error } = await client.GET("/users/reagents" as any, {
@@ -106,11 +124,15 @@ const UserProfile = () => {
             <p className="flex items-center gap-2 text-orange-200">
               <HomeIcon className="w-6 h-6" /> University of Auckland
             </p>
-            <OutlinedButton
-              label="Edit Profile"
-              size="small"
-              className="mt-6"
-            />
+            {/* show 'edit profile' btn if user is viewing their own profile */}
+            {idOfUserBeingViewed === currentUserUid && (
+              <OutlinedButton
+                backgroundColor="#BABABA"
+                label="Edit Profile"
+                textSize="text-xs"
+                className="mt-3 self-start"
+              />
+            )}
           </div>
         </div>
         {/* reagent section */}
