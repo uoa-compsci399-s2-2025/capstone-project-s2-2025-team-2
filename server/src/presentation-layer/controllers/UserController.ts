@@ -85,7 +85,7 @@ export class UserController extends Controller {
   @Security("jwt")
   public async getReagentById(@Path() id: string): Promise<Reagent | null> {
     try {
-      const reagent = await new ReagentService().getReagentsById(id)
+      const reagent = await new ReagentService().getReagentById(id)
       return reagent
     } catch (err) {
       throw new Error(
@@ -110,7 +110,7 @@ export class UserController extends Controller {
     try {
       const user = request.user
       const user_id = user.uid
-      const reagent = await new ReagentService().getReagentsById(id)
+      const reagent = await new ReagentService().getReagentById(id)
       if (user_id !== reagent.user_id) {
         console.log("You cannot delete a reagent that you don't own")
         return null
@@ -171,7 +171,7 @@ export class UserController extends Controller {
     @Request() request: AuthRequest,
   ): Promise<Reagent> {
     try {
-      const reagent = await new ReagentService().getReagentsById(id)
+      const reagent = await new ReagentService().getReagentById(id)
       const uid = request.user?.uid
       if (reagent.user_id == uid) {
         const updatedReagent = await new ReagentService().updateReagent(
