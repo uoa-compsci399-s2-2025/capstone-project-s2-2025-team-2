@@ -1,19 +1,9 @@
-export interface AuthRequest {
+import type * as express from "express"
+export interface AuthRequest extends express.Request {
   user?: {
     uid: string
     name: string
     email?: string
-  }
-  lab_manager?: {
-    uid: string
-    name: string
-    email?: string
-    role: "lab_manager"
-  }
-  admin?: {
-    uid: string
-    name: string
-    email?: string
-    role: "admin"
+    role: "user" | "lab_manager" | "admin"
   }
 }

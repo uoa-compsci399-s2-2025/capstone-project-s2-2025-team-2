@@ -6,9 +6,12 @@ import type {
 export interface CreateReagentRequest {
   name: string
   description: string
+  condition: string
   categories: ReagentCategory[]
   price?: number
+  quantity: number
   expiryDate: string
   tradingType: ReagentTradingType
+  location: string
   images?: string[]
 }

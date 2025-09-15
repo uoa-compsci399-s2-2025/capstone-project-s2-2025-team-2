@@ -1,22 +1,23 @@
 import { ButtonHTMLAttributes } from "react"
-import { getTextSizeClass } from "../textSize"
 import { getFontWeightClass } from "../font-weight"
+import { getTextSizeClass, type textSize } from "../textSize"
+
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   backgroundColor?: string
-  size?: "small" | "medium" | "large"
   label: string
+  textSize?: textSize
+  fontWeight?: "normal" | "medium" | "semibold" | "bold"
   icon?: React.ElementType
   iconPosition?: "left" | "right"
-  textSize?: "xsmall" | "small" | "medium" | "large"
-  fontWeight?: "normal" | "medium" | "semibold" | "bold"
 }
 
 // base button component w/ common styling/functionality across all variants
 const BaseButton = ({
+  backgroundColor,
   label,
   className,
   iconPosition = "left",
-  textSize,
+  textSize = "text-base",
   fontWeight,
   ...props
 }: ButtonProps) => {
@@ -24,9 +25,12 @@ const BaseButton = ({
     <button
       type="button"
       className={[
-        "inline-flex w-full cursor-pointer border-0 rounded-[8px] bg-blue-primary text-white hover:bg-blue-primary/75",
+        "py-2 px-2 inline-flex cursor-pointer border-0 rounded-[8px] bg-blue-primary text-white",
         className,
       ].join(" ")}
+      style={{
+        backgroundColor: backgroundColor,
+      }}
       {...props}
     >
       {props.icon && iconPosition === "left" && (
@@ -47,40 +51,9 @@ const BaseButton = ({
   )
 }
 
-// btn variants
-const SmallButton = (props: ButtonProps) => (
-  <BaseButton
-    {...props}
-    className={["py-1.5 px-3", { ...props }.className].join(" ")}
-  />
-)
-
-const MediumButton = (props: ButtonProps) => (
-  <BaseButton
-    {...props}
-    className={["py-3 px-5", { ...props }.className].join(" ")}
-  />
-)
-
-const LargeButton = (props: ButtonProps) => (
-  <BaseButton
-    {...props}
-    className={["py-4.5 px-7", { ...props }.className].join(" ")}
-  />
-)
-
 // exported btn component to be used
-const Button = ({ size = "medium", ...props }: ButtonProps) => {
-  switch (size) {
-    case "small":
-      return <SmallButton {...props} />
-    case "medium":
-      return <MediumButton {...props} />
-    case "large":
-      return <LargeButton {...props} />
-    default:
-      return <MediumButton {...props} />
-  }
+const Button = ({ ...props }: ButtonProps) => {
+  return <BaseButton {...props} />
 }
 
 export default Button

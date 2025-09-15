@@ -14,11 +14,20 @@
 					},
 					"username": {
 						"type": "string"
+					},
+					"role": {
+						"type": "string",
+						"enum": [
+							"user",
+							"lab_manager",
+							"admin"
+						]
 					}
 				},
 				"required": [
 					"email",
-					"username"
+					"username",
+					"role"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -50,7 +59,14 @@
 					"description": {
 						"type": "string"
 					},
+					"condition": {
+						"type": "string"
+					},
 					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"quantity": {
 						"type": "number",
 						"format": "double"
 					},
@@ -81,27 +97,20 @@
 					},
 					"id": {
 						"type": "string"
-					},
-					"quantity": {
-						"type": "number",
-						"format": "double"
-					},
-					"condition": {
-						"type": "string"
 					}
 				},
 				"required": [
 					"user_id",
 					"name",
 					"description",
+					"condition",
+					"quantity",
 					"expiryDate",
 					"tradingType",
 					"categories",
 					"createdAt",
 					"location",
-					"id",
-					"quantity",
-					"condition"
+					"id"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -114,6 +123,9 @@
 					"description": {
 						"type": "string"
 					},
+					"condition": {
+						"type": "string"
+					},
 					"categories": {
 						"items": {
 							"$ref": "#/components/schemas/ReagentCategory"
@@ -124,11 +136,18 @@
 						"type": "number",
 						"format": "double"
 					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
 					"expiryDate": {
 						"type": "string"
 					},
 					"tradingType": {
 						"$ref": "#/components/schemas/ReagentTradingType"
+					},
+					"location": {
+						"type": "string"
 					},
 					"images": {
 						"items": {
@@ -140,9 +159,12 @@
 				"required": [
 					"name",
 					"description",
+					"condition",
 					"categories",
+					"quantity",
 					"expiryDate",
-					"tradingType"
+					"tradingType",
+					"location"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -158,7 +180,14 @@
 					"description": {
 						"type": "string"
 					},
+					"condition": {
+						"type": "string"
+					},
 					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"quantity": {
 						"type": "number",
 						"format": "double"
 					},
@@ -188,13 +217,6 @@
 						"type": "string"
 					},
 					"id": {
-						"type": "string"
-					},
-					"quantity": {
-						"type": "number",
-						"format": "double"
-					},
-					"condition": {
 						"type": "string"
 					}
 				},

@@ -1,8 +1,9 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useState } from "react"
 import Overlay from "../components/composite/Overlay"
 import SearchBar from "../components/composite/searchbar/SearchBar"
 import ReagentCard from "../components/composite/reagent/ReagentCard"
+import ReagentForm from "../components/composite/reagent/ReagentForm"
 import { Reagent } from "../../../server/src/business-layer/models/Reagent"
 import client from "../services/fetch-client"
 import { v4 as uuidv4 } from "uuid"
@@ -14,15 +15,27 @@ const Marketplace = () => {
   const [sort, setSort] = useState<
     "newest" | "oldest" | "nameAZ" | "nameZA" | ""
   >("newest")
+  const [isFormOpen, setIsFormOpen] = useState(false)
+
+  const fetchReagents = useCallback(async () => {
+    const { data } = await client.GET("/reagents" as any, {})
+    setReagents(data)
+  }, [])
 
   useEffect(() => {
-    const fetchReagents = async () => {
-      const { data } = await client.GET("/reagents" as any, {})
-      console.log(data)
-      setReagents(data)
-    }
     fetchReagents()
-  }, [])
+  }, [fetchReagents])
+
+  const handleFormSubmit = async () => {
+    await fetchReagents()
+    setIsFormOpen(false)
+  }
+
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      setIsFormOpen(false)
+    }
+  }
 
   const filtered = reagents.filter((r) => {
     const query = search.trim().toLowerCase()
@@ -94,11 +107,49 @@ const Marketplace = () => {
             tags={Array.isArray(r.categories) ? r.categories : []}
             location={r.location ?? "Unknown"}
             expiryDate={r.expiryDate ?? "N/A"}
-            imageUrl={r.images?.[0] ?? "/placeholder.webp"}
+            imageUrl={
+              r.images?.[0] !== "string"
+                ? (r.images?.[0] ?? "/placeholder.webp")
+                : "/placeholder.webp"
+            }
             formula={r.tradingType ?? ""}
           />
         ))}
       </div>
+
+      <button
+        onClick={() => setIsFormOpen(true)}
+        className="fixed bottom-8 right-8 w-14 h-14 bg-blue-primary hover:bg-blue-primary/90 text-white rounded-full transition-all duration-200 flex items-center text-3xl justify-center hover:scale-110 active:scale-95 group z-50"
+      >
+        +
+      </button>
+      {isFormOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 "
+          onClick={handleBackdropClick}
+        >
+          <div className="bg-primary rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl ">
+            <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
+              <h2 className="text-2xl font-medium text-white">
+                List New Reagent
+              </h2>
+              <button
+                onClick={() => setIsFormOpen(false)}
+                className="text-gray-400 text-3xl hover:text-white "
+              >
+                ❌
+              </button>
+            </div>
+
+            <div className="p-6 overflow-y-auto flex-1">
+              <ReagentForm
+                onSubmit={handleFormSubmit}
+                onCancel={() => setIsFormOpen(false)}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </Overlay>
   )
 }
