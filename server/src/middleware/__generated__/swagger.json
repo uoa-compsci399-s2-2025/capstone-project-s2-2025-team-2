@@ -668,69 +668,6 @@
 				}
 			}
 		},
-		"/users/orders": {
-			"post": {
-				"operationId": "CreateOrder",
-				"responses": {
-					"201": {
-						"description": "Order created successfully",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/Order"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"User"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/CreateOrderRequest"
-							}
-						}
-					}
-				}
-			},
-			"get": {
-				"operationId": "GetOrders",
-				"responses": {
-					"200": {
-						"description": "All reagents returned successfully",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/Order"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"User"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": []
-			}
-		},
 		"/reagents": {
 			"get": {
 				"operationId": "GetAllReagents",
@@ -893,6 +830,69 @@
 						}
 					}
 				}
+			}
+		},
+		"/orders": {
+			"post": {
+				"operationId": "CreateOrder",
+				"responses": {
+					"201": {
+						"description": "Order created successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Order"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Order"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateOrderRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetOrders",
+				"responses": {
+					"200": {
+						"description": "All reagents returned successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Order"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Order"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
 			}
 		},
 		"/auth/google/verify": {

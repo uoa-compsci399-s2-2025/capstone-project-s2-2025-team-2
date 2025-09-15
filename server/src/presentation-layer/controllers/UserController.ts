@@ -16,16 +16,12 @@ import {
 import { UserService } from "../../data-layer/repositories/UserRepository"
 import { Reagent } from "../../business-layer/models/Reagent"
 import { ReagentService } from "../../data-layer/repositories/ReagentRepository"
-import { OrderService } from "../../data-layer/repositories/OrderRepository"
 import { CreateReagentRequest } from "../../service-layer/dtos/request/ReagentRequest"
 import { AuthRequest } from "../../service-layer/dtos/request/AuthRequest"
-import { Order } from "../../business-layer/models/Order"
-import { CreateOrderRequest } from "../../service-layer/dtos/request/CreateOrderRequest"
 
 @Tags("User")
 @Route("users")
 export class UserController extends Controller {
-  orderService = new OrderService()
   @SuccessResponse("200", "Users retrieved successfully")
   @Get()
   public async getAllUsers(): Promise<User[]> {
@@ -188,36 +184,6 @@ export class UserController extends Controller {
     } catch (error) {
       this.setStatus(400)
       throw new Error(`[ERROR] while updating reagent ${id}: ${error}`)
-    }
-  }
-
-  @SuccessResponse("201", "Order created successfully")
-  @Security("jwt")
-  @Post("/orders")
-  public async createOrder(
-    @Body() req: CreateOrderRequest,
-    @Request() request: AuthRequest,
-  ): Promise<Order> {
-    const user = request.user
-    const reqWithUser = { ...req, req_id: user.uid }
-    const order = await this.orderService.createOrder(reqWithUser)
-    return order
-  }
-
-  @SuccessResponse("200", "All reagents returned successfully")
-  @Security("jwt")
-  @Get("/orders")
-  public async getOrders(@Request() request: AuthRequest): Promise<Order[]> {
-    try {
-      const user = request.user
-      const user_id = user.uid
-      if (user_id) {
-        const orders = await this.orderService.getAllOrders(user_id)
-        return orders
-      }
-      return []
-    } catch (err) {
-      throw new Error("Failed to fetch orders: " + (err as Error).message)
     }
   }
 }
