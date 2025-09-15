@@ -16,5 +16,7 @@ export default meta
 type Story = StoryObj<typeof meta>
 
 export const DefaultReagentBreadcrumb: Story = {
-  args: {},
+  args: {
+    reagentName: "reagentName"
+  },
 }

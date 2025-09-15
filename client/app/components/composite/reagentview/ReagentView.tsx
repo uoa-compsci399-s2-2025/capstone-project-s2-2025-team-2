@@ -45,7 +45,7 @@ const ReagentView = ({
       </div>
       <div className="bg-primary -mt-[1rem] mb-[1rem] relative z-10 rounded-t-3xl md:mt-0 md:mb-0 md:rounded-none md:z-auto md:bg-transparent">
         <div className="pt-[2rem] md:pt-0 px-[2rem] md:px-0">
-          <ReagentBreadcrumb />
+          <ReagentBreadcrumb reagentName={name ?? ""} />
         </div>
 
         <div className="flex flex-col items-start md:items-center">
