@@ -57,7 +57,7 @@ const Sidebar = () => {
                         icon={Icon}
                         iconPosition="left"
                         label={label}
-                        size="small"
+                        textSize="text-base"
                       />
                     </div>
                   </Link>

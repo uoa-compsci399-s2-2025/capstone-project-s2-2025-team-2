@@ -100,8 +100,7 @@ const ReagentCard = ({
               <div className="md:hidden">
                 <Button
                   label="View"
-                  size="small"
-                  textSize="xsmall"
+                  textSize="text-xs"
                   icon={ChevronDoubleRightIcon}
                   iconPosition="right"
                   fontWeight="semibold"
@@ -110,8 +109,7 @@ const ReagentCard = ({
               <div className="hidden md:block">
                 <Button
                   label="View"
-                  size="small"
-                  textSize="small"
+                  textSize="text-sm"
                   icon={ChevronDoubleRightIcon}
                   iconPosition="right"
                   fontWeight="semibold"
