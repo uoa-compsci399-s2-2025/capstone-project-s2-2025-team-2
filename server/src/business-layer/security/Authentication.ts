@@ -25,7 +25,7 @@ export function expressAuthentication(
           const { uid } = decodedToken
           auth
             .getUser(uid)
-            .then((user) => {
+            .then(async (user) => {
               for (const scope of scopes) {
                 if (user.customClaims === undefined) {
                   throw new FireBaseError(
@@ -50,7 +50,7 @@ export function expressAuthentication(
                 const userService = new UserService()
 
                 // this function needs to be written
-                const userFromDB = userService.getUserById()
+                const userFromDB = await userService.getUserById(uid)
 
                 if (userFromDB && userFromDB.role) {
                   role = userFromDB.role
