@@ -85,6 +85,9 @@
 					"quantity": {
 						"type": "number",
 						"format": "double"
+					},
+					"condition": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -97,7 +100,8 @@
 					"createdAt",
 					"location",
 					"id",
-					"quantity"
+					"quantity",
+					"condition"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -189,6 +193,9 @@
 					"quantity": {
 						"type": "number",
 						"format": "double"
+					},
+					"condition": {
+						"type": "string"
 					}
 				},
 				"type": "object",
