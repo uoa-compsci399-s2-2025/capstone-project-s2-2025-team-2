@@ -26,7 +26,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
     fetchReagents()
   }, [])
 
-  if (!reagent) return <div>Loading...</div>;
+  if (!reagent) return <div className="bg-black h-[100vh] text-white flex justify-center mt-[50vh]">Loading...</div>;
   return (
     <div
       className="
