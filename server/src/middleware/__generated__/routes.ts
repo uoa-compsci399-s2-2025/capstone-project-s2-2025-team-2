@@ -399,10 +399,10 @@ export function RegisterRoutes(app: Router) {
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsUserController_getReagentsById: Record<string, TsoaRoute.ParameterSchema> = {
-                user_id: {"in":"path","name":"user_id","required":true,"dataType":"string"},
+                id: {"in":"path","name":"id","required":true,"dataType":"string"},
                 request: {"in":"request","name":"request","required":true,"dataType":"object"},
         };
-        app.get('/users/Reagents/:user_id',
+        app.get('/users/reagents/viewing/:id',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(UserController)),
             ...(fetchMiddlewares<RequestHandler>(UserController.prototype.getReagentsById)),
