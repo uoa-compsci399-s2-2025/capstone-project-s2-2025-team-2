@@ -163,3 +163,12 @@ body {
   );
   font-family: "Poppins", sans-serif;
 }
+
+.background-gradient {
+  background: linear-gradient(
+    to bottom,
+    black 0%,
+    black 90%,
+    var(--background) 100%
+  );
+}

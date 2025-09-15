@@ -32,7 +32,7 @@ const ReagentView = ({
     <div
       className="
         h-full font-family-sans md:p-[2rem] min-h-screen
-        md:bg-black
+        md:background-gradient
     "
     >
       <div className="md:hidden relative overflow-hidden h-[35rem] md:h-[15rem] w-full md:mb-[1rem]">
@@ -48,8 +48,8 @@ const ReagentView = ({
           <ReagentBreadcrumb />
         </div>
 
-        <div className="flex flex-col items-start md:items-center">
-          <h1 className="ml-[2rem] mt-[1rem] md:ml-0 md: mt-0 text-white tracking-wider">
+        <div className="flex flex-col items-start">
+          <h1 className="ml-[2rem] mt-[1rem] md:ml-0 md:mt-[2rem] md:mb-[1rem] text-white tracking-wider">
             {name}
           </h1>
 
@@ -58,7 +58,7 @@ const ReagentView = ({
             <p className="text-white">{description}</p>
           </div>
 
-          <div className="px-[1.5rem] mt-[2rem] mb-[2rem] md:mb-0 md:px-0 md:mt-0 gap-3 flex flex-col md:flex-row justify-around w-[43rem] mx-auto mt-[1rem]">
+          <div className="px-[1.5rem] mt-[2rem] mb-[2rem] md:mb-0 md:px-0 md:mt-0 gap-3 flex flex-col md:flex-row justify-around w-[43rem] mt-[1rem]">
             <h5 className="flex text-green-200 items-center text-[0.8rem]">
               <FaRegClock className="text-green-200 mr-[0.3rem] w-5 h-5" />{" "}
               Listed - {listedDate}
@@ -86,7 +86,7 @@ const ReagentView = ({
           </div>
         </div>
 
-        <div className="flex mt-[2rem] justify-center">
+        <div className="flex mt-[2rem] justify-center mx-auto">
           <div className="md:flex-[1.3] relative">
             <Image
               src={image ?? "/placeholder.webp"}
@@ -141,9 +141,6 @@ const ReagentView = ({
       <div className="hidden md:block">
         <div className="w-[60vw] mx-auto my-[2rem] h-[1px] bg-gradient-to-r from-transparent via-gray-400 to-transparent" />
         <div className="flex flex-col items-center gap-5">
-          <h3 className="text-[1.1rem] font-bold text-black text-white">
-            Reagent Owner
-          </h3>
           <SellerContact />
         </div>
       </div>
