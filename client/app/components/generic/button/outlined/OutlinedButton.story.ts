@@ -28,7 +28,7 @@ type Story = StoryObj<typeof meta>
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const SmallOutlinedButton: Story = {
   args: {
-    size: "small",
+    textSize: "text-sm",
     label: "I am a small button",
     backgroundColor: "#ff5555",
   },
@@ -36,7 +36,7 @@ export const SmallOutlinedButton: Story = {
 
 export const MediumOutlinedButton: Story = {
   args: {
-    size: "medium",
+    textSize: "text-lg",
     label: "I am a medium button",
     backgroundColor: "#ea49f2",
   },
@@ -44,7 +44,7 @@ export const MediumOutlinedButton: Story = {
 
 export const LargeOutlinedButton: Story = {
   args: {
-    size: "large",
+    textSize: "text-2xl",
     label: "Ray Zhao 🥵🥵🥵🥵",
     backgroundColor: "#34ba32",
   },
