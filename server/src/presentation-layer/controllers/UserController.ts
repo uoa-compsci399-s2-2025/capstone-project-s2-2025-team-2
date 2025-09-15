@@ -194,7 +194,7 @@ export class UserController extends Controller {
   @SuccessResponse("201", "Order created successfully")
   @Security("jwt")
   @Post("/orders")
-  public async createOrder(req: CreateOrderRequest): Promise<Order> {
+  public async createOrder(@Body() req: CreateOrderRequest): Promise<Order> {
     const order = await this.orderService.createOrder(req)
     return order
   }
