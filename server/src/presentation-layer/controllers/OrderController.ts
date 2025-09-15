@@ -10,6 +10,7 @@ import {
   Request,
   Body,
   Tags,
+  Patch,
 } from "tsoa"
 import { AuthRequest } from "../../service-layer/dtos/request/AuthRequest"
 import { OrderService } from "../../data-layer/repositories/OrderRepository"
@@ -45,5 +46,17 @@ export class OrderController extends Controller {
     } catch (err) {
       throw new Error("Failed to fetch orders: " + (err as Error).message)
     }
+  }
+
+  @SuccessResponse("200", "All reagents returned successfully")
+  @Security("jwt")
+  @Patch("{id}")
+  public async approveOrder(
+    @Path() id: string,
+    @Request() request: AuthRequest,
+    @Body() data?: { status?: string },
+  ): Promise<Order> {
+    const user = request.user
+    const order = new OrderService().getOrderById(id)
   }
 }
