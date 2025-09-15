@@ -116,7 +116,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
         alert("Please sign in to create a reagent.")
         return
       }
-     
+
       const { error } = await client.POST("/users/reagents" as any, {
         body: reagentData,
         headers: {

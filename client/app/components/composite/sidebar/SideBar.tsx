@@ -12,20 +12,18 @@ import { firebaseSignOut } from "../../../services/firebase-auth"
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false)
-  
+
+  //sign out and clear token from localStorage
   const handleSignOut = async () => {
     try {
       await firebaseSignOut()
-      // Clear localStorage token
       localStorage.removeItem("authToken")
-      console.log("Signed out successfully and cleared localStorage")
       alert("Signed out successfully!")
-    } catch (error) {
-      console.error("Sign out failed:", error)
-      alert("Sign out failed. Please try again.")
+    } catch {
+      alert("Sign out failed!")
     }
   }
-  
+
   const links = [
     {
       href: "/profile",
@@ -72,7 +70,6 @@ const Sidebar = () => {
                         icon={Icon}
                         iconPosition="left"
                         label={label}
-                        textSize="text-base"
                       />
                     </div>
                   </Link>
@@ -92,7 +89,7 @@ const Sidebar = () => {
             ))}
           </div>
           <div className="w-full flex justify-center">
-            <div 
+            <div
               className="flex items-center mb-20 md:mb-30 p-2 text-red-70 cursor-pointer hover:text-red-70/80"
               onClick={handleSignOut}
             >

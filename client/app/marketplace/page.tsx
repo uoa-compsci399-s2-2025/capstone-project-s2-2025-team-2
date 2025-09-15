@@ -26,7 +26,7 @@ const Marketplace = () => {
     fetchReagents()
   }, [fetchReagents])
 
-  const handleFormSubmit = async (data: any) => {
+  const handleFormSubmit = async () => {
     await fetchReagents()
     setIsFormOpen(false)
   }
@@ -106,7 +106,11 @@ const Marketplace = () => {
             tags={Array.isArray(r.categories) ? r.categories : []}
             location={r.location ?? "Unknown"}
             expiryDate={r.expiryDate ?? "N/A"}
-            imageUrl={r.images?.[0] !== "string" ? (r.images?.[0] ?? "/placeholder.webp") : "/placeholder.webp"}
+            imageUrl={
+              r.images?.[0] !== "string"
+                ? (r.images?.[0] ?? "/placeholder.webp")
+                : "/placeholder.webp"
+            }
             formula={r.tradingType ?? ""}
           />
         ))}
@@ -115,10 +119,11 @@ const Marketplace = () => {
       <button
         onClick={() => setIsFormOpen(true)}
         className="fixed bottom-8 right-8 w-14 h-14 bg-blue-primary hover:bg-blue-primary/90 text-white rounded-full transition-all duration-200 flex items-center text-3xl justify-center hover:scale-110 active:scale-95 group z-50"
-      >+
+      >
+        +
       </button>
       {isFormOpen && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 "
           onClick={handleBackdropClick}
         >
@@ -130,10 +135,11 @@ const Marketplace = () => {
               <button
                 onClick={() => setIsFormOpen(false)}
                 className="text-gray-400 text-3xl hover:text-white "
-              >❌
+              >
+                ❌
               </button>
             </div>
-            
+
             <div className="p-6 overflow-y-auto flex-1">
               <ReagentForm
                 onSubmit={handleFormSubmit}
@@ -143,7 +149,6 @@ const Marketplace = () => {
           </div>
         </div>
       )}
-    
     </Overlay>
   )
 }
