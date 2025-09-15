@@ -63,7 +63,8 @@ export const useGoogleOAuth = ({ onSuccess, onError }: GoogleOAuthBtnProps) => {
           idToken: response.credential,
         }
 
-        const responseData: GoogleOAuthResponseDto = await oauthVerify(requestData)
+        const responseData: GoogleOAuthResponseDto =
+          await oauthVerify(requestData)
 
         //sign in to firebase client w backend token
         if (responseData.success && responseData.token && auth) {
@@ -76,10 +77,10 @@ export const useGoogleOAuth = ({ onSuccess, onError }: GoogleOAuthBtnProps) => {
             onSuccess({
               ...responseData.user,
               uid: userCredential.user.uid,
-              email: userCredential.user.email
+              email: userCredential.user.email,
             })
           }
-        } 
+        }
       } catch (error) {
         console.error("Google authentication error:", error)
         if (onError) {
