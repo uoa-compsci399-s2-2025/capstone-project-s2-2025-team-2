@@ -190,7 +190,7 @@ export default function SignInBox({
 
         {/* 3. Submit Button */}
         <div className="flex justify-center w-full">
-          <Button type="submit" label="Sign In" size="small" />
+          <Button type="submit" label="Sign In" textSize="text-sm" />
         </div>
 
         {/* 4. Sign Up Link */}

@@ -138,8 +138,14 @@ export class UserController extends Controller {
     @Request() request: AuthRequest,
     @Body() requestObject: CreateReagentRequest,
   ): Promise<Reagent> {
+    console.log(request)
     const user = request.user
-    const user_id = user.uid
+    console.log(request.user.uid)
+    console.log(user.role)
+    if (!user || !["admin", "lab_manager"].includes(user.role)) {
+      throw new Error("You don't have permission to create reagents")
+    }
+    const user_id = request.user.uid
     const data = {
       ...requestObject,
       user_id,
@@ -166,8 +172,7 @@ export class UserController extends Controller {
   ): Promise<Reagent> {
     try {
       const reagent = await new ReagentService().getReagentsById(id)
-      const uid =
-        request.admin?.uid || request.lab_manager?.uid || request.user?.uid
+      const uid = request.user?.uid
       if (reagent.user_id == uid) {
         const updatedReagent = await new ReagentService().updateReagent(
           id,

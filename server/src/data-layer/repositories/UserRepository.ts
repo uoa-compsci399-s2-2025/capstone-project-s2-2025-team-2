@@ -20,4 +20,21 @@ export class UserService {
       throw error
     }
   }
+
+  async getUserById(id: string): Promise<User> {
+    try {
+      const userDoc = await FirestoreCollections.users.doc(id).get()
+      if (userDoc.exists) {
+        const userData = userDoc.data()
+        return {
+          id: userDoc.id,
+          ...userData,
+        } as User
+      }
+      return null
+    } catch (err) {
+      console.error("Error fetching user by ID:", err)
+      return null
+    }
+  }
 }
