@@ -37,7 +37,6 @@ const SellerContact = ({ name, location, rating }: SellerContactProps) => {
 
       <Button
         label={`Contact ${name || "Seller"}`}
-        size="small"
         className="
           px-20 py-8 rounded-[18px] md:rounded-[8px] md:text-sm md:px-6 md:w-auto md:py-1.5 md:justify-center
           font-semibold
