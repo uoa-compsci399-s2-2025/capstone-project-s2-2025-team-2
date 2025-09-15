@@ -119,22 +119,6 @@ export interface paths {
         patch: operations["UpdateReagent"];
         trace?: never;
     };
-    "/orders": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["GetOrders"];
-        put?: never;
-        post: operations["CreateOrder"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
-    };
     "/auth/google/verify": {
         parameters: {
             query?: never;
@@ -218,8 +202,11 @@ export interface components {
             user_id: string;
             name: string;
             description: string;
+            condition: string;
             /** Format: double */
             price?: number;
+            /** Format: double */
+            quantity: number;
             expiryDate: string;
             tradingType: components["schemas"]["ReagentTradingType"];
             images?: string[];
@@ -231,11 +218,15 @@ export interface components {
         CreateReagentRequest: {
             name: string;
             description: string;
+            condition: string;
             categories: components["schemas"]["ReagentCategory"][];
             /** Format: double */
             price?: number;
+            /** Format: double */
+            quantity: number;
             expiryDate: string;
             tradingType: components["schemas"]["ReagentTradingType"];
+            location: string;
             images?: string[];
         };
         /** @description Make all properties in T optional */
@@ -243,8 +234,11 @@ export interface components {
             user_id?: string;
             name?: string;
             description?: string;
+            condition?: string;
             /** Format: double */
             price?: number;
+            /** Format: double */
+            quantity?: number;
             expiryDate?: string;
             tradingType?: components["schemas"]["ReagentTradingType"];
             images?: string[];
@@ -252,19 +246,6 @@ export interface components {
             /** Format: date-time */
             createdAt?: string;
             location?: string;
-        };
-        Order: {
-            req_id: string;
-            owner_id: string;
-            reagent_id: string;
-            /** @enum {string} */
-            status: "pending" | "approved" | "canceled";
-            /** Format: date-time */
-            createdAt: string;
-        };
-        CreateOrderRequest: {
-            req_id: string;
-            reagent_id: string;
         };
         GoogleOAuthUser: {
             uid: string;
@@ -595,50 +576,6 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["Reagent"];
-                };
-            };
-        };
-    };
-    GetOrders: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            /** @description All reagents returned successfully */
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Order"][];
-                };
-            };
-        };
-    };
-    CreateOrder: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateOrderRequest"];
-            };
-        };
-        responses: {
-            /** @description Order created successfully */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["Order"];
                 };
             };
         };
