@@ -194,8 +194,13 @@ export class UserController extends Controller {
   @SuccessResponse("201", "Order created successfully")
   @Security("jwt")
   @Post("/orders")
-  public async createOrder(@Body() req: CreateOrderRequest): Promise<Order> {
-    const order = await this.orderService.createOrder(req)
+  public async createOrder(
+    @Body() req: CreateOrderRequest,
+    @Request() request: AuthRequest,
+  ): Promise<Order> {
+    const user = request.user
+    const reqWithUser = { ...req, req_id: user.uid }
+    const order = await this.orderService.createOrder(reqWithUser)
     return order
   }
 
