@@ -47,7 +47,7 @@ export class ReagentController extends Controller {
   @SuccessResponse("200", "Reagent retrieved successfully")
   @Get("{id}")
   public async getReagent(@Path() id: string): Promise<Reagent> {
-    const reagent = await new ReagentService().getReagentsById(id)
+    const reagent = await new ReagentService().getReagentById(id)
     if (reagent === null) {
       this.setStatus(404)
       return undefined
