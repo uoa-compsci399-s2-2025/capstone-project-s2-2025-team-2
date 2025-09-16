@@ -47,56 +47,32 @@ export class OrderService {
     ]
   }
 
-  async acceptOrder(orderId: string, userId: string): Promise<Order> {
-    const orderRef = this.db.collection("orders").doc(orderId)
-    const orderDoc = await orderRef.get()
-    
-    if (!orderDoc.exists) {
-      throw new Error("Order not found")
-    }
-    
-    const orderData = orderDoc.data() as Order
-    if (orderData.owner_id !== userId) {
-      throw new Error("The reagent owner must accept this request")
-    }
-    
-    if (orderData.status !== "pending") {
-      throw new Error("Only pending orders can be accepted")
-    }
-    
-    await orderRef.update({ status: "approved" })
-    
-    return {
-      id: orderId,
-      ...orderData,
-      status: "approved"
+  async getOrderById(id: string): Promise<Order> {
+    try {
+      const orderDoc = await FirestoreCollections.orders.doc(id).get()
+
+      if (!orderDoc.exists) {
+        throw new Error(`Order with id - ${id} not found`)
+      }
+      return {
+        ...orderDoc.data(),
+      } as Order
+    } catch (err) {
+      throw new Error(`Failed to get order: ${(err as Error).message}`)
     }
   }
 
-  async declineOrder(orderId: string, userId: string): Promise<Order> {
-    const orderRef = this.db.collection("orders").doc(orderId)
-    const orderDoc = await orderRef.get()
-    
-    if (!orderDoc.exists) {
-      throw new Error("Order not found")
-    }
-    
-    const orderData = orderDoc.data() as Order
-    if (orderData.owner_id !== userId) {
-      throw new Error("Only the order owner can decline the request")
-    }
-    
-    if (orderData.status !== "pending") {
-      throw new Error("Only pending orders can be declined")
-    }
-    
-    await orderRef.update({ status: "canceled" })
-    
-    return {
-      id: orderId,
-      ...orderData,
-      status: "canceled"
+  async updateOrderStatus(id: string, status: string): Promise<Order> {
+    try {
+      const orderRef = await FirestoreCollections.orders.doc(id)
+      await orderRef.update({
+        status: status,
+      })
+      return await this.getOrderById(id)
+    } catch (err) {
+      throw new Error(
+        `Failed to update order status: ${(err as Error).message}`,
+      )
     }
   }
 }
-

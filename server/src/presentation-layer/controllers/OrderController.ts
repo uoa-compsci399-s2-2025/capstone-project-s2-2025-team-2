@@ -4,14 +4,14 @@ import {
   Controller,
   Get,
   Post,
-  Put,
   Route,
   SuccessResponse,
   Security,
   Request,
   Body,
-  Path,
   Tags,
+  Patch,
+  Path,
 } from "tsoa"
 import { AuthRequest } from "../../service-layer/dtos/request/AuthRequest"
 import { OrderService } from "../../data-layer/repositories/OrderRepository"
@@ -49,39 +49,81 @@ export class OrderController extends Controller {
     }
   }
 
-  @SuccessResponse("200", "Order accepted successfully")
+  @SuccessResponse("200", "All orders returned successfully")
   @Security("jwt")
-  @Put("{orderId}/accept")
-  public async acceptOrder(
-    @Path() orderId: string,
-    @Request() request: AuthRequest
+  @Get("{id}")
+  public async getOrderById(
+    @Path() id: string,
+    @Request() request: AuthRequest,
   ): Promise<Order> {
     try {
       const user = request.user
-      const user_id = user.uid
-      const order = await new OrderService().acceptOrder(orderId, user_id)
+      const order = await new OrderService().getOrderById(id)
+      if (!order) {
+        this.setStatus(404)
+        throw new Error("Order not found")
+      }
+      if (
+        user.uid !== (await order).owner_id &&
+        user.uid !== (await order).req_id
+      ) {
+        this.setStatus(403)
+        throw new Error("Unauthorized to retrieve this order")
+      }
       return order
     } catch (err) {
-      throw new Error("Failed to accept order: " + (err as Error).message)
+      throw new Error("Failed to fetch order: " + (err as Error).message)
     }
   }
 
-  @SuccessResponse("200", "Order declined successfully")
+  @SuccessResponse("200", "order successfully approved")
   @Security("jwt")
-  @Put("{orderId}/decline")
-  public async declineOrder(
-    @Path() orderId: string,
-    @Request() request: AuthRequest
+  @Patch("{id}/approve")
+  public async approveOrder(
+    @Path() id: string,
+    @Request() request: AuthRequest,
   ): Promise<Order> {
-    try {
-      const user = request.user
-      const user_id = user.uid
-      const order = await new OrderService().declineOrder(orderId, user_id)
-      return order
-    } catch (err) {
-      throw new Error("Failed to decline order: " + (err as Error).message)
+    const user = request.user
+    const order = new OrderService().getOrderById(id)
+    if (!order) {
+      this.setStatus(404)
+      throw new Error("Order not found")
     }
+    if (user.uid !== (await order).owner_id) {
+      this.setStatus(403)
+      throw new Error("Unauthorized to approve this order request")
+    }
+    const updatedOrder = await new OrderService().updateOrderStatus(
+      id,
+      "approved",
+    )
+    return updatedOrder
   }
 
+  @SuccessResponse("200", "order successfully canceld")
+  @Security("jwt")
+  @Patch("{id}/cancel")
+  public async cancelOrder(
+    @Path() id: string,
+    @Request() request: AuthRequest,
+  ): Promise<Order> {
+    const user = request.user
+    const order = new OrderService().getOrderById(id)
+    if (!order) {
+      this.setStatus(404)
+      throw new Error("Order not found")
+    }
+    if (
+      user.uid !== (await order).owner_id &&
+      user.uid !== (await order).req_id
+    ) {
+      this.setStatus(403)
+      throw new Error("Unauthorized to approve this order request")
+    }
+    const updatedOrder = await new OrderService().updateOrderStatus(
+      id,
+      "canceled",
+    )
+    return updatedOrder
+  }
 }
-

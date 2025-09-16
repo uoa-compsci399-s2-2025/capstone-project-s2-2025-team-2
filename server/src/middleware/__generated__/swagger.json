@@ -224,9 +224,6 @@
 			},
 			"Order": {
 				"properties": {
-					"id": {
-						"type": "string"
-					},
 					"req_id": {
 						"type": "string"
 					},
@@ -566,7 +563,7 @@
 						}
 					}
 				},
-				"description": "Get all reagents under a user\nUser must be authenticated to access this endpoint",
+				"description": "Get all reagents under a user\r\nUser must be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -591,7 +588,7 @@
 						}
 					}
 				},
-				"description": "Create a reagent by passing in all the required props.\nUser **must** be authenticated to access this endpoint (lab manager / admin) [seller]",
+				"description": "Create a reagent by passing in all the required props.\r\nUser **must** be authenticated to access this endpoint (lab manager / admin) [seller]",
 				"tags": [
 					"User"
 				],
@@ -635,7 +632,7 @@
 						}
 					}
 				},
-				"description": "Get a reagent by using its ID\nUser must be authenticated to access this endpoint",
+				"description": "Get a reagent by using its ID\r\nUser must be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -675,7 +672,7 @@
 						}
 					}
 				},
-				"description": "Delete a reagent by using its ID\nUser **must** be authenticated to access this endpoint",
+				"description": "Delete a reagent by using its ID\r\nUser **must** be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -710,7 +707,7 @@
 						}
 					}
 				},
-				"description": "Update a reagent by its ID.\nUser **must** be authenticated to access this endpoint",
+				"description": "Update a reagent by its ID.\r\nUser **must** be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -762,7 +759,7 @@
 						}
 					}
 				},
-				"description": "\nGet all reagents under another user by their user id\nCan only be done by admin*",
+				"description": "\r\nGet all reagents under another user by their user id\r\nCan only be done by admin*",
 				"tags": [
 					"User"
 				],
@@ -862,7 +859,7 @@
 						}
 					}
 				},
-				"description": "Get a reagent by its ID.\nCan only be done by lab_admin and admin",
+				"description": "Get a reagent by its ID.\r\nCan only be done by lab_admin and admin",
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -892,7 +889,7 @@
 						}
 					}
 				},
-				"description": "Delete a reagent by its ID.\nCan only be done by lab_admin (who owns the reagent) and admin",
+				"description": "Delete a reagent by its ID.\r\nCan only be done by lab_admin (who owns the reagent) and admin",
 				"security": [],
 				"parameters": [
 					{
@@ -920,7 +917,7 @@
 						}
 					}
 				},
-				"description": "Update a reagent by its ID.\nCan only be done by lab_admin (who owns the reagent) and admin",
+				"description": "Update a reagent by its ID.\r\nCan only be done by lab_admin (who owns the reagent) and admin",
 				"security": [],
 				"parameters": [
 					{
@@ -1010,12 +1007,12 @@
 				"parameters": []
 			}
 		},
-		"/orders/{orderId}/accept": {
-			"put": {
-				"operationId": "AcceptOrder",
+		"/orders/{id}": {
+			"get": {
+				"operationId": "GetOrderById",
 				"responses": {
 					"200": {
-						"description": "Order accepted successfully",
+						"description": "All orders returned successfully",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -1036,7 +1033,7 @@
 				"parameters": [
 					{
 						"in": "path",
-						"name": "orderId",
+						"name": "id",
 						"required": true,
 						"schema": {
 							"type": "string"
@@ -1045,12 +1042,12 @@
 				]
 			}
 		},
-		"/orders/{orderId}/decline": {
-			"put": {
-				"operationId": "DeclineOrder",
+		"/orders/{id}/approve": {
+			"patch": {
+				"operationId": "ApproveOrder",
 				"responses": {
 					"200": {
-						"description": "Order declined successfully",
+						"description": "order successfully approved",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -1071,7 +1068,42 @@
 				"parameters": [
 					{
 						"in": "path",
-						"name": "orderId",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/orders/{id}/cancel": {
+			"patch": {
+				"operationId": "CancelOrder",
+				"responses": {
+					"200": {
+						"description": "order successfully canceld",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Order"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Order"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
 						"required": true,
 						"schema": {
 							"type": "string"
