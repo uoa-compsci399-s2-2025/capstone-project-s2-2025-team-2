@@ -50,6 +50,9 @@
 			},
 			"Reagent": {
 				"properties": {
+					"id": {
+						"type": "string"
+					},
 					"user_id": {
 						"type": "string"
 					},
@@ -94,12 +97,10 @@
 					},
 					"location": {
 						"type": "string"
-					},
-					"id": {
-						"type": "string"
 					}
 				},
 				"required": [
+					"id",
 					"user_id",
 					"name",
 					"description",
@@ -109,8 +110,7 @@
 					"tradingType",
 					"categories",
 					"createdAt",
-					"location",
-					"id"
+					"location"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -171,6 +171,9 @@
 			},
 			"Partial_Reagent_": {
 				"properties": {
+					"id": {
+						"type": "string"
+					},
 					"user_id": {
 						"type": "string"
 					},
@@ -214,9 +217,6 @@
 						"format": "date-time"
 					},
 					"location": {
-						"type": "string"
-					},
-					"id": {
 						"type": "string"
 					}
 				},
