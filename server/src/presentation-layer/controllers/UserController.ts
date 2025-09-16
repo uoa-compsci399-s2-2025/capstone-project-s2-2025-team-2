@@ -50,6 +50,25 @@ export class UserController extends Controller {
   }
 
   /**
+   * Gets the basic information of a user
+   *
+   * @param jwt - jwt token is needed for the user to be verified
+   * @param user_id - the ID of the user to retrieve
+   * @returns Promise<User>
+   */
+  @Security("jwt")
+  @SuccessResponse("200", "User information returned successfully")
+  @Get("{user_id}")
+  public async getUser(@Path() user_id: string): Promise<User> {
+    try {
+      const user = await new UserService().getUserById(user_id)
+      return user
+    } catch (err) {
+      throw new Error(`Failed to fetch user: ${(err as Error).message}`)
+    }
+  }
+
+  /**
    * Get all reagents under a user
    * User must be authenticated to access this endpoint
    * @param user_id - user id to query with
