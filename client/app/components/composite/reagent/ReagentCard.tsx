@@ -38,7 +38,7 @@ const ReagentCard = ({
            md:w-[19rem] md:h-[18.5rem] 
            w-full
            border-white/30 border-solid border-[1.5px] rounded-xl
-           bg-primary/80
+           bg-primary/80 
        "
     >
       <div className="flex flex-row gap-4 md:gap-0 md:flex-col m-2 md:m-3 rounded-lg overflow-hidden drop-shadow-xl">
@@ -49,7 +49,7 @@ const ReagentCard = ({
               {tags.map((tag, idx) => (
                 <span
                   key={idx}
-                  className="bg-black/30 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm"
+                  className="bg-background/70 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm"
                 >
                   {tag}
                 </span>
@@ -58,11 +58,13 @@ const ReagentCard = ({
           </div>
         </div>
 
-        <div className="flex flex-col justify-between flex-1 gap-1 md:py-4">
-          <div className="flex flex-col justify-between">
-            <span className="flex items-center gap-3 md:gap-4">
-              <h4 className="text-white text-base md:text-xl italic">{name}</h4>
-              <p className="text-white/60 text-sm md:text-sm italic mt-1">
+        <div className="flex flex-col justify-between flex-1 gap-1 md:py-4 min-h-0 overflow-hidden">
+          <div className="flex flex-col justify-between overflow-hidden">
+            <span className="flex items-start gap-3 md:gap-3 min-w-0">
+              <h4 className="text-white text-sm md:text-lg italic line-clamp-2 flex-1 min-w-0 leading-tight">
+                {name}
+              </h4>
+              <p className="text-white/60 text-xs md:text-sm italic mt-0.5 flex-shrink-0">
                 [{formula}]
               </p>
             </span>
