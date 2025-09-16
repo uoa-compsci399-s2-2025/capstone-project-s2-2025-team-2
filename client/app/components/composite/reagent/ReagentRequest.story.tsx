@@ -1,8 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/nextjs"
 import ReagentRequest from "./ReagentRequest"
-import type { components } from "@/models/__generated__/schema"
-
-type Reagent = components["schemas"]["Reagent"]
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {

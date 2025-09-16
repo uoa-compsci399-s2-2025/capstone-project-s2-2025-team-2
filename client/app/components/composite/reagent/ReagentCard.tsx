@@ -18,7 +18,7 @@ interface ReagentCardProps {
   imageUrl: string
   // quantity: string
   formula?: string
-  
+
   reagent?: Reagent
   requesterName?: string
   ownerName?: string

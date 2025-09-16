@@ -8,67 +8,72 @@ import Overlay from "../components/composite/Overlay"
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import Image from "next/image"
 
-
 type Order = components["schemas"]["Order"]
+type Reagent = components["schemas"]["Reagent"]
 
 interface OrderWithDetails extends Order {
   id: string
+  reagent?: Reagent
 }
 
 interface OrderCardProps {
   order: OrderWithDetails
   isOwner: boolean
-  onAccept: (id: string) => void
-  onDecline: (id: string) => void
+  onApprove: (id: string) => void
+  onCancel: (id: string) => void
 }
 
-const OrderCard = ({ order, isOwner, onAccept, onDecline }: OrderCardProps) => {
-  const { id, reagent_id, status } = order
-  
+const OrderCard = ({ order, isOwner, onApprove, onCancel }: OrderCardProps) => {
+  const { id, status, reagent } = order
+
   return (
-    <div className="w-full max-w-[19rem] md:h-[18.5rem] border-white/30 border-solid border-[1.5px] rounded-xl bg-primary/80">
-      <div className="flex flex-row gap-4 md:gap-0 md:flex-col m-2 md:m-3 rounded-lg overflow-hidden drop-shadow-xl">
-        
+    <div className="w-full max-w-[19rem] md:h-[16rem] border-white/30 border-solid border-[1.5px] rounded-xl bg-primary/80">
+      <div className="flex flex-row gap-4 md:gap-0 md:flex-col m-2 md:m-2 rounded-lg overflow-hidden drop-shadow-xl">
         <div className="relative w-[7rem] h-[6.5rem] md:w-full md:h-[8rem]">
-          <Image 
-            src="/placeholder.webp" 
-            fill 
-            className="object-cover rounded-lg" 
-            alt="Reagent placeholder" 
+          <Image
+            src="/placeholder.webp"
+            fill
+            className="object-cover rounded-lg"
+            alt={reagent?.name || "Reagent placeholder"}
           />
           <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
             <div className="hidden md:block">
-              <span className="bg-black/30 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm">
-                Order #{id.slice(-6)}
-              </span>
+              <div className="flex flex-wrap gap-1">
+                {reagent?.categories?.map((category, index) => (
+                  <span
+                    key={index}
+                    className="bg-black/30 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm"
+                  >
+                    {category}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col justify-between flex-1 gap-1 md:py-4">
-          
+        <div className="flex flex-col justify-between flex-1 gap-1 md:py-2">
           <div className="flex flex-col justify-between">
             <h4 className="text-white text-base md:text-xl italic">
-              Order #{id.slice(-6)}
+              {reagent?.name}
             </h4>
 
             <div className="md:hidden flex flex-wrap gap-1 mt-2">
-              <span className="bg-white/20 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm">
-                #{id.slice(-6)}
-              </span>
+              {reagent?.categories?.map((category, index) => (
+                <span
+                  key={index}
+                  className="bg-white/20 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm"
+                >
+                  {category}
+                </span>
+              ))}
             </div>
           </div>
 
-          <div className="hidden md:block bg-light-gray h-[1px] my-2"></div>
+          <div className="hidden md:block bg-light-gray h-[1px] my-1"></div>
 
           <div className="flex items-center justify-between">
-            
             <div className="flex flex-col">
-              <p className="text-light-gray text-xs">
-                <span className="text-white/60">Reagent ID: </span>
-                <span className="text-white">{reagent_id.slice(-8)}</span>
-              </p>
-              
               <p className="text-light-gray text-xs mt-1">
                 <span className="text-white/60">Status: </span>
                 <span className="text-white capitalize">{status}</span>
@@ -77,17 +82,15 @@ const OrderCard = ({ order, isOwner, onAccept, onDecline }: OrderCardProps) => {
 
             {isOwner && (
               <div className="flex gap-2">
-                <button 
-                  onClick={() => onAccept(id)} 
+                <button
+                  onClick={() => onApprove(id)}
                   className="flex items-center justify-center w-8 h-8 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
-                  title="Accept order"
                 >
                   <CheckIcon className="w-4 h-4" />
                 </button>
-                <button 
-                  onClick={() => onDecline(id)} 
+                <button
+                  onClick={() => onCancel(id)}
                   className="flex items-center justify-center w-8 h-8 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-colors"
-                  title="Decline order"
                 >
                   <XMarkIcon className="w-4 h-4" />
                 </button>
@@ -123,7 +126,7 @@ export default function Orders() {
       }
 
       const { data, error } = await client.GET("/orders" as any, {
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       })
 
       if (error) {
@@ -132,20 +135,45 @@ export default function Orders() {
         return
       }
 
-      const ordersWithDetails = (data || []).map((order: Order) => ({
-        ...order,
-        reagent: null 
-      }))
-      
-      setOrders(ordersWithDetails)
-    } catch (err) {
+      const orderDetails = await Promise.all(
+        (data || []).map(async (order: Order) => {
+          try {
+            const reagentInfo = await client.GET(
+              `/reagents/${order.reagent_id}` as any,
+              {
+                headers: { Authorization: `Bearer ${token}` },
+              },
+            )
+
+            return {
+              ...order,
+              reagent: reagentInfo.data || null,
+            }
+          } catch (err) {
+            console.error(
+              `Failed to fetch reagent details for order ${order.id}:`,
+              err,
+            )
+            return {
+              ...order,
+              reagent: null,
+            }
+          }
+        }),
+      )
+
+      setOrders(orderDetails)
+    } catch {
       alert("Failed to fetch orders")
     } finally {
       setLoading(false)
     }
   }
 
-  const handleOrderAction = async (orderId: string, action: "accept" | "decline") => {
+  const handleOrderAction = async (
+    orderId: string,
+    action: "approve" | "cancel",
+  ) => {
     try {
       const token = localStorage.getItem("authToken")
       if (!token) {
@@ -153,17 +181,20 @@ export default function Orders() {
         return
       }
 
-      const { error } = await client.PUT(`/orders/${orderId}/${action}` as any, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      const { error } = await client.PATCH(
+        `/orders/${orderId}/${action}` as any,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
 
       if (error) {
         throw new Error(`Failed to ${action} order`)
       }
-      
-      alert(`Order ${action}${action === "accept" ? "ed" : "d"} successfully!`)
-      await fetchOrders() 
-    } catch (err) {
+
+      alert(`Order ${action}${action === "approve" ? "d" : "ed"} successfully!`)
+      await fetchOrders()
+    } catch {
       alert(`Failed to ${action} order`)
     }
   }
@@ -171,8 +202,7 @@ export default function Orders() {
   const isOwner = (order: Order) => currentUser?.uid === order.owner_id
 
   //filter pending
-  const pendingOrders = orders.filter(order => order.status === "pending")
-
+  const pendingOrders = orders.filter((order) => order.status === "pending")
 
   if (loading) {
     return (
@@ -191,20 +221,20 @@ export default function Orders() {
     <Overlay>
       <div className="p-8 max-w-7xl mx-auto">
         <h1 className="text-white text-3xl font-bold mb-6">Orders</h1>
-        
+
         {pendingOrders.length === 0 ? (
           <div className="bg-primary/50 rounded-lg p-8 border border-muted text-gray-400 text-center">
             <h3 className="text-lg font-medium mb-2">No Pending Orders</h3>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {pendingOrders.map(order => (
+            {pendingOrders.map((order) => (
               <OrderCard
                 key={order.id}
                 order={order}
                 isOwner={isOwner(order)}
-                onAccept={id => handleOrderAction(id, "accept")}
-                onDecline={id => handleOrderAction(id, "decline")}
+                onApprove={(id) => handleOrderAction(id, "approve")}
+                onCancel={(id) => handleOrderAction(id, "cancel")}
               />
             ))}
           </div>

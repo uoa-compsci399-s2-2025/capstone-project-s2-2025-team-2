@@ -26,20 +26,20 @@ const ChemIcon = () => (
   </div>
 )
 
-//display user + reagent 
-const UserDisplay = ({ 
-  name, 
-  reagentName, 
-  showIcon 
-}: { 
+//display user + reagent
+const UserDisplay = ({
+  name,
+  reagentName,
+  showIcon,
+}: {
   name: string
   reagentName?: string
-  showIcon?: boolean 
+  showIcon?: boolean
 }) => (
   <div className="flex flex-col items-center flex-1 min-w-0">
     <div className="flex items-center gap-3">
-      <div 
-        className="text-white text-3xl font-semibold truncate max-w-[120px]" 
+      <div
+        className="text-white text-3xl font-semibold truncate max-w-[120px]"
         title={name}
       >
         {name}
@@ -47,8 +47,8 @@ const UserDisplay = ({
       {showIcon && <ChemIcon />}
     </div>
     {reagentName && (
-      <div 
-        className="text-gray-400 text-base font-light mt-2 truncate max-w-[140px]" 
+      <div
+        className="text-gray-400 text-base font-light mt-2 truncate max-w-[140px]"
         title={reagentName}
       >
         {reagentName}
@@ -63,7 +63,7 @@ export const ReagentRequest = ({
   onSubmit,
   reagent,
   requesterName,
-  ownerName
+  ownerName,
 }: ReagentRequestProps) => {
   const [currentUser, setCurrentUser] = useState<any>(null)
   const [ownerInfo, setOwnerInfo] = useState<any>(null)
@@ -75,7 +75,6 @@ export const ReagentRequest = ({
 
   useEffect(() => {
     if (isOpen && reagent?.user_id) {
-        
       const user = getCurrentUser()
       if (user && reagent.user_id === user.uid) {
         alert("You cannot request your own reagent!")
@@ -98,7 +97,7 @@ export const ReagentRequest = ({
       console.error("Failed to fetch info:", err)
     }
   }
-  
+
   if (!isOpen) return null
 
   const handleSubmit = async () => {
@@ -108,25 +107,25 @@ export const ReagentRequest = ({
         alert("Please sign in to make a request")
         return
       }
-      
+
       const currentUserId = currentUser.uid
 
       const { error } = await client.POST("/orders" as any, {
-        body: { 
-          req_id: currentUserId, 
-          reagent_id: reagent.id 
+        body: {
+          req_id: currentUserId,
+          reagent_id: reagent.id,
         },
-        headers: { Authorization: `Bearer ${token}` }
+        headers: { Authorization: `Bearer ${token}` },
       })
 
       if (error) {
         alert("Failed to create request")
         return
       }
-      
+
       onSubmit()
       onClose()
-    } catch{
+    } catch {
       alert("Failed to create request")
     }
   }
@@ -141,32 +140,32 @@ export const ReagentRequest = ({
         >
           ×
         </button>
-        
+
         <h2 className="text-white text-center text-2xl font-medium mb-8">
           Reagent Request
         </h2>
 
         <div className="flex items-center justify-center mb-8">
           {/*Reagent Requester*/}
-          <UserDisplay 
-            name={currentUser?.displayName || currentUser?.email || requesterName}
+          <UserDisplay
+            name={
+              currentUser?.displayName || currentUser?.email || requesterName
+            }
             showIcon={false}
           />
-          
-          <span className="px-4 text-4xl text-gray-400">
-            ←
-          </span>
+
+          <span className="px-4 text-4xl text-gray-400">←</span>
 
           {/*Reagent Sender*/}
-          <UserDisplay 
+          <UserDisplay
             name={ownerInfo?.displayName || ownerInfo?.email || ownerName}
             reagentName={reagent.name}
             showIcon={true}
           />
         </div>
-        
+
         <div className="flex justify-end">
-          <button 
+          <button
             type="button"
             onClick={handleSubmit}
             className={`${buttonStyles} bg-blue-primary hover:bg-blue-primary/80 min-w-[120px] text-base font-medium py-1 px-3`}

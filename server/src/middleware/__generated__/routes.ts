@@ -88,28 +88,6 @@ const models: TsoaRoute.Models = {
     "Order": {
         "dataType": "refObject",
         "properties": {
-            "id": {"dataType":"string"},
-            "req_id": {"dataType":"string","required":true},
-            "owner_id": {"dataType":"string","required":true},
-            "reagent_id": {"dataType":"string","required":true},
-            "status": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["pending"]},{"dataType":"enum","enums":["approved"]},{"dataType":"enum","enums":["canceled"]}],"required":true},
-            "createdAt": {"dataType":"datetime","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "CreateOrderRequest": {
-        "dataType": "refObject",
-        "properties": {
-            "req_id": {"dataType":"string","required":true},
-            "reagent_id": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Order": {
-        "dataType": "refObject",
-        "properties": {
             "req_id": {"dataType":"string","required":true},
             "owner_id": {"dataType":"string","required":true},
             "reagent_id": {"dataType":"string","required":true},
