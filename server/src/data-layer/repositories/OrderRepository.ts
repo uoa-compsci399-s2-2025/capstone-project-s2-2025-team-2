@@ -12,8 +12,6 @@ export class OrderService {
   async createOrder(req: CreateOrderRequest): Promise<Order> {
     const user = await this.userService.getUserById(req.req_id)
     const reagent = await this.reagentService.getReagentById(req.reagent_id)
-    console.log("user", user)
-    console.log("reagent", reagent)
     if (!user || !reagent) throw new Error("No user or reagent found")
     const order: Order = {
       req_id: req.req_id,
@@ -48,4 +46,57 @@ export class OrderService {
       }),
     ]
   }
+
+  async acceptOrder(orderId: string, userId: string): Promise<Order> {
+    const orderRef = this.db.collection("orders").doc(orderId)
+    const orderDoc = await orderRef.get()
+    
+    if (!orderDoc.exists) {
+      throw new Error("Order not found")
+    }
+    
+    const orderData = orderDoc.data() as Order
+    if (orderData.owner_id !== userId) {
+      throw new Error("The reagent owner must accept this request")
+    }
+    
+    if (orderData.status !== "pending") {
+      throw new Error("Only pending orders can be accepted")
+    }
+    
+    await orderRef.update({ status: "approved" })
+    
+    return {
+      id: orderId,
+      ...orderData,
+      status: "approved"
+    }
+  }
+
+  async declineOrder(orderId: string, userId: string): Promise<Order> {
+    const orderRef = this.db.collection("orders").doc(orderId)
+    const orderDoc = await orderRef.get()
+    
+    if (!orderDoc.exists) {
+      throw new Error("Order not found")
+    }
+    
+    const orderData = orderDoc.data() as Order
+    if (orderData.owner_id !== userId) {
+      throw new Error("Only the order owner can decline the request")
+    }
+    
+    if (orderData.status !== "pending") {
+      throw new Error("Only pending orders can be declined")
+    }
+    
+    await orderRef.update({ status: "canceled" })
+    
+    return {
+      id: orderId,
+      ...orderData,
+      status: "canceled"
+    }
+  }
 }
+

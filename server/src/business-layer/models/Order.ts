@@ -1,4 +1,5 @@
 export interface Order {
+  id?: string
   req_id: string
   owner_id: string
   reagent_id: string

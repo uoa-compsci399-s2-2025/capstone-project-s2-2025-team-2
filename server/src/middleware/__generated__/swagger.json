@@ -224,6 +224,9 @@
 			},
 			"Order": {
 				"properties": {
+					"id": {
+						"type": "string"
+					},
 					"req_id": {
 						"type": "string"
 					},
@@ -483,14 +486,14 @@
 						}
 					}
 				},
-				"description": "Get user information by user ID",
+				"description": "get user info using user id",
 				"tags": [
 					"User"
 				],
 				"security": [],
 				"parameters": [
 					{
-						"description": "- The ID of the user to fetch",
+						"description": "- the id of the user to fetch",
 						"in": "path",
 						"name": "user_id",
 						"required": true,
@@ -983,7 +986,7 @@
 				"operationId": "GetOrders",
 				"responses": {
 					"200": {
-						"description": "All reagents returned successfully",
+						"description": "All orders returned successfully",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -1005,6 +1008,76 @@
 					}
 				],
 				"parameters": []
+			}
+		},
+		"/orders/{orderId}/accept": {
+			"put": {
+				"operationId": "AcceptOrder",
+				"responses": {
+					"200": {
+						"description": "Order accepted successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Order"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Order"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "orderId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/orders/{orderId}/decline": {
+			"put": {
+				"operationId": "DeclineOrder",
+				"responses": {
+					"200": {
+						"description": "Order declined successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Order"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Order"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "orderId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/auth/google/verify": {

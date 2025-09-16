@@ -4,11 +4,13 @@ import {
   Controller,
   Get,
   Post,
+  Put,
   Route,
   SuccessResponse,
   Security,
   Request,
   Body,
+  Path,
   Tags,
 } from "tsoa"
 import { AuthRequest } from "../../service-layer/dtos/request/AuthRequest"
@@ -30,7 +32,7 @@ export class OrderController extends Controller {
     return order
   }
 
-  @SuccessResponse("200", "All reagents returned successfully")
+  @SuccessResponse("200", "All orders returned successfully")
   @Security("jwt")
   @Get()
   public async getOrders(@Request() request: AuthRequest): Promise<Order[]> {
@@ -47,4 +49,39 @@ export class OrderController extends Controller {
     }
   }
 
+  @SuccessResponse("200", "Order accepted successfully")
+  @Security("jwt")
+  @Put("{orderId}/accept")
+  public async acceptOrder(
+    @Path() orderId: string,
+    @Request() request: AuthRequest
+  ): Promise<Order> {
+    try {
+      const user = request.user
+      const user_id = user.uid
+      const order = await new OrderService().acceptOrder(orderId, user_id)
+      return order
+    } catch (err) {
+      throw new Error("Failed to accept order: " + (err as Error).message)
+    }
+  }
+
+  @SuccessResponse("200", "Order declined successfully")
+  @Security("jwt")
+  @Put("{orderId}/decline")
+  public async declineOrder(
+    @Path() orderId: string,
+    @Request() request: AuthRequest
+  ): Promise<Order> {
+    try {
+      const user = request.user
+      const user_id = user.uid
+      const order = await new OrderService().declineOrder(orderId, user_id)
+      return order
+    } catch (err) {
+      throw new Error("Failed to decline order: " + (err as Error).message)
+    }
+  }
+
 }
+

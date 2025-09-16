@@ -27,7 +27,7 @@ export interface paths {
             path?: never;
             cookie?: never;
         };
-        /** @description Get user information by user ID */
+        /** @description get user info using user id */
         get: operations["GetUserById"];
         put?: never;
         post?: never;
@@ -171,6 +171,38 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/orders/{orderId}/accept": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["AcceptOrder"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orders/{orderId}/decline": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["DeclineOrder"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/auth/google/verify": {
         parameters: {
             query?: never;
@@ -302,6 +334,7 @@ export interface components {
             location?: string;
         };
         Order: {
+            id?: string;
             req_id: string;
             owner_id: string;
             reagent_id: string;
@@ -387,7 +420,7 @@ export interface operations {
             query?: never;
             header?: never;
             path: {
-                /** @description - The ID of the user to fetch */
+                /** @description - the id of the user to fetch */
                 user_id: string;
             };
             cookie?: never;
@@ -701,7 +734,7 @@ export interface operations {
         };
         requestBody?: never;
         responses: {
-            /** @description All reagents returned successfully */
+            /** @description All orders returned successfully */
             200: {
                 headers: {
                     [name: string]: unknown;
@@ -727,6 +760,50 @@ export interface operations {
         responses: {
             /** @description Order created successfully */
             201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Order"];
+                };
+            };
+        };
+    };
+    AcceptOrder: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                orderId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Order accepted successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Order"];
+                };
+            };
+        };
+    };
+    DeclineOrder: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                orderId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Order declined successfully */
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
