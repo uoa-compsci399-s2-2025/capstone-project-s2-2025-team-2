@@ -2,7 +2,8 @@
 import { MapPinIcon, GiftIcon, CurrencyDollarIcon, ArrowsRightLeftIcon } from "@heroicons/react/24/outline"
 import Image from "next/image"
 import Button from "../../generic/button/regular/Button"
-import { ChevronDoubleRightIcon, ClockIcon } from "@heroicons/react/24/outline"
+import { ArrowRightIcon } from "@heroicons/react/24/solid"
+import { ClockIcon } from "@heroicons/react/24/outline"
 import { useRouter } from "next/navigation"
 
 interface ReagentCardProps {
@@ -138,28 +139,15 @@ const ReagentCard = ({
               </p>
             </div>
 
-            <div className="">
-              <div className="md:hidden">
-                <Button
-                  label="View"
-                  textSize="text-xs"
-                  icon={ChevronDoubleRightIcon}
-                  iconPosition="right"
-                  fontWeight="semibold"
-                />
-              </div>
-              <div className="hidden md:block">
-                <Button
-                  onClick={handleClick}
-                  label="View"
-                  textSize="text-sm"
-                  icon={ChevronDoubleRightIcon}
-                  iconPosition="right"
-                  fontWeight="semibold"
-                />
-              </div>
-              <span className="hidden">{imageUrl}</span>
-            </div>
+            <Button
+              onClick={handleClick}
+              label="View"
+              textSize="text-sm"
+              icon={ArrowRightIcon}
+              iconPosition="right"
+              fontWeight="semibold"
+            />
+            <span className="hidden">{imageUrl}</span>
           </div>
         </div>
       </div>
