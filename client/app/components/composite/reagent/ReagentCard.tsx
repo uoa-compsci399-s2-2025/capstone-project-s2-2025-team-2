@@ -78,15 +78,20 @@ const ReagentCard = ({
         </div>
 
         <div className="flex flex-col justify-between flex-1 gap-1 md:py-4 min-h-0 overflow-hidden">
-          <div className="flex flex-col justify-between overflow-hidden">
-            <span className="flex items-start gap-3 md:gap-3 min-w-0">
-              <h4 className="text-white text-sm md:text-lg  line-clamp-2 flex-1 min-w-0 leading-tight">
+            <div className="flex flex-col justify-between overflow-hidden">
+              <h4 className="text-white text-sm md:text-lg line-clamp-2 leading-tight">
                 {name}
               </h4>
-              <p className="text-white/60 text-xs md:text-sm mt-0.5 flex-shrink-0">
-                [{formula}]
+
+              <div className="flex items-center justify-between mt-1">
+              <p className="text-white/60 text-sm md:text-base">
+                {formula}
               </p>
-            </span>
+              <p className="flex items-center justify-center gap-0.5 text-warning text-sm md:text-base">
+                <ClockIcon className="w-5 h-5 md:w-6 md:h-6 text-warning" />
+                {expiryDate}
+              </p>
+            </div>
 
             <div className="md:hidden flex flex-wrap gap-1">
               {tags.map((tag, idx) => (
@@ -98,23 +103,14 @@ const ReagentCard = ({
                 </span>
               ))}
             </div>
-
-            <p className="hidden md:flex flex-row gap-0.5 text-warning text-base">
-              <ClockIcon className="w-4.5 h-4.5 mt-0.75 text-warning" />
-              {expiryDate}
-            </p>
           </div>
 
-          <div className="hidden md:block bg-light-gray h-[1px] my-2"></div>
+          <div className="hidden md:block bg-light-gray/30 h-[0.5px] my-2"></div>
 
           <div className="flex items-center justify-between">
             <div className="flex flex-col">
-              <p className="md:hidden flex text-warning text-sm md:text-base">
-                <ClockIcon className="w-5 h-5 md:mt-0.5 text-warning" />
-                {expiryDate}
-              </p>
               <p className="underline-offset-2 text-light-gray flex text-xs gap-0.5">
-                <MapPinIcon className="w-4 h-4 mt-0.5" />
+                <MapPinIcon className="w-5 h-5" />
                 <span className="truncate max-w-[150px]">
                   {location}
                 </span>
