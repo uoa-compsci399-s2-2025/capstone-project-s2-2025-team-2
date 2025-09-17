@@ -112,7 +112,7 @@ const Marketplace = () => {
                 ? (r.images?.[0] ?? "/placeholder.webp")
                 : "/placeholder.webp"
             }
-            formula={r.tradingType ?? ""}
+            type={r.tradingType ?? ""}
           />
         ))}
       </div>

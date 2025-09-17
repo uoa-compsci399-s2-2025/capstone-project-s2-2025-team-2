@@ -1,5 +1,5 @@
 "use client"
-import { MapPinIcon } from "@heroicons/react/24/outline"
+import { MapPinIcon, GiftIcon, CurrencyDollarIcon, ArrowsRightLeftIcon } from "@heroicons/react/24/outline"
 import Image from "next/image"
 import Button from "../../generic/button/regular/Button"
 import { ChevronDoubleRightIcon, ClockIcon } from "@heroicons/react/24/outline"
@@ -13,7 +13,7 @@ interface ReagentCardProps {
   expiryDate: string
   imageUrl: string
   // quantity: string
-  formula?: string
+  type: string
   id: string
 }
 
@@ -25,12 +25,26 @@ const ReagentCard = ({
   expiryDate,
   imageUrl,
   // quantity,
-  formula,
+  type,
   id,
 }: ReagentCardProps) => {
   const router = useRouter()
   const handleClick = () => {
     router.push(`/marketplace/${id}`)
+  }
+
+  const getTradingTypeConfig = (tradingType?: string) => {
+    const normalizedType = tradingType?.toLowerCase()
+    switch (normalizedType) {
+      case 'giveaway':
+        return { color: 'text-blue-primary', icon: GiftIcon }
+      case 'sell':
+        return { color: 'text-green-100', icon: CurrencyDollarIcon }
+      case 'trade':
+        return { color: 'text-purple-100', icon: ArrowsRightLeftIcon }
+      default:
+        return { color: 'text-white/60', icon: null }
+    }
   }
   return (
     <div
@@ -84,9 +98,16 @@ const ReagentCard = ({
               </h4>
 
               <div className="flex items-center justify-between mt-1">
-              <p className="text-white/60 text-sm md:text-base">
-                {formula}
-              </p>
+              {(() => {
+                const config = getTradingTypeConfig(type)
+                const IconComponent = config.icon
+                return (
+                    <p className={`flex items-center gap-1 text-sm md:text-base font-medium ${config.color}`}>
+                      {IconComponent && <IconComponent className="w-5 h-5" />}
+                      {type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()}
+                    </p>
+                )
+              })()}
               <p className="flex items-center justify-center gap-0.5 text-warning text-sm md:text-base">
                 <ClockIcon className="w-5 h-5 md:w-6 md:h-6 text-warning" />
                 {expiryDate}
