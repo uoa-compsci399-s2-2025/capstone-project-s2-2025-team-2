@@ -80,10 +80,10 @@ const ReagentCard = ({
         <div className="flex flex-col justify-between flex-1 gap-1 md:py-4 min-h-0 overflow-hidden">
           <div className="flex flex-col justify-between overflow-hidden">
             <span className="flex items-start gap-3 md:gap-3 min-w-0">
-              <h4 className="text-white text-sm md:text-lg italic line-clamp-2 flex-1 min-w-0 leading-tight">
+              <h4 className="text-white text-sm md:text-lg  line-clamp-2 flex-1 min-w-0 leading-tight">
                 {name}
               </h4>
-              <p className="text-white/60 text-xs md:text-sm italic mt-0.5 flex-shrink-0">
+              <p className="text-white/60 text-xs md:text-sm mt-0.5 flex-shrink-0">
                 [{formula}]
               </p>
             </span>
@@ -113,7 +113,7 @@ const ReagentCard = ({
                 <ClockIcon className="w-5 h-5 md:mt-0.5 text-warning" />
                 {expiryDate}
               </p>
-              <p className="underline-offset-2 text-light-gray underline flex text-xs gap-0.5">
+              <p className="underline-offset-2 text-light-gray flex text-xs gap-0.5">
                 <MapPinIcon className="w-4 h-4 mt-0.5" />
                 {location}
               </p>
