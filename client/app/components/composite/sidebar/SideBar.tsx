@@ -6,6 +6,8 @@ import {
   UserCircleIcon,
   ArrowLeftStartOnRectangleIcon,
   Bars3Icon,
+  EnvelopeIcon,
+  ClipboardDocumentListIcon,
 } from "@heroicons/react/24/outline"
 import Button from "../../generic/button/regular/Button"
 import { firebaseSignOut } from "../../../services/firebase-auth"
@@ -32,8 +34,8 @@ const Sidebar = () => {
       isButton: true,
     },
     { href: "/marketplace", label: "Marketplace", icon: ShoppingCartIcon },
-    { href: "/inbox", label: "Inbox", icon: ShoppingCartIcon },
-    { href: "/orders", label: "Orders", icon: ShoppingCartIcon },
+    { href: "/inbox", label: "Inbox", icon: EnvelopeIcon },
+    { href: "/orders", label: "Orders", icon: ClipboardDocumentListIcon },
   ]
 
   return (
