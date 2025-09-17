@@ -115,7 +115,9 @@ const ReagentCard = ({
               </p>
               <p className="underline-offset-2 text-light-gray flex text-xs gap-0.5">
                 <MapPinIcon className="w-4 h-4 mt-0.5" />
-                {location}
+                <span className="truncate max-w-[150px]">
+                  {location}
+                </span>
               </p>
             </div>
 
