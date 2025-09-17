@@ -86,7 +86,7 @@ const Marketplace = () => {
 
       <div className="mt-5"></div>
 
-      <div className="bg-transparent dark:bg-black flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem]">
+      <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem]">
         <SearchBar
           search={search}
           setSearch={setSearch}
@@ -97,7 +97,7 @@ const Marketplace = () => {
         />
       </div>
 
-      <div className="bg-transparent dark:bg-black flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
+      <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
         {sorted.map((r) => (
           <ReagentCard
             id={r.id}
