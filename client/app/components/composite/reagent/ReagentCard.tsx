@@ -37,11 +37,30 @@ const ReagentCard = ({
       className="
            md:w-[19rem] md:h-[18.5rem] 
            w-full
-           border-white/30 border-solid border-[1.5px] rounded-xl
-           bg-primary/80 
+           border border-white/10 border-solid
+           rounded-xl
+           relative
        "
-    >
-      <div className="flex flex-row gap-4 md:gap-0 md:flex-col m-2 md:m-3 rounded-lg overflow-hidden drop-shadow-xl">
+    > 
+      <div 
+        className="absolute inset-0 rounded-xl"
+        style={{ backgroundColor: 'rgba(204, 204, 204)' }}
+      ></div>
+      <div 
+        className="absolute inset-0 rounded-xl"
+        style={{ backgroundColor: 'rgba(0, 0, 0, 0.9)' }}
+      ></div>
+        <div 
+          className="absolute inset-0 rounded-xl"
+          style={{ backgroundColor: 'rgba(255, 255, 255, 0.06)' }}
+        ></div>
+        <div 
+          className="absolute inset-0 rounded-xl"
+          style={{
+            background: 'radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 90%)'
+          }}
+        ></div>
+      <div className="relative z-10 flex flex-row gap-4 md:gap-0 md:flex-col m-2 md:m-3 rounded-lg overflow-hidden drop-shadow-xl">
         <div className="relative w-[7rem] h-[6.5rem] md:w-full md:h-[8rem]">
           <Image src="/placeholder.webp" fill className="object-cover" alt="" />
           <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
