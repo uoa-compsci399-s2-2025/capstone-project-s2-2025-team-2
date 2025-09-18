@@ -8,6 +8,7 @@ import ReagentRequest from "./ReagentRequest"
 import type { components } from "@/models/__generated__/schema"
 
 type Reagent = components["schemas"]["Reagent"]
+type ReagentWithId = Reagent & { id: string }
 
 interface ReagentCardProps {
   name: string
@@ -151,7 +152,7 @@ const ReagentCard = ({
           isOpen={isRequestOpen}
           onClose={() => setIsRequestOpen(false)}
           onSubmit={handleRequestSubmit}
-          reagent={reagent}
+          reagent={reagent as ReagentWithId}
           requesterName={requesterName}
           ownerName={ownerName}
         />

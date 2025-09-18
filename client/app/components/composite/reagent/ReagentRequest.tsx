@@ -7,12 +7,13 @@ import client from "../../../services/fetch-client"
 import { getCurrentUser } from "../../../services/firebase-auth"
 
 type Reagent = components["schemas"]["Reagent"]
+type ReagentWithId = Reagent & { id: string }
 
 interface ReagentRequestProps {
   isOpen: boolean
   onClose: () => void
   onSubmit: () => void
-  reagent: Reagent
+  reagent: ReagentWithId
   requesterName: string
   ownerName: string
 }
@@ -123,6 +124,7 @@ export const ReagentRequest = ({
         return
       }
 
+      alert("Request sent successfully!")
       onSubmit()
       onClose()
     } catch {
