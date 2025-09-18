@@ -12,7 +12,7 @@
 					"email": {
 						"type": "string"
 					},
-					"username": {
+					"displayName": {
 						"type": "string"
 					},
 					"role": {
@@ -26,7 +26,7 @@
 				},
 				"required": [
 					"email",
-					"username",
+					"displayName",
 					"role"
 				],
 				"type": "object",
@@ -491,6 +491,43 @@
 				],
 				"parameters": [
 					{
+						"in": "path",
+						"name": "user_id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/users/{user_id}": {
+			"get": {
+				"operationId": "GetUser",
+				"responses": {
+					"200": {
+						"description": "User information returned successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"description": "Gets the basic information of a user",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "- the ID of the user to retrieve",
 						"in": "path",
 						"name": "user_id",
 						"required": true,

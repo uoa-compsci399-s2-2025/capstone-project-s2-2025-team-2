@@ -1,31 +1,28 @@
 "use client"
 import { useEffect, useState } from "react"
 import { v4 as uuidv4 } from "uuid"
+import { useParams } from "next/navigation"
 import { onAuthStateChanged } from "firebase/auth"
+import { auth } from "@/app/config/firebase"
 // components
 import ReagentCard from "../../components/composite/reagent/ReagentCard"
 import Overlay from "../../components/composite/Overlay"
 import OutlinedButton from "../../components/generic/button/outlined/OutlinedButton"
 import SearchBar from "../../components/composite/searchbar/SearchBar"
 // services
-import client from "../../services/fetch-client"
-import { auth } from "@/app/config/firebase"
+import useAuthGuard from "@/app/hooks/useAuthGuard"
 // other
+import { User } from "../../../../server/src/business-layer/models/User"
 import { Reagent } from "../../../../server/src/business-layer/models/Reagent"
 import { HomeIcon } from "@heroicons/react/24/outline"
 
-/**
- * Route parameters for the profile page.
- * `params.id` is the user id in the URL -- identifies which user's profile is being viewed.`.
- */
-interface IUserProfile {
-  params: { id: string }
-}
-
-const UserProfile = ({ params }: IUserProfile) => {
-  const { id: idOfUserBeingViewed } = params
-
-  const [currentUserUid, setCurrentUserUid] = useState<string | null>(null)
+const UserProfile = () => {
+  const params = useParams<{ id: string }>()
+  const idOfUserBeingViewed = params.id
+  // user state
+  const [userUid, setUserUid] = useState<string | null>(null)
+  const [userBeingViewed, setUserBeingViewed] = useState<User | null>(null)
+  // reagent state
   const [reagentSearch, setReagentSearch] = useState<string>("")
   const [reagentCategoryFilter, setReagentCategoryFilter] = useState<
     "all" | "on marketplace" | "expiring soon" | "private"
@@ -36,41 +33,59 @@ const UserProfile = ({ params }: IUserProfile) => {
   >("newest")
   const [reagents, setReagents] = useState<Reagent[]>([])
 
-  console.log(currentUserUid)
-  console.log(idOfUserBeingViewed)
+  const { fetchWithAuth } = useAuthGuard()
 
+  // get users uid
   useEffect(() => {
     if (!auth) return
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUserUid(user?.uid ?? null)
+      setUserUid(user?.uid ?? null)
     })
 
     return () => unsubscribe()
   }, [])
 
-  // REMINDER - move data fetching to its own hook later - logan calls dibs on this :)
   useEffect(() => {
-    const getReagents = async () => {
-      try {
-        const authToken = localStorage.getItem("authToken")
-        if (!authToken) return
+    const getUserDetails = async () => {
+      const result = await fetchWithAuth<User>(
+        `/users/${idOfUserBeingViewed}`,
+        { protectedEndpoint: true },
+      )
 
-        const { data, error } = await client.GET("/users/reagents" as any, {
-          headers: { Authorization: `Bearer ${authToken}` },
-        })
-
+      if (result) {
+        const { data, error } = result
         if (data && !error) {
-          setReagents(data)
+          setUserBeingViewed(result.data)
+        } else if (error) {
+          console.error(`Failed to fetch user reagents: ${error}`)
         }
-      } catch (e) {
-        console.error("Failed to fetch user reagents", e)
       }
     }
 
+    const getReagents = async () => {
+      const result = await fetchWithAuth<Reagent[]>(
+        `/users/${idOfUserBeingViewed}/reagents`,
+        { protectedEndpoint: true },
+      )
+
+      if (result) {
+        const { data, error } = result
+        if (data && !error) {
+          setReagents(result.data)
+        } else if (error) {
+          console.error(`Failed to fetch user reagents: ${error}`)
+        }
+      }
+    }
+
+    console.log(userBeingViewed)
+    console.log(reagents)
+
+    getUserDetails()
     getReagents()
   }, [])
 
-  // copied from marketplace page -- should move this func to its own hook?
+  // MORE TECH DEBT - copied from marketplace page, should modularize this func
   const filtered = reagents.filter((r) => {
     const query = reagentSearch.trim().toLowerCase()
     if (!query) return true
@@ -120,12 +135,16 @@ const UserProfile = ({ params }: IUserProfile) => {
             className="w-25 h-25 rounded-full border-3 border-[#6C6C6C] dark:border-white"
           />
           <div className="flex flex-col gap-2">
-            <h1 className="font-light">Welcome back, NAME</h1>
-            <p className="flex items-center gap-2 text-orange-200">
-              <HomeIcon className="w-6 h-6" /> University of Auckland
+            <h1 className="font-light">
+              {idOfUserBeingViewed === userUid
+                ? `Welcome back, ${userBeingViewed && userBeingViewed?.displayName}`
+                : `${userBeingViewed && userBeingViewed?.displayName}'s Profile`}
+            </h1>
+            <p className="flex items-center gap-2 text-[#FF7309] dark:text-orange-200">
+              <HomeIcon className="w-6 h-6" /> HOME_INSTITUTION
             </p>
             {/* show 'edit profile' btn if user is viewing their own profile */}
-            {idOfUserBeingViewed === currentUserUid && (
+            {idOfUserBeingViewed === userUid && (
               <OutlinedButton
                 backgroundColor="#BABABA"
                 label="Edit Profile"
@@ -137,7 +156,12 @@ const UserProfile = ({ params }: IUserProfile) => {
         </div>
         {/* reagent section */}
         <div className="mt-20">
-          <h4 className="font-light text-tint">Your Listings</h4>
+          <h4 className="font-light text-midnight dark:text-tint">
+            {idOfUserBeingViewed === userUid
+              ? "Your Reagents"
+              : `${userBeingViewed?.displayName}'s Reagents`}
+          </h4>
+          <p className="text-dark-gray dark:text-light-gray"></p>
           <SearchBar
             search={reagentSearch}
             setSearch={setReagentSearch}
@@ -146,17 +170,21 @@ const UserProfile = ({ params }: IUserProfile) => {
             sort={reagentSearchSort}
             setSort={setReagentSearchSort}
           />
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
-            {reagents.map((r) => (
+          <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
+            {sorted.map((reagent: Reagent) => (
               <ReagentCard
-                key={`${r.user_id}-${r.name}-${r.expiryDate}`}
-                name={r.name}
-                description={r.description}
-                tags={r.categories}
-                location={r.location}
-                expiryDate={r.expiryDate}
-                imageUrl={r.images?.[0] || ""}
-                formula={undefined}
+                key={uuidv4()}
+                name={reagent.name}
+                description={reagent.description}
+                tags={reagent.categories || []}
+                location={reagent.location || "Unknown"}
+                expiryDate={reagent.expiryDate || "N/A"}
+                imageUrl={
+                  reagent.images?.[0] !== "string"
+                    ? reagent.images?.[0] || "/placeholder.webp"
+                    : "/placeholder.webp"
+                }
+                formula={reagent.tradingType || ""}
               />
             ))}
           </div>
