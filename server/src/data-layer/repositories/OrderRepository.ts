@@ -19,6 +19,7 @@ export class OrderService {
       reagent_id: req.reagent_id,
       status: "pending",
       createdAt: new Date(),
+      message: req.message,
     }
     const docRef = await FirestoreCollections.orders.add(order)
     const createdOrder = {
