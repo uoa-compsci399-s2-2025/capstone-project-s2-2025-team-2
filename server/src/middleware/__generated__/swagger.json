@@ -50,9 +50,6 @@
 			},
 			"Reagent": {
 				"properties": {
-					"id": {
-						"type": "string"
-					},
 					"user_id": {
 						"type": "string"
 					},
@@ -100,7 +97,6 @@
 					}
 				},
 				"required": [
-					"id",
 					"user_id",
 					"name",
 					"description",
@@ -171,9 +167,6 @@
 			},
 			"Partial_Reagent_": {
 				"properties": {
-					"id": {
-						"type": "string"
-					},
 					"user_id": {
 						"type": "string"
 					},
