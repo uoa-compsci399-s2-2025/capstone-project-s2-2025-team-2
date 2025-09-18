@@ -62,11 +62,6 @@
   --accent: #f5f7fc;
   --success: #53be5a;
   --warning: #da5d5d;
-
-  --reagent-card-bg-gray: rgba(204, 204, 204, 0.95);
-  --reagent-card-bg-black: rgba(0, 0, 0, 0.9);
-  --reagent-card-bg-white: rgba(255, 255, 255, 0.06);
-  --reagent-card-bg-radial: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 70%);
 }
 
 @theme {
@@ -177,5 +172,9 @@
 body {
   background: linear-gradient(to bottom, #232526 0%, #232526 30%, #414345 100%);
   font-family: "Poppins", sans-serif;
+}
+
+.mt-0\.75 {
+  margin-top: 3px;
 }
 

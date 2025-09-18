@@ -946,7 +946,7 @@
 				"operationId": "GetOrders",
 				"responses": {
 					"200": {
-						"description": "All orders returned successfully",
+						"description": "All reagents returned successfully",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -968,111 +968,6 @@
 					}
 				],
 				"parameters": []
-			}
-		},
-		"/orders/{id}": {
-			"get": {
-				"operationId": "GetOrderById",
-				"responses": {
-					"200": {
-						"description": "All orders returned successfully",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/Order"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Order"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/orders/{id}/approve": {
-			"patch": {
-				"operationId": "ApproveOrder",
-				"responses": {
-					"200": {
-						"description": "order successfully approved",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/Order"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Order"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/orders/{id}/cancel": {
-			"patch": {
-				"operationId": "CancelOrder",
-				"responses": {
-					"200": {
-						"description": "order successfully canceld",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/Order"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Order"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
 			}
 		},
 		"/auth/google/verify": {

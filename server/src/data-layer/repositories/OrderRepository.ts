@@ -46,33 +46,4 @@ export class OrderService {
       }),
     ]
   }
-
-  async getOrderById(id: string): Promise<Order> {
-    try {
-      const orderDoc = await FirestoreCollections.orders.doc(id).get()
-
-      if (!orderDoc.exists) {
-        throw new Error(`Order with id - ${id} not found`)
-      }
-      return {
-        ...orderDoc.data(),
-      } as Order
-    } catch (err) {
-      throw new Error(`Failed to get order: ${(err as Error).message}`)
-    }
-  }
-
-  async updateOrderStatus(id: string, status: string): Promise<Order> {
-    try {
-      const orderRef = await FirestoreCollections.orders.doc(id)
-      await orderRef.update({
-        status: status,
-      })
-      return await this.getOrderById(id)
-    } catch (err) {
-      throw new Error(
-        `Failed to update order status: ${(err as Error).message}`,
-      )
-    }
-  }
 }

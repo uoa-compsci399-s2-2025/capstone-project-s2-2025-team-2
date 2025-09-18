@@ -1,153 +1,133 @@
 "use client"
-import { MapPinIcon, GiftIcon, CurrencyDollarIcon, ArrowsRightLeftIcon } from "@heroicons/react/24/outline"
-import Image from "next/image"
-import Button from "../../generic/button/regular/Button"
+import { MapPinIcon, GiftIcon, CurrencyDollarIcon, ArrowsRightLeftIcon, ClockIcon } from "@heroicons/react/24/outline"
 import { ArrowRightIcon } from "@heroicons/react/24/solid"
-import { ClockIcon } from "@heroicons/react/24/outline"
+import Image from "next/image"
 import { useRouter } from "next/navigation"
+
+type TradingType = "giveaway" | "sell" | "trade"
 
 interface ReagentCardProps {
   name: string
-  description: string
   tags: string[]
   location: string
   expiryDate: string
   imageUrl: string
-  // quantity: string
-  type: string
+  type: TradingType
   id: string
 }
 
-const ReagentCard = ({
-  name,
-  // description,
-  tags,
-  location,
-  expiryDate,
-  imageUrl,
-  // quantity,
-  type,
-  id,
+interface TradingTypeStyle {
+  color: string
+  icon: React.ComponentType<{ className?: string }> | null
+}
+
+const TRADING_TYPE_STYLES: Record<TradingType, TradingTypeStyle> = {
+  giveaway: { color: "text-blue-100", icon: GiftIcon },
+  sell: { color: "text-green-100", icon: CurrencyDollarIcon },
+  trade: { color: "text-purple-100", icon: ArrowsRightLeftIcon },
+}
+
+//temp hardcoded since it be bugging out when made into style vars
+const BG_LAYERS = [
+  { backgroundColor: "rgba(204, 204, 204)" },
+  { backgroundColor: "rgba(0, 0, 0, 0.9)" },
+  { backgroundColor: "rgba(255, 255, 255, 0.06)" },
+  { background: "radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 90%)" },
+];
+
+const ReagentCard = ({ 
+  name, 
+  tags, 
+  location, 
+  expiryDate, 
+  imageUrl, 
+  type, 
+  id, 
 }: ReagentCardProps) => {
   const router = useRouter()
-  const handleClick = () => {
+  
+  const handleViewClick = () => {
     router.push(`/marketplace/${id}`)
   }
 
-  const getTradingTypeConfig = (tradingType?: string) => {
-    const normalizedType = tradingType?.toLowerCase()
-    switch (normalizedType) {
-      case 'giveaway':
-        return { color: 'text-blue-primary', icon: GiftIcon }
-      case 'sell':
-        return { color: 'text-green-100', icon: CurrencyDollarIcon }
-      case 'trade':
-        return { color: 'text-purple-100', icon: ArrowsRightLeftIcon }
-      default:
-        return { color: 'text-white/60', icon: null }
-    }
-  }
   return (
-    <div
-      className="
-           md:w-[19rem] md:h-[18.5rem] 
-           w-full
-           border border-white/10 border-solid
-           rounded-xl
-           relative
-       "
-    > 
-      <div 
-        className="absolute inset-0 rounded-xl"
-        style={{ backgroundColor: 'rgba(204, 204, 204)' }}
-      ></div>
-      <div 
-        className="absolute inset-0 rounded-xl"
-        style={{ backgroundColor: 'rgba(0, 0, 0, 0.9)' }}
-      ></div>
-        <div 
-          className="absolute inset-0 rounded-xl"
-          style={{ backgroundColor: 'rgba(255, 255, 255, 0.06)' }}
-        ></div>
-        <div 
-          className="absolute inset-0 rounded-xl"
-          style={{
-            background: 'radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 90%)'
-          }}
-        ></div>
-      <div className="relative z-10 flex flex-row gap-4 md:gap-0 md:flex-col m-2 md:m-3 rounded-lg overflow-hidden drop-shadow-xl">
-        <div className="relative w-[7rem] h-[6.5rem] md:w-full md:h-[8rem]">
-          <Image src="/placeholder.webp" fill className="object-cover" alt="" />
-          <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
-            <div className="hidden md:block flex flex-wrap gap-1">
-              {tags.map((tag, idx) => (
-                <span
-                  key={idx}
-                  className="bg-background/70 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm"
-                >
-                  {tag}
-                </span>
-              ))}
+    <div className="md:w-[18.5rem] md:h-[20.5rem] w-full border border-white/10 border-solid rounded-xl relative">
+      {BG_LAYERS.map((style, index) => (
+        <div key={index} className="absolute inset-0 rounded-xl" style={style} />
+      ))}
+
+      <div className="relative z-10 p-4">
+        <div className="flex flex-row gap-3 md:gap-0 md:flex-col">
+          <div className="relative w-full h-[9.5rem]">
+            <Image
+              src={(imageUrl as string) || "/placeholder.webp"}
+              fill
+              className="object-cover rounded-lg"
+              alt=""
+            />
+            <div className="absolute rounded-b-lg bottom-0 left-0 right-0 p-2">
+              <div className="hidden md:flex flex-wrap gap-1">
+                {tags.map((tag, idx) => (
+                  <span
+                    key={idx}
+                    className="bg-background/70 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div className="flex flex-col justify-between flex-1 gap-1 md:py-4 min-h-0 overflow-hidden">
-            <div className="flex flex-col justify-between overflow-hidden">
-              <h4 className="text-white text-sm md:text-lg line-clamp-2 leading-tight">
+          <div className="flex flex-col justify-between flex-1 gap-2 md:gap-2 md:pt-3 min-h-0 overflow-hidden">
+            <div className="flex flex-col justify-between gap-2 overflow-hidden">
+              <h4 className="text-white text-base md:text-lg line-clamp-2 tracking-wider leading-tight font-normal">
                 {name}
               </h4>
 
-              <div className="flex items-center justify-between mt-1">
+              <div className="flex items-center justify-between">
               {(() => {
-                const config = getTradingTypeConfig(type)
-                const IconComponent = config.icon
-                return (
-                    <p className={`flex items-center gap-1 text-sm md:text-base font-medium ${config.color}`}>
-                      {IconComponent && <IconComponent className="w-5 h-5" />}
-                      {type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()}
-                    </p>
-                )
-              })()}
-              <p className="flex items-center justify-center gap-0.5 text-warning text-sm md:text-base">
-                <ClockIcon className="w-5 h-5 md:w-6 md:h-6 text-warning" />
-                {expiryDate}
-              </p>
+                  const typeStyle = TRADING_TYPE_STYLES[type?.toLowerCase() as TradingType] || { color: "", icon: null }
+                  const IconComponent = typeStyle.icon
+                  return (
+                    <div className="flex flex-col">
+                      <span className="text-white/50 text-xs">Type</span>
+                      <p className={`flex items-center gap-1 text-sm md:text-base ${typeStyle.color}`}>
+                        {IconComponent && <IconComponent className="w-5 h-5" />}
+                        {type.charAt(0).toUpperCase() + type.slice(1).toLowerCase()}
+                      </p>
+                    </div>
+                  )
+                })()}
+
+                <div className="flex flex-col items-end">
+                  <span className="text-white/50 text-xs">Expires</span>
+                  <p className="flex items-center justify-center gap-0.5 text-warning text-sm md:text-base">
+                    <ClockIcon className="w-5 h-5 md:w-6 md:h-6 text-warning" />
+                    {expiryDate}
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <div className="md:hidden flex flex-wrap gap-1">
-              {tags.map((tag, idx) => (
-                <span
-                  key={idx}
-                  className="bg-white/20 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm"
-                >
-                  {tag}
-                </span>
-              ))}
+            <div className="hidden md:block bg-light-gray/30 h-[0.5px] my-1" />
+
+            <div className="flex items-center justify-between">
+              <div className="flex flex-col">
+                <p className="underline-offset-2 text-white/50 flex text-xs gap-0.5">
+                  <MapPinIcon className="w-5 h-5" />
+                  <span className="truncate max-w-[135px]">{location}</span>
+                </p>
+              </div>
+
+              <button
+                onClick={handleViewClick}
+                className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-secondary rounded-lg"
+              >
+                View
+                <ArrowRightIcon className="w-5 h-5" />
+              </button>
             </div>
-          </div>
-
-          <div className="hidden md:block bg-light-gray/30 h-[0.5px] my-2"></div>
-
-          <div className="flex items-center justify-between">
-            <div className="flex flex-col">
-              <p className="underline-offset-2 text-light-gray flex text-xs gap-0.5">
-                <MapPinIcon className="w-5 h-5" />
-                <span className="truncate max-w-[150px]">
-                  {location}
-                </span>
-              </p>
-            </div>
-
-            <Button
-              onClick={handleClick}
-              label="View"
-              textSize="text-sm"
-              icon={ArrowRightIcon}
-              iconPosition="right"
-              fontWeight="semibold"
-            />
-            <span className="hidden">{imageUrl}</span>
           </div>
         </div>
       </div>

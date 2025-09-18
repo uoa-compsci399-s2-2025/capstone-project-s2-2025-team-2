@@ -10,8 +10,6 @@ import {
   Request,
   Body,
   Tags,
-  Patch,
-  Path,
 } from "tsoa"
 import { AuthRequest } from "../../service-layer/dtos/request/AuthRequest"
 import { OrderService } from "../../data-layer/repositories/OrderRepository"
@@ -32,7 +30,7 @@ export class OrderController extends Controller {
     return order
   }
 
-  @SuccessResponse("200", "All orders returned successfully")
+  @SuccessResponse("200", "All reagents returned successfully")
   @Security("jwt")
   @Get()
   public async getOrders(@Request() request: AuthRequest): Promise<Order[]> {
@@ -49,81 +47,4 @@ export class OrderController extends Controller {
     }
   }
 
-  @SuccessResponse("200", "All orders returned successfully")
-  @Security("jwt")
-  @Get("{id}")
-  public async getOrderById(
-    @Path() id: string,
-    @Request() request: AuthRequest,
-  ): Promise<Order> {
-    try {
-      const user = request.user
-      const order = await new OrderService().getOrderById(id)
-      if (!order) {
-        this.setStatus(404)
-        throw new Error("Order not found")
-      }
-      if (
-        user.uid !== (await order).owner_id &&
-        user.uid !== (await order).req_id
-      ) {
-        this.setStatus(403)
-        throw new Error("Unauthorized to retrieve this order")
-      }
-      return order
-    } catch (err) {
-      throw new Error("Failed to fetch order: " + (err as Error).message)
-    }
-  }
-
-  @SuccessResponse("200", "order successfully approved")
-  @Security("jwt")
-  @Patch("{id}/approve")
-  public async approveOrder(
-    @Path() id: string,
-    @Request() request: AuthRequest,
-  ): Promise<Order> {
-    const user = request.user
-    const order = new OrderService().getOrderById(id)
-    if (!order) {
-      this.setStatus(404)
-      throw new Error("Order not found")
-    }
-    if (user.uid !== (await order).owner_id) {
-      this.setStatus(403)
-      throw new Error("Unauthorized to approve this order request")
-    }
-    const updatedOrder = await new OrderService().updateOrderStatus(
-      id,
-      "approved",
-    )
-    return updatedOrder
-  }
-
-  @SuccessResponse("200", "order successfully canceld")
-  @Security("jwt")
-  @Patch("{id}/cancel")
-  public async cancelOrder(
-    @Path() id: string,
-    @Request() request: AuthRequest,
-  ): Promise<Order> {
-    const user = request.user
-    const order = new OrderService().getOrderById(id)
-    if (!order) {
-      this.setStatus(404)
-      throw new Error("Order not found")
-    }
-    if (
-      user.uid !== (await order).owner_id &&
-      user.uid !== (await order).req_id
-    ) {
-      this.setStatus(403)
-      throw new Error("Unauthorized to approve this order request")
-    }
-    const updatedOrder = await new OrderService().updateOrderStatus(
-      id,
-      "canceled",
-    )
-    return updatedOrder
-  }
 }
