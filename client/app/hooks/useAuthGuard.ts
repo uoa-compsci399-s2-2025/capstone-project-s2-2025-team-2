@@ -1,9 +1,7 @@
 "use client"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import { useRouter } from "next/navigation"
 import client from "../services/fetch-client"
-import { onAuthStateChanged } from "firebase/auth"
-import { auth } from "@/app/config/firebase"
 
 interface IuseAuthGuard {
   /**
@@ -17,18 +15,6 @@ interface IuseAuthGuard {
 const useAuthGuard = (options: IuseAuthGuard = { redirectToAuth: true }) => {
   const router = useRouter()
   const authPagePath = "/auth"
-
-  const [currentUserUid, setCurrentUserUid] = useState<string | null>(null)
-
-  // get users uid
-  useEffect(() => {
-    if (!auth) return
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUserUid(user?.uid ?? null)
-    })
-
-    return () => unsubscribe()
-  }, [])
 
   const fetchWithAuth = async <T>(
     path: string,
@@ -61,7 +47,6 @@ const useAuthGuard = (options: IuseAuthGuard = { redirectToAuth: true }) => {
   }
 
   return {
-    currentUserUid,
     fetchWithAuth,
   }
 }
