@@ -103,6 +103,7 @@ const ReagentCard = ({
             <div className="">
               <div className="md:hidden">
                 <Button
+                  onClick={handleClick}
                   label="View"
                   textSize="text-xs"
                   icon={ChevronDoubleRightIcon}

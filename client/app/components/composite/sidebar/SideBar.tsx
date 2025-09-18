@@ -39,7 +39,7 @@ const Sidebar = () => {
   return (
     <>
       {/* Mobile Header */}
-      <header className="fixed z-50 shadow-lg md:hidden top-0 w-full h-14 bg-primary text-white flex items-center justify-between px-4 z-10">
+      <header className="fixed z-50 shadow-lg md:hidden top-0 w-full h-14 bg-primary text-white flex items-center justify-between px-4">
         <h3 className="m-0 md:m-5 md:hidden">Chemical.ly</h3>
         <h2 className="m-0 md:m-5 hidden md:block">Chemical.ly</h2>
         <button
