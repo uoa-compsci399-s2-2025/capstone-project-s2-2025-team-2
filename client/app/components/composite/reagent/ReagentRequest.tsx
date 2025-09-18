@@ -109,11 +109,8 @@ export const ReagentRequest = ({
         return
       }
 
-      const currentUserId = currentUser.uid
-
       const { error } = await client.POST("/orders" as any, {
         body: {
-          req_id: currentUserId,
           reagent_id: reagent.id,
         },
         headers: { Authorization: `Bearer ${token}` },
