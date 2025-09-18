@@ -11,7 +11,7 @@ interface IuseAuthGuard {
 }
 
 // the hook to be exported and consumed, contains functions for usage within components
-const useAuthGuard = (options: IuseAuthGuard = { redirectToAuth: true }) => {
+const useAuthGuard = (options: IuseAuthGuard = { redirectToAuth: false }) => {
   const router = useRouter()
   const authPagePath = "/auth"
 
