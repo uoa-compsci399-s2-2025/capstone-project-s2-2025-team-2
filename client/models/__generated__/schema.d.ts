@@ -299,7 +299,6 @@ export interface components {
         /** @enum {string} */
         ReagentCategory: "chemical" | "hazardous" | "biological";
         Reagent: {
-            id?: string;
             user_id: string;
             name: string;
             description: string;
@@ -332,7 +331,6 @@ export interface components {
         };
         /** @description Make all properties in T optional */
         Partial_Reagent_: {
-            id?: string;
             user_id?: string;
             name?: string;
             description?: string;
