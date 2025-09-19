@@ -241,6 +241,9 @@ export const ReagentRequest = ({
                 maxLength={500}
                 disabled={isSubmitting}
               />
+              <div className="text-right text-xs text-gray-300 mt-1">
+                {message.length}/500
+              </div>
             </div>
 
             <div className="flex justify-end">
