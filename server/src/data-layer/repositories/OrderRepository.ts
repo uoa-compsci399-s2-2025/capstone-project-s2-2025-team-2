@@ -15,7 +15,6 @@ export class OrderService {
     const reagent = await this.reagentService.getReagentById(requestBody.reagent_id)
     if (!user || !reagent) throw new Error("No user or reagent found")
     const order: Order = {
-      order_id: uuidv4(),
       requester_id: user_id,
       reagent_id: requestBody.reagent_id,
       status: "pending",
