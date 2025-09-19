@@ -4,4 +4,5 @@ export interface Order {
   reagent_id: string
   status: "pending" | "approved" | "canceled"
   createdAt: Date
+  message?: string
 }
