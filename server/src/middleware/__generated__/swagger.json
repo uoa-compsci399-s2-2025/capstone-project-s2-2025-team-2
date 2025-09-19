@@ -50,9 +50,6 @@
 			},
 			"Reagent": {
 				"properties": {
-					"id": {
-						"type": "string"
-					},
 					"user_id": {
 						"type": "string"
 					},
@@ -100,7 +97,6 @@
 					}
 				},
 				"required": [
-					"id",
 					"user_id",
 					"name",
 					"description",
@@ -171,9 +167,6 @@
 			},
 			"Partial_Reagent_": {
 				"properties": {
-					"id": {
-						"type": "string"
-					},
 					"user_id": {
 						"type": "string"
 					},
@@ -946,7 +939,7 @@
 				"operationId": "GetOrders",
 				"responses": {
 					"200": {
-						"description": "All reagents returned successfully",
+						"description": "All orders returned successfully",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -968,6 +961,111 @@
 					}
 				],
 				"parameters": []
+			}
+		},
+		"/orders/{id}": {
+			"get": {
+				"operationId": "GetOrderById",
+				"responses": {
+					"200": {
+						"description": "All orders returned successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Order"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Order"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/orders/{id}/approve": {
+			"patch": {
+				"operationId": "ApproveOrder",
+				"responses": {
+					"200": {
+						"description": "order successfully approved",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Order"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Order"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/orders/{id}/cancel": {
+			"patch": {
+				"operationId": "CancelOrder",
+				"responses": {
+					"200": {
+						"description": "order successfully canceld",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Order"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Order"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/auth/google/verify": {

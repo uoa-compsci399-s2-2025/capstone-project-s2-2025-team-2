@@ -4,12 +4,15 @@ import Overlay from "../components/composite/Overlay"
 import SearchBar from "../components/composite/searchbar/SearchBar"
 import ReagentCard from "../components/composite/reagent/ReagentCard"
 import ReagentForm from "../components/composite/reagent/ReagentForm"
-import { Reagent } from "../../../server/src/business-layer/models/Reagent"
+import { components } from "@/models/__generated__/schema"
+
+type Reagent = components["schemas"]["Reagent"]
+type ReagentWithId = Reagent & { id: string }
 import client from "../services/fetch-client"
 import { v4 as uuidv4 } from "uuid"
 
 const Marketplace = () => {
-  const [reagents, setReagents] = useState<Reagent[]>([])
+  const [reagents, setReagents] = useState<ReagentWithId[]>([])
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState("all")
   const [sort, setSort] = useState<
@@ -100,8 +103,7 @@ const Marketplace = () => {
       <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
         {sorted.map((r) => (
           <ReagentCard
-            id={r.id}
-            key={uuidv4()}
+            key={r.id}
             name={r.name}
             tags={Array.isArray(r.categories) ? r.categories : []}
             location={r.location ?? "Unknown"}
@@ -111,7 +113,8 @@ const Marketplace = () => {
                 ? (r.images?.[0] ?? "/placeholder.webp")
                 : "/placeholder.webp"
             }
-            type={r.tradingType ?? ""}
+            type={r.tradingType ?? "sell"}
+            id={r.id}
           />
         ))}
       </div>
