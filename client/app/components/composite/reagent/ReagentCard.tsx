@@ -90,8 +90,12 @@ const ReagentCard = ({
             <span className="flex items-center gap-3 md:gap-4">
               <h4 className="text-white text-base md:text-xl italic">{name}</h4>
             </span>
+            <p className="text-light-gray flex text-xs gap-0.5">
+                <MapPinIcon className="w-4 h-4 mt-0.5" />
+                {location}
+            </p>
 
-            <div className="md:hidden flex flex-wrap gap-1">
+            <div className="hidden gap-1">
               {tags.map((tag, idx) => (
                 <span
                   key={idx}
@@ -116,10 +120,7 @@ const ReagentCard = ({
                 <ClockIcon className="w-5 h-5 md:mt-0.5 text-warning" />
                 {expiryDate}
               </p>
-              <p className="underline-offset-2 text-light-gray underline flex text-xs gap-0.5">
-                <MapPinIcon className="w-4 h-4 mt-0.5" />
-                {location}
-              </p>
+              
             </div>
 
             <div className="">
