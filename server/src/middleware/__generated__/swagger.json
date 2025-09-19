@@ -238,6 +238,9 @@
 					"createdAt": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"message": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -256,6 +259,9 @@
 						"type": "string"
 					},
 					"reagent_id": {
+						"type": "string"
+					},
+					"message": {
 						"type": "string"
 					}
 				},

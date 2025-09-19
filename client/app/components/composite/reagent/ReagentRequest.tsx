@@ -54,6 +54,7 @@ export const ReagentRequest = ({
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string>("")
   const [isInitializing, setIsInitializing] = useState(true)
+  const [message, setMessage] = useState<string>("")
 
   //prevent state updates if window isclosed
   const guardUpdate = (isClosed: boolean, updateState: () => void) => {
@@ -79,6 +80,7 @@ export const ReagentRequest = ({
       setError("")
       setIsInitializing(true)
       setOwnerInfo(null)
+      setMessage("")
       return
     }
 
@@ -146,7 +148,11 @@ export const ReagentRequest = ({
     setIsSubmitting(true)
     try {
       const { error } = await client.POST("/orders" as any, {
-        body: { reagent_id: reagent.id, req_id: "" },
+        body: { 
+          reagent_id: reagent.id, 
+          req_id: "",
+          ...(message.trim() && { message: message.trim() })
+        },
         headers: { Authorization: `Bearer ${token}` },
       })
 
@@ -160,12 +166,13 @@ export const ReagentRequest = ({
     } finally {
       setIsSubmitting(false)
     }
-  }, [reagent.id, onSubmit, onClose])
+  }, [reagent.id, message, onSubmit, onClose])
 
 
   const handleClose = useCallback(() => {
     if (!isSubmitting) {
       setError("")
+      setMessage("")
       onClose()
     }
   }, [isSubmitting, onClose])
@@ -218,6 +225,21 @@ export const ReagentRequest = ({
                 name={ownerName} 
                 reagentName={reagent.name} 
                 showIcon 
+              />
+            </div>
+
+            <div className="mb-6">
+              <label className="block text-sm text-gray-300 mb-2">
+                Message (optional)
+              </label>
+              <textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Attach a message..."
+                className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent resize-none"
+                rows={3}
+                maxLength={500}
+                disabled={isSubmitting}
               />
             </div>
 

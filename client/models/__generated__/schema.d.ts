@@ -355,10 +355,12 @@ export interface components {
             status: "pending" | "approved" | "canceled";
             /** Format: date-time */
             createdAt: string;
+            message?: string;
         };
         CreateOrderRequest: {
             req_id: string;
             reagent_id: string;
+            message?: string;
         };
         GoogleOAuthUser: {
             uid: string;
