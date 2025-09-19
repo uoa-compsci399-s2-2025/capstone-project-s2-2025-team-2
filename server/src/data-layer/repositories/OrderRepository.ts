@@ -3,7 +3,6 @@ import { Order } from "../../business-layer/models/Order"
 import { CreateOrderRequest } from "../../service-layer/dtos/request/CreateOrderRequest"
 import { UserService } from "./UserRepository"
 import { ReagentService } from "./ReagentRepository"
-import { v4 as uuidv4 } from "uuid"
 import admin from "firebase-admin"
 
 export class OrderService {
