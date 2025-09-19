@@ -1,8 +1,15 @@
 "use client"
-import { MapPinIcon } from "@heroicons/react/24/outline"
 import Image from "next/image"
 import Button from "../../generic/button/regular/Button"
-import { ChevronDoubleRightIcon, ClockIcon } from "@heroicons/react/24/outline"
+
+import {
+  MapPinIcon,
+  GiftIcon,
+  CurrencyDollarIcon,
+  ArrowsRightLeftIcon,
+  ChevronDoubleRightIcon,
+  ClockIcon,
+} from "@heroicons/react/24/outline"
 
 interface ReagentCardProps {
   name: string
@@ -39,7 +46,7 @@ const ReagentCard = ({
           <Image
             src={imageUrl || "./placeholder.webp"}
             fill
-            className="object-cover"
+            className="object-cover rounded-lg"
             alt=""
           />
           <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
@@ -58,11 +65,19 @@ const ReagentCard = ({
 
         <div className="flex flex-col justify-between flex-1 gap-1 md:py-4">
           <div className="flex flex-col justify-between">
+            <p className="text-white/60 text-sm md:text-sm italic mt-1">
+                {formula === "trade" ? (
+                  <ArrowsRightLeftIcon className="w-5 h-5" />
+                ) : formula === "sell" ? (
+                  <CurrencyDollarIcon className="w-5 h-5" />
+                ) : formula === "giveaway" ? (
+                  "Shows for C"
+                ) : (
+                  <GiftIcon className="w-5 h-5" />
+                )}
+              </p>
             <span className="flex items-center gap-3 md:gap-4">
               <h4 className="text-white text-base md:text-xl italic">{name}</h4>
-              <p className="text-white/60 text-sm md:text-sm italic mt-1">
-                [{formula}]
-              </p>
             </span>
 
             <div className="md:hidden flex flex-wrap gap-1">
