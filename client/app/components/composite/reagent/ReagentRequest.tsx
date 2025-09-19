@@ -1,10 +1,11 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
-import { BeakerIcon } from "@heroicons/react/20/solid"
+import React, { useState, useEffect, useCallback } from "react"
+import { BeakerIcon, XMarkIcon } from "@heroicons/react/20/solid"
 import type { components } from "@/models/__generated__/schema"
 import client from "../../../services/fetch-client"
-import { getCurrentUser } from "../../../services/firebase-auth"
+import { onAuthStateChanged } from "firebase/auth"
+import { auth } from "../../../config/firebase"
 
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
@@ -14,44 +15,28 @@ interface ReagentRequestProps {
   onClose: () => void
   onSubmit: () => void
   reagent: ReagentWithId
-  requesterName: string
-  ownerName: string
 }
 
-//reusable styling classes
-const buttonStyles = "px-4 py-2 text-white rounded-lg"
-
-const ChemIcon = () => (
-  <div className="inline-flex items-center justify-center bg-blue-primary text-white rounded-full p-2">
-    <BeakerIcon className="w-6 h-6" />
-  </div>
-)
-
-//display user + reagent
-const UserDisplay = ({
-  name,
-  reagentName,
-  showIcon,
-}: {
+interface UserDisplayProps {
   name: string
   reagentName?: string
   showIcon?: boolean
-}) => (
+}
+
+const UserDisplay = ({ name, reagentName, showIcon }: UserDisplayProps) => (
   <div className="flex flex-col items-center flex-1 min-w-0">
     <div className="flex items-center gap-3">
-      <div
-        className="text-white text-3xl font-semibold truncate max-w-[120px]"
-        title={name}
-      >
+      <div className="text-white text-3xl font-semibold truncate max-w-[120px]" title={name}>
         {name}
       </div>
-      {showIcon && <ChemIcon />}
+      {showIcon && (
+        <div className="inline-flex items-center justify-center bg-blue-primary text-white rounded-full p-2 shadow-lg">
+          <BeakerIcon className="w-6 h-6" />
+        </div>
+      )}
     </div>
     {reagentName && (
-      <div
-        className="text-gray-400 text-base font-light mt-2 truncate max-w-[140px]"
-        title={reagentName}
-      >
+      <div className="text-gray-400 text-base font-light mt-2 truncate max-w-[140px]" title={reagentName}>
         {reagentName}
       </div>
     )}
@@ -63,115 +48,191 @@ export const ReagentRequest = ({
   onClose,
   onSubmit,
   reagent,
-  requesterName,
-  ownerName,
 }: ReagentRequestProps) => {
   const [currentUser, setCurrentUser] = useState<any>(null)
   const [ownerInfo, setOwnerInfo] = useState<any>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [error, setError] = useState<string>("")
+  const [isInitializing, setIsInitializing] = useState(true)
 
-  useEffect(() => {
-    const user = getCurrentUser()
-    setCurrentUser(user)
-  }, [isOpen])
-
-  useEffect(() => {
-    if (isOpen && reagent?.user_id) {
-      const user = getCurrentUser()
-      if (user && reagent.user_id === user.uid) {
-        alert("You cannot request your own reagent!")
-        onClose()
-        return
-      }
-      fetchOwnerInfo(reagent.user_id)
-    }
-  }, [isOpen, reagent?.user_id, onClose])
-
-  const fetchOwnerInfo = async (userId: string) => {
-    try {
-      const { data, error } = await client.GET(`/users/${userId}` as any, {})
-      if (error) {
-        console.error("Failed to fetch info:", error)
-        return
-      }
-      setOwnerInfo(data)
-    } catch (err) {
-      console.error("Failed to fetch info:", err)
-    }
+  //prevent state updates if window isclosed
+  const guardUpdate = (isClosed: boolean, updateState: () => void) => {
+    if (!isClosed) updateState()
   }
 
-  if (!isOpen) return null
+  //changes user based on auth state
+  useEffect(() => {
+    if (!isOpen) return
 
-  const handleSubmit = async () => {
-    try {
-      const token = localStorage.getItem("authToken")
-      if (!token || !currentUser) {
-        alert("Please sign in to make a request")
-        return
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user)
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [isOpen])
+
+  //owner info and validation effect
+  useEffect(() => {
+    if (!isOpen) {
+      setError("")
+      setIsInitializing(true)
+      setOwnerInfo(null)
+      return
+    }
+
+    let isClosed = false
+
+    //signed in, no self-request
+    const validateUser = () => {
+      if (!currentUser) {
+        guardUpdate(isClosed, () => {
+          setError("Please sign in to make a request")
+          setIsInitializing(false)
+        })
+        return false
       }
 
+      if (currentUser.uid === reagent.user_id) {
+        guardUpdate(isClosed, () => {
+          setError("You cannot request your own reagent")
+          setIsInitializing(false)
+        })
+        return false
+      }
+      
+      return true
+    }
+
+    //fetch owner info for display
+    const fetchOwner = async () => {
+      try {
+        const owner = await client.GET(`/users/${reagent.user_id}` as any, {})
+
+        if (owner.error) {
+          guardUpdate(isClosed, () => setError("Failed to fetch owner information."))
+        } else {
+          guardUpdate(isClosed, () => {
+            setOwnerInfo(owner.data)
+            setError("")
+          })
+        }
+      } catch {
+        guardUpdate(isClosed, () => setError("Failed to fetch owner information."))
+      } finally {
+        guardUpdate(isClosed, () => setIsInitializing(false))
+      }
+    }
+
+    if (validateUser()) {
+      fetchOwner()
+    }
+
+    return () => {
+      isClosed = true
+    }
+  }, [isOpen, currentUser, reagent.user_id])
+
+  //auth token fetch + check
+  const handleSubmit = useCallback(async () => {
+    const token = localStorage.getItem("authToken")
+    if (!token) {
+      return
+    }
+
+    //submit order request
+    //no need to pass req id, backend will us auth user id
+    setIsSubmitting(true)
+    try {
       const { error } = await client.POST("/orders" as any, {
-        body: {
-          reagent_id: reagent.id,
-        },
+        body: { reagent_id: reagent.id, req_id: "" },
         headers: { Authorization: `Bearer ${token}` },
       })
 
-      if (error) {
-        alert("Failed to create request")
-        return
-      }
+      if (error) throw new Error("Failed to create request. Please try again.")
 
       alert("Request sent successfully!")
       onSubmit()
       onClose()
     } catch {
-      alert("Failed to create request")
+      setError("Failed to create request. Please try again.")
+    } finally {
+      setIsSubmitting(false)
     }
-  }
+  }, [reagent.id, onSubmit, onClose])
+
+
+  const handleClose = useCallback(() => {
+    if (!isSubmitting) {
+      setError("")
+      onClose()
+    }
+  }, [isSubmitting, onClose])
+
+  if (!isOpen) return null
+
+  const requesterName = currentUser?.displayName || "You"
+  const ownerName = ownerInfo?.displayName || "User"
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70">
-      <div className="relative w-full max-w-lg bg-primary rounded-2xl p-8 border border-muted">
-        {/* Close Button */}
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70"
+      onClick={(e) => { if (e.target === e.currentTarget) handleClose() }}
+    >
+      <div 
+        className="relative w-full max-w-lg bg-primary rounded-2xl p-8 border border-muted shadow-2xl"
+      >
         <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl transition-colors"
+          onClick={handleClose}
+          disabled={isSubmitting}
+          className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors p-1 rounded-lg hover:bg-white/10"
         >
-          ×
+          <XMarkIcon className="w-6 h-6" />
         </button>
 
-        <h2 className="text-white text-center text-2xl font-medium mb-8">
-          Reagent Request
-        </h2>
+        {isInitializing ? (
+          //loading state while validating/init
+          <div className="text-center">
+            <h2 className="text-white text-2xl font-medium mb-4">Loading...</h2>
+          </div>
+        ) : error ? (
 
-        <div className="flex items-center justify-center mb-8">
-          {/*Reagent Requester*/}
-          <UserDisplay
-            name={
-              currentUser?.displayName || currentUser?.email || requesterName
-            }
-            showIcon={false}
-          />
+          //error window
+          <div className="text-center">
+            <h2 className="text-red-400 text-2xl font-medium mb-4">Error</h2>
+            <p className="text-red-400 text-lg">{error}</p>
+          </div>
+        ) : (
 
-          <span className="px-4 text-4xl text-gray-400">←</span>
+          //request window
+          <div>
+            <h2 className="text-white text-center text-2xl font-medium mb-8">
+              Reagent Request
+            </h2>
+            
+            <div className="flex items-center justify-center mb-8">
+              <UserDisplay name={requesterName} />
+              <span className="px-4 text-4xl text-gray-400">←</span>
+              <UserDisplay 
+                name={ownerName} 
+                reagentName={reagent.name} 
+                showIcon 
+              />
+            </div>
 
-          {/*Reagent Sender*/}
-          <UserDisplay
-            name={ownerInfo?.displayName || ownerInfo?.email || ownerName}
-            reagentName={reagent.name}
-            showIcon={true}
-          />
-        </div>
-
-        <div className="flex justify-end">
-          <button
-            type="button"
-            onClick={handleSubmit}
-            className={`${buttonStyles} bg-blue-primary hover:bg-blue-primary/80 min-w-[120px] text-base font-medium py-1 px-3`}
-          >
-            Request →
-          </button>
-        </div>
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+                className="px-4 py-2 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed bg-blue-primary hover:bg-blue-primary/80 min-w-[120px] text-base font-medium flex items-center justify-center gap-2"
+              >
+                Request →
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

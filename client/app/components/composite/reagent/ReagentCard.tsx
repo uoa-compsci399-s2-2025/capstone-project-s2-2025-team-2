@@ -20,9 +20,7 @@ interface ReagentCardProps {
   // quantity: string
   formula?: string
 
-  reagent?: Reagent
-  requesterName?: string
-  ownerName?: string
+  reagent?: ReagentWithId
 }
 
 const ReagentCard = ({
@@ -35,8 +33,6 @@ const ReagentCard = ({
   // quantity,
   formula,
   reagent,
-  requesterName = "",
-  ownerName = "",
 }: ReagentCardProps) => {
   const [isRequestOpen, setIsRequestOpen] = useState(false)
 
@@ -152,9 +148,7 @@ const ReagentCard = ({
           isOpen={isRequestOpen}
           onClose={() => setIsRequestOpen(false)}
           onSubmit={handleRequestSubmit}
-          reagent={reagent as ReagentWithId}
-          requesterName={requesterName}
-          ownerName={ownerName}
+          reagent={reagent}
         />
       )}
     </div>
