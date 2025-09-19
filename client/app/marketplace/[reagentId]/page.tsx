@@ -36,7 +36,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
     <div
       className="
     font-family-sans h-full w-full min-h-screen md:flex md:items-center md:justify-center
-    md:background-gradient md:p-[2rem] md:-mt-[2rem] mb-[8rem] md:mb-0
+    md:background-gradient md:p-[2rem] md:-mt-[2rem] mb-[5rem] md:mb-0
     "
     >
       <div className="md:max-w-6xl mx-auto w-full">
@@ -49,7 +49,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
               className="object-cover"
             />
           </div>
-          <div className="bg-primary -mt-[1rem] mb-[1rem] relative z-10 rounded-t-3xl md:mt-0 md:mb-0 md:rounded-none md:z-auto md:bg-transparent">
+          <div className="bg-primary -mt-[1.3rem] mb-[1rem] relative z-10 rounded-t-3xl md:mt-0 md:mb-0 md:rounded-none md:z-auto md:bg-transparent">
             <div className="pt-[2rem] md:pt-0 px-[2rem] md:px-0">
               <ReagentBreadcrumb reagentName={reagent.name ?? ""} />
             </div>
@@ -137,17 +137,16 @@ export default function ReagentView({ params }: ReagentViewProps) {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div className="fixed bottom-0 w-full md:hidden bg-background -mt-[2rem] z-50 rounded-t-3xl">
-          <div className="flex h-[8rem] justify-between">
-            <span className="flex flex-col justify-center ml-[2rem]">
-              <p className="text-white/60 text-[1.3rem]">Price</p>
-              <h2 className="text-green-500">${reagent.price}</h2>
-            </span>
-            <div className="flex items-center mr-[2rem]">
-              <SellerContact />
+            <div className="fixed bottom-0 w-full md:hidden bg-background z-50 rounded-t-3xl">
+              <div className="flex h-[8rem] justify-between">
+                <span className="flex flex-col justify-center ml-[2rem]">
+                  <p className="text-white/60 text-[1.3rem]">Price</p>
+                  <h2 className="text-green-500">${reagent.price}</h2>
+                </span>
+                <div className="flex items-center mr-[2rem]">
+                  <SellerContact />
+                </div>
+              </div>
             </div>
           </div>
         </div>
