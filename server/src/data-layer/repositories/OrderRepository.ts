@@ -3,24 +3,28 @@ import { Order } from "../../business-layer/models/Order"
 import { CreateOrderRequest } from "../../service-layer/dtos/request/CreateOrderRequest"
 import { UserService } from "./UserRepository"
 import { ReagentService } from "./ReagentRepository"
+import { v4 as uuidv4 } from "uuid"
 import admin from "firebase-admin"
 
 export class OrderService {
   userService = new UserService()
   reagentService = new ReagentService()
   db = admin.firestore()
-  async createOrder(req: CreateOrderRequest): Promise<Order> {
-    const user = await this.userService.getUserById(req.req_id)
-    const reagent = await this.reagentService.getReagentById(req.reagent_id)
+  async createOrder(user_id: string, requestBody: CreateOrderRequest): Promise<Order> {
+    const user = await this.userService.getUserById(user_id)
+    const reagent = await this.reagentService.getReagentById(requestBody.reagent_id)
     if (!user || !reagent) throw new Error("No user or reagent found")
     const order: Order = {
-      req_id: req.req_id,
-      owner_id: reagent.user_id,
-      reagent_id: req.reagent_id,
+      order_id: uuidv4(),
+      requester_id: user_id,
+      reagent_id: requestBody.reagent_id,
       status: "pending",
       createdAt: new Date(),
-      message: req.message,
+      message: requestBody.message,
     }
+
+    console.log("Order: ", order)
+
     const docRef = await FirestoreCollections.orders.add(order)
     const createdOrder = {
       ...order,
