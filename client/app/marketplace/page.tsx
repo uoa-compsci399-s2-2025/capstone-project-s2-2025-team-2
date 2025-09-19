@@ -9,7 +9,6 @@ import { components } from "@/models/__generated__/schema"
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
 import client from "../services/fetch-client"
-import { v4 as uuidv4 } from "uuid"
 
 const Marketplace = () => {
   const [reagents, setReagents] = useState<ReagentWithId[]>([])
