@@ -103,7 +103,6 @@ const Marketplace = () => {
             id={r.id}
             key={uuidv4()}
             name={r.name}
-            description={r.description}
             tags={Array.isArray(r.categories) ? r.categories : []}
             location={r.location ?? "Unknown"}
             expiryDate={r.expiryDate ?? "N/A"}
