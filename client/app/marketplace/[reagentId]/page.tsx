@@ -55,10 +55,12 @@ export default function ReagentView({ params }: ReagentViewProps) {
             </div>
 
             <div className="flex flex-col items-start">
-              <h1 className="ml-[2rem] mt-[1rem] md:ml-0 md:mt-[1rem] md:mb-[1rem] text-white tracking-wider">
+              <h1 className="hidden md:block ml-0 mt-[1rem] mb-[1rem] text-white tracking-wider">
                 {reagent.name}
               </h1>
-
+              <h2 className="md:hidden ml-[2rem] mt-[1.5rem] text-white tracking-wider">
+                <b>{reagent.name}</b>
+              </h2>
               <div className="md:hidden px-[2rem] mt-[1rem]">
                 <p className=" text-white mb-1">
                   <b>Quantity: </b> {reagent.quantity}
@@ -66,7 +68,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                 <p className="text-white">{reagent.description}</p>
               </div>
 
-              <div className="px-[1.5rem] mt-[2rem] mb-[2rem] md:mb-0 md:px-0 md:mt-0 gap-12 flex flex-col md:flex-row justify-around md:w-[47rem] mt-[1rem]">
+              <div className="px-[2rem] mt-[2rem] mb-[2rem] md:mb-0 md:px-0 md:mt-0 gap-[1rem] md:gap-12 flex flex-col md:flex-row justify-around md:w-[47rem] mt-[1rem]">
                 <h5 className="flex text-green-200 items-center text-[0.8rem]">
                   <FaRegClock className="text-green-200 mr-[0.3rem] w-5 h-5" />{" "}
                   Listed - {reagent.expiryDate}
@@ -83,7 +85,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                   {reagent.categories?.map((tag) => {
                     return (
                       <div
-                        className="mr-[0.8rem] px-[0.8rem] rounded-[0.7rem] font-family-sans tracking-widest text-white bg-secondary"
+                        className="py-1 mr-[0.8rem] px-[0.8rem] rounded-[0.7rem] tracking-widest text-white bg-secondary/60"
                         key={tag}
                       >
                         {tag}
@@ -122,7 +124,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                         {reagent.categories?.map((tag) => {
                           return (
                             <div
-                              className="px-4 py-2 mx-[0.4rem] px-[0.8rem] rounded-[0.7rem] font-family-sans tracking-widest text-white bg-background"
+                              className="px-4 py-2 mx-[0.4rem] px-[0.8rem] rounded-[0.7rem] tracking-widest text-white bg-background"
                               key={tag}
                             >
                               {tag}
