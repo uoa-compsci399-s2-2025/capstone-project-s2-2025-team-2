@@ -28,7 +28,7 @@ export class OrderController extends Controller {
   ): Promise<Order> {
     const user = request.user
     console.log("User: ", user)
-    const order = await new OrderService().createOrder(user.uid, req);
+    const order = await new OrderService().createOrder(user.uid, req)
     return order
   }
 
@@ -63,9 +63,7 @@ export class OrderController extends Controller {
         this.setStatus(404)
         throw new Error("Order not found")
       }
-      if (
-        user.uid !== (await order).requester_id
-      ) {
+      if (user.uid !== (await order).requester_id) {
         this.setStatus(403)
         throw new Error("Unauthorized to retrieve this order")
       }
@@ -112,9 +110,7 @@ export class OrderController extends Controller {
       this.setStatus(404)
       throw new Error("Order not found")
     }
-    if (
-      user.uid !== (await order).requester_id
-    ) {
+    if (user.uid !== (await order).requester_id) {
       this.setStatus(403)
       throw new Error("Unauthorized to approve this order request")
     }

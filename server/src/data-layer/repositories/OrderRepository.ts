@@ -9,9 +9,14 @@ export class OrderService {
   userService = new UserService()
   reagentService = new ReagentService()
   db = admin.firestore()
-  async createOrder(user_id: string, requestBody: CreateOrderRequest): Promise<Order> {
+  async createOrder(
+    user_id: string,
+    requestBody: CreateOrderRequest,
+  ): Promise<Order> {
     const user = await this.userService.getUserById(user_id)
-    const reagent = await this.reagentService.getReagentById(requestBody.reagent_id)
+    const reagent = await this.reagentService.getReagentById(
+      requestBody.reagent_id,
+    )
     if (!user || !reagent) throw new Error("No user or reagent found")
     const order: Order = {
       requester_id: user_id,
