@@ -133,6 +133,8 @@ export default function ReagentView({ params }: ReagentViewProps) {
                 </div>
               </div>
             </div>
+
+            
           </div>
         </div>
 
