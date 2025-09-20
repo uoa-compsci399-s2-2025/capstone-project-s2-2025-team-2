@@ -67,7 +67,7 @@ const SellerContact = ({
         label="Request Reagent"
         onClick={handleRequestClick}
         className="
-          px-20 py-8 rounded-[18px] md:rounded-[8px] md:text-sm md:px-6 md:w-auto md:py-1.5 md:justify-center
+          px-[1.5rem] py-[1.5rem] rounded-[18px] md:rounded-[8px] md:text-sm md:px-6 md:w-auto md:py-1.5 md:justify-center
           font-semibold
           "
       />
