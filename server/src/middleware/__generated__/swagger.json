@@ -218,10 +218,7 @@
 			},
 			"Order": {
 				"properties": {
-					"req_id": {
-						"type": "string"
-					},
-					"owner_id": {
+					"requester_id": {
 						"type": "string"
 					},
 					"reagent_id": {
@@ -238,11 +235,13 @@
 					"createdAt": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"message": {
+						"type": "string"
 					}
 				},
 				"required": [
-					"req_id",
-					"owner_id",
+					"requester_id",
 					"reagent_id",
 					"status",
 					"createdAt"
@@ -252,15 +251,14 @@
 			},
 			"CreateOrderRequest": {
 				"properties": {
-					"req_id": {
+					"reagent_id": {
 						"type": "string"
 					},
-					"reagent_id": {
+					"message": {
 						"type": "string"
 					}
 				},
 				"required": [
-					"req_id",
 					"reagent_id"
 				],
 				"type": "object",
@@ -455,6 +453,44 @@
 				],
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/users/{user_id}": {
+			"get": {
+				"operationId": "GetUserById",
+				"responses": {
+					"200": {
+						"description": "User retrieved successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{
+											"$ref": "#/components/schemas/User"
+										}
+									],
+									"nullable": true
+								}
+							}
+						}
+					}
+				},
+				"description": "get user info using user id",
+				"tags": [
+					"User"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "- the id of the user to fetch",
+						"in": "path",
+						"name": "user_id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
 			}
 		},
 		"/users/{user_id}/email": {

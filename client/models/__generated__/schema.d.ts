@@ -20,6 +20,23 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  "/users/{user_id}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description get user info using user id */
+    get: operations["GetUserById"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   "/users/{user_id}/email": {
     parameters: {
       query?: never
@@ -331,17 +348,17 @@ export interface components {
       location?: string
     }
     Order: {
-      req_id: string
-      owner_id: string
+      requester_id: string
       reagent_id: string
       /** @enum {string} */
       status: "pending" | "approved" | "canceled"
       /** Format: date-time */
       createdAt: string
+      message?: string
     }
     CreateOrderRequest: {
-      req_id: string
       reagent_id: string
+      message?: string
     }
     GoogleOAuthUser: {
       uid: string
@@ -407,6 +424,29 @@ export interface operations {
         }
         content: {
           "application/json": components["schemas"]["User"][]
+        }
+      }
+    }
+  }
+  GetUserById: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description - the id of the user to fetch */
+        user_id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description User retrieved successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["User"] | null
         }
       }
     }

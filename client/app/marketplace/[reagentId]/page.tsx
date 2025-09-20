@@ -145,7 +145,20 @@ export default function ReagentView({ params }: ReagentViewProps) {
               <h2 className="text-green-500">${reagent.price}</h2>
             </span>
             <div className="flex items-center mr-[2rem]">
-              <SellerContact />
+              <SellerContact
+                reagent={
+                  reagent
+                    ? {
+                        ...reagent,
+                        id: reagentId,
+                        createdAt:
+                          reagent.createdAt instanceof Date
+                            ? reagent.createdAt.toISOString()
+                            : reagent.createdAt,
+                      }
+                    : undefined
+                }
+              />
             </div>
           </div>
         </div>
@@ -153,7 +166,20 @@ export default function ReagentView({ params }: ReagentViewProps) {
         <div className="hidden md:block mt-[3rem]">
           <div className="w-[60vw] mx-auto my-[2rem] h-[1px] bg-gradient-to-r from-transparent via-gray-400 to-transparent" />
           <div className="flex flex-col items-center gap-5">
-            <SellerContact />
+            <SellerContact
+              reagent={
+                reagent
+                  ? {
+                      ...reagent,
+                      id: reagentId,
+                      createdAt:
+                        reagent.createdAt instanceof Date
+                          ? reagent.createdAt.toISOString()
+                          : reagent.createdAt,
+                    }
+                  : undefined
+              }
+            />
           </div>
         </div>
       </div>
