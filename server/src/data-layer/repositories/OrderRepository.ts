@@ -3,11 +3,13 @@ import { Order } from "../../business-layer/models/Order"
 import { CreateOrderRequest } from "../../service-layer/dtos/request/CreateOrderRequest"
 import { UserService } from "./UserRepository"
 import { ReagentService } from "./ReagentRepository"
+import { InboxService } from "../../service-layer/services/InboxService"
 import admin from "firebase-admin"
 
 export class OrderService {
   userService = new UserService()
   reagentService = new ReagentService()
+  inboxService = new InboxService()
   db = admin.firestore()
   async createOrder(
     user_id: string,
@@ -32,6 +34,18 @@ export class OrderService {
     const createdOrder = {
       ...order,
       id: docRef.id,
+    }
+
+    // Create chat room between requester and reagent owner
+    try {
+      await this.inboxService.createChatRoom({
+        user1_id: user_id,
+        user2_id: reagent.user_id,
+        initial_message: requestBody.message,
+      });
+    } catch (error) {
+      console.error("Error creating chat room for order:", error);
+      // Don't fail the order creation if chat room creation fails
     }
 
     return createdOrder
