@@ -16,7 +16,8 @@ const SellerContactMobile = ({
 
 
   return (
-    <div className="flex flex-row items-center">
+    <div className="flex flex-row gap-[1rem] items-center">
+
       <div className="block relative bg-yellow-600 rounded-full border-2 border-white h-[4rem] w-[4rem] overflow-hidden">
         <Image
           src="/placeholder.webp"
@@ -26,7 +27,7 @@ const SellerContactMobile = ({
         />
       </div>
 
-      <div className="block  mx-[1.5rem]">
+      <div className="mx-[1.5rem]">
         <h4 className="text-[1rem] font-boldtext-white">{name || "text"}</h4>
         <span className="flex items-center text-[0.8rem] font-bold text-white">
           <LuHouse className="mr-[0.3rem]" />
