@@ -7,9 +7,9 @@ import {
   GiftIcon,
   CurrencyDollarIcon,
   ArrowsRightLeftIcon,
-  ChevronDoubleRightIcon,
-  ClockIcon,
 } from "@heroicons/react/24/outline"
+import { LuClockAlert } from "react-icons/lu";
+import { IoArrowForward } from "react-icons/io5";
 
 interface ReagentCardProps {
   name: string
@@ -21,6 +21,16 @@ interface ReagentCardProps {
   // quantity: string
   formula?: string
 }
+
+const BG_LAYERS = [
+  { backgroundColor: "rgba(204, 204, 204)" },
+  { backgroundColor: "rgba(0, 0, 0, 0.9)" },
+  { backgroundColor: "rgba(255, 255, 255, 0.06)" },
+  {
+    background:
+      "radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 90%)",
+  },
+]
 
 const ReagentCard = ({
   name,
@@ -35,12 +45,20 @@ const ReagentCard = ({
   return (
     <div
       className="
+            relative
+            p-2
            md:w-[19rem] md:h-[18.5rem] 
            w-full
            border-white/30 border-solid border-[1.5px] rounded-xl
-           bg-primary/80
        "
     >
+      {BG_LAYERS.map((style, index) => (
+        <div
+          key={index}
+          className="absolute inset-0 rounded-xl"
+          style={style}
+        />
+      ))}
       <div className="flex flex-row gap-4 md:gap-0 md:flex-col m-2 md:m-3 rounded-lg overflow-hidden drop-shadow-xl">
         <div className="relative w-[7rem] h-[6.5rem] md:w-full md:h-[8rem]">
           <Image
@@ -106,7 +124,7 @@ const ReagentCard = ({
             </div>
 
             <p className="hidden md:flex flex-row gap-0.5 text-warning text-base">
-              <ClockIcon className="w-4.5 h-4.5 mt-0.75 text-warning" />
+              <LuClockAlert className="w-4.5 h-4.5 mt-0.75 text-warning" />
               {expiryDate}
             </p>
           </div>
@@ -116,7 +134,7 @@ const ReagentCard = ({
           <div className="flex items-center justify-between">
             <div className="flex flex-col">
               <p className="md:hidden flex text-warning text-sm md:text-base">
-                <ClockIcon className="w-5 h-5 md:mt-0.5 text-warning" />
+                <LuClockAlert className="w-4.5 h-4.5 mx-[0.1rem] md:mt-0.5 text-warning" />
                 {expiryDate}
               </p>
               
@@ -127,7 +145,7 @@ const ReagentCard = ({
                 <Button
                   label="View"
                   textSize="text-xs"
-                  icon={ChevronDoubleRightIcon}
+                  icon={IoArrowForward}
                   iconPosition="right"
                   fontWeight="semibold"
                 />
@@ -136,7 +154,7 @@ const ReagentCard = ({
                 <Button
                   label="View"
                   textSize="text-sm"
-                  icon={ChevronDoubleRightIcon}
+                  icon={IoArrowForward}
                   iconPosition="right"
                   fontWeight="semibold"
                 />
