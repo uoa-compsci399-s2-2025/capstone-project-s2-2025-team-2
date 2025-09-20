@@ -59,12 +59,12 @@ const ReagentCard = ({
           style={style}
         />
       ))}
-      <div className="flex flex-row gap-4 md:gap-0 md:flex-col m-2 md:m-3 rounded-lg overflow-hidden drop-shadow-xl">
-        <div className="relative w-[7rem] h-[6.5rem] md:w-full md:h-[8rem]">
+      <div className="flex flex-row py-auto gap-4 md:gap-0 md:flex-col m-2 md:m-3 rounded-lg overflow-hidden drop-shadow-xl">
+        <div className="relative w-[7rem] h-[6.5rem] flex items-center justify-center md:w-full md:h-[8rem]">
           <Image
             src={imageUrl || "./placeholder.webp"}
             fill
-            className="object-cover rounded-lg"
+            className="object-cover rounded-lg h-full"
             alt=""
           />
           <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
@@ -108,7 +108,7 @@ const ReagentCard = ({
             <span className="flex items-center gap-3 md:gap-4">
               <h4 className="text-white text-base md:text-xl italic">{name}</h4>
             </span>
-            <p className="text-light-gray flex text-xs gap-0.5 mt-[0.1rem] mb-[-1.5rem]">
+            <p className="text-light-gray flex text-xs gap-0.5 mt-[0.1rem]">
                 <MapPinIcon className="w-5 h-5" />
                 {location}
             </p>
@@ -148,6 +148,7 @@ const ReagentCard = ({
                   icon={IoArrowForward}
                   iconPosition="right"
                   fontWeight="semibold"
+                  className="px-[0.5rem] py-[0.3rem]"
                 />
               </div>
               <div className="hidden md:block">
