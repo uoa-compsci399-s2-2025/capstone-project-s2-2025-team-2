@@ -8,6 +8,7 @@ import { LuHouse } from "react-icons/lu"
 import Image from "next/image"
 import SellerContact from "@/app/components/composite/reagentview/SellerContact"
 import ReagentBreadcrumb from "@/app/components/composite/reagentview/ReagentBreadcrumb"
+import SellerContactMobile from "@/app/components/composite/reagentview/SellerContactMobile"
 
 interface ReagentViewProps {
   params: Promise<{ reagentId: string }>
@@ -36,7 +37,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
     <div
       className="
     font-family-sans h-full w-full min-h-screen md:flex md:items-center md:justify-center
-    md:background-gradient md:p-[2rem] md:-mt-[2rem] mb-[5rem] md:mb-0
+    background-gradient md:p-[2rem] md:-mt-[2rem] mb-[5rem] md:mb-0
     "
     >
       <div className="md:max-w-6xl mx-auto w-full">
@@ -94,7 +95,18 @@ export default function ReagentView({ params }: ReagentViewProps) {
                     )
                   })}
                 </div>
+                              <div className="md:hidden mx-auto">
+                                      <div className="w-[15rem] my-[2rem] h-[1px] bg-gradient-to-r from-transparent via-gray-400 to-transparent" />
+                               <h4 className="text-white tracking-wider">
+                              <b>Seller Details</b>
+                            </h4>
+              <SellerContactMobile
+
+              />                
               </div>
+              </div>
+
+
             </div>
 
             <div className="flex mt-[3rem] justify-center mx-auto">
@@ -135,7 +147,9 @@ export default function ReagentView({ params }: ReagentViewProps) {
                     </div>
                   </div>
                 </div>
+                
               </div>
+
             </div>
           </div>
         </div>
