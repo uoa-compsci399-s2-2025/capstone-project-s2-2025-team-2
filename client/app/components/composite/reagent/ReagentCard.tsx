@@ -90,11 +90,10 @@ const ReagentCard = ({
             <span className="flex items-center gap-3 md:gap-4">
               <h4 className="text-white text-base md:text-xl italic">{name}</h4>
             </span>
-            <p className="text-light-gray flex text-xs gap-0.5">
-                <MapPinIcon className="w-4 h-4 mt-0.5" />
+            <p className="text-light-gray flex text-xs gap-0.5 mt-[0.1rem] mb-[-1.5rem]">
+                <MapPinIcon className="w-5 h-5" />
                 {location}
             </p>
-
             <div className="hidden gap-1">
               {tags.map((tag, idx) => (
                 <span
