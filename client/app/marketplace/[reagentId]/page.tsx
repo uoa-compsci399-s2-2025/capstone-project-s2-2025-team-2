@@ -136,7 +136,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
           </div>
         </div>
 
-        <div className="fixed bottom-0 w-full md:hidden bg-background -mt-[2rem] z-50 rounded-t-3xl">
+        <div className="fixed bottom-0 w-full md:hidden bg-background -mt-[2rem] z-10 rounded-t-3xl">
                     <div className="flex h-[8rem] justify-between">
             <span className="flex flex-col justify-center ml-[2rem]">
               <p className="text-white/60 text-[1.3rem]">Price</p>
