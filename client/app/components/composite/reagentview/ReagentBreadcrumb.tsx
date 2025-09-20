@@ -6,11 +6,11 @@ const ReagentBreadcrumb = ({ reagentName }: ReagentBreadcrumbProps) => {
     <div>
       <h5
         className="
-        font-bold text-[0.8rem]
-        text-blue-400
+        font-bold
+        text-blue-primary
       "
       >
-        Reagents / Listings / {reagentName}
+        Reagents / {reagentName}
       </h5>
     </div>
   )
