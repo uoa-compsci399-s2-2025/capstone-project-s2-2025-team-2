@@ -73,8 +73,8 @@ export default function ReagentView({ params }: ReagentViewProps) {
               className="object-cover"
             />
           </div>
-          <div className="bg-primary -mt-[1.3rem] mb-[1rem] relative z-10 rounded-t-3xl md:mt-0 md:mb-0 md:rounded-none md:z-auto md:bg-transparent">
-            <div className="pt-[2rem] md:pt-0 px-[2rem] md:px-0">
+          <div className="bg-primary -mt-[1.3rem] mb-[1rem] relative z-10 rounded-t-3xl lg:mt-0 md:mb-0 md:rounded-none md:z-auto md:bg-transparent">
+            <div className="pt-[2rem] lg:pt-0 px-[2rem] md:px-0">
               <ReagentBreadcrumb reagentName={reagent.name ?? ""} />
             </div>
 
@@ -92,7 +92,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                 <p className="text-white">{reagent.description}</p>
               </div>
 
-              <div className="px-[2rem] mb-[2rem] md:mb-0 md:px-0 md:mt-0 gap-[1rem] md:gap-12 flex flex-col md:flex-row justify-around md:w-[47rem] mt-[1rem]">
+              <div className="px-[2rem] mb-[2rem] md:mb-0 md:px-0 lg:mt-0 gap-[1rem] lg:gap-12 flex flex-col lg:flex-row justify-start md:w-full mt-[1rem]">
                 {" "}
                 <h5 className="flex text-blue-secondary items-center text-[0.8rem]">
                   <FaRegClock className="text-blue-secondary mr-[0.3rem] w-5 h-5" />{" "}
@@ -199,7 +199,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
 
         <div className="hidden md:block mt-[3rem]">
           <div className="flex flex-col items-center gap-2">
-            <div className="w-[60vw] max-w-2xl mx-auto my-[1rem] border-t border-light-gray" />
+            <div className="w-[80vw] max-w-2xl min-w-xl mx-auto my-[1rem] border-t border-light-gray" />
             <div className="max-w-2xl mx-auto grid grid-cols-4 mb-[0.1rem]">
               <h4 className="text-left text-white tracking-wider col-span-1">
                 <b>Seller Details</b>
