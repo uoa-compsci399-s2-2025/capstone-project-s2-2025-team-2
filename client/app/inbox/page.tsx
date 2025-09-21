@@ -70,12 +70,6 @@ export default function InboxPage() {
     }
   }
 
-  //            function: handleMessageSent           //
-  const handleMessageSent = () => {
-    // No need to reload all conversations since handleConversationUpdate handles it
-    // This function is kept for compatibility but does nothing
-  }
-
   //            render: InboxPage           //
   return (
     <Overlay>

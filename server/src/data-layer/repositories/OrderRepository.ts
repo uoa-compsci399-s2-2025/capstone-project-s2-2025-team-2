@@ -42,9 +42,9 @@ export class OrderService {
         user1_id: user_id,
         user2_id: reagent.user_id,
         initial_message: requestBody.message,
-      });
+      })
     } catch (error) {
-      console.error("Error creating chat room for order:", error);
+      console.error("Error creating chat room for order:", error)
       // Don't fail the order creation if chat room creation fails
     }
 
