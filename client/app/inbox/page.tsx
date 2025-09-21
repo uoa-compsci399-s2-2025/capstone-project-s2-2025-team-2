@@ -54,6 +54,11 @@ import { auth } from "../config/firebase"
       setSelectedConversation(conversation)
     }
 
+    //            function: handleConversationUpdate           //
+    const handleConversationUpdate = (updatedConversation: any) => {
+      setSelectedConversation(updatedConversation)
+    }
+
     //            function: handleMessageSent           //
     const handleMessageSent = () => {
       // Reload conversations to get updated data
@@ -78,6 +83,7 @@ import { auth } from "../config/firebase"
             <ChatBox 
               selectedConversation={selectedConversation}
               onMessageSent={handleMessageSent}
+              onConversationUpdate={handleConversationUpdate}
             />
           </div>
         </div>

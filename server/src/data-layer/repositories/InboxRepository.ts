@@ -86,7 +86,7 @@ export class InboxRepository {
           (b.created_at as any)._seconds * 1000 : 
           new Date(b.created_at).getTime();
         
-        return bTime - aTime;
+        return aTime - bTime;
       }) as Message[];
   }
 
@@ -102,6 +102,16 @@ export class InboxRepository {
         id: doc.id,
         ...doc.data(),
       }))
-      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) as Message[];
+      .sort((a, b) => {
+        // Handle Firestore Timestamp objects
+        const aTime = (a.created_at as any)._seconds ? 
+          (a.created_at as any)._seconds * 1000 : 
+          new Date(a.created_at).getTime();
+        const bTime = (b.created_at as any)._seconds ? 
+          (b.created_at as any)._seconds * 1000 : 
+          new Date(b.created_at).getTime();
+        
+        return aTime - bTime; // Oldest first for chat room
+      }) as Message[];
   }
 }

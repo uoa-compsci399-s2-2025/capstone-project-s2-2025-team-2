@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import MessageBubble from "../components/MessageBubble"
-import { sendMessage } from "../../services/inbox"
+import { sendMessage, getChatRoomById } from "../../services/inbox"
 import { onAuthStateChanged, User } from "firebase/auth"
 import { auth } from "../../config/firebase"
 import { formatTime } from "../../hooks/utils/timeFormatter"
@@ -11,9 +11,11 @@ import { formatTime } from "../../hooks/utils/timeFormatter"
 export default function ChatBox({
   selectedConversation,
   onMessageSent,
+  onConversationUpdate,
 }: {
   selectedConversation: any
   onMessageSent: () => void
+  onConversationUpdate: (updatedConversation: any) => void
 }) {
   //            state           //
   const [messageInput, setMessageInput] = useState("")
@@ -50,7 +52,15 @@ export default function ChatBox({
       })
       
       setMessageInput("")
-      onMessageSent() // Refresh conversations
+      
+      // Refresh the current conversation with latest messages
+      const updatedConversation = await getChatRoomById(
+        selectedConversation.chat_room.id, 
+        user.uid
+      )
+      onConversationUpdate(updatedConversation)
+      
+      onMessageSent() // Refresh conversations list
     } catch (error) {
       console.error("Error sending message:", error)
       // You could add a toast notification here
@@ -71,10 +81,8 @@ export default function ChatBox({
   const getMessages = () => {
     if (!selectedConversation?.messages) return []
     
-    // Reverse the order so newest messages appear at the bottom
+    // Messages are already sorted by server (oldest first)
     return selectedConversation.messages
-      .slice()
-      .reverse()
       .map((message: any) => 
         transformMessage(message, message.sender_id === user?.uid)
       )
