@@ -81,7 +81,7 @@ const ReagentCard = ({
           </div>
         </div>
 
-        <div className="flex flex-col justify-between flex-1 gap-1 md:py-4">
+        <div className="flex flex-col justify-between flex-1 gap-1 md:pt-4">
           <div
             className="
             flex flex-col justify-between
@@ -136,7 +136,7 @@ const ReagentCard = ({
             <div className="hidden md:flex md:justify-between md:items-end">
                 <div className="md:flex md:flex-col">
                     <span className="text-light-gray">Purity</span>
-                    <span>35%</span>
+                    <span>Purity not listed</span>
                 </div>
                 <p className="hidden md:flex text-warning text-sm md:text-base">
                   <LuClockAlert className="w-4.5 h-4.5 mx-[0.1rem] md:mt-0.5 text-warning" />
@@ -146,13 +146,13 @@ const ReagentCard = ({
           </div>
 
           <div className="hidden md:block bg-light-gray h-[1px] my-2"></div>
-          <div className="md:flex md:w-full md:justify-between md:items-center">
+          <div className="md:flex md:w-full md:my-auto md:justify-between md:items-center">
             <p className="text-light-gray text-xs gap-0.5 mt-[0.1rem] hidden md:flex">
               <MapPinIcon className="w-5 h-5" />
               {location}
             </p>
 
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between py-auto">
               <div className="flex w-full justify-between items-center">
                 <p className="md:hidden flex text-warning text-sm md:text-base">
                   <LuClockAlert className="w-4.5 h-4.5 mx-[0.1rem] md:mt-0.5 text-warning" />
