@@ -79,7 +79,6 @@ export class InboxRepository {
   async getMessagesByChatRoomWithLimit(chatRoomId: string, limit: number = 50): Promise<Message[]> {
     const query = this.db.messages
       .where("chat_room_id", "==", chatRoomId)
-      .orderBy("created_at", "desc")
       .limit(limit);
     
     const snapshot = await query.get();
@@ -89,6 +88,6 @@ export class InboxRepository {
         id: doc.id,
         ...doc.data(),
       }))
-      .reverse() as Message[];
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()) as Message[];
   }
 }

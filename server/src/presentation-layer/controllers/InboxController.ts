@@ -1,137 +1,95 @@
-import { Request, Response } from "express";
+import { Body, Controller, Get, Post, Route, Tags, Path } from "tsoa";
 import { InboxService } from "../../service-layer/services/InboxService";
 import { CreateChatRoomRequest } from "../../service-layer/dtos/request/CreateChatRoomRequest";
 import { SendMessageRequest } from "../../service-layer/dtos/request/SendMessageRequest";
-import { ResponseDto } from "../../service-layer/dtos/response/ResponseDto"
+import { ChatRoomResponse, ConversationListResponse } from "../../service-layer/dtos/response/ChatRoomResponse";
 
-export class InboxController {
+@Route("inbox")
+@Tags("Inbox")
+export class InboxController extends Controller {
   private inboxService = new InboxService();
 
-  async createChatRoom(req: Request, res: Response): Promise<void> {
-    try {
-      const request: CreateChatRoomRequest = req.body;
-      
-      if (!request.user1_id || !request.user2_id) {
-        res.status(400).json({
-          success: false,
-          message: "user1_id and user2_id are required",
-        } as ResponseDto);
-        return;
-      }
+  @Post("chatroom")
+  async createChatRoom(@Body() request: CreateChatRoomRequest): Promise<ChatRoomResponse> {
+    if (!request.user1_id || !request.user2_id) {
+      this.setStatus(400);
+      throw new Error("user1_id and user2_id are required");
+    }
 
+    try {
       const chatRoom = await this.inboxService.createChatRoom(request);
-      
-      res.status(201).json({
-        success: true,
-        message: "Chat room created successfully",
-        data: chatRoom,
-      } as ResponseDto);
+      const chatRoomResponse = await this.inboxService.getChatRoomById(chatRoom.id!, request.user1_id);
+      this.setStatus(201);
+      return chatRoomResponse;
     } catch (error) {
       console.error("Error creating chat room:", error);
-      res.status(500).json({
-        success: false,
-        message: "Internal server error",
-      } as ResponseDto);
+      this.setStatus(500);
+      throw new Error("Internal server error");
     }
   }
 
-  async sendMessage(req: Request, res: Response): Promise<void> {
-    try {
-      const request: SendMessageRequest = req.body;
-      
-      if (!request.chat_room_id || !request.sender_id || !request.content) {
-        res.status(400).json({
-          success: false,
-          message: "chat_room_id, sender_id, and content are required",
-        } as ResponseDto);
-        return;
-      }
+  @Post("message")
+  async sendMessage(@Body() request: SendMessageRequest): Promise<ChatRoomResponse> {
+    if (!request.chat_room_id || !request.sender_id || !request.content) {
+      this.setStatus(400);
+      throw new Error("chat_room_id, sender_id, and content are required");
+    }
 
-      const message = await this.inboxService.sendMessage(request);
-      
-      res.status(201).json({
-        success: true,
-        message: "Message sent successfully",
-        data: message,
-      } as ResponseDto);
+    try {
+      await this.inboxService.sendMessage(request);
+      const chatRoom = await this.inboxService.getChatRoomById(request.chat_room_id, request.sender_id);
+      this.setStatus(201);
+      return chatRoom;
     } catch (error) {
       console.error("Error sending message:", error);
-      res.status(500).json({
-        success: false,
-        message: "Internal server error",
-      } as ResponseDto);
+      this.setStatus(500);
+      throw new Error("Internal server error");
     }
   }
 
-  async getConversations(req: Request, res: Response): Promise<void> {
-    try {
-      const userId = req.params.userId || req.body.userId;
-      
-      if (!userId) {
-        res.status(400).json({
-          success: false,
-          message: "userId is required",
-        } as ResponseDto);
-        return;
-      }
+  @Get("conversations/{userId}")
+  async getConversations(@Path() userId: string): Promise<ConversationListResponse> {
+    if (!userId) {
+      this.setStatus(400);
+      throw new Error("userId is required");
+    }
 
+    try {
       const conversations = await this.inboxService.getConversations(userId);
-      
-      res.status(200).json({
-        success: true,
-        message: "Conversations retrieved successfully",
-        data: conversations,
-      } as ResponseDto);
+      this.setStatus(200);
+      return conversations;
     } catch (error) {
       console.error("Error getting conversations:", error);
-      res.status(500).json({
-        success: false,
-        message: "Internal server error",
-      } as ResponseDto);
+      this.setStatus(500);
+      throw new Error("Internal server error");
     }
   }
 
-  async getChatRoomById(req: Request, res: Response): Promise<void> {
-    try {
-      const { chatRoomId } = req.params;
-      const userId = req.params.userId || req.body.userId;
-      
-      if (!chatRoomId || !userId) {
-        res.status(400).json({
-          success: false,
-          message: "chatRoomId and userId are required",
-        } as ResponseDto);
-        return;
-      }
+  @Get("chatroom/{chatRoomId}/{userId}")
+  async getChatRoomById(@Path() chatRoomId: string, @Path() userId: string): Promise<ChatRoomResponse> {
+    if (!chatRoomId || !userId) {
+      this.setStatus(400);
+      throw new Error("chatRoomId and userId are required");
+    }
 
+    try {
       const chatRoom = await this.inboxService.getChatRoomById(chatRoomId, userId);
       
       if (!chatRoom) {
-        res.status(404).json({
-          success: false,
-          message: "Chat room not found",
-        } as ResponseDto);
-        return;
+        this.setStatus(404);
+        throw new Error("Chat room not found");
       }
       
-      res.status(200).json({
-        success: true,
-        message: "Chat room retrieved successfully",
-        data: chatRoom,
-      } as ResponseDto);
+      this.setStatus(200);
+      return chatRoom;
     } catch (error) {
       console.error("Error getting chat room:", error);
       if (error instanceof Error && error.message.includes("not authorized")) {
-        res.status(403).json({
-          success: false,
-          message: "User is not authorized to access this chat room",
-        } as ResponseDto);
-        return;
+        this.setStatus(403);
+        throw new Error("User is not authorized to access this chat room");
       }
-      res.status(500).json({
-        success: false,
-        message: "Internal server error",
-      } as ResponseDto);
+      this.setStatus(500);
+      throw new Error("Internal server error");
     }
   }
 }

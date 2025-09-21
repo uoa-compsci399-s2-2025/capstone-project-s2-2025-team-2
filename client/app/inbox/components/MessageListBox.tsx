@@ -1,109 +1,66 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 // import SearchBar from "../../components/composite/searchbar/SearchBar"
 import ConversationItem from "./ConversationItem"
+import { ConversationListResponseDto } from "../../models/response-models/ChatRoomResponseDto"
 
 //            function: MessageListBox           //
 export default function MessageListBox({
+  conversations,
+  loading,
+  error,
   selectedConversation,
   setSelectedConversation,
+  onRefresh,
 }: {
+  conversations: ConversationListResponseDto | null
+  loading: boolean
+  error: string | null
   selectedConversation: any
   setSelectedConversation: (conversation: any) => void
+  onRefresh: () => void
 }) {
   //            state           //
   const [searchQuery, setSearchQuery] = useState("")
 
-  // Mock data for conversations
-  const conversations = [
-    {
-      id: 1,
-      name: "Violet Chen",
-      university: "Victoria University of Wellington",
-      lastMessage: "lmao broke",
-      time: "12m ago",
-      reagent: "Sulfuric Acid",
-      isActive: true,
-      avatar: "/placeholder.webp"
-    },
-    {
-      id: 2,
-      name: "Logan Belling...",
-      lastMessage: "Stop lowballing me",
-      time: "5m ago",
-      reagent: "Salt",
-      isActive: false,
-      avatar: "/placeholder.webp"
-    },
-    {
-      id: 3,
-      name: "Del Huang",
-      lastMessage: "Should arrive next week",
-      time: "2hr ago",
-      reagent: "Phenol",
-      isActive: false,
-      avatar: "/placeholder.webp"
-    },
-    {
-      id: 4,
-      name: "Ray Zhao",
-      lastMessage: "Ok great",
-      time: "8hr ago",
-      reagent: "Hydrochloric Acid",
-      isActive: false,
-      avatar: "/placeholder.webp"
-    },
-    {
-      id: 5,
-      name: "Ezekiel Ko",
-      lastMessage: "Sure!",
-      time: "11hr ago",
-      reagent: "Ethanol",
-      isActive: false,
-      avatar: "/placeholder.webp"
-    },
-    {
-      id: 6,
-      name: "Kihyun Kim",
-      lastMessage: "That sounds great!",
-      time: "14hr ago",
-      reagent: "Hydrogen Peroxide",
-      isActive: false,
-      avatar: "/placeholder.webp"
-    },
-    {
-      id: 7,
-      name: "David Broder..",
-      lastMessage: "Tuesday could work",
-      time: "1d ago",
-      reagent: "Osmium Tetroxide",
-      isActive: false,
-      avatar: "/placeholder.webp"
-    },
-    {
-      id: 8,
-      name: "Wandia Kimita",
-      lastMessage: "What if I traded you for..",
-      time: "Tuesday",
-      reagent: "Sulfuric Acid",
-      isActive: false,
-      avatar: "/placeholder.webp"
-    },
-    {
-      id: 9,
-      name: "Anna Trofimo..",
-      lastMessage: "I'll check with our lab m..",
-      time: "30/8",
-      reagent: "Acetone",
-      isActive: false,
-      avatar: "/placeholder.webp"
-    }
-  ]
+  //            function: formatTime           //
+  const formatTime = (dateString: string) => {
+    const date = new Date(dateString)
+    const now = new Date()
+    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60))
+    
+    if (diffInMinutes < 1) return "now"
+    if (diffInMinutes < 60) return `${diffInMinutes}m ago`
+    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}hr ago`
+    if (diffInMinutes < 10080) return `${Math.floor(diffInMinutes / 1440)}d ago`
+    return date.toLocaleDateString()
+  }
+
+  //            function: getLastMessage           //
+  const getLastMessage = (messages: any[]) => {
+    if (!messages || messages.length === 0) return "No messages yet"
+    return messages[messages.length - 1]?.content || "No messages yet"
+  }
+
+  //            function: transformConversation           //
+  const transformConversation = (conversation: any) => ({
+    id: conversation.chat_room.id,
+    name: conversation.other_user.name,
+    university: conversation.other_user.email,
+    lastMessage: getLastMessage(conversation.messages),
+    time: conversation.messages.length > 0 
+      ? formatTime(conversation.messages[conversation.messages.length - 1].created_at)
+      : "No messages",
+    reagent: "Reagent", // This would need to be added to the backend response
+    isActive: selectedConversation?.id === conversation.chat_room.id,
+    avatar: "/placeholder.webp",
+    originalData: conversation
+  })
 
   //            function: handleConversationSelect           //
   const handleConversationSelect = (conversation: any) => {
-    setSelectedConversation(conversation)
+    setSelectedConversation(conversation.originalData)
   }
 
   //            function: handleSearchChange           //
@@ -111,12 +68,42 @@ export default function MessageListBox({
     setSearchQuery(query)
   }
 
+  //            function: filteredConversations           //
+  const filteredConversations = useMemo(() => {
+    if (!conversations?.conversations) return []
+    
+    const transformed = conversations.conversations.map(transformConversation)
+    
+    if (!searchQuery) return transformed
+    
+    return transformed.filter(conv => 
+      conv.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      conv.lastMessage.toLowerCase().includes(searchQuery.toLowerCase())
+    )
+  }, [conversations, searchQuery, selectedConversation])
+
+  //            function: handleRefresh           //
+  const handleRefresh = () => {
+    onRefresh()
+  }
+
   //            render: MessageListBox           //
   return (
     <div className="w-1/4 bg-background flex flex-col h-screen">
       {/* Header */}
       <div className="p-4">
-        <h1 className="text-xl font-semibold text-tint mb-4">Messages</h1>
+        <div className="flex items-center justify-between mb-4">
+          <h1 className="text-xl font-semibold text-tint">Messages</h1>
+          <button 
+            onClick={handleRefresh}
+            className="text-secondary hover:text-light-gray transition-colors"
+            disabled={loading}
+          >
+            <svg className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+          </button>
+        </div>
         
         {/* Search Bar */}
         <div className="relative">
@@ -132,32 +119,59 @@ export default function MessageListBox({
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </div>
-          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex space-x-2">
-            <button className="text-secondary hover:text-light-gray">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
-              </svg>
-            </button>
-            <button className="text-secondary hover:text-light-gray">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-              </svg>
-            </button>
-          </div>
         </div>
       </div>
 
+      {/* Loading State */}
+      {loading && (
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
+            <p className="text-secondary">Loading conversations...</p>
+          </div>
+        </div>
+      )}
+
+      {/* Error State */}
+      {error && (
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-red-500 mb-2">{error}</p>
+            <button 
+              onClick={handleRefresh}
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+            >
+              Try Again
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Empty State */}
+      {!loading && !error && filteredConversations.length === 0 && (
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-secondary mb-2">No conversations found</p>
+            <p className="text-sm text-gray-500">
+              {searchQuery ? "Try adjusting your search" : "Start a conversation by creating an order"}
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* Conversations List */}
-      <div className="flex-1 overflow-y-auto scrollbar-thin">
-        {conversations.map((conversation) => (
-          <ConversationItem
-            key={conversation.id}
-            conversation={conversation}
-            isSelected={selectedConversation?.id === conversation.id}
-            onClick={() => handleConversationSelect(conversation)}
-          />
-        ))}
-      </div>
+      {!loading && !error && filteredConversations.length > 0 && (
+        <div className="flex-1 overflow-y-auto scrollbar-thin">
+          {filteredConversations.map((conversation) => (
+            <ConversationItem
+              key={conversation.id}
+              conversation={conversation}
+              isSelected={selectedConversation?.chat_room?.id === conversation.id}
+              onClick={() => handleConversationSelect(conversation)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }

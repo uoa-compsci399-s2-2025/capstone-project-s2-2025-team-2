@@ -1,63 +1,65 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import MessageBubble from "../components/MessageBubble"
+import { sendMessage } from "../../services/inbox"
+import { onAuthStateChanged, User } from "firebase/auth"
+import { auth } from "../../config/firebase"
 
 //            function: ChatBox           //
 export default function ChatBox({
   selectedConversation,
+  onMessageSent,
 }: {
   selectedConversation: any
+  onMessageSent: () => void
 }) {
   //            state           //
   const [messageInput, setMessageInput] = useState("")
+  const [sending, setSending] = useState(false)
+  const [user, setUser] = useState<User | null>(null)
+  
+  //            effect: auth state change           //
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user)
+    })
+    return () => unsubscribe()
+  }, [])
 
-  // Mock messages data
-  const messages = [
-    {
-      id: 1,
-      sender: "user",
-      content: "Hey Violet, I see you have industrial-grade sulfuric acid available. I would love to purchase 24 x 1L tanks, what would you have in mind for pricing?",
-      timestamp: "12:30 PM"
-    },
-    {
-      id: 2,
-      sender: "violet",
-      content: "Hello! I can happily arrange those 1L containers for you. For an order of 24 x 1L tanks, you'd be looking at around $26 per liter.",
-      timestamp: "12:32 PM"
-    },
-    {
-      id: 3,
-      sender: "violet",
-      content: "The pricing is due to handling and packaging requirements. Smaller packaged volumes like this are shipped as hazardous goods, and have additional costs.",
-      timestamp: "12:33 PM"
-    },
-    {
-      id: 4,
-      sender: "violet",
-      content: "Shipping would be extra on top of that. Would you like me see how much it would be to ship directly to your university?",
-      timestamp: "12:34 PM"
-    },
-    {
-      id: 5,
-      sender: "user",
-      content: "Ah, that might be a little out of our lab budget unfortunately.",
-      timestamp: "12:35 PM"
-    },
-    {
-      id: 6,
-      sender: "violet",
-      content: "lmao broke",
-      timestamp: "12:36 PM"
-    }
-  ]
+  //            function: formatTimestamp           //
+  const formatTimestamp = (dateString: string) => {
+    const date = new Date(dateString)
+    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+  }
+
+  //            function: transformMessage           //
+  const transformMessage = (message: any, isUser: boolean) => ({
+    id: message.id,
+    sender: isUser ? "user" : "other",
+    content: message.content,
+    timestamp: formatTimestamp(message.created_at)
+  })
 
   //            function: handleSendMessage           //
-  const handleSendMessage = () => {
-    if (messageInput.trim()) {
-      // Handle sending message
-      console.log("Sending message:", messageInput)
+  const handleSendMessage = async () => {
+    if (!messageInput.trim() || !selectedConversation || !user?.uid || sending) return
+
+    try {
+      setSending(true)
+      await sendMessage({
+        chat_room_id: selectedConversation.chat_room.id,
+        sender_id: user.uid,
+        content: messageInput.trim()
+      })
+      
       setMessageInput("")
+      onMessageSent() // Refresh conversations
+    } catch (error) {
+      console.error("Error sending message:", error)
+      // You could add a toast notification here
+    } finally {
+      setSending(false)
     }
   }
 
@@ -67,6 +69,15 @@ export default function ChatBox({
       e.preventDefault()
       handleSendMessage()
     }
+  }
+
+  //            function: getMessages           //
+  const getMessages = () => {
+    if (!selectedConversation?.messages) return []
+    
+    return selectedConversation.messages.map((message: any) => 
+      transformMessage(message, message.sender_id === user?.uid)
+    )
   }
 
   //            render: ChatBox           //
@@ -81,6 +92,8 @@ export default function ChatBox({
     )
   }
 
+  const messages = getMessages()
+
   return (
     <div className="h-screen flex-1 flex flex-col bg-background">
       {/* Header */}
@@ -88,16 +101,16 @@ export default function ChatBox({
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <img
-              src={selectedConversation.avatar}
-              alt={selectedConversation.name}
+              src="/placeholder.webp"
+              alt={selectedConversation.other_user.name}
               className="w-10 h-10 rounded-full object-cover"
             />
             <div>
               <h2 className="text-lg font-semibold text-tint">
-                {selectedConversation.name}
+                {selectedConversation.other_user.name}
               </h2>
               <p className="text-sm text-secondary">
-                {selectedConversation.university}
+                {selectedConversation.other_user.email}
               </p>
             </div>
           </div>
@@ -118,13 +131,22 @@ export default function ChatBox({
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin">
-        {messages.map((message) => (
-          <MessageBubble
-            key={message.id}
-            message={message}
-            isUser={message.sender === "user"}
-          />
-        ))}
+        {messages.length === 0 ? (
+          <div className="flex items-center justify-center h-full">
+            <div className="text-center">
+              <p className="text-secondary mb-2">No messages yet</p>
+              <p className="text-sm text-gray-500">Start the conversation!</p>
+            </div>
+          </div>
+        ) : (
+          messages.map((message: any) => (
+            <MessageBubble
+              key={message.id}
+              message={message}
+              isUser={message.sender === "user"}
+            />
+          ))
+        )}
       </div>
 
       {/* Message Input */}
@@ -136,15 +158,21 @@ export default function ChatBox({
             onChange={(e) => setMessageInput(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder="Message..."
-            className="flex-1 px-4 py-2 bg-primary text-tint placeholder-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            disabled={sending}
+            className="flex-1 px-4 py-2 bg-primary text-tint placeholder-secondary rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:opacity-50"
           />
           <button
             onClick={handleSendMessage}
-            className="bg-primary p-2 text-[var(--color-blue-primary)] hover:text-[var(--color-blue-secondary)] transition-colors rounded-lg"
+            disabled={sending || !messageInput.trim()}
+            className="bg-primary p-2 text-[var(--color-blue-primary)] hover:text-[var(--color-blue-secondary)] transition-colors rounded-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <svg className="w-6 h-6 transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-            </svg>
+            {sending ? (
+              <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
+            ) : (
+              <svg className="w-6 h-6 transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              </svg>
+            )}
           </button>
         </div>
       </div>
