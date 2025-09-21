@@ -99,7 +99,7 @@ const ReagentCard = ({
           {/*reagent details*/}
           <div className="flex flex-col justify-between flex-1 gap-2 md:gap-2 md:pt-3 min-h-0 overflow-hidden">
             <div className="flex flex-col justify-between gap-2 overflow-hidden">
-              <h4 className="text-white text-base md:text-lg line-clamp-2 tracking-wider leading-tight font-normal">
+              <h4 className="text-white text-base md:text-lg tracking-wider leading-tight font-normal truncate max-w-9/10">
                 {name}
               </h4>
 
