@@ -41,15 +41,15 @@ const Sidebar = () => {
   return (
     <>
       {/* Mobile Header */}
-      <header className="fixed z-50 shadow-lg md:hidden top-0 w-full h-14 bg-primary text-white flex items-center justify-between px-4 z-10">
+      <header className="fixed z-50 shadow-lg lg:hidden top-0 w-full h-14 bg-primary text-white flex items-center justify-between px-4 z-10">
         <Link href="/marketplace">
-          <h3 className="m-0 md:m-5 hover:text-light-gray duration-100 md:hidden">
+          <h3 className="m-0 lg:m-5 hover:text-light-gray duration-100 lg:hidden">
             Chemical.ly
           </h3>
         </Link>
-        <h2 className="m-0 md:m-5 hidden md:block">Chemical.ly</h2>
+        <h2 className="m-0 lg:m-5 hidden lg:block">Chemical.ly</h2>
         <button
-          className="md:hidden p-2 rounded-md text-white hover:text-light-gray duration-100"
+          className="lg:hidden p-2 rounded-md text-white hover:text-light-gray duration-100"
           onClick={() => setIsOpen(!isOpen)}
         >
           <Bars3Icon className="h-6 w-6" />
@@ -58,11 +58,11 @@ const Sidebar = () => {
 
       {/* Side bar */}
       <div
-        className={`fixed pt-8 shadow-lg md:pt-0 w-60 h-full bg-primary z-40 mt-14 md:mt-0 transform transition-transform duration-300 
+        className={`fixed pt-8 shadow-lg lg:pt-0 w-60 h-full bg-primary z-40 mt-14 lg:mt-0 transform transition-transform duration-300 
       ${isOpen ? "translate-x-0 right-0" : "translate-x-full right-0"}
-       md:left-0 md:right-auto md:translate-x-0 md:block`}
+       lg:left-0 lg:right-auto lg:translate-x-0 lg:block`}
       >
-        <h2 className="hidden md:block ml-7 mt-7 mb-8">Chemical.ly</h2>
+        <h2 className="hidden lg:block ml-7 mt-7 mb-8">Chemical.ly</h2>
 
         <div className="flex flex-col justify-between h-full">
           <div>
@@ -96,7 +96,7 @@ const Sidebar = () => {
           </div>
           <div className="w-full flex justify-center">
             <div
-              className="flex items-center mb-20 md:mb-30 p-2 text-red-70 cursor-pointer hover:text-red-70/80"
+              className="flex items-center mb-20 lg:mb-30 p-2 text-red-70 cursor-pointer hover:text-red-70/80"
               onClick={handleSignOut}
             >
               <ArrowLeftStartOnRectangleIcon className="w-5 h-5" />
@@ -107,7 +107,7 @@ const Sidebar = () => {
       </div>
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 z-30 md:hidden"
+          className="fixed inset-0 bg-black/50 z-30 lg:hidden"
           onClick={() => setIsOpen(false)}
         />
       )}

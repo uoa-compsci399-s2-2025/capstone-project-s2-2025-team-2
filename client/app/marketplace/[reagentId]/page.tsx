@@ -118,7 +118,9 @@ export default function ReagentView({ params }: ReagentViewProps) {
                     )
                   })}
                 </div>
-                <div className="md:hidden">
+                <div className="md:hidden mt-[1rem] mb-[0.5rem]">
+                  <div className="w-[60vw] max-w-2xl mx-auto my-[1rem] border-t border-light-gray" />
+
                   <h4 className="text-white tracking-wider">
                     <b>Seller Details</b>
                   </h4>
