@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Route, Tags, Path } from "tsoa"
+import { Body, Controller, Get, Post, Route, Tags, Path, Security } from "tsoa"
 import { InboxService } from "../../service-layer/services/InboxService"
 import { CreateChatRoomRequest } from "../../service-layer/dtos/request/CreateChatRoomRequest"
 import { SendMessageRequest } from "../../service-layer/dtos/request/SendMessageRequest"
@@ -12,6 +12,7 @@ import {
 export class InboxController extends Controller {
   private inboxService = new InboxService()
 
+  @Security("jwt")
   @Post("chatroom")
   async createChatRoom(
     @Body() request: CreateChatRoomRequest,
@@ -36,6 +37,7 @@ export class InboxController extends Controller {
     }
   }
 
+  @Security("jwt")
   @Post("message")
   async sendMessage(
     @Body() request: SendMessageRequest,
@@ -60,6 +62,7 @@ export class InboxController extends Controller {
     }
   }
 
+  @Security("jwt")
   @Get("conversations/{userId}")
   async getConversations(
     @Path() userId: string,
@@ -82,6 +85,7 @@ export class InboxController extends Controller {
     }
   }
 
+  @Security("jwt")
   @Get("chatroom/{chatRoomId}/{userId}")
   async getChatRoomById(
     @Path() chatRoomId: string,
