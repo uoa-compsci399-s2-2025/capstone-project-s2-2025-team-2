@@ -115,7 +115,7 @@ const ReagentCard = ({
                     </span>
                 </div>
             
-            <p className="text-light-gray flex text-xs gap-0.5 mt-[0.1rem]">
+            <p className="text-light-gray flex text-xs gap-0.5 mt-[0.1rem] md:hidden">
                 <MapPinIcon className="w-5 h-5" />
                 {location}
             </p>
@@ -137,17 +137,19 @@ const ReagentCard = ({
           </div>
 
           <div className="hidden md:block bg-light-gray h-[1px] my-2"></div>
+          <p className="text-light-gray text-xs gap-0.5 mt-[0.1rem] hidden md:flex">
+                <MapPinIcon className="w-5 h-5" />
+                {location}
+            </p>
 
           <div className="flex items-center justify-between">
-            <div className="flex flex-col">
-              <p className="md:hidden flex text-warning text-sm md:text-base">
+            
+
+            <div className="flex w-full justify-between">
+                <p className="md:hidden flex text-warning text-sm md:text-base">
                 <LuClockAlert className="w-4.5 h-4.5 mx-[0.1rem] md:mt-0.5 text-warning" />
                 {expiryDate}
               </p>
-              
-            </div>
-
-            <div className="">
               <div className="md:hidden">
                 <Button
                   label="View"
