@@ -24,11 +24,7 @@ export default function MessageBubble({
         }`}
       >
         <p className="text-sm">{message.content}</p>
-        <p
-          className={`text-xs mt-1 text-gray-400`}
-        >
-          {message.timestamp}
-        </p>
+        <p className={`text-xs mt-1 text-gray-400`}>{message.timestamp}</p>
       </div>
     </div>
   )

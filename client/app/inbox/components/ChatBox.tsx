@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import MessageBubble from "../components/MessageBubble"
 import { sendMessage, getChatRoomById } from "../../services/inbox"
 import { onAuthStateChanged, User } from "firebase/auth"
@@ -10,18 +10,17 @@ import { formatTime } from "../../hooks/utils/timeFormatter"
 //            function: ChatBox           //
 export default function ChatBox({
   selectedConversation,
-  onMessageSent,
   onConversationUpdate,
 }: {
   selectedConversation: any
-  onMessageSent: () => void
   onConversationUpdate: (updatedConversation: any) => void
 }) {
   //            state           //
   const [messageInput, setMessageInput] = useState("")
   const [sending, setSending] = useState(false)
   const [user, setUser] = useState<User | null>(null)
-  
+  const messagesEndRef = useRef<HTMLDivElement>(null)
+
   //            effect: auth state change           //
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -30,37 +29,45 @@ export default function ChatBox({
     return () => unsubscribe()
   }, [])
 
+  //            function: scrollToBottom           //
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  //            effect: scroll to bottom when messages change           //
+  useEffect(() => {
+    scrollToBottom()
+  }, [selectedConversation?.messages])
 
   //            function: transformMessage           //
   const transformMessage = (message: any, isUser: boolean) => ({
     id: message.id,
     sender: isUser ? "user" : "other",
     content: message.content,
-    timestamp: formatTime(message.created_at, 'time')
+    timestamp: formatTime(message.created_at, "time"),
   })
 
   //            function: handleSendMessage           //
   const handleSendMessage = async () => {
-    if (!messageInput.trim() || !selectedConversation || !user?.uid || sending) return
+    if (!messageInput.trim() || !selectedConversation || !user?.uid || sending)
+      return
 
     try {
       setSending(true)
       await sendMessage({
         chat_room_id: selectedConversation.chat_room.id,
         sender_id: user.uid,
-        content: messageInput.trim()
+        content: messageInput.trim(),
       })
-      
+
       setMessageInput("")
-      
+
       // Refresh the current conversation with latest messages
       const updatedConversation = await getChatRoomById(
-        selectedConversation.chat_room.id, 
-        user.uid
+        selectedConversation.chat_room.id,
+        user.uid,
       )
       onConversationUpdate(updatedConversation)
-      
-      onMessageSent() // Refresh conversations list
     } catch (error) {
       console.error("Error sending message:", error)
       // You could add a toast notification here
@@ -80,12 +87,11 @@ export default function ChatBox({
   //            function: getMessages           //
   const getMessages = () => {
     if (!selectedConversation?.messages) return []
-    
+
     // Messages are already sorted by server (oldest first)
-    return selectedConversation.messages
-      .map((message: any) => 
-        transformMessage(message, message.sender_id === user?.uid)
-      )
+    return selectedConversation.messages.map((message: any) =>
+      transformMessage(message, message.sender_id === user?.uid),
+    )
   }
 
   //            render: ChatBox           //
@@ -93,8 +99,12 @@ export default function ChatBox({
     return (
       <div className="flex-1 flex items-center justify-center bg-background">
         <div className="text-center">
-          <h2 className="text-xl font-semibold text-secondary mb-2">Select a conversation</h2>
-          <p className="text-gray">Choose a conversation from the list to start messaging</p>
+          <h2 className="text-xl font-semibold text-secondary mb-2">
+            Select a conversation
+          </h2>
+          <p className="text-gray">
+            Choose a conversation from the list to start messaging
+          </p>
         </div>
       </div>
     )
@@ -122,7 +132,7 @@ export default function ChatBox({
               </p>
             </div>
           </div>
-          
+
           <div className="flex space-x-2">
             <button className="px-4 py-2 text-sm bg-[var(--dark-gray)] text-white text-light-gray hover:bg-primary rounded-2xl transition-colors">
               View Listing
@@ -147,13 +157,16 @@ export default function ChatBox({
             </div>
           </div>
         ) : (
-          messages.map((message: any) => (
-            <MessageBubble
-              key={message.id}
-              message={message}
-              isUser={message.sender === "user"}
-            />
-          ))
+          <>
+            {messages.map((message: any) => (
+              <MessageBubble
+                key={message.id}
+                message={message}
+                isUser={message.sender === "user"}
+              />
+            ))}
+            <div ref={messagesEndRef} />
+          </>
         )}
       </div>
 
@@ -177,8 +190,18 @@ export default function ChatBox({
             {sending ? (
               <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500"></div>
             ) : (
-              <svg className="w-6 h-6 transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+              <svg
+                className="w-6 h-6 transform rotate-90"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
+                />
               </svg>
             )}
           </button>
