@@ -60,7 +60,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
     <div
       className="
     font-family-sans h-full w-full min-h-screen md:flex md:items-center md:justify-center
-    background-gradient md:p-[2rem] md:-mt-[2rem] mb-[5rem] md:mb-0
+    background-gradient md:p-[2rem] md:-mt-[2rem] mb-[6rem] md:mb-0
     "
     >
       <div className="md:max-w-6xl mx-auto w-full">
@@ -82,14 +82,14 @@ export default function ReagentView({ params }: ReagentViewProps) {
               <h1 className="hidden md:block ml-0 mt-[1rem] mb-[1rem] text-white tracking-wider">
                 {reagent.name}
               </h1>
-              <h2 className="md:hidden ml-[2rem] mt-[1.5rem] text-white tracking-wider">
+              <h2 className="md:hidden ml-[2rem] mr-[2rem] mt-[1.5rem] text-white tracking-wider">
                 <b>{reagent.name}</b>
               </h2>
-              <div className="md:hidden px-[2rem] mt-[1rem]">
-                <h5 className="text-white/80 mb-2">
+              <div className="md:hidden px-[2rem] mt-[1.5rem]">
+                <h5 className="text-white/80 mb-[0.5rem]">
                   Quantity: {reagent.quantity}
                 </h5>
-                <p className="text-white">{reagent.description}</p>
+                <p className="text-white mb-[1rem]">{reagent.description}</p>
               </div>
 
               <div className="px-[2rem] mb-[2rem] md:mb-0 md:px-0 lg:mt-0 gap-[1rem] lg:gap-12 flex flex-col lg:flex-row justify-start md:w-full mt-[1rem]">
@@ -118,10 +118,10 @@ export default function ReagentView({ params }: ReagentViewProps) {
                     )
                   })}
                 </div>
-                <div className="md:hidden mt-[1rem] mb-[0.5rem]">
-                  <div className="w-[60vw] max-w-2xl mx-auto my-[1rem] border-t border-light-gray" />
+                <div className="md:hidden mt-[1rem] ">
+                  <div className="w-[60vw] max-w-2xl my-[1rem] border-t border-light-gray" />
 
-                  <h4 className="text-white tracking-wider">
+                  <h4 className="text-white tracking-wider mb-[0.3rem]">
                     <b>Seller Details</b>
                   </h4>
                   <SellerContactMobile />
@@ -175,7 +175,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
         <div className="fixed bottom-0 w-full md:hidden bg-background -mt-[2rem] z-10 rounded-t-3xl">
           <div className="flex h-[8rem] justify-between">
             <span className="flex flex-col justify-center ml-[2rem]">
-              <p className="text-white/60 text-[1.3rem]">Price</p>
+              <p className="text-white/60 text-[1.1rem]">Price</p>
               <h2 className="text-green-500">${reagent.price}</h2>
             </span>
             <div className="flex items-center mr-[2rem]">
@@ -197,7 +197,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
           </div>
         </div>
 
-        <div className="hidden md:block mt-[3rem]">
+        <div className="hidden md:block mt-[2rem]">
           <div className="flex flex-col items-center gap-2">
             <div className="w-[80vw] max-w-2xl min-w-xl mx-auto my-[1rem] border-t border-light-gray" />
             <div className="max-w-2xl mx-auto grid grid-cols-4 mb-[0.1rem]">
