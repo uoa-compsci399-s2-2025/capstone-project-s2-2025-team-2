@@ -82,32 +82,39 @@ const ReagentCard = ({
         </div>
 
         <div className="flex flex-col justify-between flex-1 gap-1 md:py-4">
-          <div className="flex flex-col justify-between">
-            <p className="text-white/60 text-sm md:text-sm italic mt-1 flex gap-1">
-                {/* Icon */}
-                {formula === "trade" ? (
-                  <ArrowsRightLeftIcon className="w-5 h-5 text-orange-200" />
-                ) : formula === "sell" ? (
-                  <CurrencyDollarIcon className="w-5 h-5 text-green-400" />
-                ) : formula === "giveaway" ? (
-                  <GiftIcon className="w-5 h-5 text-blue-300" />
-                ) : (
-                  <GiftIcon className="w-5 h-5 text-blue-300" />
-                )}
-                {/* Text */}
-                {formula === "trade" ? (
-                  <span className="text-orange-200">Trade</span>
-                ) : formula === "sell" ? (
-                  <span className="text-green-400">Sell</span>
-                ) : formula === "giveaway" ? (
-                  <span className="text-blue-300">Giveaway</span>
-                ) : (
-                  <span className="text-blue-300">Giveaway</span>
-                )}
-              </p>
-            <span className="flex items-center gap-3 md:gap-4">
-              <h4 className="text-white text-base md:text-xl italic">{name}</h4>
-            </span>
+          <div className="
+            flex flex-col justify-between
+            ">
+                <div className="
+                    md:flex md:gap-1
+                ">
+                    <p className="text-white/60 text-sm md:text-sm italic mt-1 flex gap-1">
+                        {/* Icon */}
+                        {formula === "trade" ? (
+                        <ArrowsRightLeftIcon className="w-5 h-5 text-orange-200" />
+                        ) : formula === "sell" ? (
+                        <CurrencyDollarIcon className="w-5 h-5 text-green-400" />
+                        ) : formula === "giveaway" ? (
+                        <GiftIcon className="w-5 h-5 text-blue-300" />
+                        ) : (
+                        <GiftIcon className="w-5 h-5 text-blue-300" />
+                        )}
+                        {/* Text */}
+                        {formula === "trade" ? (
+                        <span className="text-orange-200 md:hidden">Trade</span>
+                        ) : formula === "sell" ? (
+                        <span className="text-green-400 md:hidden">Sell</span>
+                        ) : formula === "giveaway" ? (
+                        <span className="text-blue-300 md:hidden">Giveaway</span>
+                        ) : (
+                        <span className="text-blue-300 md:hidden">Giveaway</span>
+                        )}
+                    </p>
+                    <span className="flex items-center gap-3 md:gap-4">
+                    <h4 className="text-white text-base md:text-xl">{name}</h4>
+                    </span>
+                </div>
+            
             <p className="text-light-gray flex text-xs gap-0.5 mt-[0.1rem]">
                 <MapPinIcon className="w-5 h-5" />
                 {location}
