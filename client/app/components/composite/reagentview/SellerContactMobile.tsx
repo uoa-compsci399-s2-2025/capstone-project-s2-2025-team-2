@@ -13,11 +13,8 @@ const SellerContactMobile = ({
   location,
   rating,
 }: SellerContactMobileProps) => {
-
-
   return (
     <div className="flex flex-row gap-[1rem] items-center">
-
       <div className="block relative bg-yellow-600 rounded-full border-2 border-white h-[4rem] w-[4rem] overflow-hidden">
         <Image
           src="/placeholder.webp"

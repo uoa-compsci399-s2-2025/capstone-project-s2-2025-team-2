@@ -43,7 +43,9 @@ const Sidebar = () => {
       {/* Mobile Header */}
       <header className="fixed z-50 shadow-lg md:hidden top-0 w-full h-14 bg-primary text-white flex items-center justify-between px-4 z-10">
         <Link href="/marketplace">
-        <h3 className="m-0 md:m-5 hover:text-light-gray duration-100 md:hidden">Chemical.ly</h3>
+          <h3 className="m-0 md:m-5 hover:text-light-gray duration-100 md:hidden">
+            Chemical.ly
+          </h3>
         </Link>
         <h2 className="m-0 md:m-5 hidden md:block">Chemical.ly</h2>
         <button

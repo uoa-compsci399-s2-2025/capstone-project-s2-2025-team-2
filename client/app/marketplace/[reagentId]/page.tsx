@@ -9,7 +9,6 @@ import Image from "next/image"
 import SellerContact from "@/app/components/composite/reagentview/SellerContact"
 import ReagentBreadcrumb from "@/app/components/composite/reagentview/ReagentBreadcrumb"
 import SellerContactMobile from "@/app/components/composite/reagentview/SellerContactMobile"
-import Load from "@/public/load.svg"
 
 interface ReagentViewProps {
   params: Promise<{ reagentId: string }>
