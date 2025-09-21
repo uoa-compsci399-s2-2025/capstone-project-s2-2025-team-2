@@ -5,6 +5,7 @@ import MessageBubble from "../components/MessageBubble"
 import { sendMessage } from "../../services/inbox"
 import { onAuthStateChanged, User } from "firebase/auth"
 import { auth } from "../../config/firebase"
+import { formatTime } from "../../hooks/utils/timeFormatter"
 
 //            function: ChatBox           //
 export default function ChatBox({
@@ -27,18 +28,13 @@ export default function ChatBox({
     return () => unsubscribe()
   }, [])
 
-  //            function: formatTimestamp           //
-  const formatTimestamp = (dateString: string) => {
-    const date = new Date(dateString)
-    return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-  }
 
   //            function: transformMessage           //
   const transformMessage = (message: any, isUser: boolean) => ({
     id: message.id,
     sender: isUser ? "user" : "other",
     content: message.content,
-    timestamp: formatTimestamp(message.created_at)
+    timestamp: formatTime(message.created_at, 'time')
   })
 
   //            function: handleSendMessage           //
@@ -75,9 +71,13 @@ export default function ChatBox({
   const getMessages = () => {
     if (!selectedConversation?.messages) return []
     
-    return selectedConversation.messages.map((message: any) => 
-      transformMessage(message, message.sender_id === user?.uid)
-    )
+    // Reverse the order so newest messages appear at the bottom
+    return selectedConversation.messages
+      .slice()
+      .reverse()
+      .map((message: any) => 
+        transformMessage(message, message.sender_id === user?.uid)
+      )
   }
 
   //            render: ChatBox           //

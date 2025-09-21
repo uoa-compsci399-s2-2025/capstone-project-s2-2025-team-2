@@ -33,6 +33,8 @@ import { auth } from "../config/firebase"
         setLoading(true)
         setError(null)
         const response = await getConversations(user.uid)
+        console.log("conversations..");
+        console.log(response);
         setConversations(response)
       } catch (err) {
         console.error("Error loading conversations:", err)

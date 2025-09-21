@@ -55,6 +55,8 @@ export class InboxController extends Controller {
     }
 
     try {
+      console.log("getting conversations..");
+      console.log(userId);
       const conversations = await this.inboxService.getConversations(userId);
       this.setStatus(200);
       return conversations;
@@ -73,6 +75,9 @@ export class InboxController extends Controller {
     }
 
     try {
+      console.log("getting chat room..");
+      console.log(chatRoomId);
+      console.log(userId);
       const chatRoom = await this.inboxService.getChatRoomById(chatRoomId, userId);
       
       if (!chatRoom) {

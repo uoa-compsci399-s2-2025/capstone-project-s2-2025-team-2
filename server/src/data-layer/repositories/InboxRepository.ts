@@ -65,15 +65,29 @@ export class InboxRepository {
 
   async getMessagesByChatRoom(chatRoomId: string): Promise<Message[]> {
     const query = this.db.messages
-      .where("chat_room_id", "==", chatRoomId)
-      .orderBy("created_at", "asc");
+      .where("chat_room_id", "==", chatRoomId);
     
     const snapshot = await query.get();
+
+    console.log("snapshot..");
+    console.log(snapshot.docs);
     
-    return snapshot.docs.map(doc => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as Message[];
+    return snapshot.docs
+      .map(doc => ({
+        id: doc.id,
+        ...doc.data(),
+      }))
+      .sort((a, b) => {
+        // Handle Firestore Timestamp objects
+        const aTime = (a.created_at as any)._seconds ? 
+          (a.created_at as any)._seconds * 1000 : 
+          new Date(a.created_at).getTime();
+        const bTime = (b.created_at as any)._seconds ? 
+          (b.created_at as any)._seconds * 1000 : 
+          new Date(b.created_at).getTime();
+        
+        return bTime - aTime;
+      }) as Message[];
   }
 
   async getMessagesByChatRoomWithLimit(chatRoomId: string, limit: number = 50): Promise<Message[]> {

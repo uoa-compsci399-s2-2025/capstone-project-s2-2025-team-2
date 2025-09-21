@@ -28,7 +28,7 @@ export default function ConversationItem({
       onClick={onClick}
     >
       <div className="">
-        {/* 위쪽: 이미지, 이름, reagent */}
+        {/* reagent, name, time */}
         <div className="flex items-center space-x-3">
           {/* Avatar */}
           <div className="flex-shrink-0">
@@ -53,7 +53,7 @@ export default function ConversationItem({
           </div>
         </div>
 
-        {/* 아래쪽: conversation */}
+        {/* conversation */}
         <div className="ml-13">
           <p className="text-sm text-light-gray truncate">
             {conversation.lastMessage}

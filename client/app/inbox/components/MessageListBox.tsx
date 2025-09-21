@@ -4,6 +4,7 @@ import { useState, useMemo } from "react"
 // import SearchBar from "../../components/composite/searchbar/SearchBar"
 import ConversationItem from "./ConversationItem"
 import { ConversationListResponseDto } from "../../models/response-models/ChatRoomResponseDto"
+import { formatTime } from "../../hooks/utils/timeFormatter"
 
 //            function: MessageListBox           //
 export default function MessageListBox({
@@ -24,21 +25,11 @@ export default function MessageListBox({
   //            state           //
   const [searchQuery, setSearchQuery] = useState("")
 
-  //            function: formatTime           //
-  const formatTime = (dateString: string) => {
-    const date = new Date(dateString)
-    const now = new Date()
-    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60))
-    
-    if (diffInMinutes < 1) return "now"
-    if (diffInMinutes < 60) return `${diffInMinutes}m ago`
-    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}hr ago`
-    if (diffInMinutes < 10080) return `${Math.floor(diffInMinutes / 1440)}d ago`
-    return date.toLocaleDateString()
-  }
 
   //            function: getLastMessage           //
   const getLastMessage = (messages: any[]) => {
+    console.log("messages..");
+    console.log(messages);
     if (!messages || messages.length === 0) return "No messages yet"
     return messages[messages.length - 1]?.content || "No messages yet"
   }

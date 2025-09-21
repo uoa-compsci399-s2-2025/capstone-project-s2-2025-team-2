@@ -66,13 +66,16 @@ export class InboxService {
       const otherUserId = chatRoom.user1_id === userId ? chatRoom.user2_id : chatRoom.user1_id;
       const otherUser = await this.userService.getUserById(otherUserId);
 
+      console.log("other user..");
+      console.log(otherUser);
+
       if (otherUser) {
         conversations.push({
           chat_room: chatRoom,
           messages: messages,
           other_user: {
             id: otherUserId,
-            name: otherUser.username || otherUser.email,
+            name: otherUser.displayName || otherUser.email,
             email: otherUser.email,
           },
         });
@@ -88,7 +91,15 @@ export class InboxService {
       if (!aLastMessage) return 1;
       if (!bLastMessage) return -1;
       
-      return bLastMessage.created_at.getTime() - aLastMessage.created_at.getTime();
+      // Handle Firestore Timestamp objects
+      const aTime = (aLastMessage.created_at as any)._seconds ? 
+        (aLastMessage.created_at as any)._seconds * 1000 : 
+        new Date(aLastMessage.created_at).getTime();
+      const bTime = (bLastMessage.created_at as any)._seconds ? 
+        (bLastMessage.created_at as any)._seconds * 1000 : 
+        new Date(bLastMessage.created_at).getTime();
+      
+      return aTime - bTime;
     });
 
     return { conversations };
@@ -121,7 +132,7 @@ export class InboxService {
       messages: messages,
       other_user: {
         id: otherUserId,
-        name: otherUser.username || otherUser.email,
+        name: otherUser.displayName || otherUser.email,
         email: otherUser.email,
       },
     };
