@@ -39,7 +39,8 @@ const SellerContact = ({
   }
 
   return (
-    <div className="flex flex-row items-center">
+    <div className="flex flex-row items-center gap-[8.5rem]">
+      <div className="flex flex-row">
       <div className="hidden md:block relative bg-yellow-600 rounded-full border-2 border-white h-[4rem] w-[4rem] overflow-hidden">
         <Image
           src="/placeholder.webp"
@@ -61,14 +62,16 @@ const SellerContact = ({
             ? `${rating} (${rating}% Positive Feedback)`
             : "No rating yet"}
         </span>
+      </div>        
       </div>
+
 
       <Button
         label="Request Reagent"
         onClick={handleRequestClick}
         className="
           px-[1.5rem] py-[1.5rem] rounded-[18px] md:rounded-[8px] md:text-sm md:px-6 md:w-auto md:py-1.5 md:justify-center
-          font-semibold
+          font-semibold 
           "
       />
 

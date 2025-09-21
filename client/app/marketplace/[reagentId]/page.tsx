@@ -180,8 +180,14 @@ export default function ReagentView({ params }: ReagentViewProps) {
         </div>
 
         <div className="hidden md:block mt-[3rem]">
-          <div className="w-[60vw] mx-auto my-[2rem] h-[1px] bg-gradient-to-r from-transparent via-gray-400 to-transparent" />
-          <div className="flex flex-col items-center gap-5">
+          
+          <div className="flex flex-col items-center gap-2">
+              <div className="w-[60vw] max-w-2xl mx-auto my-[1rem] border-t border-light-gray" />
+<div className="max-w-2xl mx-auto grid grid-cols-4 mb-[0.1rem]">
+  <h4 className="text-left text-white tracking-wider col-span-1">
+    <b>Seller Details</b>
+  </h4>
+</div>
             <SellerContact
               reagent={
                 reagent
