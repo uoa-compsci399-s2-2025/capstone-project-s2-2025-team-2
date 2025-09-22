@@ -33,8 +33,8 @@ export default function ReagentView({ params }: ReagentViewProps) {
 
   if (!reagent)
     return (
-      <div className="bg-primary h-[100vh] w-full">
-        <div className="bg-primary w-full items-center gap-4 text-white flex justify-center mt-[50vh]">
+      <div className="bg-transparent h-[100vh] w-full">
+        <div className="bg-transparent w-full items-center gap-4 text-white flex justify-center mt-[50vh]">
           <svg
             fill="white"
             viewBox="0 0 24 24"
