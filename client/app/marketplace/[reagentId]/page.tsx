@@ -160,7 +160,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                         {reagent.categories?.map((tag) => {
                           return (
                             <div
-                              className="px-2 py-1 mx-2 text-xs rounded-lg tracking-widest text-white bg-secondary/30"
+                              className="px-2 py-1 mr-[1rem] text-xs rounded-lg tracking-widest text-white bg-secondary/30"
                               key={tag}
                             >
                               {tag}
