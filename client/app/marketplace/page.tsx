@@ -81,7 +81,7 @@ const Marketplace = () => {
       <p className="text-4xl font-medium text-white mt-4 ml-4 md:ml-8 tracking-[0.05em]">
         Marketplace
       </p>
-      <div className="ml-4">
+      <div className="ml-4 md:ml-0">
         <p className="md:ml-8 text-warning italic font-bold inline mr-2 tracking-[0.05em]">
           Buy, Sell & Exchange
         </p>

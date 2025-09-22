@@ -24,10 +24,7 @@ export default function SearchBar({
   }
 
   return (
-    <form
-      onSubmit={handleSearch}
-      className="flex items-center py-1 w-[calc(100vw-4rem)] lg:w-[calc(100vw-19rem)]"
-    >
+    <form onSubmit={handleSearch} className="flex items-center py-1">
       {/* Filter */}
       <div className="relative w-1/5 min-w-27">
         <select
