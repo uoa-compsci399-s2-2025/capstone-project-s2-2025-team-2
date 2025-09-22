@@ -20,6 +20,10 @@ export default function ReagentView({ params }: ReagentViewProps) {
   const [reagent, setReagent] = useState<Reagent | null>(null)
 
   useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [reagentId])
+
+  useEffect(() => {
     const fetchReagents = async () => {
       const { data } = await client.GET(`/reagents/${reagentId}` as any, {})
       setReagent(data)
