@@ -169,7 +169,21 @@
   }
 }
 
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin; /* Firefox */
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+}
+
 body {
-  background: linear-gradient(to bottom, #232526 0%, #232526 30%, #414345 100%);
+  background: linear-gradient(
+    to bottom,
+    var(--background) 0%,
+    var(--background) 30%,
+    var(--background-fade) 100%
+  );
   font-family: "Poppins", sans-serif;
 }

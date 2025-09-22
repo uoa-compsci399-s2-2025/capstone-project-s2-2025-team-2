@@ -115,6 +115,25 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  "/users/{id}/reagents": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description
+     *     Get all reagents under another user by their user id
+     *     Can only be done by admin* */
+    get: operations["GetReagentsByUserId"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   "/reagents": {
     parameters: {
       query?: never
@@ -153,70 +172,6 @@ export interface paths {
     /** @description Update a reagent by its ID.
      *     Can only be done by lab_admin (who owns the reagent) and admin */
     patch: operations["UpdateReagent"]
-    trace?: never
-  }
-  "/orders": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get: operations["GetOrders"]
-    put?: never
-    post: operations["CreateOrder"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/orders/{id}": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get: operations["GetOrderById"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/orders/{id}/approve": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch: operations["ApproveOrder"]
-    trace?: never
-  }
-  "/orders/{id}/cancel": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch: operations["CancelOrder"]
     trace?: never
   }
   "/auth/google/verify": {
@@ -293,6 +248,8 @@ export interface components {
       username: string
       /** @enum {string} */
       role: "user" | "lab_manager" | "admin"
+      /** @enum {string} */
+      role: "user" | "lab_manager" | "admin"
     }
     /** @enum {string} */
     ReagentTradingType: "trade" | "giveaway" | "sell"
@@ -313,6 +270,7 @@ export interface components {
       categories: components["schemas"]["ReagentCategory"][]
       /** Format: date-time */
       createdAt: string
+      location: string
       location: string
     }
     CreateReagentRequest: {
@@ -345,20 +303,6 @@ export interface components {
       categories?: components["schemas"]["ReagentCategory"][]
       /** Format: date-time */
       createdAt?: string
-      location?: string
-    }
-    Order: {
-      requester_id: string
-      reagent_id: string
-      /** @enum {string} */
-      status: "pending" | "approved" | "canceled"
-      /** Format: date-time */
-      createdAt: string
-      message?: string
-    }
-    CreateOrderRequest: {
-      reagent_id: string
-      message?: string
     }
     GoogleOAuthUser: {
       uid: string
@@ -734,116 +678,6 @@ export interface operations {
         }
         content: {
           "application/json": components["schemas"]["Reagent"]
-        }
-      }
-    }
-  }
-  GetOrders: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description All orders returned successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Order"][]
-        }
-      }
-    }
-  }
-  CreateOrder: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateOrderRequest"]
-      }
-    }
-    responses: {
-      /** @description Order created successfully */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Order"]
-        }
-      }
-    }
-  }
-  GetOrderById: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description All orders returned successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Order"]
-        }
-      }
-    }
-  }
-  ApproveOrder: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description order successfully approved */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Order"]
-        }
-      }
-    }
-  }
-  CancelOrder: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description order successfully canceld */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Order"]
         }
       }
     }

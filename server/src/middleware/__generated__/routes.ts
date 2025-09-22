@@ -10,6 +10,8 @@ import { ReagentController } from './../../presentation-layer/controllers/Reagen
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { OrderController } from './../../presentation-layer/controllers/OrderController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { InboxController } from './../../presentation-layer/controllers/InboxController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { GoogleOAuthController } from './../../presentation-layer/controllers/GoogleOAuthController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AuthController } from './../../presentation-layer/controllers/AuthController';
@@ -101,6 +103,67 @@ const models: TsoaRoute.Models = {
         "properties": {
             "reagent_id": {"dataType":"string","required":true},
             "message": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ChatRoom": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string"},
+            "user1_id": {"dataType":"string","required":true},
+            "user2_id": {"dataType":"string","required":true},
+            "created_at": {"dataType":"datetime","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Message": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"string"},
+            "chat_room_id": {"dataType":"string","required":true},
+            "sender_id": {"dataType":"string","required":true},
+            "content": {"dataType":"string","required":true},
+            "created_at": {"dataType":"datetime","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ChatRoomResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "chat_room": {"ref":"ChatRoom","required":true},
+            "messages": {"dataType":"array","array":{"dataType":"refObject","ref":"Message"},"required":true},
+            "other_user": {"dataType":"nestedObjectLiteral","nestedProperties":{"email":{"dataType":"string","required":true},"name":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}},"required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateChatRoomRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "user1_id": {"dataType":"string","required":true},
+            "user2_id": {"dataType":"string","required":true},
+            "initial_message": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "SendMessageRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "chat_room_id": {"dataType":"string","required":true},
+            "sender_id": {"dataType":"string","required":true},
+            "content": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ConversationListResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "conversations": {"dataType":"array","array":{"dataType":"refObject","ref":"ChatRoomResponse"},"required":true},
         },
         "additionalProperties": false,
     },
@@ -792,6 +855,127 @@ export function RegisterRoutes(app: Router) {
                 next,
                 validatedArgs,
                 successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsInboxController_createChatRoom: Record<string, TsoaRoute.ParameterSchema> = {
+                request: {"in":"body","name":"request","required":true,"ref":"CreateChatRoomRequest"},
+        };
+        app.post('/inbox/chatroom',
+            ...(fetchMiddlewares<RequestHandler>(InboxController)),
+            ...(fetchMiddlewares<RequestHandler>(InboxController.prototype.createChatRoom)),
+
+            async function InboxController_createChatRoom(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsInboxController_createChatRoom, request, response });
+
+                const controller = new InboxController();
+
+              await templateService.apiHandler({
+                methodName: 'createChatRoom',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsInboxController_sendMessage: Record<string, TsoaRoute.ParameterSchema> = {
+                request: {"in":"body","name":"request","required":true,"ref":"SendMessageRequest"},
+        };
+        app.post('/inbox/message',
+            ...(fetchMiddlewares<RequestHandler>(InboxController)),
+            ...(fetchMiddlewares<RequestHandler>(InboxController.prototype.sendMessage)),
+
+            async function InboxController_sendMessage(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsInboxController_sendMessage, request, response });
+
+                const controller = new InboxController();
+
+              await templateService.apiHandler({
+                methodName: 'sendMessage',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsInboxController_getConversations: Record<string, TsoaRoute.ParameterSchema> = {
+                userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
+        };
+        app.get('/inbox/conversations/:userId',
+            ...(fetchMiddlewares<RequestHandler>(InboxController)),
+            ...(fetchMiddlewares<RequestHandler>(InboxController.prototype.getConversations)),
+
+            async function InboxController_getConversations(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsInboxController_getConversations, request, response });
+
+                const controller = new InboxController();
+
+              await templateService.apiHandler({
+                methodName: 'getConversations',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsInboxController_getChatRoomById: Record<string, TsoaRoute.ParameterSchema> = {
+                chatRoomId: {"in":"path","name":"chatRoomId","required":true,"dataType":"string"},
+                userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
+        };
+        app.get('/inbox/chatroom/:chatRoomId/:userId',
+            ...(fetchMiddlewares<RequestHandler>(InboxController)),
+            ...(fetchMiddlewares<RequestHandler>(InboxController.prototype.getChatRoomById)),
+
+            async function InboxController_getChatRoomById(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsInboxController_getChatRoomById, request, response });
+
+                const controller = new InboxController();
+
+              await templateService.apiHandler({
+                methodName: 'getChatRoomById',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
               });
             } catch (err) {
                 return next(err);
