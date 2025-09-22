@@ -41,7 +41,7 @@ const Sidebar = () => {
   return (
     <>
       {/* Mobile Header */}
-      <header className="fixed z-50 shadow-lg lg:hidden top-0 w-full h-14 bg-primary text-white flex items-center justify-between px-4 z-10">
+      <header className="fixed z-50 shadow-lg lg:hidden top-0 w-full h-[4rem] bg-primary text-white flex items-center justify-between px-4 z-10">
         <Link href="/marketplace">
           <h3 className="m-0 lg:m-5 hover:text-light-gray duration-100 lg:hidden">
             Chemical.ly
