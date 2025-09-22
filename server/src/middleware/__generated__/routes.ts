@@ -29,7 +29,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "email": {"dataType":"string","required":true},
-            "username": {"dataType":"string","required":true},
+            "displayName": {"dataType":"string","required":true},
             "role": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["user"]},{"dataType":"enum","enums":["lab_manager"]},{"dataType":"enum","enums":["admin"]}],"required":true},
         },
         "additionalProperties": false,
@@ -865,6 +865,7 @@ export function RegisterRoutes(app: Router) {
                 request: {"in":"body","name":"request","required":true,"ref":"CreateChatRoomRequest"},
         };
         app.post('/inbox/chatroom',
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(InboxController)),
             ...(fetchMiddlewares<RequestHandler>(InboxController.prototype.createChatRoom)),
 
@@ -895,6 +896,7 @@ export function RegisterRoutes(app: Router) {
                 request: {"in":"body","name":"request","required":true,"ref":"SendMessageRequest"},
         };
         app.post('/inbox/message',
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(InboxController)),
             ...(fetchMiddlewares<RequestHandler>(InboxController.prototype.sendMessage)),
 
@@ -925,6 +927,7 @@ export function RegisterRoutes(app: Router) {
                 userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
         };
         app.get('/inbox/conversations/:userId',
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(InboxController)),
             ...(fetchMiddlewares<RequestHandler>(InboxController.prototype.getConversations)),
 
@@ -956,6 +959,7 @@ export function RegisterRoutes(app: Router) {
                 userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
         };
         app.get('/inbox/chatroom/:chatRoomId/:userId',
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(InboxController)),
             ...(fetchMiddlewares<RequestHandler>(InboxController.prototype.getChatRoomById)),
 

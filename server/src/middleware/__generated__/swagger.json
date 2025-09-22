@@ -12,7 +12,7 @@
 					"email": {
 						"type": "string"
 					},
-					"username": {
+					"displayName": {
 						"type": "string"
 					},
 					"role": {
@@ -26,7 +26,7 @@
 				},
 				"required": [
 					"email",
-					"username",
+					"displayName",
 					"role"
 				],
 				"type": "object",
@@ -1267,7 +1267,11 @@
 				"tags": [
 					"Inbox"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
 				"parameters": [],
 				"requestBody": {
 					"required": true,
@@ -1299,7 +1303,11 @@
 				"tags": [
 					"Inbox"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
 				"parameters": [],
 				"requestBody": {
 					"required": true,
@@ -1331,7 +1339,11 @@
 				"tags": [
 					"Inbox"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",
@@ -1362,7 +1374,11 @@
 				"tags": [
 					"Inbox"
 				],
-				"security": [],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
 				"parameters": [
 					{
 						"in": "path",

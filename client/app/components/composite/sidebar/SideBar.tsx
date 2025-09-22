@@ -15,12 +15,12 @@ import { firebaseSignOut } from "../../../services/firebase-auth"
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false)
 
-  //sign out and clear token from localStorage
+  //sign out, clear token from localStorage, reload page
   const handleSignOut = async () => {
     try {
       await firebaseSignOut()
       localStorage.removeItem("authToken")
-      alert("Signed out successfully!")
+      window.location.reload()
     } catch {
       alert("Sign out failed!")
     }

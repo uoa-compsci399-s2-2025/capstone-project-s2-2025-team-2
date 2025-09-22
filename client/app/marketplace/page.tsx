@@ -18,6 +18,7 @@ const Marketplace = () => {
     "newest" | "oldest" | "nameAZ" | "nameZA" | ""
   >("newest")
   const [isFormOpen, setIsFormOpen] = useState(false)
+  const [isSignedIn, setIsSignedIn] = useState(false)
 
   const fetchReagents = useCallback(async () => {
     const { data } = await client.GET("/reagents" as any, {})
@@ -26,6 +27,13 @@ const Marketplace = () => {
 
   useEffect(() => {
     fetchReagents()
+    //if auth token in local storage, user is signed in
+    try {
+      const token = localStorage.getItem("authToken")
+      setIsSignedIn(!!token)
+    } catch (_) {
+      setIsSignedIn(false)
+    }
   }, [fetchReagents])
 
   const handleFormSubmit = async () => {
@@ -120,12 +128,14 @@ const Marketplace = () => {
         ))}
       </div>
 
-      <button
-        onClick={() => setIsFormOpen(true)}
-        className="fixed bottom-8 right-8 w-14 h-14 bg-blue-primary hover:bg-blue-primary/90 text-white rounded-full transition-all duration-200 flex items-center text-3xl justify-center hover:scale-110 active:scale-95 group z-50"
-      >
-        +
-      </button>
+      {isSignedIn && (
+        <button
+          onClick={() => setIsFormOpen(true)}
+          className="fixed bottom-8 right-8 w-14 h-14 bg-blue-primary hover:bg-blue-primary/90 text-white rounded-full transition-all duration-200 flex items-center text-3xl justify-center hover:scale-110 active:scale-95 group z-50"
+        >
+          +
+        </button>
+      )}
       {isFormOpen && (
         <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 "
