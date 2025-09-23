@@ -7,9 +7,10 @@ interface SellerContactProps {
   name?: string
   location?: string
   rating?: number
+  userRole?: boolean
 }
 
-const SellerContact = ({ name, location, rating }: SellerContactProps) => {
+const SellerContact = ({ name, location, rating, userRole }: SellerContactProps) => {
   return (
     <div className="flex flex-row items-center">
       <div className="hidden md:block relative bg-yellow-600 rounded-full border-2 border-white h-[4rem] w-[4rem] overflow-hidden">
@@ -35,13 +36,15 @@ const SellerContact = ({ name, location, rating }: SellerContactProps) => {
         </span>
       </div>
 
-      <Button
+      {
+        userRole ?? <Button
         label={`Contact ${name || "Seller"}`}
         className="
           px-[1.5rem] py-[1.5rem] rounded-[18px] md:rounded-[8px] md:text-sm md:px-6 md:w-auto md:py-1.5 md:justify-center
           font-semibold
           "
       />
+      }
     </div>
   )
 }

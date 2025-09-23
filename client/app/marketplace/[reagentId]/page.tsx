@@ -9,6 +9,10 @@ import Image from "next/image"
 import SellerContact from "@/app/components/composite/reagentview/SellerContact"
 import ReagentBreadcrumb from "@/app/components/composite/reagentview/ReagentBreadcrumb"
 
+import { onAuthStateChanged } from "firebase/auth"
+import { auth } from "@/app/config/firebase"
+import { User } from "../../../../server/src/business-layer/models/User"
+
 interface ReagentViewProps {
   params: Promise<{ reagentId: string }>
 }
@@ -17,6 +21,44 @@ export default function ReagentView({ params }: ReagentViewProps) {
   const { reagentId } = use(params)
 
   const [reagent, setReagent] = useState<Reagent | null>(null)
+  const [UID, setUID] = useState<string | null>(null)
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
+
+  // get page viewer's id: WORKS
+  useEffect(() => {
+    if (!auth) return
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUID(user?.uid ?? null)
+    })
+    console.log("User id: ", UID)
+    return () => unsubscribe()
+  }, [UID])
+  ///====================
+  useEffect(() => {
+  if (!UID) return
+
+  const fetchUser = async () => {
+    try {
+      const { data } = await client.GET(`/users/${UID}` as any, {})
+      if (!data) {
+        console.error("User data not found")
+        setCurrentUser(null)
+        return
+      }
+      setCurrentUser(data)
+      console.log("User role:", data.role)
+    } catch (err) {
+      console.error("Failed to fetch current user:", err)
+      setCurrentUser(null)
+    }
+  }
+
+  fetchUser()
+}, [UID])
+
+  //fetch user
+  
+  //======================================
 
   useEffect(() => {
     const fetchReagents = async () => {
@@ -154,7 +196,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
         <div className="hidden md:block mt-[3rem]">
           <div className="w-[60vw] mx-auto my-[2rem] h-[1px] bg-gradient-to-r from-transparent via-gray-400 to-transparent" />
           <div className="flex flex-col items-center gap-5">
-            <SellerContact />
+            <SellerContact userRole={currentUser?.role === "admin"} />
           </div>
         </div>
       </div>
