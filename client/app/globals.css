@@ -178,12 +178,16 @@
   }
 
   body {
+    background: var(--soft-gray);
+    font-family: "Poppins", sans-serif;
+  }
+
+  .dark body {
     background: linear-gradient(
       to bottom,
       var(--background) 0%,
       var(--background) 30%,
       var(--background-fade) 100%
     );
-    font-family: "Poppins", sans-serif;
   }
 }
