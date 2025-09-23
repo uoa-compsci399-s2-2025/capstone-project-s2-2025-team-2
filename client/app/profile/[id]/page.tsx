@@ -16,13 +16,20 @@ import { User } from "../../../../server/src/business-layer/models/User"
 import { Reagent } from "../../../../server/src/business-layer/models/Reagent"
 import { HomeIcon } from "@heroicons/react/24/outline"
 
+/*
+
+TO DO!!
+  1) edit profile functionality
+
+*/
+
 const UserProfile = () => {
   const params = useParams<{ id: string }>()
   const idOfUserBeingViewed = params.id
-  // user state
+  // users
   const [userUid, setUserUid] = useState<string | null>(null)
   const [userBeingViewed, setUserBeingViewed] = useState<User | null>(null)
-  // reagent state
+  // reagents
   const [reagentSearch, setReagentSearch] = useState<string>("")
   const [reagentCategoryFilter, setReagentCategoryFilter] = useState<
     "all" | "on marketplace" | "expiring soon" | "private"
@@ -31,14 +38,15 @@ const UserProfile = () => {
   const [reagentSearchSort, setReagentSearchSort] = useState<
     "newest" | "oldest" | "nameAZ" | "nameZA" | ""
   >("newest")
-  const [reagents, setReagents] = useState<Reagent[]>([])
+  const [reagents, setReagents] = useState<Reagent[] | null>(null)
 
-  const { fetchWithAuth } = useAuthGuard()
+  const { fetchWithAuth } = useAuthGuard({ redirectToAuth: true })
 
   // get users uid
   useEffect(() => {
     if (!auth) return
     const unsubscribe = onAuthStateChanged(auth, (user) => {
+      console.log("poo")
       setUserUid(user?.uid ?? null)
     })
 
@@ -78,15 +86,12 @@ const UserProfile = () => {
       }
     }
 
-    console.log(userBeingViewed)
-    console.log(reagents)
-
     getUserDetails()
     getReagents()
   }, [])
 
   // MORE TECH DEBT - copied from marketplace page, should modularize this func
-  const filtered = reagents.filter((r) => {
+  const filtered = reagents?.filter((r) => {
     const query = reagentSearch.trim().toLowerCase()
     if (!query) return true
 
@@ -109,7 +114,7 @@ const UserProfile = () => {
   })
 
   // same w this
-  const sorted = [...filtered].sort((a, b) => {
+  const sorted = [...(filtered || [])].sort((a, b) => {
     switch (reagentSearchSort) {
       case "newest":
         return a.expiryDate.localeCompare(b.expiryDate)
@@ -125,7 +130,7 @@ const UserProfile = () => {
   })
 
   // return loading state if data hasn't finished loading
-  if (!userBeingViewed || reagents.length === 0) {
+  if (!userBeingViewed || !reagents) {
     return (
       <div className="bg-transparent h-[100vh] w-full">
         <div className="bg-transparent w-full items-center gap-4 text-white flex justify-center mt-[50vh]">
@@ -158,7 +163,7 @@ const UserProfile = () => {
 
   return (
     <Overlay>
-      <div className="px-5">
+      <div className="px-5 pt-5">
         {/* profile header */}
         <div className="flex gap-3">
           <img
@@ -167,28 +172,30 @@ const UserProfile = () => {
             className="w-25 h-25 rounded-full border-3 border-[#6C6C6C] dark:border-white"
           />
           <div className="flex flex-col gap-2">
-            <h1 className="font-light">
+            <h1 className="font-light text-midnight dark:text-pearl text-xl md:text-4xl">
               {idOfUserBeingViewed === userUid
                 ? `Welcome back, ${userBeingViewed && userBeingViewed?.displayName}`
                 : `${userBeingViewed && userBeingViewed?.displayName}'s Profile`}
             </h1>
-            <p className="flex items-center gap-2 text-[#FF7309] dark:text-orange-200">
-              <HomeIcon className="w-6 h-6" /> HOME_INSTITUTION
+            <p className="flex items-center gap-2 text-xs md:text-sm text-[#FF7309] dark:text-orange-200">
+              <HomeIcon className="w-5 h-5 md:w-6 md:h-6" />
+              HOME_INSTITUTION
             </p>
             {/* show 'edit profile' btn if user is viewing their own profile */}
             {idOfUserBeingViewed === userUid && (
               <OutlinedButton
-                backgroundColor="#BABABA"
+                backgroundColor="#A1A1A1"
                 label="Edit Profile"
                 textSize="text-xs"
+                fontWeight="bold"
                 className="mt-3 self-start"
               />
             )}
           </div>
         </div>
         {/* reagent section */}
-        <div className="mt-20">
-          <h4 className="font-light text-midnight dark:text-tint">
+        <div className="mt-20 flex flex-col gap-1">
+          <h4 className="font-light text-midnight text-lg md:text-xl dark:text-tint">
             {idOfUserBeingViewed === userUid
               ? "Your Reagents"
               : `${userBeingViewed?.displayName}'s Reagents`}
@@ -202,23 +209,29 @@ const UserProfile = () => {
             sort={reagentSearchSort}
             setSort={setReagentSearchSort}
           />
-          <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
-            {sorted.map((reagent: Reagent) => (
-              <ReagentCard
-                key={uuidv4()}
-                name={reagent.name}
-                tags={reagent.categories || []}
-                location={reagent.location || "Unknown"}
-                expiryDate={reagent.expiryDate || "N/A"}
-                imageUrl={
-                  reagent.images?.[0] !== "string"
-                    ? reagent.images?.[0] || "/placeholder.webp"
-                    : "/placeholder.webp"
-                }
-                description={reagent.description || ""}
-              />
-            ))}
-          </div>
+          {sorted.length == 0 ? (
+            <p className="flex justify-center mt-8 italic text-gray-100 dark:text-light-gray">
+              This user has no reagents
+            </p>
+          ) : (
+            <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
+              {sorted.map((reagent: Reagent) => (
+                <ReagentCard
+                  key={uuidv4()}
+                  name={reagent.name}
+                  tags={reagent.categories || []}
+                  location={reagent.location || "Unknown"}
+                  expiryDate={reagent.expiryDate || "N/A"}
+                  imageUrl={
+                    reagent.images?.[0] !== "string"
+                      ? reagent.images?.[0] || "/placeholder.webp"
+                      : "/placeholder.webp"
+                  }
+                  description={reagent.description || ""}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </Overlay>

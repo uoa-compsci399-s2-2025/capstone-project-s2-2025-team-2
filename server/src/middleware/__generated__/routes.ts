@@ -45,6 +45,11 @@ const models: TsoaRoute.Models = {
         "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["chemical"]},{"dataType":"enum","enums":["hazardous"]},{"dataType":"enum","enums":["biological"]}],"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ReagentVisibility": {
+        "dataType": "refAlias",
+        "type": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["everyone"]},{"dataType":"enum","enums":["region"]},{"dataType":"enum","enums":["institution"]},{"dataType":"enum","enums":["private"]}],"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Reagent": {
         "dataType": "refObject",
         "properties": {
@@ -60,6 +65,7 @@ const models: TsoaRoute.Models = {
             "categories": {"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"},"required":true},
             "createdAt": {"dataType":"datetime","required":true},
             "location": {"dataType":"string","required":true},
+            "visibility": {"ref":"ReagentVisibility","required":true},
         },
         "additionalProperties": false,
     },
@@ -83,7 +89,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Partial_Reagent_": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"user_id":{"dataType":"string"},"name":{"dataType":"string"},"description":{"dataType":"string"},"condition":{"dataType":"string"},"price":{"dataType":"double"},"quantity":{"dataType":"double"},"expiryDate":{"dataType":"string"},"tradingType":{"ref":"ReagentTradingType"},"images":{"dataType":"array","array":{"dataType":"string"}},"categories":{"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"}},"createdAt":{"dataType":"datetime"},"location":{"dataType":"string"}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"user_id":{"dataType":"string"},"name":{"dataType":"string"},"description":{"dataType":"string"},"condition":{"dataType":"string"},"price":{"dataType":"double"},"quantity":{"dataType":"double"},"expiryDate":{"dataType":"string"},"tradingType":{"ref":"ReagentTradingType"},"images":{"dataType":"array","array":{"dataType":"string"}},"categories":{"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"}},"createdAt":{"dataType":"datetime"},"location":{"dataType":"string"},"visibility":{"ref":"ReagentVisibility"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Order": {
@@ -866,6 +872,7 @@ export function RegisterRoutes(app: Router) {
                 request: {"in":"body","name":"request","required":true,"ref":"CreateChatRoomRequest"},
         };
         app.post('/inbox/chatroom',
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(InboxController)),
             ...(fetchMiddlewares<RequestHandler>(InboxController.prototype.createChatRoom)),
 
@@ -896,6 +903,7 @@ export function RegisterRoutes(app: Router) {
                 request: {"in":"body","name":"request","required":true,"ref":"SendMessageRequest"},
         };
         app.post('/inbox/message',
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(InboxController)),
             ...(fetchMiddlewares<RequestHandler>(InboxController.prototype.sendMessage)),
 
@@ -926,6 +934,7 @@ export function RegisterRoutes(app: Router) {
                 userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
         };
         app.get('/inbox/conversations/:userId',
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(InboxController)),
             ...(fetchMiddlewares<RequestHandler>(InboxController.prototype.getConversations)),
 
@@ -957,6 +966,7 @@ export function RegisterRoutes(app: Router) {
                 userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
         };
         app.get('/inbox/chatroom/:chatRoomId/:userId',
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(InboxController)),
             ...(fetchMiddlewares<RequestHandler>(InboxController.prototype.getChatRoomById)),
 

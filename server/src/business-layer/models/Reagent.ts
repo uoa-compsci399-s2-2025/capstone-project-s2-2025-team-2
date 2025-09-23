@@ -1,6 +1,10 @@
 export type ReagentTradingType = "trade" | "giveaway" | "sell"
-
 export type ReagentCategory = "chemical" | "hazardous" | "biological"
+export type ReagentVisibility =
+  | "everyone"
+  | "region"
+  | "institution"
+  | "private"
 
 export interface Reagent {
   user_id: string
@@ -15,4 +19,5 @@ export interface Reagent {
   categories: ReagentCategory[]
   createdAt: Date
   location: string
+  visibility: ReagentVisibility
 }
