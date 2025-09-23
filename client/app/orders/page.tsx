@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import Overlay from "../components/composite/Overlay"
 import OrderCard from "../components/composite/order/OrderCard"
 import client from "../services/fetch-client"
+import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import type { components } from "@/models/__generated__/schema"
 
@@ -52,7 +53,7 @@ export default function Orders() {
       headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
     })
     await fetchOrders()
-    alert(action === "approve" ? "Order approved!" : "Order canceled!")
+    toast(action === "approve" ? "Order approved!" : "Order canceled!")
   }
 
   return (

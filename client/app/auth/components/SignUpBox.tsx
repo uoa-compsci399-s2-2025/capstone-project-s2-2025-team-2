@@ -17,6 +17,7 @@ import FirebaseSignUpRequestDto from "../../models/request-models/FirebaseSignUp
 import FirebaseSignUpResponseDto from "../../models/response-models/FirebaseSignUpResponseDto"
 import { verifyToken } from "../../services/auth"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 //            function: SignUpBox           //
 export default function SignUpBox({
@@ -93,7 +94,7 @@ export default function SignUpBox({
       setNotificationState("not-displaying")
       setCurrentStep(2)
     } else {
-      alert("Please fill in all required fields.")
+      toast("Please fill in all required fields.")
     }
   }
 
@@ -129,10 +130,8 @@ export default function SignUpBox({
       //save user to firestore
       await saveUserToFirestore()
 
-      //welcome alert, mmarketplace redirect
-      alert(
-        `Welcome, ${response.email}! Your account has been created successfully.`,
-      )
+      //welcome toast, marketplace redirect
+      toast(`Welcome, ${response.email}! Your account has been created successfully.`)
       router.push("/marketplace")
 
       // User is automatically signed in after successful sign up

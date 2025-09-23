@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from "react"
 import { BeakerIcon, XMarkIcon } from "@heroicons/react/20/solid"
 import type { components } from "@/models/__generated__/schema"
 import client from "../../../services/fetch-client"
+import { toast } from "sonner"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../../../config/firebase"
 
@@ -167,7 +168,7 @@ export const ReagentRequest = ({
 
       if (error) throw new Error("Failed to create request. Please try again.")
 
-      alert("Request sent successfully!")
+      toast("Request sent successfully!")
       onSubmit()
       onClose()
     } catch {

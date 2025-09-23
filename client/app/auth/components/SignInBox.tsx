@@ -16,6 +16,7 @@ import { firebaseSignIn, getIdToken } from "../../services/firebase-auth"
 import FirebaseSignInRequestDto from "../../models/request-models/FirebaseSignInRequestDto"
 import FirebaseSignInResponseDto from "../../models/response-models/FirebaseSignInResponseDto"
 import { verifyToken } from "../../services/auth"
+import { toast } from "sonner"
 
 //            function: SignIn           //
 export default function SignInBox({
@@ -58,15 +59,15 @@ export default function SignInBox({
     } catch (error) {
       console.error("Error storing Google OAuth token:", error)
     }
-    //welcome alert, redirect to marketplace
-    alert(`Welcome, ${userData.displayName || userData.email}!`)
+    //welcome toast, redirect to marketplace
+    toast(`Welcome, ${userData.displayName || userData.email}!`)
     router.push("/marketplace")
   }
 
   //            function: handleGoogleError           //
   const handleGoogleError = (error: any) => {
     console.error("Google OAuth error:", error)
-    alert("Google authentication failed. Please try again.")
+    toast("Google authentication failed. Please try again.")
   }
 
   //            function: handleSubmit           //
@@ -110,8 +111,8 @@ export default function SignInBox({
       // Ensure user data exists in Firestore
       await ensureUserInFirestore()
 
-      //welcome alert, redirect to marketplace
-      alert(`Welcome back, ${response.email}!`)
+      //welcome toast, redirect to marketplace
+      toast(`Welcome back, ${response.email}!`)
       router.push("/marketplace")
     } else {
       setNotificationState("login-fail")

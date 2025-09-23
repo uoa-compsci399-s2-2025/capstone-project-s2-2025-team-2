@@ -11,6 +11,7 @@ import {
 } from "@heroicons/react/24/outline"
 import Button from "../../generic/button/regular/Button"
 import { firebaseSignOut } from "../../../services/firebase-auth"
+import { toast } from "sonner"
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -22,7 +23,7 @@ const Sidebar = () => {
       localStorage.removeItem("authToken")
       window.location.reload()
     } catch {
-      alert("Sign out failed!")
+      toast("Sign out failed!")
     }
   }
 

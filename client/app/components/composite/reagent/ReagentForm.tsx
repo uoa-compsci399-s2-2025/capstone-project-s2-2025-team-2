@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo } from "react"
 import type { components } from "@/models/__generated__/schema"
 import client from "../../../services/fetch-client"
+import { toast } from "sonner"
 
 type ReagentTradingType = components["schemas"]["ReagentTradingType"]
 type ReagentCategory = components["schemas"]["ReagentCategory"]
@@ -88,7 +89,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
 
     //at least one category selected
     if (!formData.categories.length) {
-      alert("Please select at least one tag")
+      toast("Please select at least one tag")
       return
     }
 
@@ -113,7 +114,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       //fetch token from localStorage
       const idToken = localStorage.getItem("authToken")
       if (!idToken) {
-        alert("Please sign in to create a reagent.")
+        toast("Please sign in to create a reagent.")
         return
       }
 
@@ -128,10 +129,10 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
         throw new Error("Failed to create reagent")
       }
 
-      alert("Reagent created successfully!")
+      toast("Reagent created successfully!")
       onSubmit(reagentData)
     } catch {
-      alert("Failed to create reagent!")
+      toast("Failed to create reagent!")
     }
   }
 
@@ -142,13 +143,13 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
     if (!url) return
     if (formData.images.length >= MAX_IMAGES) return
     if (formData.images.includes(url)) {
-      alert("URL has already been added")
+      toast("URL has already been added")
       return
     }
     try {
       new URL(url)
     } catch {
-      alert("Invalid URL")
+      toast("Invalid URL")
       return
     }
 
