@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useEffect, useState, ElementType } from "react"
 import { v4 as uuidv4 } from "uuid"
 import { useParams } from "next/navigation"
 import { onAuthStateChanged } from "firebase/auth"
@@ -7,6 +7,7 @@ import { auth } from "@/app/config/firebase"
 // components
 import ReagentCard from "../../components/composite/reagent/ReagentCard"
 import Overlay from "../../components/composite/Overlay"
+import Button from "@/app/components/generic/button/regular/Button"
 import OutlinedButton from "../../components/generic/button/outlined/OutlinedButton"
 import SearchBar from "../../components/composite/searchbar/SearchBar"
 // services
@@ -14,14 +15,25 @@ import useAuthGuard from "@/app/hooks/useAuthGuard"
 // other
 import { User } from "../../../../server/src/business-layer/models/User"
 import { Reagent } from "../../../../server/src/business-layer/models/Reagent"
-import { HomeIcon } from "@heroicons/react/24/outline"
+import {
+  HomeIcon,
+  Square3Stack3DIcon,
+  ShoppingCartIcon,
+  ExclamationTriangleIcon,
+  LockClosedIcon,
+} from "@heroicons/react/24/outline"
 
 /*
-
 TO DO!!
   1) edit profile functionality
-
+  2) change "expiring soon" filter to use dynamic instead of hard-coded expiry
 */
+
+type reagentCategoryFilter =
+  | "all"
+  | "on marketplace"
+  | "expiring soon"
+  | "private"
 
 const UserProfile = () => {
   const params = useParams<{ id: string }>()
@@ -31,9 +43,10 @@ const UserProfile = () => {
   const [userBeingViewed, setUserBeingViewed] = useState<User | null>(null)
   // reagents
   const [reagentSearch, setReagentSearch] = useState<string>("")
-  const [reagentCategoryFilter, setReagentCategoryFilter] = useState<
-    "all" | "on marketplace" | "expiring soon" | "private"
-  >("all")
+  const [reagentCategoryFilter, setReagentCategoryFilter] =
+    useState<reagentCategoryFilter>("all")
+  const [reagentCategoryFilterIndex, setReagentCategoryFilterIndex] =
+    useState<number>(0)
   const [reagentSearchFilter, setReagentSearchFilter] = useState("all")
   const [reagentSearchSort, setReagentSearchSort] = useState<
     "newest" | "oldest" | "nameAZ" | "nameZA" | ""
@@ -42,11 +55,51 @@ const UserProfile = () => {
 
   const { fetchWithAuth } = useAuthGuard({ redirectToAuth: true })
 
+  // to be used when mapping reagent filter btns
+  const reagentFilters: {
+    label: string
+    categoryFilterValue: reagentCategoryFilter
+    bgColour: string
+    icon: ElementType
+  }[] = [
+    {
+      label: "All Reagents",
+      categoryFilterValue: "all",
+      bgColour: "#7C7EFF",
+      icon: Square3Stack3DIcon,
+    },
+    {
+      label: "On Marketplace",
+      categoryFilterValue: "on marketplace",
+      bgColour: "#44A04A",
+      icon: ShoppingCartIcon,
+    },
+    {
+      label: "Expiring Soon",
+      categoryFilterValue: "expiring soon",
+      bgColour: "#FF666C",
+      icon: ExclamationTriangleIcon,
+    },
+    {
+      label: "Private Inventory",
+      categoryFilterValue: "private",
+      bgColour: "#FF9156",
+      icon: LockClosedIcon,
+    },
+  ]
+
+  // keep reagent filter index in sync with the selected filter
+  useEffect(() => {
+    const i = reagentFilters.findIndex(
+      (filter) => filter.categoryFilterValue === reagentCategoryFilter,
+    )
+    setReagentCategoryFilterIndex(i)
+  }, [reagentCategoryFilter])
+
   // get users uid
   useEffect(() => {
     if (!auth) return
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      console.log("poo")
       setUserUid(user?.uid ?? null)
     })
 
@@ -92,6 +145,32 @@ const UserProfile = () => {
 
   // MORE TECH DEBT - copied from marketplace page, should modularize this func
   const filtered = reagents?.filter((r) => {
+    // first appply category filter (all, on marketplace, expiring soon, private)
+    let categoryMatch = true
+    switch (reagentCategoryFilter) {
+      case "on marketplace":
+        categoryMatch = r.visibility !== "private"
+        break
+      case "expiring soon":
+        // currently hardcoded to 30 days from now, change to dynamic later (using user-set expires soon time)
+        const expiryDate = new Date(r.expiryDate)
+        const today = new Date()
+        const thirtyDaysFromNow = new Date(
+          today.getTime() + 30 * 24 * 60 * 60 * 1000,
+        )
+        categoryMatch = expiryDate <= thirtyDaysFromNow && expiryDate >= today
+        break
+      case "private":
+        categoryMatch = r.visibility === "private"
+        break
+      default:
+        categoryMatch = true
+        break
+    }
+
+    if (!categoryMatch) return false
+
+    // Then apply search filters (tag, category, date, name)
     const query = reagentSearch.trim().toLowerCase()
     if (!query) return true
 
@@ -194,44 +273,127 @@ const UserProfile = () => {
           </div>
         </div>
         {/* reagent section */}
-        <div className="mt-20 flex flex-col gap-1">
-          <h4 className="font-light text-midnight text-lg md:text-xl dark:text-tint">
-            {idOfUserBeingViewed === userUid
-              ? "Your Reagents"
-              : `${userBeingViewed?.displayName}'s Reagents`}
-          </h4>
-          <p className="text-dark-gray dark:text-light-gray"></p>
-          <SearchBar
-            search={reagentSearch}
-            setSearch={setReagentSearch}
-            filter={reagentSearchFilter}
-            setFilter={setReagentSearchFilter}
-            sort={reagentSearchSort}
-            setSort={setReagentSearchSort}
-          />
-          {sorted.length == 0 ? (
-            <p className="flex justify-center mt-8 italic text-gray-100 dark:text-light-gray">
-              This user has no reagents
-            </p>
-          ) : (
-            <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
-              {sorted.map((reagent: Reagent) => (
-                <ReagentCard
-                  key={uuidv4()}
-                  name={reagent.name}
-                  tags={reagent.categories || []}
-                  location={reagent.location || "Unknown"}
-                  expiryDate={reagent.expiryDate || "N/A"}
-                  imageUrl={
-                    reagent.images?.[0] !== "string"
-                      ? reagent.images?.[0] || "/placeholder.webp"
-                      : "/placeholder.webp"
-                  }
-                  description={reagent.description || ""}
-                />
-              ))}
+        <div className="mt-20 flex flex-col gap-8 md:gap-2">
+          {/* reagent filter btns */}
+          <div className="flex flex-col gap-4 mb-5">
+            <div className="flex gap-4 justify-center md:justify-end">
+              {reagentFilters.map((btnProps) =>
+                reagentCategoryFilter === btnProps.categoryFilterValue ? (
+                  <div>
+                    {/* variant for wide-screen views */}
+                    <span className="hidden md:block">
+                      <Button
+                        textSize="text-sm"
+                        fontWeight="normal"
+                        key={btnProps.categoryFilterValue}
+                        label={btnProps.label}
+                        backgroundColor={btnProps.bgColour}
+                        icon={btnProps.icon}
+                        onClick={() =>
+                          setReagentCategoryFilter(btnProps.categoryFilterValue)
+                        }
+                      />
+                    </span>
+                    {/* variant for mobile-screen views */}
+                    <span className="block md:hidden">
+                      <button
+                        type="button"
+                        className="p-2 text-white rounded-lg"
+                        onClick={() =>
+                          setReagentCategoryFilter(btnProps.categoryFilterValue)
+                        }
+                        style={{ backgroundColor: btnProps.bgColour }}
+                      >
+                        <btnProps.icon className={`w-7`} />
+                      </button>
+                    </span>
+                  </div>
+                ) : (
+                  <div>
+                    <span className="hidden md:block">
+                      <OutlinedButton
+                        textSize="text-sm"
+                        fontWeight="normal"
+                        key={btnProps.categoryFilterValue}
+                        label={btnProps.label}
+                        backgroundColor={btnProps.bgColour}
+                        icon={btnProps.icon}
+                        onClick={() =>
+                          setReagentCategoryFilter(btnProps.categoryFilterValue)
+                        }
+                      />
+                    </span>
+                    <span className="block md:hidden">
+                      <button
+                        type="button"
+                        className="bg-gray-50 dark:bg-primary p-2 rounded-lg outline-2"
+                        onClick={() =>
+                          setReagentCategoryFilter(btnProps.categoryFilterValue)
+                        }
+                        style={{
+                          outlineColor: btnProps.bgColour,
+                          color: btnProps.bgColour,
+                        }}
+                      >
+                        <btnProps.icon className={`w-7`} />
+                      </button>
+                    </span>
+                  </div>
+                ),
+              )}
             </div>
-          )}
+            <h5
+              className="text-center font-light text-sm italic  md:hidden"
+              style={{
+                color: reagentFilters[reagentCategoryFilterIndex].bgColour,
+              }}
+            >
+              {`Viewing '${reagentFilters[reagentCategoryFilterIndex].label}'`}
+            </h5>
+          </div>
+          {/* reagent search bar + results */}
+          <div className="flex flex-col gap-2">
+            <h4 className="font-light text-midnight text-lg md:text-xl dark:text-tint">
+              {idOfUserBeingViewed === userUid
+                ? "Your Reagents"
+                : `${userBeingViewed?.displayName}'s Reagents`}
+            </h4>
+            <p className="text-dark-gray dark:text-light-gray"></p>
+            <SearchBar
+              search={reagentSearch}
+              setSearch={setReagentSearch}
+              filter={reagentSearchFilter}
+              setFilter={setReagentSearchFilter}
+              sort={reagentSearchSort}
+              setSort={setReagentSearchSort}
+            />
+            {/* if raw reagent array AND sorted array are both length 0, it means user has no reagents */}
+            {sorted.length === 0 ? (
+              <p className="flex justify-center mt-8 italic text-gray-100 dark:text-light-gray">
+                {reagents.length === 0
+                  ? "This user has no reagents"
+                  : "No reagents under selected filters and/or search query"}
+              </p>
+            ) : (
+              <div className="bg-transparent flex flex-wrap gap-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
+                {sorted.map((reagent: Reagent) => (
+                  <ReagentCard
+                    key={uuidv4()}
+                    name={reagent.name}
+                    tags={reagent.categories || []}
+                    location={reagent.location || "Unknown"}
+                    expiryDate={reagent.expiryDate || "N/A"}
+                    imageUrl={
+                      reagent.images?.[0] !== "string"
+                        ? reagent.images?.[0] || "/placeholder.webp"
+                        : "/placeholder.webp"
+                    }
+                    description={reagent.description || ""}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </Overlay>
