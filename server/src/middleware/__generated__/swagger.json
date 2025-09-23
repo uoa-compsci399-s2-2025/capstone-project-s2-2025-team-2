@@ -218,10 +218,7 @@
 			},
 			"Order": {
 				"properties": {
-					"req_id": {
-						"type": "string"
-					},
-					"owner_id": {
+					"requester_id": {
 						"type": "string"
 					},
 					"reagent_id": {
@@ -238,11 +235,13 @@
 					"createdAt": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"message": {
+						"type": "string"
 					}
 				},
 				"required": [
-					"req_id",
-					"owner_id",
+					"requester_id",
 					"reagent_id",
 					"status",
 					"createdAt"
@@ -252,16 +251,160 @@
 			},
 			"CreateOrderRequest": {
 				"properties": {
-					"req_id": {
+					"reagent_id": {
 						"type": "string"
 					},
-					"reagent_id": {
+					"message": {
 						"type": "string"
 					}
 				},
 				"required": [
-					"req_id",
 					"reagent_id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ChatRoom": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"user1_id": {
+						"type": "string"
+					},
+					"user2_id": {
+						"type": "string"
+					},
+					"created_at": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"user1_id",
+					"user2_id",
+					"created_at"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Message": {
+				"properties": {
+					"id": {
+						"type": "string"
+					},
+					"chat_room_id": {
+						"type": "string"
+					},
+					"sender_id": {
+						"type": "string"
+					},
+					"content": {
+						"type": "string"
+					},
+					"created_at": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"chat_room_id",
+					"sender_id",
+					"content",
+					"created_at"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ChatRoomResponse": {
+				"properties": {
+					"chat_room": {
+						"$ref": "#/components/schemas/ChatRoom"
+					},
+					"messages": {
+						"items": {
+							"$ref": "#/components/schemas/Message"
+						},
+						"type": "array"
+					},
+					"other_user": {
+						"properties": {
+							"email": {
+								"type": "string"
+							},
+							"name": {
+								"type": "string"
+							},
+							"id": {
+								"type": "string"
+							}
+						},
+						"required": [
+							"email",
+							"name",
+							"id"
+						],
+						"type": "object"
+					}
+				},
+				"required": [
+					"chat_room",
+					"messages",
+					"other_user"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateChatRoomRequest": {
+				"properties": {
+					"user1_id": {
+						"type": "string"
+					},
+					"user2_id": {
+						"type": "string"
+					},
+					"initial_message": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"user1_id",
+					"user2_id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"SendMessageRequest": {
+				"properties": {
+					"chat_room_id": {
+						"type": "string"
+					},
+					"sender_id": {
+						"type": "string"
+					},
+					"content": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"chat_room_id",
+					"sender_id",
+					"content"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ConversationListResponse": {
+				"properties": {
+					"conversations": {
+						"items": {
+							"$ref": "#/components/schemas/ChatRoomResponse"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"conversations"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -556,7 +699,7 @@
 						}
 					}
 				},
-				"description": "Get all reagents under a user\r\nUser must be authenticated to access this endpoint",
+				"description": "Get all reagents under a user\nUser must be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -581,7 +724,7 @@
 						}
 					}
 				},
-				"description": "Create a reagent by passing in all the required props.\r\nUser **must** be authenticated to access this endpoint (lab manager / admin) [seller]",
+				"description": "Create a reagent by passing in all the required props.\nUser **must** be authenticated to access this endpoint (lab manager / admin) [seller]",
 				"tags": [
 					"User"
 				],
@@ -625,7 +768,7 @@
 						}
 					}
 				},
-				"description": "Get a reagent by using its ID\r\nUser must be authenticated to access this endpoint",
+				"description": "Get a reagent by using its ID\nUser must be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -665,7 +808,7 @@
 						}
 					}
 				},
-				"description": "Delete a reagent by using its ID\r\nUser **must** be authenticated to access this endpoint",
+				"description": "Delete a reagent by using its ID\nUser **must** be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -700,7 +843,7 @@
 						}
 					}
 				},
-				"description": "Update a reagent by its ID.\r\nUser **must** be authenticated to access this endpoint",
+				"description": "Update a reagent by its ID.\nUser **must** be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -752,7 +895,7 @@
 						}
 					}
 				},
-				"description": "\r\nGet all reagents under another user by their user id\r\nCan only be done by admin*",
+				"description": "\nGet all reagents under another user by their user id\nCan only be done by admin*",
 				"tags": [
 					"User"
 				],
@@ -852,7 +995,7 @@
 						}
 					}
 				},
-				"description": "Get a reagent by its ID.\r\nCan only be done by lab_admin and admin",
+				"description": "Get a reagent by its ID.\nCan only be done by lab_admin and admin",
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -882,7 +1025,7 @@
 						}
 					}
 				},
-				"description": "Delete a reagent by its ID.\r\nCan only be done by lab_admin (who owns the reagent) and admin",
+				"description": "Delete a reagent by its ID.\nCan only be done by lab_admin (who owns the reagent) and admin",
 				"security": [],
 				"parameters": [
 					{
@@ -910,7 +1053,7 @@
 						}
 					}
 				},
-				"description": "Update a reagent by its ID.\r\nCan only be done by lab_admin (who owns the reagent) and admin",
+				"description": "Update a reagent by its ID.\nCan only be done by lab_admin (who owns the reagent) and admin",
 				"security": [],
 				"parameters": [
 					{
@@ -1097,6 +1240,140 @@
 					{
 						"in": "path",
 						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/inbox/chatroom": {
+			"post": {
+				"operationId": "CreateChatRoom",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ChatRoomResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Inbox"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateChatRoomRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/inbox/message": {
+			"post": {
+				"operationId": "SendMessage",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ChatRoomResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Inbox"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/SendMessageRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/inbox/conversations/{userId}": {
+			"get": {
+				"operationId": "GetConversations",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ConversationListResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Inbox"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "userId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/inbox/chatroom/{chatRoomId}/{userId}": {
+			"get": {
+				"operationId": "GetChatRoomById",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ChatRoomResponse"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Inbox"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "chatRoomId",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"in": "path",
+						"name": "userId",
 						"required": true,
 						"schema": {
 							"type": "string"

@@ -22,7 +22,8 @@
     "nodemailer": "^7.0.6",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.1",
-    "tsoa": "^6.6.0"
+    "tsoa": "^6.6.0",
+    "uuid": "^13.0.0"
   },
   "devDependencies": {
     "@types/body-parser": "^1.19.6",
