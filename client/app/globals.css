@@ -185,9 +185,9 @@
   .dark body {
     background: linear-gradient(
       to bottom,
-      var(--background) 0%,
-      var(--background) 30%,
-      var(--background-fade) 100%
+      #181818 0%,
+      #181818 60%,
+      #474747 100%
     );
   }
 }
