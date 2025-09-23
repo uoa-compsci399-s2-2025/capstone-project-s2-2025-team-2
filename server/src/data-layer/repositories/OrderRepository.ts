@@ -23,6 +23,7 @@ export class OrderService {
     const order: Order = {
       requester_id: user_id,
       reagent_id: requestBody.reagent_id,
+      owner_id: reagent.user_id,
       status: "pending",
       createdAt: new Date(),
       ...(requestBody.message && { message: requestBody.message }),
@@ -96,5 +97,37 @@ export class OrderService {
         `Failed to update order status: ${(err as Error).message}`,
       )
     }
+  }
+
+  async approveOrder(id: string): Promise<Order> {
+    return await this.db.runTransaction(async (tx) => {
+        const orderRef = FirestoreCollections.orders.doc(id)
+        const orderDoc = await tx.get(orderRef)
+        if (!orderDoc.exists) {
+          throw new Error(`Order ${id} not found`)
+        }
+        const order = orderDoc.data() as Order
+   
+        const otherOrdersQuery = this.db
+          .collection("orders")
+          .where("reagent_id", "==", order.reagent_id)
+          .where("status", "==", "pending")
+        const otherOrders = await tx.get(otherOrdersQuery)
+
+        //writes, updating status + ownership
+        tx.update(orderRef, { status: "approved" })
+
+        //transfer ownership
+        const reagentRef = this.db.collection("reagents").doc(order.reagent_id)
+        tx.update(reagentRef, { user_id: order.requester_id })
+
+        //cancel other pending orders for reagent
+        otherOrders.docs.forEach((doc) => {
+          if (doc.id !== id) {
+            tx.update(doc.ref, { status: "canceled" })
+          }
+        })
+        return { ...order, status: "approved" }
+      })
   }
 }

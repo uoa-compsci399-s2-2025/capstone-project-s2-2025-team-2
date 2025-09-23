@@ -224,6 +224,9 @@
 					"reagent_id": {
 						"type": "string"
 					},
+					"owner_id": {
+						"type": "string"
+					},
 					"status": {
 						"type": "string",
 						"enum": [
@@ -243,6 +246,7 @@
 				"required": [
 					"requester_id",
 					"reagent_id",
+					"owner_id",
 					"status",
 					"createdAt"
 				],

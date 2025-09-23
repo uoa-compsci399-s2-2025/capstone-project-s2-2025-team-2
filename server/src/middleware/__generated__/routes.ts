@@ -91,6 +91,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "requester_id": {"dataType":"string","required":true},
             "reagent_id": {"dataType":"string","required":true},
+            "owner_id": {"dataType":"string","required":true},
             "status": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["pending"]},{"dataType":"enum","enums":["approved"]},{"dataType":"enum","enums":["canceled"]}],"required":true},
             "createdAt": {"dataType":"datetime","required":true},
             "message": {"dataType":"string"},
