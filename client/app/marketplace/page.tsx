@@ -113,17 +113,8 @@ const Marketplace = () => {
         {sorted.map((r) => (
           <ReagentCard
             key={r.id}
-            name={r.name}
-            tags={Array.isArray(r.categories) ? r.categories : []}
+            reagent={r as ReagentWithId}
             location={r.location ?? "Unknown"}
-            expiryDate={r.expiryDate ?? "N/A"}
-            imageUrl={
-              r.images?.[0] !== "string"
-                ? (r.images?.[0] ?? "/placeholder.webp")
-                : "/placeholder.webp"
-            }
-            type={r.tradingType ?? "sell"}
-            id={r.id}
           />
         ))}
       </div>

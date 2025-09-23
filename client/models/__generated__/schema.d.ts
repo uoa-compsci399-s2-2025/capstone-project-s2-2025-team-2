@@ -414,6 +414,7 @@ export interface components {
         Order: {
             requester_id: string;
             reagent_id: string;
+            owner_id: string;
             /** @enum {string} */
             status: "pending" | "approved" | "canceled";
             /** Format: date-time */

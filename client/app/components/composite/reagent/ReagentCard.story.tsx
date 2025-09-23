@@ -29,13 +29,23 @@ type Story = StoryObj<typeof meta>
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const DefaultReagentCard: Story = {
   args: {
-    name: "Ethanol",
-    tags: ["liquid", "alchohol", "flammable"],
+    reagent: {
+      id: "abcd",
+      user_id: "user_1",
+      name: "Ethanol",
+      categories: ["chemical"],
+      expiryDate: "25/10/2026",
+      images: [
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4R4SrdU7Rbyr3DqFDmKBsFH9t9lqjLcJetw&s",
+      ],
+      tradingType: "trade",
+      description: "High purity ethanol",
+      condition: "New",
+      quantity: 1,
+      createdAt: "2025-01-01T00:00:00.000Z",
+      location: "UoA, Auckland",
+      price: 0,
+    },
     location: "UoA, Auckland",
-    expiryDate: "25/10/2026",
-    imageUrl:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4R4SrdU7Rbyr3DqFDmKBsFH9t9lqjLcJetw&s",
-    type: "trade",
-    id: "abcd",
   },
 }
