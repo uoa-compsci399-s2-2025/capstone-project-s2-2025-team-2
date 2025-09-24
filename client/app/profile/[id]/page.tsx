@@ -151,7 +151,7 @@ const UserProfile = () => {
       case "on marketplace":
         categoryMatch = r.visibility !== "private"
         break
-      case "expiring soon":
+      case "expiring soon": {
         // currently hardcoded to 30 days from now, change to dynamic later (using user-set expires soon time)
         const expiryDate = new Date(r.expiryDate)
         const today = new Date()
@@ -160,6 +160,7 @@ const UserProfile = () => {
         )
         categoryMatch = expiryDate <= thirtyDaysFromNow && expiryDate >= today
         break
+      }
       case "private":
         categoryMatch = r.visibility === "private"
         break
