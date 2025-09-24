@@ -8,7 +8,7 @@ export interface Order {
 
 export interface Exchange extends Order {
   offeredReagentId: string
-  quantity: number
+  quantity: string
 }
 
 export interface Trade extends Order {
