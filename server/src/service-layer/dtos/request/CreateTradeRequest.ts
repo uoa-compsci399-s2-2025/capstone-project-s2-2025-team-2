@@ -3,4 +3,5 @@ export interface CreateTradeRequest {
   message?: string
   price: number
   type: "trade"
+  quantity?: string
 }
