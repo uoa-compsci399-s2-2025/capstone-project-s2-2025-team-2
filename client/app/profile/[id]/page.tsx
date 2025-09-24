@@ -279,7 +279,7 @@ const UserProfile = () => {
             <div className="flex gap-4 justify-center md:justify-end">
               {reagentFilters.map((btnProps) =>
                 reagentCategoryFilter === btnProps.categoryFilterValue ? (
-                  <div>
+                  <div key={btnProps.categoryFilterValue}>
                     {/* variant for wide-screen views */}
                     <span className="hidden md:block">
                       <Button
@@ -309,7 +309,7 @@ const UserProfile = () => {
                     </span>
                   </div>
                 ) : (
-                  <div>
+                  <div key={btnProps.categoryFilterValue}>
                     <span className="hidden md:block">
                       <OutlinedButton
                         textSize="text-sm"
