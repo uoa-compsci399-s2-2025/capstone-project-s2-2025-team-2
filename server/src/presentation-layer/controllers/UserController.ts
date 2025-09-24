@@ -50,6 +50,34 @@ export class UserController extends Controller {
   }
 
   /**
+   * Gets the basic information of a user
+   *
+   * @param jwt - jwt token is needed for the user to be verified
+   * @param user_id - the ID of the user to retrieve
+   * @returns Promise<User>
+   */
+  @Security("jwt")
+  @SuccessResponse("200", "User information returned successfully")
+  @Get("{user_id}")
+  public async getUser(
+    @Path() user_id: string,
+    @Request() request: AuthRequest,
+  ): Promise<User> {
+    try {
+      if (request.user.role !== "admin" && request.user.uid !== user_id) {
+        this.setStatus(403)
+        console.error(
+          "You don't have permission to access other users information",
+        )
+      }
+      const user = await new UserService().getUserById(user_id)
+      return user
+    } catch (err) {
+      throw new Error(`Failed to fetch user: ${(err as Error).message}`)
+    }
+  }
+
+  /**
    * Get all reagents under a user
    * User must be authenticated to access this endpoint
    * @param user_id - user id to query with
@@ -108,11 +136,10 @@ export class UserController extends Controller {
     @Request() request: AuthRequest,
   ): Promise<Reagent | null> {
     try {
-      const user = request.user
-      const user_id = user.uid
+      const user_id = request.user.uid
       const reagent = await new ReagentService().getReagentById(id)
       if (user_id !== reagent.user_id) {
-        console.log("You cannot delete a reagent that you don't own")
+        console.error("You cannot delete a reagent that you don't own")
         return null
       }
       const reagentToDelete = await new ReagentService().deleteReagent(id)
@@ -138,12 +165,9 @@ export class UserController extends Controller {
     @Request() request: AuthRequest,
     @Body() requestObject: CreateReagentRequest,
   ): Promise<Reagent> {
-    console.log(request)
     const user = request.user
-    console.log(request.user.uid)
-    console.log(user.role)
     if (!user || !["admin", "lab_manager"].includes(user.role)) {
-      throw new Error("You don't have permission to create reagents")
+      console.error("You don't have permission to create reagents")
     }
     const user_id = request.user.uid
     const data = {
@@ -202,8 +226,11 @@ Can only be done by admin*
     @Request() request: AuthRequest,
   ): Promise<Reagent[]> {
     try {
-      if (request.user.role !== "admin") {
-        throw new Error("You don't have permission to access this endpoint")
+      if (request.user.role !== "admin" && request.user.uid !== id) {
+        this.setStatus(403)
+        console.error(
+          "You don't have permission to access other users reagents",
+        )
       }
       const reagents = await new ReagentService().getReagentsByUserId(id)
       return reagents

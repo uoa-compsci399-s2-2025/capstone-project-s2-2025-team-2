@@ -29,7 +29,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "email": {"dataType":"string","required":true},
-            "username": {"dataType":"string","required":true},
+            "displayName": {"dataType":"string","required":true},
             "role": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["user"]},{"dataType":"enum","enums":["lab_manager"]},{"dataType":"enum","enums":["admin"]}],"required":true},
         },
         "additionalProperties": false,
@@ -319,6 +319,38 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'getEmail',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsUserController_getUser: Record<string, TsoaRoute.ParameterSchema> = {
+                user_id: {"in":"path","name":"user_id","required":true,"dataType":"string"},
+                request: {"in":"request","name":"request","required":true,"dataType":"object"},
+        };
+        app.get('/users/:user_id',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(UserController)),
+            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.getUser)),
+
+            async function UserController_getUser(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsUserController_getUser, request, response });
+
+                const controller = new UserController();
+
+              await templateService.apiHandler({
+                methodName: 'getUser',
                 controller,
                 response,
                 next,
@@ -835,6 +867,7 @@ export function RegisterRoutes(app: Router) {
                 request: {"in":"body","name":"request","required":true,"ref":"CreateChatRoomRequest"},
         };
         app.post('/inbox/chatroom',
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(InboxController)),
             ...(fetchMiddlewares<RequestHandler>(InboxController.prototype.createChatRoom)),
 
@@ -865,6 +898,7 @@ export function RegisterRoutes(app: Router) {
                 request: {"in":"body","name":"request","required":true,"ref":"SendMessageRequest"},
         };
         app.post('/inbox/message',
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(InboxController)),
             ...(fetchMiddlewares<RequestHandler>(InboxController.prototype.sendMessage)),
 
@@ -895,6 +929,7 @@ export function RegisterRoutes(app: Router) {
                 userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
         };
         app.get('/inbox/conversations/:userId',
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(InboxController)),
             ...(fetchMiddlewares<RequestHandler>(InboxController.prototype.getConversations)),
 
@@ -926,6 +961,7 @@ export function RegisterRoutes(app: Router) {
                 userId: {"in":"path","name":"userId","required":true,"dataType":"string"},
         };
         app.get('/inbox/chatroom/:chatRoomId/:userId',
+            authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(InboxController)),
             ...(fetchMiddlewares<RequestHandler>(InboxController.prototype.getChatRoomById)),
 
