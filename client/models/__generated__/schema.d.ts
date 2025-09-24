@@ -37,6 +37,23 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  "/users/{user_id}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description Gets the basic information of a user */
+    get: operations["GetUser"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   "/users/reagents": {
     parameters: {
       query?: never
@@ -337,7 +354,7 @@ export interface components {
   schemas: {
     User: {
       email: string
-      username: string
+      displayName: string
       /** @enum {string} */
       role: "user" | "lab_manager" | "admin"
     }
@@ -345,6 +362,8 @@ export interface components {
     ReagentTradingType: "trade" | "giveaway" | "sell"
     /** @enum {string} */
     ReagentCategory: "chemical" | "hazardous" | "biological"
+    /** @enum {string} */
+    ReagentVisibility: "everyone" | "region" | "institution" | "private"
     Reagent: {
       user_id: string
       name: string
@@ -361,6 +380,7 @@ export interface components {
       /** Format: date-time */
       createdAt: string
       location: string
+      visibility: components["schemas"]["ReagentVisibility"]
     }
     CreateReagentRequest: {
       name: string
@@ -393,6 +413,7 @@ export interface components {
       /** Format: date-time */
       createdAt?: string
       location?: string
+      visibility?: components["schemas"]["ReagentVisibility"]
     }
     Order: {
       requester_id: string
@@ -532,6 +553,29 @@ export interface operations {
           "application/json": {
             email: string
           }
+        }
+      }
+    }
+  }
+  GetUser: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description - the ID of the user to retrieve */
+        user_id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description User information returned successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["User"]
         }
       }
     }

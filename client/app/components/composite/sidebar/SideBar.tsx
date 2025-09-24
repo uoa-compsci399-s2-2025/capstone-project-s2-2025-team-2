@@ -9,6 +9,7 @@ import {
 } from "@heroicons/react/24/outline"
 import Button from "../../generic/button/regular/Button"
 import { firebaseSignOut } from "../../../services/firebase-auth"
+import { auth } from "@/app/config/firebase"
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -24,9 +25,12 @@ const Sidebar = () => {
     }
   }
 
+  const uid = auth?.currentUser?.uid
+  const profileHref = uid ? `/profile/${uid}` : "/auth"
+
   const links = [
     {
-      href: "/profile",
+      href: profileHref,
       label: "Profile",
       icon: UserCircleIcon,
       isButton: true,
