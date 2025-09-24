@@ -31,7 +31,7 @@ const Marketplace = () => {
     try {
       const token = localStorage.getItem("authToken")
       setIsSignedIn(!!token)
-    } catch (_) {
+    } catch {
       setIsSignedIn(false)
     }
   }, [fetchReagents])
