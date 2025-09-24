@@ -3,4 +3,5 @@ export interface CreateExchangeRequest {
   message?: string
   offeredReagentId: string
   quantity: number
+  type: "exchange"
 }
