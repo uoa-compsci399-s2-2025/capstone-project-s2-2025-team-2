@@ -5,3 +5,12 @@ export interface Order {
   createdAt: Date
   message?: string
 }
+
+export interface Exchange extends Order {
+  offeredReagentId: string
+  quantity: number
+}
+
+export interface Trade extends Order {
+  price: number
+}

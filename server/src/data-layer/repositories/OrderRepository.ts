@@ -1,6 +1,7 @@
 import FirestoreCollections from "../adapters/FirestoreCollections"
 import { Order } from "../../business-layer/models/Order"
 import { CreateOrderRequest } from "../../service-layer/dtos/request/CreateOrderRequest"
+import { CreateTradeRequest } from "../../service-layer/dtos/request/CreateTradeRequest"
 import { UserService } from "./UserRepository"
 import { ReagentService } from "./ReagentRepository"
 import { InboxService } from "../../service-layer/services/InboxService"
@@ -12,6 +13,46 @@ export class OrderService {
   inboxService = new InboxService()
   db = admin.firestore()
   async createOrder(
+    user_id: string,
+    requestBody: CreateOrderRequest,
+  ): Promise<Order> {
+    const user = await this.userService.getUserById(user_id)
+    const reagent = await this.reagentService.getReagentById(
+      requestBody.reagent_id,
+    )
+    if (!user || !reagent) throw new Error("No user or reagent found")
+    const order: Order = {
+      requester_id: user_id,
+      reagent_id: requestBody.reagent_id,
+      status: "pending",
+      createdAt: new Date(),
+      ...(requestBody.message && { message: requestBody.message }),
+    }
+
+    console.log("Order: ", order)
+
+    const docRef = await FirestoreCollections.orders.add(order)
+    const createdOrder = {
+      ...order,
+      id: docRef.id,
+    }
+
+    // Create chat room between requester and reagent owner
+    try {
+      await this.inboxService.createChatRoom({
+        user1_id: user_id,
+        user2_id: reagent.user_id,
+        initial_message: requestBody.message,
+      })
+    } catch (error) {
+      console.error("Error creating chat room for order:", error)
+      // Don't fail the order creation if chat room creation fails
+    }
+
+    return createdOrder
+  }
+
+  async createTrade(
     user_id: string,
     requestBody: CreateOrderRequest,
   ): Promise<Order> {
