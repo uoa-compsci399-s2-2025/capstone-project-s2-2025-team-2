@@ -25,7 +25,7 @@ export class OrderService {
       reagent_id: requestBody.reagent_id,
       status: "pending",
       createdAt: new Date(),
-      message: requestBody.message,
+      ...(requestBody.message && { message: requestBody.message }),
     }
 
     console.log("Order: ", order)
@@ -53,7 +53,7 @@ export class OrderService {
 
   async getAllOrders(user_id: string): Promise<Order[]> {
     const [snap1, snap2] = await Promise.all([
-      this.db.collection("orders").where("req_id", "==", user_id).get(),
+      this.db.collection("orders").where("requester_id", "==", user_id).get(),
       this.db.collection("orders").where("owner_id", "==", user_id).get(),
     ])
 

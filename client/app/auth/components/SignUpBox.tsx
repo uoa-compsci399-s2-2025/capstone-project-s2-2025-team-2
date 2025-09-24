@@ -125,15 +125,21 @@ export default function SignUpBox({
   const handleSignUpResponse = async (response: FirebaseSignUpResponseDto) => {
     if (response.success) {
       setNotificationState("sign-up-success")
-      router.push("/")
+
+      //save user to firestore
+      await saveUserToFirestore()
+
+      //welcome alert, mmarketplace redirect
+      alert(
+        `Welcome, ${response.email}! Your account has been created successfully.`,
+      )
+      router.push("/marketplace")
+
       // User is automatically signed in after successful sign up
       console.log("User created and signed in:", {
         uid: response.uid,
         email: response.email,
       })
-
-      // Save user data to Firestore via backend
-      await saveUserToFirestore()
     } else {
       setNotificationState("sign-up-fail")
     }

@@ -30,6 +30,20 @@ export class UserController extends Controller {
     console.log(`Returning ${users.length} users`)
     return users
   }
+
+  /**
+   * get user info using user id
+   *
+   * @param user_id - the id of the user to fetch
+   * @returns user info including display name
+   */
+  @SuccessResponse("200", "User retrieved successfully")
+  @Get("{user_id}")
+  public async getUserById(@Path() user_id: string): Promise<User | null> {
+    console.log("Getting user by ID:", user_id)
+    const user = await new UserService().getUserById(user_id)
+    return user
+  }
   /**
    * Get email of the current logged in user
    *
