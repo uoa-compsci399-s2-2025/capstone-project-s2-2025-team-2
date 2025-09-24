@@ -48,6 +48,7 @@ const ReagentCard = ({
             relative
             p-2
            md:w-[19rem] md:h-full
+           min-w-[22rem]
            w-full
            border-white/30 border-solid border-[1.5px] rounded-xl
        "

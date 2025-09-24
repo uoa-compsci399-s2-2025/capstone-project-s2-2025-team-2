@@ -86,7 +86,7 @@ const Marketplace = () => {
 
       <div className="mt-5"></div>
 
-      <div className="bg-transparent dark:bg-black flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem]">
+      <div className="bg-transparent dark:bg-black flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] min-w-[21rem]">
         <SearchBar
           search={search}
           setSearch={setSearch}
