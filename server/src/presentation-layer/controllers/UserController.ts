@@ -136,11 +136,10 @@ export class UserController extends Controller {
     @Request() request: AuthRequest,
   ): Promise<Reagent | null> {
     try {
-      const user = request.user
-      const user_id = user.uid
+      const user_id = request.user.uid
       const reagent = await new ReagentService().getReagentById(id)
       if (user_id !== reagent.user_id) {
-        console.log("You cannot delete a reagent that you don't own")
+        console.error("You cannot delete a reagent that you don't own")
         return null
       }
       const reagentToDelete = await new ReagentService().deleteReagent(id)
@@ -168,7 +167,7 @@ export class UserController extends Controller {
   ): Promise<Reagent> {
     const user = request.user
     if (!user || !["admin", "lab_manager"].includes(user.role)) {
-      throw new Error("You don't have permission to create reagents")
+      console.error("You don't have permission to create reagents")
     }
     const user_id = request.user.uid
     const data = {

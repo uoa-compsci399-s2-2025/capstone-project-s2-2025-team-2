@@ -61,11 +61,11 @@ export class OrderController extends Controller {
       const order = await new OrderService().getOrderById(id)
       if (!order) {
         this.setStatus(404)
-        throw new Error("Order not found")
+        console.error("Order not found")
       }
-      if (user.uid !== (await order).requester_id) {
+      if (user.uid !== order.requester_id) {
         this.setStatus(403)
-        throw new Error("Unauthorized to retrieve this order")
+        console.error("Unauthorized to retrieve this order")
       }
       return order
     } catch (err) {
@@ -81,14 +81,14 @@ export class OrderController extends Controller {
     @Request() request: AuthRequest,
   ): Promise<Order> {
     const user = request.user
-    const order = new OrderService().getOrderById(id)
+    const order = await new OrderService().getOrderById(id)
     if (!order) {
       this.setStatus(404)
-      throw new Error("Order not found")
+      console.error("Order not found")
     }
-    if (user.uid !== (await order).requester_id) {
+    if (user.uid !== order.requester_id) {
       this.setStatus(403)
-      throw new Error("Unauthorized to approve this order request")
+      console.error("Unauthorized to approve this order request")
     }
     const updatedOrder = await new OrderService().updateOrderStatus(
       id,
@@ -105,14 +105,14 @@ export class OrderController extends Controller {
     @Request() request: AuthRequest,
   ): Promise<Order> {
     const user = request.user
-    const order = new OrderService().getOrderById(id)
+    const order = await new OrderService().getOrderById(id)
     if (!order) {
       this.setStatus(404)
       throw new Error("Order not found")
     }
-    if (user.uid !== (await order).requester_id) {
+    if (user.uid !== order.requester_id) {
       this.setStatus(403)
-      throw new Error("Unauthorized to approve this order request")
+      console.error("Unauthorized to approve this order request")
     }
     const updatedOrder = await new OrderService().updateOrderStatus(
       id,
