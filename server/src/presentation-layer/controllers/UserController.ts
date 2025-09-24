@@ -59,8 +59,17 @@ export class UserController extends Controller {
   @Security("jwt")
   @SuccessResponse("200", "User information returned successfully")
   @Get("{user_id}")
-  public async getUser(@Path() user_id: string): Promise<User> {
+  public async getUser(
+    @Path() user_id: string,
+    @Request() request: AuthRequest,
+  ): Promise<User> {
     try {
+      if (request.user.role !== "admin" && request.user.uid !== user_id) {
+        this.setStatus(403)
+        console.error(
+          "You don't have permission to access other users information",
+        )
+      }
       const user = await new UserService().getUserById(user_id)
       return user
     } catch (err) {
@@ -157,10 +166,7 @@ export class UserController extends Controller {
     @Request() request: AuthRequest,
     @Body() requestObject: CreateReagentRequest,
   ): Promise<Reagent> {
-    console.log(request)
     const user = request.user
-    console.log(request.user.uid)
-    console.log(user.role)
     if (!user || !["admin", "lab_manager"].includes(user.role)) {
       throw new Error("You don't have permission to create reagents")
     }
@@ -221,8 +227,11 @@ Can only be done by admin*
     @Request() request: AuthRequest,
   ): Promise<Reagent[]> {
     try {
-      if (request.user.role !== "admin") {
-        throw new Error("You don't have permission to access this endpoint")
+      if (request.user.role !== "admin" && request.user.uid !== id) {
+        this.setStatus(403)
+        console.error(
+          "You don't have permission to access other users reagents",
+        )
       }
       const reagents = await new ReagentService().getReagentsByUserId(id)
       return reagents
