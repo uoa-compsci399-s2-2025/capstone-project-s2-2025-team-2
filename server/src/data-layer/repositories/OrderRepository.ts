@@ -1,7 +1,10 @@
 import FirestoreCollections from "../adapters/FirestoreCollections"
 import { Order } from "../../business-layer/models/Order"
+import { Trade } from "../../business-layer/models/Order"
+import { Exchange } from "../../business-layer/models/Order"
 import { CreateOrderRequest } from "../../service-layer/dtos/request/CreateOrderRequest"
 import { CreateTradeRequest } from "../../service-layer/dtos/request/CreateTradeRequest"
+import { CreateExchangeRequest } from "../../service-layer/dtos/request/CreateExchangeRequest"
 import { UserService } from "./UserRepository"
 import { ReagentService } from "./ReagentRepository"
 import { InboxService } from "../../service-layer/services/InboxService"
@@ -54,25 +57,26 @@ export class OrderService {
 
   async createTrade(
     user_id: string,
-    requestBody: CreateOrderRequest,
-  ): Promise<Order> {
+    requestBody: CreateTradeRequest,
+  ): Promise<Trade> {
     const user = await this.userService.getUserById(user_id)
     const reagent = await this.reagentService.getReagentById(
       requestBody.reagent_id,
     )
     if (!user || !reagent) throw new Error("No user or reagent found")
-    const order: Order = {
+    const order: Trade = {
       requester_id: user_id,
       reagent_id: requestBody.reagent_id,
       status: "pending",
       createdAt: new Date(),
       ...(requestBody.message && { message: requestBody.message }),
+      price: requestBody.price,
     }
 
     console.log("Order: ", order)
 
     const docRef = await FirestoreCollections.orders.add(order)
-    const createdOrder = {
+    const createdTrade = {
       ...order,
       id: docRef.id,
     }
@@ -89,10 +93,52 @@ export class OrderService {
       // Don't fail the order creation if chat room creation fails
     }
 
-    return createdOrder
+    return createdTrade
   }
 
-  async getAllOrders(user_id: string): Promise<Order[]> {
+  async createExchange(
+    user_id: string,
+    requestBody: CreateExchangeRequest,
+  ): Promise<Exchange> {
+    const user = await this.userService.getUserById(user_id)
+    const reagent = await this.reagentService.getReagentById(
+      requestBody.reagent_id,
+    )
+    if (!user || !reagent) throw new Error("No user or reagent found")
+    const order: Exchange = {
+      requester_id: user_id,
+      reagent_id: requestBody.reagent_id,
+      status: "pending",
+      createdAt: new Date(),
+      ...(requestBody.message && { message: requestBody.message }),
+      offeredReagentId: requestBody.offeredReagentId,
+      quantity: requestBody.quantity,
+    }
+
+    console.log("Order: ", order)
+
+    const docRef = await FirestoreCollections.orders.add(order)
+    const createdExchange = {
+      ...order,
+      id: docRef.id,
+    }
+
+    // Create chat room between requester and reagent owner
+    try {
+      await this.inboxService.createChatRoom({
+        user1_id: user_id,
+        user2_id: reagent.user_id,
+        initial_message: requestBody.message,
+      })
+    } catch (error) {
+      console.error("Error creating chat room for order:", error)
+      // Don't fail the order creation if chat room creation fails
+    }
+
+    return createdExchange
+  }
+
+  async getAllOrders(user_id: string): Promise<Order[] | Trade[] | Exchange[]> {
     const [snap1, snap2] = await Promise.all([
       this.db.collection("orders").where("requester_id", "==", user_id).get(),
       this.db.collection("orders").where("owner_id", "==", user_id).get(),
@@ -110,7 +156,7 @@ export class OrderService {
     ]
   }
 
-  async getOrderById(id: string): Promise<Order> {
+  async getOrderById(id: string): Promise<Order | Trade | Exchange> {
     try {
       const orderDoc = await FirestoreCollections.orders.doc(id).get()
 
@@ -125,7 +171,10 @@ export class OrderService {
     }
   }
 
-  async updateOrderStatus(id: string, status: string): Promise<Order> {
+  async updateOrderStatus(
+    id: string,
+    status: string,
+  ): Promise<Order | Trade | Exchange> {
     try {
       const orderRef = await FirestoreCollections.orders.doc(id)
       await orderRef.update({
