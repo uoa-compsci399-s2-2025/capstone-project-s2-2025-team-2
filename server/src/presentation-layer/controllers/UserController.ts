@@ -72,7 +72,7 @@ export class UserController extends Controller {
    */
   @Security("jwt")
   @SuccessResponse("200", "User information returned successfully")
-  @Get("{user_id}")
+  @Get("{user_id}/jwt")
   public async getUser(
     @Path() user_id: string,
     @Request() request: AuthRequest,
