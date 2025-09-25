@@ -105,6 +105,9 @@ export class OrderService {
       requestBody.reagent_id,
     )
     if (!user || !reagent) throw new Error("No user or reagent found")
+    if (requestBody.offeredReagentId === requestBody.reagent_id) {
+      throw new Error("Cannot exchange the same reagent")
+    }
     const order: Exchange = {
       requester_id: user_id,
       reagent_id: requestBody.reagent_id,

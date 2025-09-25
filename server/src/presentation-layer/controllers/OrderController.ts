@@ -61,6 +61,13 @@ export class OrderController extends Controller {
   ): Promise<Exchange> {
     const user = request.user
     console.log("User: ", user)
+    const reagent = await new OrderService().reagentService.getReagentById(
+      req.offeredReagentId,
+    )
+    if (reagent?.user_id !== user.uid) {
+      this.setStatus(403)
+      throw new Error("You can only offer your own reagents for exchange")
+    }
     const exchange = await new OrderService().createExchange(user.uid, req)
     return exchange
   }

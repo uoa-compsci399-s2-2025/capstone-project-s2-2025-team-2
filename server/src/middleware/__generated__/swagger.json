@@ -263,6 +263,9 @@
 							"order"
 						],
 						"nullable": false
+					},
+					"quantity": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -328,6 +331,9 @@
 							"trade"
 						],
 						"nullable": false
+					},
+					"quantity": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -365,8 +371,7 @@
 						"type": "string"
 					},
 					"quantity": {
-						"type": "number",
-						"format": "double"
+						"type": "string"
 					}
 				},
 				"required": [
@@ -392,8 +397,7 @@
 						"type": "string"
 					},
 					"quantity": {
-						"type": "number",
-						"format": "double"
+						"type": "string"
 					},
 					"type": {
 						"type": "string",
@@ -406,7 +410,6 @@
 				"required": [
 					"reagent_id",
 					"offeredReagentId",
-					"quantity",
 					"type"
 				],
 				"type": "object",
