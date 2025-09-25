@@ -1,7 +1,8 @@
-export interface CreateOrderRequest {
+export interface CreateTradeRequest {
   reagent_id: string
   message?: string
-  type: "order"
+  price: number
+  type: "trade"
   quantity: number
   unit: string
 }

@@ -1,5 +1,9 @@
 import { Order } from "../../business-layer/models/Order"
+import { Trade } from "../../business-layer/models/Order"
+import { Exchange } from "../../business-layer/models/Order"
 import { CreateOrderRequest } from "../../service-layer/dtos/request/CreateOrderRequest"
+import { CreateTradeRequest } from "../../service-layer/dtos/request/CreateTradeRequest"
+import { CreateExchangeRequest } from "../../service-layer/dtos/request/CreateExchangeRequest"
 import {
   Controller,
   Get,
@@ -23,7 +27,8 @@ export class OrderController extends Controller {
   @Security("jwt")
   @Post()
   public async createOrder(
-    @Body() req: CreateOrderRequest,
+    @Body()
+    req: CreateOrderRequest,
     @Request() request: AuthRequest,
   ): Promise<Order> {
     const user = request.user
@@ -32,10 +37,47 @@ export class OrderController extends Controller {
     return order
   }
 
+  @SuccessResponse("201", "Trade created successfully")
+  @Security("jwt")
+  @Post("trades")
+  public async createTrade(
+    @Body()
+    req: CreateTradeRequest,
+    @Request() request: AuthRequest,
+  ): Promise<Trade> {
+    const user = request.user
+    console.log("User: ", user)
+    const trade = await new OrderService().createTrade(user.uid, req)
+    return trade
+  }
+
+  @SuccessResponse("201", "Exchange created successfully")
+  @Security("jwt")
+  @Post("exchanges")
+  public async createExchange(
+    @Body()
+    req: CreateExchangeRequest,
+    @Request() request: AuthRequest,
+  ): Promise<Exchange> {
+    const user = request.user
+    console.log("User: ", user)
+    const reagent = await new OrderService().reagentService.getReagentById(
+      req.offeredReagentId,
+    )
+    if (reagent?.user_id !== user.uid) {
+      this.setStatus(403)
+      throw new Error("You can only offer your own reagents for exchange")
+    }
+    const exchange = await new OrderService().createExchange(user.uid, req)
+    return exchange
+  }
+
   @SuccessResponse("200", "All orders returned successfully")
   @Security("jwt")
   @Get()
-  public async getOrders(@Request() request: AuthRequest): Promise<Order[]> {
+  public async getOrders(
+    @Request() request: AuthRequest,
+  ): Promise<Order[] | Trade[] | Exchange[]> {
     try {
       const user = request.user
       const user_id = user.uid
@@ -55,7 +97,7 @@ export class OrderController extends Controller {
   public async getOrderById(
     @Path() id: string,
     @Request() request: AuthRequest,
-  ): Promise<Order> {
+  ): Promise<Order | Trade | Exchange> {
     try {
       const user = request.user
       const order = await new OrderService().getOrderById(id)
@@ -79,7 +121,7 @@ export class OrderController extends Controller {
   public async approveOrder(
     @Path() id: string,
     @Request() request: AuthRequest,
-  ): Promise<Order> {
+  ): Promise<Order | Trade | Exchange> {
     const user = request.user
     const order = await new OrderService().getOrderById(id)
     if (!order) {
@@ -103,7 +145,7 @@ export class OrderController extends Controller {
   public async cancelOrder(
     @Path() id: string,
     @Request() request: AuthRequest,
-  ): Promise<Order> {
+  ): Promise<Order | Trade | Exchange> {
     const user = request.user
     const order = await new OrderService().getOrderById(id)
     if (!order) {

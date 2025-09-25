@@ -238,6 +238,13 @@
 					},
 					"message": {
 						"type": "string"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"unit": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -256,10 +263,189 @@
 					},
 					"message": {
 						"type": "string"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"order"
+						],
+						"nullable": false
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"unit": {
+						"type": "string"
 					}
 				},
 				"required": [
-					"reagent_id"
+					"reagent_id",
+					"type",
+					"quantity",
+					"unit"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Trade": {
+				"properties": {
+					"requester_id": {
+						"type": "string"
+					},
+					"reagent_id": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string",
+						"enum": [
+							"pending",
+							"approved",
+							"canceled"
+						]
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"message": {
+						"type": "string"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"unit": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"requester_id",
+					"reagent_id",
+					"status",
+					"createdAt",
+					"price"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateTradeRequest": {
+				"properties": {
+					"reagent_id": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"trade"
+						],
+						"nullable": false
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"unit": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"reagent_id",
+					"price",
+					"type",
+					"quantity",
+					"unit"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Exchange": {
+				"properties": {
+					"requester_id": {
+						"type": "string"
+					},
+					"reagent_id": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string",
+						"enum": [
+							"pending",
+							"approved",
+							"canceled"
+						]
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"message": {
+						"type": "string"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"unit": {
+						"type": "string"
+					},
+					"offeredReagentId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"requester_id",
+					"reagent_id",
+					"status",
+					"createdAt",
+					"offeredReagentId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateExchangeRequest": {
+				"properties": {
+					"reagent_id": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"offeredReagentId": {
+						"type": "string"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"exchange"
+						],
+						"nullable": false
+					},
+					"unit": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"reagent_id",
+					"offeredReagentId",
+					"quantity",
+					"type",
+					"unit"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -682,7 +868,7 @@
 				]
 			}
 		},
-		"/users/{user_id}": {
+		"/users/{user_id}/jwt": {
 			"get": {
 				"operationId": "GetUser",
 				"responses": {
@@ -1033,7 +1219,7 @@
 						}
 					}
 				},
-				"description": "Get a reagent by its ID.\r\nCan only be done by lab_admin and admin",
+				"description": "Get a reagent by its ID.\nCan only be done by lab_admin and admin",
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -1063,7 +1249,7 @@
 						}
 					}
 				},
-				"description": "Delete a reagent by its ID.\r\nCan only be done by lab_admin (who owns the reagent) and admin",
+				"description": "Delete a reagent by its ID.\nCan only be done by lab_admin (who owns the reagent) and admin",
 				"security": [],
 				"parameters": [
 					{
@@ -1091,7 +1277,7 @@
 						}
 					}
 				},
-				"description": "Update a reagent by its ID.\r\nCan only be done by lab_admin (who owns the reagent) and admin",
+				"description": "Update a reagent by its ID.\nCan only be done by lab_admin (who owns the reagent) and admin",
 				"security": [],
 				"parameters": [
 					{
@@ -1161,10 +1347,26 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/Order"
-									},
-									"type": "array"
+									"anyOf": [
+										{
+											"items": {
+												"$ref": "#/components/schemas/Order"
+											},
+											"type": "array"
+										},
+										{
+											"items": {
+												"$ref": "#/components/schemas/Trade"
+											},
+											"type": "array"
+										},
+										{
+											"items": {
+												"$ref": "#/components/schemas/Exchange"
+											},
+											"type": "array"
+										}
+									]
 								}
 							}
 						}
@@ -1181,6 +1383,78 @@
 				"parameters": []
 			}
 		},
+		"/orders/trades": {
+			"post": {
+				"operationId": "CreateTrade",
+				"responses": {
+					"201": {
+						"description": "Trade created successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Trade"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Order"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateTradeRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/orders/exchanges": {
+			"post": {
+				"operationId": "CreateExchange",
+				"responses": {
+					"201": {
+						"description": "Exchange created successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Exchange"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Order"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateExchangeRequest"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/orders/{id}": {
 			"get": {
 				"operationId": "GetOrderById",
@@ -1190,7 +1464,17 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/Order"
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/Order"
+										},
+										{
+											"$ref": "#/components/schemas/Trade"
+										},
+										{
+											"$ref": "#/components/schemas/Exchange"
+										}
+									]
 								}
 							}
 						}
@@ -1225,7 +1509,17 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/Order"
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/Order"
+										},
+										{
+											"$ref": "#/components/schemas/Trade"
+										},
+										{
+											"$ref": "#/components/schemas/Exchange"
+										}
+									]
 								}
 							}
 						}
@@ -1260,7 +1554,17 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/Order"
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/Order"
+										},
+										{
+											"$ref": "#/components/schemas/Trade"
+										},
+										{
+											"$ref": "#/components/schemas/Exchange"
+										}
+									]
 								}
 							}
 						}
