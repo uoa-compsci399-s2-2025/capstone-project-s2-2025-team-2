@@ -4,11 +4,11 @@ export interface Order {
   status: "pending" | "approved" | "canceled"
   createdAt: Date
   message?: string
+  quantity?: string
 }
 
 export interface Exchange extends Order {
   offeredReagentId: string
-  quantity: string
 }
 
 export interface Trade extends Order {
