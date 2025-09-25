@@ -22,6 +22,22 @@ import { AuthRequest } from "../../service-layer/dtos/request/AuthRequest"
 @Tags("User")
 @Route("users")
 export class UserController extends Controller {
+
+  /**
+   * Get reagents those are expiring in 30 days under a user by their user id
+   * @param user_id - user id to query with
+   * @returns Promise<Reagent[]> - The list of all reagents filtered.
+   */
+  @SuccessResponse("200", "All reagents returned successfully")
+  @Security("jwt")
+  @Get("/{user_id}/reagents/expiring-soon")
+  public async getReagentsExpiringSoon(
+    @Path() user_id: string,
+  ): Promise<Reagent[]> {
+    const reagents = await new ReagentService().getReagentsExpiringSoon(user_id)
+    return reagents
+  }
+
   @SuccessResponse("200", "Users retrieved successfully")
   @Get()
   public async getAllUsers(): Promise<User[]> {

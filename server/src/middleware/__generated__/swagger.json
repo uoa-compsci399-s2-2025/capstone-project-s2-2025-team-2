@@ -7,31 +7,6 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"User": {
-				"properties": {
-					"email": {
-						"type": "string"
-					},
-					"displayName": {
-						"type": "string"
-					},
-					"role": {
-						"type": "string",
-						"enum": [
-							"user",
-							"lab_manager",
-							"admin"
-						]
-					}
-				},
-				"required": [
-					"email",
-					"displayName",
-					"role"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"ReagentTradingType": {
 				"type": "string",
 				"enum": [
@@ -94,6 +69,9 @@
 					},
 					"location": {
 						"type": "string"
+					},
+					"unit": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -106,7 +84,33 @@
 					"tradingType",
 					"categories",
 					"createdAt",
-					"location"
+					"location",
+					"unit"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"User": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"displayName": {
+						"type": "string"
+					},
+					"role": {
+						"type": "string",
+						"enum": [
+							"user",
+							"lab_manager",
+							"admin"
+						]
+					}
+				},
+				"required": [
+					"email",
+					"displayName",
+					"role"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -210,6 +214,9 @@
 						"format": "date-time"
 					},
 					"location": {
+						"type": "string"
+					},
+					"unit": {
 						"type": "string"
 					}
 				},
@@ -761,6 +768,46 @@
 		"contact": {}
 	},
 	"paths": {
+		"/users/{user_id}/reagents/expiring-soon": {
+			"get": {
+				"operationId": "GetReagentsExpiringSoon",
+				"responses": {
+					"200": {
+						"description": "All reagents returned successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Reagent"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get reagents those are expiring in 30 days under a user by their user id",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "- user id to query with",
+						"in": "path",
+						"name": "user_id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/users": {
 			"get": {
 				"operationId": "GetAllUsers",
@@ -1219,7 +1266,7 @@
 						}
 					}
 				},
-				"description": "Get a reagent by its ID.\nCan only be done by lab_admin and admin",
+				"description": "Get a reagent by its ID.\r\nCan only be done by lab_admin and admin",
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -1249,7 +1296,7 @@
 						}
 					}
 				},
-				"description": "Delete a reagent by its ID.\nCan only be done by lab_admin (who owns the reagent) and admin",
+				"description": "Delete a reagent by its ID.\r\nCan only be done by lab_admin (who owns the reagent) and admin",
 				"security": [],
 				"parameters": [
 					{
@@ -1277,7 +1324,7 @@
 						}
 					}
 				},
-				"description": "Update a reagent by its ID.\nCan only be done by lab_admin (who owns the reagent) and admin",
+				"description": "Update a reagent by its ID.\r\nCan only be done by lab_admin (who owns the reagent) and admin",
 				"security": [],
 				"parameters": [
 					{

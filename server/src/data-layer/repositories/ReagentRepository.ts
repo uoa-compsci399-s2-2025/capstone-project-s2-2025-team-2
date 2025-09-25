@@ -129,13 +129,15 @@ export class ReagentService {
   }
 
   /**
-   * Retrieves reagents expiring in exactly 30 days.
+   * Retrieves reagents expiring in exactly 30 days for a certain user.
    *
    * @returns Promise<Reagent[]> - Returns an array of reagents.
    */
-  async getReagentsExpiringSoon(): Promise<Reagent[]> {
+  async getReagentsExpiringSoon(user_id:string): Promise<Reagent[]> {
     try{
-    const reagentsSnapshot = await FirestoreCollections.reagents.get()
+    const reagentsSnapshot = await FirestoreCollections.reagents
+    .where('user_id', '==', user_id)
+    .get()
     const reagents = reagentsSnapshot.docs.map((doc) => doc.data())
     return reagents.filter(
       (reagent) => {
