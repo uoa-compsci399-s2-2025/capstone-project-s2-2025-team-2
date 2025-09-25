@@ -122,4 +122,17 @@ export class ReagentController extends Controller {
       throw new Error(`[ERROR] while updating reagent ${id}: ${error}`)
     }
   }
+
+  /**
+   * Get all reagents expiring in exactly 30 days.
+   *
+   * @returns Promise<Reagent[]> - The list of all reagents filtered.
+   */
+  @SuccessResponse("200", "Reagents retrieved successfully")
+  @Get("/expiring-soon")
+  public async getReagentsExpiringSoon(): Promise<Reagent[]> {
+    const reagents = await new ReagentService().getReagentsExpiringSoon()
+    return reagents
+  }
+
 }

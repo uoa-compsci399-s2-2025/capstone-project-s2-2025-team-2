@@ -1,5 +1,7 @@
 import FirestoreCollections from "../adapters/FirestoreCollections"
 import { Reagent, ReagentCategory } from "../../business-layer/models/Reagent"
+import { daysUntilExpiry } from "../../utils/dateCalculate"
+
 export class ReagentService {
   /**
    * Retrieves all reagents from the Firestore database.
@@ -125,4 +127,27 @@ export class ReagentService {
       .get()
     return reagentsSnapshot.docs.map((doc) => doc.data())
   }
+
+  /**
+   * Retrieves reagents expiring in exactly 30 days.
+   *
+   * @returns Promise<Reagent[]> - Returns an array of reagents.
+   */
+  async getReagentsExpiringSoon(): Promise<Reagent[]> {
+    try{
+    const reagentsSnapshot = await FirestoreCollections.reagents.get()
+    const reagents = reagentsSnapshot.docs.map((doc) => doc.data())
+    return reagents.filter(
+      (reagent) => {
+        if (!reagent.expiryDate) return false
+        const daysLeft = daysUntilExpiry(reagent.expiryDate)
+        return daysLeft == 30
+      }
+    )      
+    } catch (err) {
+      console.log(err)
+      throw new Error(`Failed to get reagents expiring soon: ${err}`)
+
+  }
+}
 }
