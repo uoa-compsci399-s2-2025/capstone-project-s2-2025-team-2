@@ -238,6 +238,13 @@
 					},
 					"message": {
 						"type": "string"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"unit": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -265,12 +272,18 @@
 						"nullable": false
 					},
 					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"unit": {
 						"type": "string"
 					}
 				},
 				"required": [
 					"reagent_id",
-					"type"
+					"type",
+					"quantity",
+					"unit"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -296,6 +309,13 @@
 						"format": "date-time"
 					},
 					"message": {
+						"type": "string"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"unit": {
 						"type": "string"
 					},
 					"price": {
@@ -333,13 +353,19 @@
 						"nullable": false
 					},
 					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"unit": {
 						"type": "string"
 					}
 				},
 				"required": [
 					"reagent_id",
 					"price",
-					"type"
+					"type",
+					"quantity",
+					"unit"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -367,10 +393,14 @@
 					"message": {
 						"type": "string"
 					},
-					"offeredReagentId": {
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"unit": {
 						"type": "string"
 					},
-					"quantity": {
+					"offeredReagentId": {
 						"type": "string"
 					}
 				},
@@ -379,8 +409,7 @@
 					"reagent_id",
 					"status",
 					"createdAt",
-					"offeredReagentId",
-					"quantity"
+					"offeredReagentId"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -397,7 +426,8 @@
 						"type": "string"
 					},
 					"quantity": {
-						"type": "string"
+						"type": "number",
+						"format": "double"
 					},
 					"type": {
 						"type": "string",
@@ -405,12 +435,17 @@
 							"exchange"
 						],
 						"nullable": false
+					},
+					"unit": {
+						"type": "string"
 					}
 				},
 				"required": [
 					"reagent_id",
 					"offeredReagentId",
-					"type"
+					"quantity",
+					"type",
+					"unit"
 				],
 				"type": "object",
 				"additionalProperties": false

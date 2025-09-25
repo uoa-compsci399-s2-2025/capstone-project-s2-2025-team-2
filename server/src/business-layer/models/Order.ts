@@ -4,7 +4,8 @@ export interface Order {
   status: "pending" | "approved" | "canceled"
   createdAt: Date
   message?: string
-  quantity?: string
+  quantity?: number
+  unit?: string
 }
 
 export interface Exchange extends Order {

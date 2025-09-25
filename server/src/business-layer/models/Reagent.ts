@@ -15,4 +15,5 @@ export interface Reagent {
   categories: ReagentCategory[]
   createdAt: Date
   location: string
+  unit: string
 }
