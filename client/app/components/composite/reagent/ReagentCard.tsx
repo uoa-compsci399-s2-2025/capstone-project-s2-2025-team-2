@@ -135,14 +135,14 @@ const ReagentCard = ({
               ))}
             </div>
             <div className="hidden md:flex md:justify-between md:items-end">
-                <div className="md:flex md:flex-col">
-                    <span className="text-light-gray">Purity</span>
-                    <span>Purity not listed</span>
-                </div>
-                <p className="hidden md:flex text-warning text-sm md:text-base">
-                  <LuClockAlert className="w-4.5 h-4.5 mx-[0.1rem] md:mt-0.5 text-warning" />
-                  {expiryDate}
-                </p>
+              <div className="md:flex md:flex-col">
+                <span className="text-light-gray">Purity</span>
+                <span>Purity not listed</span>
+              </div>
+              <p className="hidden md:flex text-warning text-sm md:text-base">
+                <LuClockAlert className="w-4.5 h-4.5 mx-[0.1rem] md:mt-0.5 text-warning" />
+                {expiryDate}
+              </p>
             </div>
           </div>
 

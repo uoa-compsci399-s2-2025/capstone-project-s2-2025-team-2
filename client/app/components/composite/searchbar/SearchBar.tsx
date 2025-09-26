@@ -46,11 +46,13 @@ export default function SearchBar({
       </div>
 
       {/* Search input */}
-      <div className="
+      <div
+        className="
         bg-primary flex items-center flex-1 ml-2 pl-2 py-1 shadow-lg
         w-full
         md:mr-2
-      ">
+      "
+      >
         <MagnifyingGlassIcon className="h-5 w-5 text-secondary mr-2" />
         <input
           type="text"
@@ -62,10 +64,12 @@ export default function SearchBar({
       </div>
 
       {/* Sort */}
-      <div className="
+      <div
+        className="
         relative w-1/5 min-w-27
         hidden md:block
-      ">
+      "
+      >
         <select
           value={sort}
           onChange={(e) =>
