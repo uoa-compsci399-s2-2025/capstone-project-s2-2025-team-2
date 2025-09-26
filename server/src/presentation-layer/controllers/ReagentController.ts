@@ -23,7 +23,8 @@ export class ReagentController extends Controller {
   @SuccessResponse("200", "All reagents returned successfully")
   @Get("expiring-soon")
   public async getReagentsExpiringSoon(): Promise<Record<string, Reagent[]>> {
-    const reagents = await new ReagentService().getReagentsExpiringSoonAllUsers()
+    const reagents =
+      await new ReagentService().getReagentsExpiringSoonAllUsers()
     return reagents
   }
 

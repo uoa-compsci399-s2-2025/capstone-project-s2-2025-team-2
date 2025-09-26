@@ -133,60 +133,56 @@ export class ReagentService {
    *
    * @returns Promise<Reagent[]> - Returns an array of reagents.
    */
-  async getReagentsExpiringSoon(user_id:string): Promise<Reagent[]> {
-    try{
-    const reagentsSnapshot = await FirestoreCollections.reagents
-    .where('user_id', '==', user_id)
-    .get()
-    const reagents = reagentsSnapshot.docs.map((doc) => doc.data())
-    return reagents.filter(
-      (reagent) => {
+  async getReagentsExpiringSoon(user_id: string): Promise<Reagent[]> {
+    try {
+      const reagentsSnapshot = await FirestoreCollections.reagents
+        .where("user_id", "==", user_id)
+        .get()
+      const reagents = reagentsSnapshot.docs.map((doc) => doc.data())
+      return reagents.filter((reagent) => {
         if (!reagent.expiryDate) return false
         const daysLeft = daysUntilExpiry(reagent.expiryDate)
         return daysLeft == 30
-      }
-    )      
+      })
     } catch (err) {
       console.log(err)
       throw new Error(`Failed to get reagents expiring soon: ${err}`)
-
+    }
   }
-}
 
-/**
- * Retrieves reagents expiring in exactly 30 days for all users, grouped by user ID.
- *
- * @returns Promise<Record<string, Reagent[]>> - Returns a dictionary with userID as key and array of reagents as value.
- * 
- */
-async getReagentsExpiringSoonAllUsers(): Promise<Record<string, Reagent[]>> {
-  try {
-    const reagentsSnapshot = await FirestoreCollections.reagents.get()
-    const reagents = reagentsSnapshot.docs.map((doc) => doc.data())
-    
-    const expiringReagents = reagents.filter(
-      (reagent) => {
+  /**
+   * Retrieves reagents expiring in exactly 30 days for all users, grouped by user ID.
+   *
+   * @returns Promise<Record<string, Reagent[]>> - Returns a dictionary with userID as key and array of reagents as value.
+   *
+   */
+  async getReagentsExpiringSoonAllUsers(): Promise<Record<string, Reagent[]>> {
+    try {
+      const reagentsSnapshot = await FirestoreCollections.reagents.get()
+      const reagents = reagentsSnapshot.docs.map((doc) => doc.data())
+
+      const expiringReagents = reagents.filter((reagent) => {
         if (!reagent.expiryDate) return false
         const daysLeft = daysUntilExpiry(reagent.expiryDate)
         return daysLeft == 30
-      }
-    )
+      })
 
-    const groupedReagents: Record<string, Reagent[]> = {}
-    
-    expiringReagents.forEach((reagent) => {
-      const userId = reagent.user_id
-      if (!groupedReagents[userId]) {
-        groupedReagents[userId] = []
-      }
-      groupedReagents[userId].push(reagent)
-    })
+      const groupedReagents: Record<string, Reagent[]> = {}
 
-    return groupedReagents
+      expiringReagents.forEach((reagent) => {
+        const userId = reagent.user_id
+        if (!groupedReagents[userId]) {
+          groupedReagents[userId] = []
+        }
+        groupedReagents[userId].push(reagent)
+      })
+
+      return groupedReagents
+    } catch (err) {
+      console.log(err)
+      throw new Error(
+        `Failed to get reagents expiring soon for all users: ${err}`,
+      )
+    }
   }
-  catch (err) {
-    console.log(err)
-    throw new Error(`Failed to get reagents expiring soon for all users: ${err}`)
-  }
-}
 }

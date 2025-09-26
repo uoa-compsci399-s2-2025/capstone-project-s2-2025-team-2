@@ -12,13 +12,19 @@ export class EmailTemplates {
       </div>
     `
   }
-  static getExpiryEmailTemplate(reagents: { name: string; expiryDate: string}[]): string {
-    const reagentList = reagents.map(reagent => `
+  static getExpiryEmailTemplate(
+    reagents: { name: string; expiryDate: string }[],
+  ): string {
+    const reagentList = reagents
+      .map(
+        (reagent) => `
       <li>
         <strong>${reagent.name}</strong> - Expiry Date: ${new Date(reagent.expiryDate).toLocaleDateString()}
       </li>
-    `).join('')
-    
+    `,
+      )
+      .join("")
+
     return `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #333;">Dear User</h2>
@@ -29,6 +35,5 @@ export class EmailTemplates {
         <p>Please sell, trade or giveaway those reagents, or use them as soon as possible.</p>
       </div>
     `
-}
-
+  }
 }
