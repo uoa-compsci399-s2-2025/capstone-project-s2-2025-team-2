@@ -10,6 +10,9 @@ import {
 } from "@heroicons/react/24/outline"
 import { LuClockAlert } from "react-icons/lu"
 import { IoArrowForward } from "react-icons/io5"
+import { useRouter } from "next/navigation"
+
+type TradingType = "giveaway" | "sell" | "trade"
 
 interface ReagentCardProps {
   name: string
@@ -19,19 +22,6 @@ interface ReagentCardProps {
   imageUrl: string
   type: TradingType
   id: string
-}
-
-//trading type display style mapping
-const TRADING_TYPE_STYLES: Record<
-  TradingType,
-  {
-    color: string
-    icon: React.ComponentType<{ className?: string }> | null
-  }
-> = {
-  giveaway: { color: "text-blue-100", icon: GiftIcon },
-  sell: { color: "text-green-100", icon: CurrencyDollarIcon },
-  trade: { color: "text-purple-100", icon: ArrowsRightLeftIcon },
 }
 
 //temp hardcoded since it be bugging out when made into style vars
@@ -55,6 +45,12 @@ const ReagentCard = ({
   type,
   id,
 }: ReagentCardProps) => {
+  const router = useRouter()
+
+  //single reagent view page
+  const handleViewClick = () => {
+    router.push(`/marketplace/${id}`)
+  }
   return (
     <div
       className="
@@ -108,21 +104,21 @@ const ReagentCard = ({
             >
               <p className="text-white/60 text-sm md:text-sm italic mt-1 flex gap-1">
                 {/* Icon */}
-                {formula === "trade" ? (
+                {type === "trade" ? (
                   <ArrowsRightLeftIcon className="w-5 h-5 text-orange-200" />
-                ) : formula === "sell" ? (
+                ) : type === "sell" ? (
                   <CurrencyDollarIcon className="w-5 h-5 text-green-400" />
-                ) : formula === "giveaway" ? (
+                ) : type === "giveaway" ? (
                   <GiftIcon className="w-5 h-5 text-blue-300" />
                 ) : (
                   <GiftIcon className="w-5 h-5 text-blue-300" />
                 )}
                 {/* Text */}
-                {formula === "trade" ? (
+                {type === "trade" ? (
                   <span className="text-orange-200 md:hidden">Trade</span>
-                ) : formula === "sell" ? (
+                ) : type === "sell" ? (
                   <span className="text-green-400 md:hidden">Sell</span>
-                ) : formula === "giveaway" ? (
+                ) : type === "giveaway" ? (
                   <span className="text-blue-300 md:hidden">Giveaway</span>
                 ) : (
                   <span className="text-blue-300 md:hidden">Giveaway</span>
@@ -190,17 +186,10 @@ const ReagentCard = ({
                     iconPosition="right"
                     fontWeight="semibold"
                     className="md:px-[0.4rem] md:py-[0.2rem]"
+                    onClick={handleViewClick}
                   />
                 </div>
               </div>
-
-              <button
-                onClick={handleViewClick}
-                className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-secondary rounded-lg"
-              >
-                View
-                <ArrowRightIcon className="w-5 h-5" />
-              </button>
             </div>
           </div>
         </div>
