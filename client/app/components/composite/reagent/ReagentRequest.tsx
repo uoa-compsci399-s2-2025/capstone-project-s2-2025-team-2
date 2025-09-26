@@ -62,6 +62,10 @@ export const ReagentRequest = ({
   const [error, setError] = useState<string>("")
   const [isInitializing, setIsInitializing] = useState(true)
   const [message, setMessage] = useState<string>("")
+  const [price, setPrice] = useState("")
+  const [offeredReagentId, setOfferedReagentId] = useState("")
+
+  const tradingType = reagent.tradingType
 
   //prevent state updates if window isclosed
   const guardUpdate = (isClosed: boolean, updateState: () => void) => {
@@ -88,6 +92,8 @@ export const ReagentRequest = ({
       setIsInitializing(true)
       setOwnerInfo(null)
       setMessage("")
+      setPrice("")
+      setOfferedReagentId("placeholder-id")
       return
     }
 
@@ -150,25 +156,52 @@ export const ReagentRequest = ({
   //auth token fetch + check
   const handleSubmit = useCallback(async () => {
     const token = localStorage.getItem("authToken")
-    if (!token) {
-      return
-    }
+    if (!token) return
 
     //submit order request
     //no need to pass req id, backend will us auth user id
     setIsSubmitting(true)
     try {
-      const { error } = await client.POST("/orders" as any, {
-        body: {
-          reagent_id: reagent.id,
-          ...(message.trim() && { message: message.trim() }),
-        },
+      let requestBody: any = {
+        reagent_id: reagent.id,
+        ...(message.trim() && { message: message.trim() }),
+      }
+
+       //add type-specific fields
+       if (tradingType === "sell") {
+         requestBody = { 
+           ...requestBody, 
+           type: "trade", 
+           price: Number(price)
+         }
+       } else if (tradingType === "trade") {
+         requestBody = { 
+           ...requestBody, 
+           type: "exchange", 
+           offeredReagentId: "placeholder-id"
+         }
+       } else {
+         requestBody = { 
+           ...requestBody, 
+           type: "order"
+         }
+       }
+
+      //call endpoint based on trading type
+      const endpoint = tradingType === "giveaway" ? "/orders" : 
+                      tradingType === "sell" ? "/orders/trades" : 
+                      "/orders/exchanges"
+      
+      console.log("Making " + tradingType + " request!")
+    
+      const { error } = await client.POST(endpoint as any, {
+        body: requestBody,
         headers: { Authorization: `Bearer ${token}` },
       })
 
       if (error) throw new Error("Failed to create request. Please try again.")
 
-      toast("Request sent successfully!")
+      toast(tradingType.charAt(0).toUpperCase() + tradingType.slice(1) + " request sent successfully!")
       onSubmit()
       onClose()
     } catch {
@@ -176,7 +209,7 @@ export const ReagentRequest = ({
     } finally {
       setIsSubmitting(false)
     }
-  }, [reagent.id, message, onSubmit, onClose])
+  }, [reagent.id, message, tradingType, price, offeredReagentId, onSubmit, onClose])
 
   const handleClose = useCallback(() => {
     if (!isSubmitting) {

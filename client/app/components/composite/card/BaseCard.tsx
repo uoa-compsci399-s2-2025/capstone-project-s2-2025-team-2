@@ -41,8 +41,7 @@ const BG_LAYERS = [
 const BaseCard = ({ name, categories, expiryDate, images, tradingType, footerLeft, reagentId }: BaseCardProps) => {
   const router = useRouter()
   const { color, icon: Icon } = TRADING_TYPE_STYLES[tradingType] || {}
-  const imageUrl = images?.[0] ?? "/placeholder.webp"
-  
+  const imageUrl = images?.[0]?.trim() && (images[0].startsWith('/') || images[0].startsWith('./') || images[0].startsWith('http')) ? images[0] : "/placeholder.webp";  
   return (
     <div className="md:w-[18.5rem] md:h-[20.5rem] w-full border border-white/10 rounded-xl relative">
       {BG_LAYERS.map((style, i) => (
