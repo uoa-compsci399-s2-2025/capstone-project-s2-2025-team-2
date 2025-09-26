@@ -60,6 +60,7 @@ const models: TsoaRoute.Models = {
             "categories": {"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"},"required":true},
             "createdAt": {"dataType":"datetime","required":true},
             "location": {"dataType":"string","required":true},
+            "unit": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -83,7 +84,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Partial_Reagent_": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"user_id":{"dataType":"string"},"name":{"dataType":"string"},"description":{"dataType":"string"},"condition":{"dataType":"string"},"price":{"dataType":"double"},"quantity":{"dataType":"double"},"expiryDate":{"dataType":"string"},"tradingType":{"ref":"ReagentTradingType"},"images":{"dataType":"array","array":{"dataType":"string"}},"categories":{"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"}},"createdAt":{"dataType":"datetime"},"location":{"dataType":"string"}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"user_id":{"dataType":"string"},"name":{"dataType":"string"},"description":{"dataType":"string"},"condition":{"dataType":"string"},"price":{"dataType":"double"},"quantity":{"dataType":"double"},"expiryDate":{"dataType":"string"},"tradingType":{"ref":"ReagentTradingType"},"images":{"dataType":"array","array":{"dataType":"string"}},"categories":{"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"}},"createdAt":{"dataType":"datetime"},"location":{"dataType":"string"},"unit":{"dataType":"string"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Order": {
@@ -96,7 +97,6 @@ const models: TsoaRoute.Models = {
             "message": {"dataType":"string"},
             "quantity": {"dataType":"double"},
             "unit": {"dataType":"string"},
-
         },
         "additionalProperties": false,
     },
@@ -106,7 +106,6 @@ const models: TsoaRoute.Models = {
         "properties": {
             "reagent_id": {"dataType":"string","required":true},
             "message": {"dataType":"string"},
-
             "type": {"dataType":"enum","enums":["order"],"required":true},
             "quantity": {"dataType":"double","required":true},
             "unit": {"dataType":"string","required":true},
@@ -227,7 +226,6 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "conversations": {"dataType":"array","array":{"dataType":"refObject","ref":"ChatRoomResponse"},"required":true},
-
         },
         "additionalProperties": false,
     },

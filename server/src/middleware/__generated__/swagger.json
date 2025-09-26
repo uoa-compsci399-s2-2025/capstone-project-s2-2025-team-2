@@ -94,6 +94,9 @@
 					},
 					"location": {
 						"type": "string"
+					},
+					"unit": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -106,7 +109,8 @@
 					"tradingType",
 					"categories",
 					"createdAt",
-					"location"
+					"location",
+					"unit"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -211,6 +215,9 @@
 					},
 					"location": {
 						"type": "string"
+					},
+					"unit": {
+						"type": "string"
 					}
 				},
 				"type": "object",
@@ -238,7 +245,6 @@
 					},
 					"message": {
 						"type": "string"
-
 					},
 					"quantity": {
 						"type": "number",
@@ -439,7 +445,6 @@
 					},
 					"unit": {
 						"type": "string"
-
 					}
 				},
 				"required": [

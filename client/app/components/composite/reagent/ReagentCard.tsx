@@ -11,7 +11,6 @@ import {
 import { LuClockAlert } from "react-icons/lu"
 import { IoArrowForward } from "react-icons/io5"
 
-
 interface ReagentCardProps {
   name: string
   tags: string[]
@@ -56,7 +55,6 @@ const ReagentCard = ({
   type,
   id,
 }: ReagentCardProps) => {
-
   return (
     <div
       className="
@@ -194,7 +192,6 @@ const ReagentCard = ({
                     className="md:px-[0.4rem] md:py-[0.2rem]"
                   />
                 </div>
-
               </div>
 
               <button
