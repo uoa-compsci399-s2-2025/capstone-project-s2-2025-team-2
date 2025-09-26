@@ -19,7 +19,7 @@ export class ExpiryController extends Controller {
       for (const [user_id, reagents] of Object.entries(ExpiryReagentsWithUser)) {
         const user = await new UserService().getUserById(user_id)
         if (user && user.email && reagents.length > 0) {
-          await new EmailService().sendReagentExpiryEmail(user.email, reagents)
+          await new EmailService().sendReagentExpiryEmail(user.displayName, user.email, reagents)
         }
       }
     } catch (error) {

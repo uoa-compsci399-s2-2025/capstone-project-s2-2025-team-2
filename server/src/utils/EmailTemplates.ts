@@ -13,6 +13,7 @@ export class EmailTemplates {
     `
   }
   static getExpiryEmailTemplate(
+    username: string,
     reagents: { name: string; expiryDate: string }[],
   ): string {
     const reagentList = reagents
@@ -27,7 +28,7 @@ export class EmailTemplates {
 
     return `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #333;">Dear User</h2>
+        <h2 style="color: #333;">Dear ${username}:</h2>
         <p style="color: #333;">You have reagents expiring in 30 days:</p>
         <div style="background-color: #f4f4f4; padding: 20px; text-align: center; border-radius: 8px; margin: 20px 0;">
           <h5 style="color: #333; font-size: 16px; margin: 0; letter-spacing: 1px;">${reagentList}</h5>

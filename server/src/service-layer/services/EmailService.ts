@@ -41,6 +41,7 @@ export default class EmailService {
    */
 
   public async sendReagentExpiryEmail(
+    username: string,
     email: string,
     reagents: Reagent[],
   ): Promise<void> {
@@ -48,7 +49,7 @@ export default class EmailService {
       from: process.env.EMAIL_USER,
       to: email,
       subject: "Reagent Expiry Alert - You have reagents expiring in 30 Days",
-      html: EmailTemplates.getExpiryEmailTemplate(reagents),
+      html: EmailTemplates.getExpiryEmailTemplate(username, reagents),
     }
     try {
       await this.transporter.sendMail(mailOptions)

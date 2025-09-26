@@ -151,7 +151,7 @@ export class ReagentService {
   }
 
   /**
-   * Retrieves reagents expiring in exactly 30 days for all users, grouped by user ID.
+   * Retrieves reagents expiring in exactly 30 days for all users, grouped by their user ID.
    *
    * @returns Promise<Record<string, Reagent[]>> - Returns a dictionary with userID as key and array of reagents as value.
    *
