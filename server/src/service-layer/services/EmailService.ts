@@ -1,16 +1,19 @@
 import nodemailer from "nodemailer"
 import { EmailTemplates } from "../../utils/EmailTemplates"
-import { Reagent } from "../../data-layer/models/Reagent"
+import { Reagent } from "../../business-layer/models/Reagent"
 
 export default class EmailService {
-  private transporter = nodemailer.createTransport({
-    host: "smtp.ethereal.email",
-    port: 587,
-    auth: {
-      user: "cullen.erdman8@ethereal.email",
-      pass: "1zUpknfJyQAV8zKsaD",
-    },
-  })
+  private transporter: nodemailer.Transporter
+
+  constructor() {
+    this.transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.APP_PASSWORD,
+      },
+    })
+  }
   public async sendVerificationEmail(
     email: string,
     verificationCode: string,
