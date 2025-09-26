@@ -20,6 +20,23 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  "/users/{user_id}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description get user info using user id */
+    get: operations["GetUserById"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   "/users/{user_id}/email": {
     parameters: {
       query?: never
@@ -79,6 +96,25 @@ export interface paths {
     patch: operations["UpdateReagent"]
     trace?: never
   }
+  "/users/{id}/reagents": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description
+     *     Get all reagents under another user by their user id
+     *     Can only be done by admin* */
+    get: operations["GetReagentsByUserId"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   "/reagents": {
     parameters: {
       query?: never
@@ -117,6 +153,134 @@ export interface paths {
     /** @description Update a reagent by its ID.
      *     Can only be done by lab_admin (who owns the reagent) and admin */
     patch: operations["UpdateReagent"]
+    trace?: never
+  }
+  "/orders": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations["GetOrders"]
+    put?: never
+    post: operations["CreateOrder"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/orders/{id}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations["GetOrderById"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/orders/{id}/approve": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch: operations["ApproveOrder"]
+    trace?: never
+  }
+  "/orders/{id}/cancel": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch: operations["CancelOrder"]
+    trace?: never
+  }
+  "/inbox/chatroom": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: operations["CreateChatRoom"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/inbox/message": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: operations["SendMessage"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/inbox/conversations/{userId}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations["GetConversations"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/inbox/chatroom/{chatRoomId}/{userId}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations["GetChatRoomById"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
     trace?: never
   }
   "/auth/google/verify": {
@@ -190,7 +354,9 @@ export interface components {
   schemas: {
     User: {
       email: string
-      username: string
+      displayName: string
+      /** @enum {string} */
+      role: "user" | "lab_manager" | "admin"
     }
     /** @enum {string} */
     ReagentTradingType: "trade" | "giveaway" | "sell"
@@ -209,9 +375,9 @@ export interface components {
       tradingType: components["schemas"]["ReagentTradingType"]
       images?: string[]
       categories: components["schemas"]["ReagentCategory"][]
-      location: string
       /** Format: date-time */
       createdAt: string
+      location: string
     }
     CreateReagentRequest: {
       name: string
@@ -241,9 +407,59 @@ export interface components {
       tradingType?: components["schemas"]["ReagentTradingType"]
       images?: string[]
       categories?: components["schemas"]["ReagentCategory"][]
-      location?: string
       /** Format: date-time */
       createdAt?: string
+      location?: string
+    }
+    Order: {
+      requester_id: string
+      reagent_id: string
+      /** @enum {string} */
+      status: "pending" | "approved" | "canceled"
+      /** Format: date-time */
+      createdAt: string
+      message?: string
+    }
+    CreateOrderRequest: {
+      reagent_id: string
+      message?: string
+    }
+    ChatRoom: {
+      id?: string
+      user1_id: string
+      user2_id: string
+      /** Format: date-time */
+      created_at: string
+    }
+    Message: {
+      id?: string
+      chat_room_id: string
+      sender_id: string
+      content: string
+      /** Format: date-time */
+      created_at: string
+    }
+    ChatRoomResponse: {
+      chat_room: components["schemas"]["ChatRoom"]
+      messages: components["schemas"]["Message"][]
+      other_user: {
+        email: string
+        name: string
+        id: string
+      }
+    }
+    CreateChatRoomRequest: {
+      user1_id: string
+      user2_id: string
+      initial_message?: string
+    }
+    SendMessageRequest: {
+      chat_room_id: string
+      sender_id: string
+      content: string
+    }
+    ConversationListResponse: {
+      conversations: components["schemas"]["ChatRoomResponse"][]
     }
     GoogleOAuthUser: {
       uid: string
@@ -309,6 +525,29 @@ export interface operations {
         }
         content: {
           "application/json": components["schemas"]["User"][]
+        }
+      }
+    }
+  }
+  GetUserById: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description - the id of the user to fetch */
+        user_id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description User retrieved successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["User"] | null
         }
       }
     }
@@ -456,6 +695,28 @@ export interface operations {
       }
     }
   }
+  GetReagentsByUserId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description All reagents returned successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Reagent"][]
+        }
+      }
+    }
+  }
   GetAllReagents: {
     parameters: {
       query?: {
@@ -574,6 +835,209 @@ export interface operations {
         }
         content: {
           "application/json": components["schemas"]["Reagent"]
+        }
+      }
+    }
+  }
+  GetOrders: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description All orders returned successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Order"][]
+        }
+      }
+    }
+  }
+  CreateOrder: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateOrderRequest"]
+      }
+    }
+    responses: {
+      /** @description Order created successfully */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Order"]
+        }
+      }
+    }
+  }
+  GetOrderById: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description All orders returned successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Order"]
+        }
+      }
+    }
+  }
+  ApproveOrder: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description order successfully approved */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Order"]
+        }
+      }
+    }
+  }
+  CancelOrder: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description order successfully canceld */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Order"]
+        }
+      }
+    }
+  }
+  CreateChatRoom: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateChatRoomRequest"]
+      }
+    }
+    responses: {
+      /** @description Ok */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["ChatRoomResponse"]
+        }
+      }
+    }
+  }
+  SendMessage: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["SendMessageRequest"]
+      }
+    }
+    responses: {
+      /** @description Ok */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["ChatRoomResponse"]
+        }
+      }
+    }
+  }
+  GetConversations: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        userId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Ok */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["ConversationListResponse"]
+        }
+      }
+    }
+  }
+  GetChatRoomById: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        chatRoomId: string
+        userId: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Ok */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["ChatRoomResponse"]
         }
       }
     }

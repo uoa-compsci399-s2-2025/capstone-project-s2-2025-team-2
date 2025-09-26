@@ -56,10 +56,18 @@ export default function SearchBar({
         <MagnifyingGlassIcon className="h-5 w-5 text-secondary mr-2" />
         <input
           type="text"
+          placeholder="Search..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="bg-primary w-full text-white placeholder-secondary outline-none turncate md:hidden"
+        />
+
+        <input
+          type="text"
           placeholder="Search for reagents, tags and more..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="bg-primary w-full text-white placeholder-secondary outline-none"
+          className="bg-primary w-full text-white placeholder-secondary outline-none hidden md:block"
         />
       </div>
 

@@ -4,18 +4,21 @@ import Overlay from "../components/composite/Overlay"
 import SearchBar from "../components/composite/searchbar/SearchBar"
 import ReagentCard from "../components/composite/reagent/ReagentCard"
 import ReagentForm from "../components/composite/reagent/ReagentForm"
-import { Reagent } from "../../../server/src/business-layer/models/Reagent"
+import { components } from "@/models/__generated__/schema"
+
+type Reagent = components["schemas"]["Reagent"]
+type ReagentWithId = Reagent & { id: string }
 import client from "../services/fetch-client"
-import { v4 as uuidv4 } from "uuid"
 
 const Marketplace = () => {
-  const [reagents, setReagents] = useState<Reagent[]>([])
+  const [reagents, setReagents] = useState<ReagentWithId[]>([])
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState("all")
   const [sort, setSort] = useState<
     "newest" | "oldest" | "nameAZ" | "nameZA" | ""
   >("newest")
   const [isFormOpen, setIsFormOpen] = useState(false)
+  const [isSignedIn, setIsSignedIn] = useState(false)
 
   const fetchReagents = useCallback(async () => {
     const { data } = await client.GET("/reagents" as any, {})
@@ -24,6 +27,13 @@ const Marketplace = () => {
 
   useEffect(() => {
     fetchReagents()
+    //if auth token in local storage, user is signed in
+    try {
+      const token = localStorage.getItem("authToken")
+      setIsSignedIn(!!token)
+    } catch {
+      setIsSignedIn(false)
+    }
   }, [fetchReagents])
 
   const handleFormSubmit = async () => {
@@ -93,6 +103,7 @@ const Marketplace = () => {
       <div className="mt-5"></div>
 
       <div className="bg-transparent dark:bg-black flex flex-wrap gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] min-w-[21rem]">
+
         <SearchBar
           search={search}
           setSearch={setSearch}
@@ -103,12 +114,11 @@ const Marketplace = () => {
         />
       </div>
 
-      <div className="bg-transparent dark:bg-black flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
+      <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
         {sorted.map((r) => (
           <ReagentCard
-            key={uuidv4()}
+            key={r.id}
             name={r.name}
-            description={r.description}
             tags={Array.isArray(r.categories) ? r.categories : []}
             location={r.location ?? "Unknown"}
             expiryDate={r.expiryDate ?? "N/A"}
@@ -117,17 +127,20 @@ const Marketplace = () => {
                 ? (r.images?.[0] ?? "/placeholder.webp")
                 : "/placeholder.webp"
             }
-            formula={r.tradingType ?? ""}
+            type={r.tradingType ?? "sell"}
+            id={r.id}
           />
         ))}
       </div>
 
-      <button
-        onClick={() => setIsFormOpen(true)}
-        className="fixed bottom-8 right-8 w-14 h-14 bg-blue-primary hover:bg-blue-primary/90 text-white rounded-full transition-all duration-200 flex items-center text-3xl justify-center hover:scale-110 active:scale-95 group z-50"
-      >
-        +
-      </button>
+      {isSignedIn && (
+        <button
+          onClick={() => setIsFormOpen(true)}
+          className="fixed bottom-8 right-8 w-14 h-14 bg-blue-primary hover:bg-blue-primary/90 text-white rounded-full transition-all duration-200 flex items-center text-3xl justify-center hover:scale-110 active:scale-95 group z-50"
+        >
+          +
+        </button>
+      )}
       {isFormOpen && (
         <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 "

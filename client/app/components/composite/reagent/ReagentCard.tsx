@@ -11,16 +11,31 @@ import {
 import { LuClockAlert } from "react-icons/lu"
 import { IoArrowForward } from "react-icons/io5"
 
+
 interface ReagentCardProps {
   name: string
-  description: string
   tags: string[]
   location: string
   expiryDate: string
   imageUrl: string
-  // quantity: string
-  formula?: string
+  type: TradingType
+  id: string
 }
+
+//trading type display style mapping
+const TRADING_TYPE_STYLES: Record<
+  TradingType,
+  {
+    color: string
+    icon: React.ComponentType<{ className?: string }> | null
+  }
+> = {
+  giveaway: { color: "text-blue-100", icon: GiftIcon },
+  sell: { color: "text-green-100", icon: CurrencyDollarIcon },
+  trade: { color: "text-purple-100", icon: ArrowsRightLeftIcon },
+}
+
+//temp hardcoded since it be bugging out when made into style vars
 
 const BG_LAYERS = [
   { backgroundColor: "rgba(204, 204, 204)" },
@@ -34,14 +49,14 @@ const BG_LAYERS = [
 
 const ReagentCard = ({
   name,
-  // description,
   tags,
   location,
   expiryDate,
   imageUrl,
-  // quantity,
-  formula,
+  type,
+  id,
 }: ReagentCardProps) => {
+
   return (
     <div
       className="
@@ -179,7 +194,16 @@ const ReagentCard = ({
                     className="md:px-[0.4rem] md:py-[0.2rem]"
                   />
                 </div>
+
               </div>
+
+              <button
+                onClick={handleViewClick}
+                className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-secondary rounded-lg"
+              >
+                View
+                <ArrowRightIcon className="w-5 h-5" />
+              </button>
             </div>
           </div>
         </div>

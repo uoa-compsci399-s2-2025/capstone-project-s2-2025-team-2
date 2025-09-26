@@ -177,6 +177,15 @@
   }
 }
 
+@layer utilities {
+  .scrollbar-thin {
+    scrollbar-width: thin; /* Firefox */
+  }
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+  }
+}
+
 body {
   background: linear-gradient(
     to bottom,
