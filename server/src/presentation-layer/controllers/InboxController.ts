@@ -116,7 +116,7 @@ export class InboxController extends Controller {
       console.error("Error getting chat room:", error)
       if (error instanceof Error && error.message.includes("not authorized")) {
         this.setStatus(403)
-        throw new Error("User is not authorized to access this chat room")
+        console.error("User is not authorized to access this chat room")
       }
       this.setStatus(500)
       throw new Error("Internal server error")

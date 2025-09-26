@@ -8,9 +8,14 @@ import { components } from "@/models/__generated__/schema"
 
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
+import { components } from "@/models/__generated__/schema"
+
+type Reagent = components["schemas"]["Reagent"]
+type ReagentWithId = Reagent & { id: string }
 import client from "../services/fetch-client"
 
 const Marketplace = () => {
+  const [reagents, setReagents] = useState<ReagentWithId[]>([])
   const [reagents, setReagents] = useState<ReagentWithId[]>([])
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState("all")
@@ -18,6 +23,7 @@ const Marketplace = () => {
     "newest" | "oldest" | "nameAZ" | "nameZA" | ""
   >("newest")
   const [isFormOpen, setIsFormOpen] = useState(false)
+  const [isSignedIn, setIsSignedIn] = useState(false)
   const [isSignedIn, setIsSignedIn] = useState(false)
 
   const fetchReagents = useCallback(async () => {
@@ -95,9 +101,16 @@ const Marketplace = () => {
         </p>
         <p className="text-gray-100 italic inline">Laboratory Reagents</p>
       </div>
+      <div className="ml-4 md:ml-0">
+        <p className="md:ml-8 text-warning italic font-bold inline mr-2 tracking-[0.05em]">
+          Buy, Sell & Exchange
+        </p>
+        <p className="text-gray-100 italic inline">Laboratory Reagents</p>
+      </div>
 
       <div className="mt-5"></div>
 
+      <div className="bg-transparent pt-[2rem] mx-4 md:gap-[2rem] md:mx-[2rem]">
       <div className="bg-transparent pt-[2rem] mx-4 md:gap-[2rem] md:mx-[2rem]">
         <SearchBar
           search={search}
@@ -110,6 +123,7 @@ const Marketplace = () => {
       </div>
 
       <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
+      <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
         {sorted.map((r) => (
           <ReagentCard
             key={r.id}
@@ -119,6 +133,14 @@ const Marketplace = () => {
         ))}
       </div>
 
+      {isSignedIn && (
+        <button
+          onClick={() => setIsFormOpen(true)}
+          className="fixed bottom-8 right-8 w-14 h-14 bg-blue-primary hover:bg-blue-primary/90 text-white rounded-full transition-all duration-200 flex items-center text-3xl justify-center hover:scale-110 active:scale-95 group z-50"
+        >
+          +
+        </button>
+      )}
       {isSignedIn && (
         <button
           onClick={() => setIsFormOpen(true)}

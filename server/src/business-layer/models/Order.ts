@@ -5,4 +5,14 @@ export interface Order {
   status: "pending" | "approved" | "canceled"
   createdAt: Date
   message?: string
+  quantity?: number
+  unit?: string
+}
+
+export interface Exchange extends Order {
+  offeredReagentId: string
+}
+
+export interface Trade extends Order {
+  price: number
 }
