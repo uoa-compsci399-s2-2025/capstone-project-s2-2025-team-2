@@ -23,7 +23,7 @@ import { AuthRequest } from "../../service-layer/dtos/request/AuthRequest"
 @Route("users")
 export class UserController extends Controller {
   /**
-   * Get reagents those are expiring in 30 days under a user by their user id
+   * Get reagents those are expiring in 60 days or less under a user by their user id
    * @param user_id - user id to query with
    * @returns Promise<Reagent[]> - The list of all reagents filtered.
    */

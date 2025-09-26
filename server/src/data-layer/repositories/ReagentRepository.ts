@@ -129,7 +129,7 @@ export class ReagentService {
   }
 
   /**
-   * Retrieves reagents expiring in exactly 30 days for a certain user.
+   * Retrieves reagents expiring in 60 days or less for a certain user.
    *
    * @returns Promise<Reagent[]> - Returns an array of reagents.
    */
@@ -142,7 +142,7 @@ export class ReagentService {
       return reagents.filter((reagent) => {
         if (!reagent.expiryDate) return false
         const daysLeft = daysUntilExpiry(reagent.expiryDate)
-        return daysLeft == 30
+        return daysLeft <= 60 && daysLeft >= 0
       })
     } catch (err) {
       console.log(err)
