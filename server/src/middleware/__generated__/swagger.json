@@ -292,9 +292,7 @@
 				},
 				"required": [
 					"reagent_id",
-					"type",
-					"quantity",
-					"unit"
+					"type"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -378,9 +376,7 @@
 				"required": [
 					"reagent_id",
 					"price",
-					"type",
-					"quantity",
-					"unit"
+					"type"
 				],
 				"type": "object",
 				"additionalProperties": false

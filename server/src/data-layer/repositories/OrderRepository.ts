@@ -31,6 +31,8 @@ export class OrderService {
       status: "pending",
       createdAt: new Date(),
       ...(requestBody.message && { message: requestBody.message }),
+      ...(requestBody.quantity && { quantity: requestBody.quantity }),
+      ...(requestBody.unit && { unit: requestBody.unit }),
     }
 
     console.log("Order: ", order)
@@ -73,8 +75,8 @@ export class OrderService {
       createdAt: new Date(),
       ...(requestBody.message && { message: requestBody.message }),
       price: requestBody.price,
-      quantity: requestBody.quantity,
-      unit: requestBody.unit,
+      ...(requestBody.quantity && { quantity: requestBody.quantity }),
+      ...(requestBody.unit && { unit: requestBody.unit }),
     }
 
     console.log("Order: ", order)

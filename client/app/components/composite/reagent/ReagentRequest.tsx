@@ -23,6 +23,9 @@ interface UserDisplayProps {
   reagentName?: string
   showIcon?: boolean
   showDropdown?: boolean
+  showPriceInput?: boolean
+  price?: string
+  onPriceChange?: (price: string) => void
   userReagents?: ReagentWithId[]
   selectedReagentId?: string
   onReagentChange?: (reagentId: string) => void
@@ -33,7 +36,10 @@ const UserDisplay = ({
   name, 
   reagentName, 
   showIcon, 
-  showDropdown, 
+  showDropdown,
+  showPriceInput,
+  price = "",
+  onPriceChange,
   userReagents = [],
   selectedReagentId = "",
   onReagentChange,
@@ -47,9 +53,23 @@ const UserDisplay = ({
       >
         {name}
       </div>
-      {showIcon && (
+      {showIcon && !showPriceInput && (
         <div className="inline-flex items-center justify-center bg-blue-primary text-white rounded-full p-2 shadow-lg">
           <BeakerIcon className="w-6 h-6" />
+        </div>
+      )}
+      {showPriceInput && (
+        <div className="inline-flex items-center rounded-full px-1.5 py-1 shadow-lg" style={{ backgroundColor: 'var(--succ-green-light)' }}>
+          <div className="w-6 h-6 flex items-center justify-center text-white font-black text-lg leading-none">$</div>
+          <input
+            type="number"
+            value={price}
+            onChange={(e) => onPriceChange?.(e.target.value)}
+            className="bg-transparent text-white w-12 text-left focus:outline-none text-base font-medium leading-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            placeholder="0.00"
+            min="0"
+            disabled={isSubmitting}
+          />
         </div>
       )}
     </div>
@@ -93,11 +113,10 @@ export const ReagentRequest = ({
   const [error, setError] = useState<string>("")
   const [isInitialising, setIsInitialising] = useState(true)
   const [message, setMessage] = useState<string>("")
-  const [price, setPrice] = useState("")
+  const [price, setPrice] = useState(reagent.price ? reagent.price.toFixed(2) : "")
   const [offeredReagentId, setOfferedReagentId] = useState("")
   const [userReagents, setUserReagents] = useState<ReagentWithId[]>([])
 
-  const tradingType = reagent.tradingType
 
   //prevent state updates if window isclosed
   const guardUpdate = (isClosed: boolean, updateState: () => void) => {
@@ -124,7 +143,6 @@ export const ReagentRequest = ({
       setIsInitialising(true)
       setOwnerInfo(null)
       setMessage("")
-      setPrice("")
       setOfferedReagentId("")
       setUserReagents([])
       return
@@ -164,7 +182,7 @@ export const ReagentRequest = ({
 
     //exchange: fetch user's reagents to offer
     const fetchUserReagents = async () => {
-      if (tradingType !== "trade" || !currentUser) return
+      if (reagent.tradingType !== "trade" || !currentUser) return
       
       try {
         const token = localStorage.getItem("authToken")
@@ -195,7 +213,7 @@ export const ReagentRequest = ({
     const initialise = async () => {
       if (validateUser()) {
         const promises = [fetchOwner()]
-        if (tradingType === "trade") {
+        if (reagent.tradingType === "trade") {
           promises.push(fetchUserReagents())
         }
         await Promise.all(promises)
@@ -229,17 +247,17 @@ export const ReagentRequest = ({
       const requestBody = {
         reagent_id: reagent.id,
         ...(message.trim() && { message: message.trim() }),
-        ...(tradingType === "sell" && { type: "trade", price: Number(price) }),
-        ...(tradingType === "trade" && { type: "exchange", offeredReagentId }),
-        ...(tradingType === "giveaway" && { type: "order" })
+        ...(reagent.tradingType === "sell" && { type: "trade", price: Number(price) }),
+        ...(reagent.tradingType === "trade" && { type: "exchange", offeredReagentId }),
+        ...(reagent.tradingType === "giveaway" && { type: "order" })
       }
 
       //call endpoint based on trading type
-      const endpoint = tradingType === "giveaway" ? "/orders" : 
-                      tradingType === "sell" ? "/orders/trades" : 
+      const endpoint = reagent.tradingType === "giveaway" ? "/orders" : 
+                      reagent.tradingType === "sell" ? "/orders/trades" : 
                       "/orders/exchanges"
       
-      console.log("Making " + tradingType + " request!")
+      console.log("Making " + reagent.tradingType + " request!")
     
       const { error } = await client.POST(endpoint as any, {
         body: requestBody,
@@ -248,7 +266,7 @@ export const ReagentRequest = ({
 
       if (error) throw new Error("Failed to create request. Please try again.")
 
-      toast(tradingType.charAt(0).toUpperCase() + tradingType.slice(1) + " request sent successfully!")
+      toast(reagent.tradingType.charAt(0).toUpperCase() + reagent.tradingType.slice(1) + " request sent successfully!")
       onSubmit()
       onClose()
     } catch {
@@ -256,7 +274,7 @@ export const ReagentRequest = ({
     } finally {
       setIsSubmitting(false)
     }
-  }, [reagent.id, message, tradingType, price, offeredReagentId, onSubmit, onClose])
+  }, [reagent.id, message, reagent.tradingType, price, offeredReagentId, onSubmit, onClose])
 
   const handleClose = useCallback(() => {
     if (!isSubmitting) {
@@ -308,8 +326,11 @@ export const ReagentRequest = ({
             <div className="flex items-center justify-center mb-8">
               <UserDisplay 
                 name={requesterName} 
-                showDropdown={tradingType === "trade"}
-                showIcon={tradingType === "trade"}
+                showDropdown={reagent.tradingType === "trade"}
+                showIcon={reagent.tradingType === "trade"}
+                showPriceInput={reagent.tradingType === "sell"}
+                price={price}
+                onPriceChange={setPrice}
                 userReagents={userReagents}
                 selectedReagentId={offeredReagentId}
                 onReagentChange={setOfferedReagentId}
