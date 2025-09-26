@@ -1820,6 +1820,31 @@
 				}
 			}
 		},
+		"/Expiry/{user_id}/expiry": {
+			"get": {
+				"operationId": "CheckUserReagentExpiry",
+				"responses": {
+					"200": {
+						"description": "User email retrieved successfully"
+					}
+				},
+				"description": "Check if this user has any reagents expiring in 30 days by their id.",
+				"tags": [
+					"Expiry"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "user_id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/auth/send-verification-code": {
 			"post": {
 				"operationId": "SendVerificationCode",

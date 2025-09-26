@@ -42,7 +42,7 @@ export default class EmailService {
    */
 
 
-  public async sendReagentExpiryNotification(
+  public async sendReagentExpiryEmail(
     email: string,
     reagents: Reagent[]): Promise<void> {
     const mailOptions = {
