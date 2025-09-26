@@ -4,10 +4,7 @@ import React, { useState, useEffect, useCallback } from "react"
 import { BeakerIcon, XMarkIcon } from "@heroicons/react/20/solid"
 import type { components } from "@/models/__generated__/schema"
 import client from "../../../services/fetch-client"
-<<<<<<< HEAD
 import { toast } from "sonner"
-=======
->>>>>>> origin/main
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../../../config/firebase"
 
@@ -171,11 +168,7 @@ export const ReagentRequest = ({
 
       if (error) throw new Error("Failed to create request. Please try again.")
 
-<<<<<<< HEAD
       toast("Request sent successfully!")
-=======
-      alert("Request sent successfully!")
->>>>>>> origin/main
       onSubmit()
       onClose()
     } catch {

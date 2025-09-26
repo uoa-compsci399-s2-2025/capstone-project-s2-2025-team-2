@@ -12,7 +12,6 @@ import AuthNotificationBox, {
 } from "./AuthNotificationBox"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { useRouter } from "next/navigation"
 import { firebaseSignIn, getIdToken } from "../../services/firebase-auth"
 import FirebaseSignInRequestDto from "../../models/request-models/FirebaseSignInRequestDto"
 import FirebaseSignInResponseDto from "../../models/response-models/FirebaseSignInResponseDto"
@@ -26,7 +25,6 @@ export default function SignInBox({
   setAuthType: (authType: "signin" | "signup" | "forgotpassword") => void
 }) {
   //            state           //
-  const router = useRouter()
   const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")

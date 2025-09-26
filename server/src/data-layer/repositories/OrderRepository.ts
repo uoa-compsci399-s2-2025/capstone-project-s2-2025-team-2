@@ -68,10 +68,13 @@ export class OrderService {
     const order: Trade = {
       requester_id: user_id,
       reagent_id: requestBody.reagent_id,
+      owner_id: reagent.user_id,
       status: "pending",
       createdAt: new Date(),
       ...(requestBody.message && { message: requestBody.message }),
       price: requestBody.price,
+      quantity: requestBody.quantity,
+      unit: requestBody.unit,
     }
 
     console.log("Order: ", order)
@@ -112,11 +115,13 @@ export class OrderService {
     const order: Exchange = {
       requester_id: user_id,
       reagent_id: requestBody.reagent_id,
+      owner_id: reagent.user_id,
       status: "pending",
       createdAt: new Date(),
       ...(requestBody.message && { message: requestBody.message }),
       offeredReagentId: requestBody.offeredReagentId,
       quantity: requestBody.quantity,
+      unit: requestBody.unit,
     }
 
     console.log("Order: ", order)

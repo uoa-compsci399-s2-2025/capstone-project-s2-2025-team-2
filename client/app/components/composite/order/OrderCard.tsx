@@ -6,7 +6,7 @@ import type { components } from "@/models/__generated__/schema"
 import { getCurrentUser } from "@/app/services/firebase-auth"
 
 type Order = components["schemas"]["Order"]
-type OrderWithId = Order & { id: string }
+type OrderWithId = Order & { id: string; owner_id: string }
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
 

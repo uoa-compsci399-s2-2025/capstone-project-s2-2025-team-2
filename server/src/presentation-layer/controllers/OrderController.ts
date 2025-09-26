@@ -124,7 +124,6 @@ export class OrderController extends Controller {
   ): Promise<Order | Trade | Exchange> {
     const user = request.user
     const order = await new OrderService().getOrderById(id)
-    const order = await new OrderService().getOrderById(id)
     if (!order) {
       this.setStatus(404)
       console.error("Order not found")
@@ -146,7 +145,6 @@ export class OrderController extends Controller {
     @Request() request: AuthRequest,
   ): Promise<Order | Trade | Exchange> {
     const user = request.user
-    const order = await new OrderService().getOrderById(id)
     const order = await new OrderService().getOrderById(id)
     if (!order) {
       this.setStatus(404)
