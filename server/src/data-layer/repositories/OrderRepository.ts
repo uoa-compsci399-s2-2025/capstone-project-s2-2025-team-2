@@ -120,8 +120,8 @@ export class OrderService {
       createdAt: new Date(),
       ...(requestBody.message && { message: requestBody.message }),
       offeredReagentId: requestBody.offeredReagentId,
-      quantity: requestBody.quantity,
-      unit: requestBody.unit,
+      ...(requestBody.quantity && { quantity: requestBody.quantity }),
+      ...(requestBody.unit && { unit: requestBody.unit }),
     }
 
     console.log("Order: ", order)

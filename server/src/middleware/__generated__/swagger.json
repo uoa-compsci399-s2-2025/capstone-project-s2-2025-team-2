@@ -462,9 +462,7 @@
 				"required": [
 					"reagent_id",
 					"offeredReagentId",
-					"quantity",
-					"type",
-					"unit"
+					"type"
 				],
 				"type": "object",
 				"additionalProperties": false

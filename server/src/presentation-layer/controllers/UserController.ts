@@ -32,6 +32,31 @@ export class UserController extends Controller {
   }
 
   /**
+   * Get all reagents under a user
+   * User must be authenticated to access this endpoint
+   * @param user_id - user id to query with
+   * @returns Promise<Reagent[]> - The list of all reagents filtered.
+   */
+  @SuccessResponse("200", "All reagents returned successfully")
+  @Security("jwt")
+  @Get("/reagents")
+  public async getReagents(
+    @Request() request: AuthRequest,
+  ): Promise<Reagent[]> {
+    try {
+      const user = request.user
+      const user_id = user.uid
+      if (user_id) {
+        const reagents = await new ReagentService().getReagentsByUserId(user_id)
+        return reagents
+      }
+      return []
+    } catch (err) {
+      throw new Error("Failed to fetch reagents: " + (err as Error).message)
+    }
+  }
+
+  /**
    * get user info using user id
    *
    * @param user_id - the id of the user to fetch
@@ -88,31 +113,6 @@ export class UserController extends Controller {
       return user
     } catch (err) {
       throw new Error(`Failed to fetch user: ${(err as Error).message}`)
-    }
-  }
-
-  /**
-   * Get all reagents under a user
-   * User must be authenticated to access this endpoint
-   * @param user_id - user id to query with
-   * @returns Promise<Reagent[]> - The list of all reagents filtered.
-   */
-  @SuccessResponse("200", "All reagents returned successfully")
-  @Security("jwt")
-  @Get("/reagents")
-  public async getReagents(
-    @Request() request: AuthRequest,
-  ): Promise<Reagent[]> {
-    try {
-      const user = request.user
-      const user_id = user.uid
-      if (user_id) {
-        const reagents = await new ReagentService().getReagentsByUserId(user_id)
-        return reagents
-      }
-      return []
-    } catch (err) {
-      throw new Error("Failed to fetch reagents: " + (err as Error).message)
     }
   }
 
