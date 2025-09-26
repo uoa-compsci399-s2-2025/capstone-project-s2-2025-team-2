@@ -14,6 +14,8 @@ import { InboxController } from './../../presentation-layer/controllers/InboxCon
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { GoogleOAuthController } from './../../presentation-layer/controllers/GoogleOAuthController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { ExpiryController } from './../../presentation-layer/controllers/ExpiryController';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { AuthController } from './../../presentation-layer/controllers/AuthController';
 import { expressAuthentication } from './../../business-layer/security/Authentication';
 // @ts-ignore - no great way to install types from subpackage
@@ -85,6 +87,11 @@ const models: TsoaRoute.Models = {
     "Partial_Reagent_": {
         "dataType": "refAlias",
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"user_id":{"dataType":"string"},"name":{"dataType":"string"},"description":{"dataType":"string"},"condition":{"dataType":"string"},"price":{"dataType":"double"},"quantity":{"dataType":"double"},"expiryDate":{"dataType":"string"},"tradingType":{"ref":"ReagentTradingType"},"images":{"dataType":"array","array":{"dataType":"string"}},"categories":{"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"}},"createdAt":{"dataType":"datetime"},"location":{"dataType":"string"},"unit":{"dataType":"string"}},"validators":{}},
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Record_string.Reagent-Array_": {
+        "dataType": "refAlias",
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"array","array":{"dataType":"refObject","ref":"Reagent"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Order": {
@@ -1228,6 +1235,35 @@ export function RegisterRoutes(app: Router) {
                 next,
                 validatedArgs,
                 successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsExpiryController_sendExpiryNotifications: Record<string, TsoaRoute.ParameterSchema> = {
+        };
+        app.get('/Expiry/send-expiry-emails',
+            ...(fetchMiddlewares<RequestHandler>(ExpiryController)),
+            ...(fetchMiddlewares<RequestHandler>(ExpiryController.prototype.sendExpiryNotifications)),
+
+            async function ExpiryController_sendExpiryNotifications(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsExpiryController_sendExpiryNotifications, request, response });
+
+                const controller = new ExpiryController();
+
+              await templateService.apiHandler({
+                methodName: 'sendExpiryNotifications',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
               });
             } catch (err) {
                 return next(err);

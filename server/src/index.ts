@@ -4,6 +4,7 @@ import cors from "cors"
 import { RegisterRoutes } from "./middleware/__generated__/routes"
 import helmet from "helmet"
 import { json, urlencoded } from "body-parser"
+import { ScheduleService } from "./service-layer/services/ScheduleService"
 
 import * as swaggerJson from "./middleware/__generated__/swagger.json"
 import * as swaggerUI from "swagger-ui-express"
@@ -24,6 +25,9 @@ app.use(cors())
 app.use("/swagger", swaggerUI.serve, swaggerUI.setup(swaggerJson))
 
 RegisterRoutes(app)
+
+const scheduler = new ScheduleService()
+scheduler.scheduleExpiryEmails()
 
 const port = process.env.PORT || 8000
 

@@ -1,6 +1,6 @@
-import EmailService from "service-layer/services/EmailService"
-import { ReagentService } from "data-layer/repositories/ReagentRepository"
-import { UserService } from "data-layer/repositories/UserRepository"
+import EmailService from "../../service-layer/services/EmailService"
+import { ReagentService } from "../../data-layer/repositories/ReagentRepository"
+import { UserService } from "../../data-layer/repositories/UserRepository"
 import { Controller, Get, Route, SuccessResponse, Tags} from "tsoa"
 
 @Tags("Expiry")

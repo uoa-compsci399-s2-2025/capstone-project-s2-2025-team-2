@@ -223,6 +223,17 @@
 				"type": "object",
 				"description": "Make all properties in T optional"
 			},
+			"Record_string.Reagent-Array_": {
+				"properties": {},
+				"additionalProperties": {
+					"items": {
+						"$ref": "#/components/schemas/Reagent"
+					},
+					"type": "array"
+				},
+				"type": "object",
+				"description": "Construct a type with a set of properties K of type T"
+			},
 			"Order": {
 				"properties": {
 					"requester_id": {
@@ -970,7 +981,7 @@
 						}
 					}
 				},
-				"description": "Get all reagents under a user\r\nUser must be authenticated to access this endpoint",
+				"description": "Get all reagents under a user\nUser must be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -995,7 +1006,7 @@
 						}
 					}
 				},
-				"description": "Create a reagent by passing in all the required props.\r\nUser **must** be authenticated to access this endpoint (lab manager / admin) [seller]",
+				"description": "Create a reagent by passing in all the required props.\nUser **must** be authenticated to access this endpoint (lab manager / admin) [seller]",
 				"tags": [
 					"User"
 				],
@@ -1039,7 +1050,7 @@
 						}
 					}
 				},
-				"description": "Get a reagent by using its ID\r\nUser must be authenticated to access this endpoint",
+				"description": "Get a reagent by using its ID\nUser must be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -1079,7 +1090,7 @@
 						}
 					}
 				},
-				"description": "Delete a reagent by using its ID\r\nUser **must** be authenticated to access this endpoint",
+				"description": "Delete a reagent by using its ID\nUser **must** be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -1114,7 +1125,7 @@
 						}
 					}
 				},
-				"description": "Update a reagent by its ID.\r\nUser **must** be authenticated to access this endpoint",
+				"description": "Update a reagent by its ID.\nUser **must** be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -1166,7 +1177,7 @@
 						}
 					}
 				},
-				"description": "\r\nGet all reagents under another user by their user id\r\nCan only be done by admin*",
+				"description": "\nGet all reagents under another user by their user id\nCan only be done by admin*",
 				"tags": [
 					"User"
 				],
@@ -1196,10 +1207,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/Reagent"
-									},
-									"type": "array"
+									"$ref": "#/components/schemas/Record_string.Reagent-Array_"
 								}
 							}
 						}
@@ -1289,7 +1297,7 @@
 						}
 					}
 				},
-				"description": "Get a reagent by its ID.\r\nCan only be done by lab_admin and admin",
+				"description": "Get a reagent by its ID.\nCan only be done by lab_admin and admin",
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -1319,7 +1327,7 @@
 						}
 					}
 				},
-				"description": "Delete a reagent by its ID.\r\nCan only be done by lab_admin (who owns the reagent) and admin",
+				"description": "Delete a reagent by its ID.\nCan only be done by lab_admin (who owns the reagent) and admin",
 				"security": [],
 				"parameters": [
 					{
@@ -1347,7 +1355,7 @@
 						}
 					}
 				},
-				"description": "Update a reagent by its ID.\r\nCan only be done by lab_admin (who owns the reagent) and admin",
+				"description": "Update a reagent by its ID.\nCan only be done by lab_admin (who owns the reagent) and admin",
 				"security": [],
 				"parameters": [
 					{
@@ -1841,6 +1849,22 @@
 						}
 					}
 				}
+			}
+		},
+		"/Expiry/send-expiry-emails": {
+			"get": {
+				"operationId": "SendExpiryNotifications",
+				"responses": {
+					"200": {
+						"description": "Email notifications sent successfully"
+					}
+				},
+				"description": "Send email notifications to all users who has reagents expiring in 30 days",
+				"tags": [
+					"Expiry"
+				],
+				"security": [],
+				"parameters": []
 			}
 		},
 		"/auth/send-verification-code": {
