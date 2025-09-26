@@ -35,13 +35,30 @@ const BG_LAYERS = [
   { backgroundColor: "rgba(204, 204, 204)" },
   { backgroundColor: "rgba(0, 0, 0, 0.9)" },
   { backgroundColor: "rgba(255, 255, 255, 0.06)" },
-  { background: "radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 90%)" },
+  {
+    background:
+      "radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 90%)",
+  },
 ]
 
-const BaseCard = ({ name, categories, expiryDate, images, tradingType, footerLeft, reagentId }: BaseCardProps) => {
+const BaseCard = ({
+  name,
+  categories,
+  expiryDate,
+  images,
+  tradingType,
+  footerLeft,
+  reagentId,
+}: BaseCardProps) => {
   const router = useRouter()
   const { color, icon: Icon } = TRADING_TYPE_STYLES[tradingType] || {}
-  const imageUrl = images?.[0]?.trim() && (images[0].startsWith('/') || images[0].startsWith('./') || images[0].startsWith('http')) ? images[0] : "/placeholder.webp";  
+  const imageUrl =
+    images?.[0]?.trim() &&
+    (images[0].startsWith("/") ||
+      images[0].startsWith("./") ||
+      images[0].startsWith("http"))
+      ? images[0]
+      : "/placeholder.webp"
   return (
     <div className="md:w-[18.5rem] md:h-[20.5rem] w-full border border-white/10 rounded-xl relative">
       {BG_LAYERS.map((style, i) => (
@@ -50,14 +67,21 @@ const BaseCard = ({ name, categories, expiryDate, images, tradingType, footerLef
 
       <div className="relative z-10 p-4">
         <div className="flex flex-row gap-3 md:gap-0 md:flex-col">
-          
           {/*image + tags*/}
           <div className="relative w-full h-[9.5rem]">
-            <Image src={imageUrl} fill className="object-cover rounded-lg" alt="" />
+            <Image
+              src={imageUrl}
+              fill
+              className="object-cover rounded-lg"
+              alt=""
+            />
             <div className="absolute rounded-b-lg bottom-0 left-0 right-0 p-2">
               <div className="hidden md:flex flex-wrap gap-1">
                 {categories.map((cat, i) => (
-                  <span key={i} className="bg-background/70 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm">
+                  <span
+                    key={i}
+                    className="bg-background/70 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm"
+                  >
                     {cat}
                   </span>
                 ))}
@@ -71,12 +95,14 @@ const BaseCard = ({ name, categories, expiryDate, images, tradingType, footerLef
               <h4 className="text-white text-base md:text-lg tracking-wider leading-tight font-normal truncate max-w-9/10">
                 {name}
               </h4>
-              
+
               {/*icon + colour dependent on type*/}
               <div className="flex items-start justify-between">
                 <div className="flex flex-col">
                   <span className="text-white/50 text-xs">Type</span>
-                  <p className={`flex items-center gap-1 text-sm md:text-base ${color}`}>
+                  <p
+                    className={`flex items-center gap-1 text-sm md:text-base ${color}`}
+                  >
                     {Icon && <Icon className="w-5 h-5" />}
                     {tradingType[0].toUpperCase() + tradingType.slice(1)}
                   </p>

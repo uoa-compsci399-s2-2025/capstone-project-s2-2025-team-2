@@ -201,33 +201,33 @@ export class OrderService {
 
   async approveOrder(id: string): Promise<Order> {
     return await this.db.runTransaction(async (tx) => {
-        const orderRef = FirestoreCollections.orders.doc(id)
-        const orderDoc = await tx.get(orderRef)
-        if (!orderDoc.exists) {
-          throw new Error(`Order ${id} not found`)
+      const orderRef = FirestoreCollections.orders.doc(id)
+      const orderDoc = await tx.get(orderRef)
+      if (!orderDoc.exists) {
+        throw new Error(`Order ${id} not found`)
+      }
+      const order = orderDoc.data() as Order
+
+      const otherOrdersQuery = this.db
+        .collection("orders")
+        .where("reagent_id", "==", order.reagent_id)
+        .where("status", "==", "pending")
+      const otherOrders = await tx.get(otherOrdersQuery)
+
+      //writes, updating status + ownership
+      tx.update(orderRef, { status: "approved" })
+
+      //transfer ownership
+      const reagentRef = this.db.collection("reagents").doc(order.reagent_id)
+      tx.update(reagentRef, { user_id: order.requester_id })
+
+      //cancel other pending orders for reagent
+      otherOrders.docs.forEach((doc) => {
+        if (doc.id !== id) {
+          tx.update(doc.ref, { status: "canceled" })
         }
-        const order = orderDoc.data() as Order
-   
-        const otherOrdersQuery = this.db
-          .collection("orders")
-          .where("reagent_id", "==", order.reagent_id)
-          .where("status", "==", "pending")
-        const otherOrders = await tx.get(otherOrdersQuery)
-
-        //writes, updating status + ownership
-        tx.update(orderRef, { status: "approved" })
-
-        //transfer ownership
-        const reagentRef = this.db.collection("reagents").doc(order.reagent_id)
-        tx.update(reagentRef, { user_id: order.requester_id })
-
-        //cancel other pending orders for reagent
-        otherOrders.docs.forEach((doc) => {
-          if (doc.id !== id) {
-            tx.update(doc.ref, { status: "canceled" })
-          }
-        })
-        return { ...order, status: "approved" }
       })
+      return { ...order, status: "approved" }
+    })
   }
 }

@@ -15,7 +15,9 @@ type ReagentWithId = Reagent & { id: string }
 
 export default function Orders() {
   const [orders, setOrders] = useState<OrderWithId[]>([])
-  const [reagents, setReagents] = useState<Map<string, ReagentWithId>>(new Map())
+  const [reagents, setReagents] = useState<Map<string, ReagentWithId>>(
+    new Map(),
+  )
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
@@ -27,25 +29,27 @@ export default function Orders() {
     const { data: ordersData = [] } = await client.GET("/orders" as any, {
       headers: { Authorization: `Bearer ${token}` },
     })
-    
+
     setOrders(ordersData as OrderWithId[])
 
     //fetch all reagents involved in orders, map ids
     const uniqueIds = [...new Set(ordersData.map((o: Order) => o.reagent_id))]
     const reagentData = await Promise.all(
-      uniqueIds.map(async id => {
+      uniqueIds.map(async (id) => {
         const { data } = await client.GET(`/reagents/${id}` as any, {
           headers: { Authorization: `Bearer ${token}` },
         })
-        return data && { ...data, id } as ReagentWithId
-      })
+        return data && ({ ...data, id } as ReagentWithId)
+      }),
     )
-    
-    setReagents(new Map(reagentData.filter(Boolean).map(r => [r!.id, r!])))
+
+    setReagents(new Map(reagentData.filter(Boolean).map((r) => [r!.id, r!])))
     setLoading(false)
   }, [router])
 
-  useEffect(() => { fetchOrders() }, [fetchOrders])
+  useEffect(() => {
+    fetchOrders()
+  }, [fetchOrders])
 
   //handle approve/cancel order, send alert
   const handleAction = async (orderId: string, action: string) => {
@@ -60,22 +64,22 @@ export default function Orders() {
     <Overlay>
       <div className="p-8 max-w-7xl mx-auto">
         <h1 className="text-white text-3xl font-bold mb-6">Your Requests</h1>
-        
+
         {/*loading state*/}
         {loading ? (
           <div className="text-white text-center">Loading requests...</div>
         ) : !orders.length ? (
-          
           //no orders found
           <div className="bg-primary/50 rounded-lg p-8 border border-muted text-gray-400 text-center">
             <h3 className="text-lg font-medium mb-2">No Requests Found.</h3>
-            <p className="text-sm">Requests tied to your account will appear here.</p>
+            <p className="text-sm">
+              Requests tied to your account will appear here.
+            </p>
           </div>
         ) : (
-          
           //render order cards
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {orders.map(order => {
+            {orders.map((order) => {
               const reagent = reagents.get(order.reagent_id)
               if (!reagent) return null
               return (
@@ -83,8 +87,8 @@ export default function Orders() {
                   key={order.id}
                   reagent={reagent}
                   order={order}
-                  onApprove={id => handleAction(id, "approve")}
-                  onDecline={id => handleAction(id, "cancel")}
+                  onApprove={(id) => handleAction(id, "approve")}
+                  onDecline={(id) => handleAction(id, "cancel")}
                 />
               )
             })}

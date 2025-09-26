@@ -13,10 +13,7 @@ interface SellerContactMobileProps {
   reagent?: ReagentWithId
 }
 
-const SellerContactMobile = ({
-  rating,
-  reagent,
-}: SellerContactMobileProps) => {
+const SellerContactMobile = ({ rating, reagent }: SellerContactMobileProps) => {
   const [sellerInfo, setSellerInfo] = useState<any>(null)
 
   //fetch seller info using user id
@@ -25,7 +22,10 @@ const SellerContactMobile = ({
 
     const fetchSellerInfo = async () => {
       try {
-        const { data } = await client.GET(`/users/${reagent.user_id}` as any, {})
+        const { data } = await client.GET(
+          `/users/${reagent.user_id}` as any,
+          {},
+        )
         if (data) {
           setSellerInfo(data)
         }

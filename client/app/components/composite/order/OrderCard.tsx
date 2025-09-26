@@ -17,7 +17,12 @@ interface OrderCardProps {
   onDecline?: (orderId: string) => void
 }
 
-const OrderCard = ({ reagent, order, onApprove, onDecline }: OrderCardProps) => {
+const OrderCard = ({
+  reagent,
+  order,
+  onApprove,
+  onDecline,
+}: OrderCardProps) => {
   //reusable styling
   const btnStyle = "flex items-center justify-center gap-0.5 w-8 h-8 rounded-lg"
   const iconStyle = "w-5 h-5"
@@ -26,7 +31,6 @@ const OrderCard = ({ reagent, order, onApprove, onDecline }: OrderCardProps) => 
     <BaseCard
       {...reagent}
       reagentId={reagent.id}
-
       //conditional rendering for approve/decline
       footerLeft={
         order.status === "pending" ? (
@@ -47,7 +51,6 @@ const OrderCard = ({ reagent, order, onApprove, onDecline }: OrderCardProps) => 
             </button>
           </div>
         ) : (
-          
           //order status
           <p className="text-white/80 text-sm">
             {order.status === "approved" ? "Accepted" : "Declined"}

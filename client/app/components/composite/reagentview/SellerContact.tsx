@@ -15,10 +15,7 @@ interface SellerContactProps {
   reagent?: ReagentWithId
 }
 
-const SellerContact = ({
-  rating,
-  reagent,
-}: SellerContactProps) => {
+const SellerContact = ({ rating, reagent }: SellerContactProps) => {
   const [isRequestOpen, setIsRequestOpen] = useState(false)
   const [sellerInfo, setSellerInfo] = useState<any>(null)
 
@@ -28,7 +25,10 @@ const SellerContact = ({
 
     const fetchSellerInfo = async () => {
       try {
-        const { data } = await client.GET(`/users/${reagent.user_id}` as any, {})
+        const { data } = await client.GET(
+          `/users/${reagent.user_id}` as any,
+          {},
+        )
         if (data) {
           setSellerInfo(data)
         }

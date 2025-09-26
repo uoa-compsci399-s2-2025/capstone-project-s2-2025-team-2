@@ -131,7 +131,9 @@ export default function SignUpBox({
       await saveUserToFirestore()
 
       //welcome toast, marketplace redirect
-      toast(`Welcome, ${response.email}! Your account has been created successfully.`)
+      toast(
+        `Welcome, ${response.email}! Your account has been created successfully.`,
+      )
       router.push("/marketplace")
 
       // User is automatically signed in after successful sign up

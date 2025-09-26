@@ -16,7 +16,6 @@ const ReagentCard = ({ reagent, location }: ReagentCardProps) => (
   <BaseCard
     {...reagent}
     reagentId={reagent.id}
-    
     //location render
     footerLeft={
       <p className="underline-offset-2 text-white/50 flex text-xs gap-0.5">
