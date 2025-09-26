@@ -64,11 +64,3 @@ node_modules/
 
 # dotenv environment variables file
 .env
-
-# Ignore all test email files
-*testEmail.ts
-test*.ts
-
-# Ignore all test config files
-tsconfig.test.json
-tsconfig.*.json

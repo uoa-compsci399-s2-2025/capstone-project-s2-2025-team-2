@@ -18,9 +18,9 @@ export class EmailTemplates {
     const reagentList = reagents
       .map(
         (reagent) => `
-      <li>
+      <div>
         <strong>${reagent.name}</strong> - Expiry Date: ${new Date(reagent.expiryDate).toLocaleDateString()}
-      </li>
+      </div>
     `,
       )
       .join("")
@@ -28,11 +28,11 @@ export class EmailTemplates {
     return `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #333;">Dear User</h2>
-        <p>You have reagents expiring in 30 days:</p>
+        <p style="color: #333;">You have reagents expiring in 30 days:</p>
         <div style="background-color: #f4f4f4; padding: 20px; text-align: center; border-radius: 8px; margin: 20px 0;">
-          <h1 style="color: #007bff; font-size: 32px; margin: 0; letter-spacing: 5px;">${reagentList}</h1>
+          <h5 style="color: #333; font-size: 16px; margin: 0; letter-spacing: 1px;">${reagentList}</h5>
         </div>
-        <p>Please sell, trade or giveaway those reagents, or use them as soon as possible.</p>
+        <p style="color: #333;">Please sell, trade or giveaway those reagents, or use them as soon as possible.</p>
       </div>
     `
   }
