@@ -65,7 +65,7 @@ const UserDisplay = ({
             type="number"
             value={price}
             onChange={(e) => onPriceChange?.(e.target.value)}
-            className="bg-transparent text-white w-12 text-left focus:outline-none text-base font-medium leading-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            className="bg-transparent text-white w-12 text-center focus:outline-none text-base font-medium leading-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             placeholder="0.00"
             min="0"
             disabled={isSubmitting}
@@ -113,7 +113,7 @@ export const ReagentRequest = ({
   const [error, setError] = useState<string>("")
   const [isInitialising, setIsInitialising] = useState(true)
   const [message, setMessage] = useState<string>("")
-  const [price, setPrice] = useState(reagent.price ? reagent.price.toFixed(2) : "")
+  const [price, setPrice] = useState(reagent.price ? Number(reagent.price).toFixed(2) : "")
   const [offeredReagentId, setOfferedReagentId] = useState("")
   const [userReagents, setUserReagents] = useState<ReagentWithId[]>([])
 

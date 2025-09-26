@@ -169,7 +169,7 @@ export default function MessageListBox({
             <p className="text-sm text-gray-500">
               {searchQuery
                 ? "Try adjusting your search"
-                : "Start a conversation by creating an order"}
+                : "Start a conversation by creating a request"}
             </p>
           </div>
         </div>

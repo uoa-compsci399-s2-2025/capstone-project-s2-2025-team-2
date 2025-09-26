@@ -36,7 +36,7 @@ const Sidebar = () => {
     },
     { href: "/marketplace", label: "Marketplace", icon: ShoppingCartIcon },
     { href: "/inbox", label: "Inbox", icon: EnvelopeIcon },
-    { href: "/orders", label: "Orders", icon: ClipboardDocumentListIcon },
+    { href: "/requests", label: "Requests", icon: ClipboardDocumentListIcon },
   ]
 
   return (

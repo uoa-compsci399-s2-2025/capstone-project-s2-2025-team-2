@@ -53,23 +53,23 @@ export default function Orders() {
       headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
     })
     await fetchOrders()
-    toast(action === "approve" ? "Order approved!" : "Order canceled!")
+    toast(action === "approve" ? "Request approved!" : "Request canceled!")
   }
 
   return (
     <Overlay>
       <div className="p-8 max-w-7xl mx-auto">
-        <h1 className="text-white text-3xl font-bold mb-6">Your Orders</h1>
+        <h1 className="text-white text-3xl font-bold mb-6">Your Requests</h1>
         
         {/*loading state*/}
         {loading ? (
-          <div className="text-white text-center">Loading orders...</div>
+          <div className="text-white text-center">Loading requests...</div>
         ) : !orders.length ? (
           
           //no orders found
           <div className="bg-primary/50 rounded-lg p-8 border border-muted text-gray-400 text-center">
-            <h3 className="text-lg font-medium mb-2">No Orders Found.</h3>
-            <p className="text-sm">Orders tied to your account will appear here.</p>
+            <h3 className="text-lg font-medium mb-2">No Requests Found.</h3>
+            <p className="text-sm">Requests tied to your account will appear here.</p>
           </div>
         ) : (
           
