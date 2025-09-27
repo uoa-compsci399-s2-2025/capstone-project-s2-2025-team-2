@@ -166,6 +166,9 @@
 							"type": "string"
 						},
 						"type": "array"
+					},
+					"visibility": {
+						"$ref": "#/components/schemas/ReagentVisibility"
 					}
 				},
 				"required": [

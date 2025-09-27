@@ -1,6 +1,7 @@
 import type {
   ReagentCategory,
   ReagentTradingType,
+  ReagentVisibility,
 } from "business-layer/models/Reagent"
 
 export interface CreateReagentRequest {
@@ -14,4 +15,5 @@ export interface CreateReagentRequest {
   tradingType: ReagentTradingType
   location: string
   images?: string[]
+  visibility?: ReagentVisibility
 }

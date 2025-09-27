@@ -84,6 +84,7 @@ const models: TsoaRoute.Models = {
             "tradingType": {"ref":"ReagentTradingType","required":true},
             "location": {"dataType":"string","required":true},
             "images": {"dataType":"array","array":{"dataType":"string"}},
+            "visibility": {"ref":"ReagentVisibility"},
         },
         "additionalProperties": false,
     },
