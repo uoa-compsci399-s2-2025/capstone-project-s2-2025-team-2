@@ -12,7 +12,12 @@ type CreateReagentRequest = components["schemas"]["CreateReagentRequest"]
 //note: hardcoded for now?
 const TRADING_TYPES: ReagentTradingType[] = ["trade", "giveaway", "sell"]
 const CATEGORIES: ReagentCategory[] = ["chemical", "hazardous", "biological"]
-const VISIBILITY_OPTIONS: ReagentVisibility[] = ["everyone", "region", "institution", "private"]
+const VISIBILITY_OPTIONS: ReagentVisibility[] = [
+  "everyone",
+  "region",
+  "institution",
+  "private",
+]
 const MAX_IMAGES = 5
 
 interface ReagentFormProps {

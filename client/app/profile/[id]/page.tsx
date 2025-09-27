@@ -1,6 +1,5 @@
 "use client"
 import { useEffect, useState, ElementType } from "react"
-import { v4 as uuidv4 } from "uuid"
 import { useParams } from "next/navigation"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "@/app/config/firebase"
@@ -15,7 +14,6 @@ import useAuthGuard from "@/app/hooks/useAuthGuard"
 // other
 import { User } from "../../../../server/src/business-layer/models/User"
 import { components } from "@/models/__generated__/schema"
-import client from "../../services/fetch-client"
 
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
