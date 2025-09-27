@@ -41,7 +41,6 @@ app.use(
 )
 app.use(json())
 app.use(helmet())
-app.use(cors())
 
 app.use("/swagger", swaggerUI.serve, swaggerUI.setup(swaggerJson))
 
