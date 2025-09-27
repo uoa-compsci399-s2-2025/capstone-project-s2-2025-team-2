@@ -201,9 +201,9 @@ const UserProfile = () => {
   const sorted = [...(filtered || [])].sort((a, b) => {
     switch (reagentSearchSort) {
       case "newest":
-        return a.expiryDate.localeCompare(b.expiryDate)
-      case "oldest":
         return b.expiryDate.localeCompare(a.expiryDate)
+      case "oldest":
+        return a.expiryDate.localeCompare(b.expiryDate)
       case "nameAZ":
         return a.name.localeCompare(b.name)
       case "nameZA":
