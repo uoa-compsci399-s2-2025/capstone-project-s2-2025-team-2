@@ -65,7 +65,7 @@ const models: TsoaRoute.Models = {
             "categories": {"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"},"required":true},
             "createdAt": {"dataType":"datetime","required":true},
             "location": {"dataType":"string","required":true},
-            "visibility": {"ref":"ReagentVisibility","required":true},
+            "visibility": {"ref":"ReagentVisibility"},
         },
         "additionalProperties": false,
     },

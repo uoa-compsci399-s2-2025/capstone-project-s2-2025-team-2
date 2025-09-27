@@ -118,8 +118,7 @@
 					"tradingType",
 					"categories",
 					"createdAt",
-					"location",
-					"visibility"
+					"location"
 				],
 				"type": "object",
 				"additionalProperties": false

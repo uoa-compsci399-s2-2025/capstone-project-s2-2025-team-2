@@ -380,7 +380,7 @@ export interface components {
       /** Format: date-time */
       createdAt: string
       location: string
-      visibility: components["schemas"]["ReagentVisibility"]
+      visibility?: components["schemas"]["ReagentVisibility"]
     }
     CreateReagentRequest: {
       name: string
