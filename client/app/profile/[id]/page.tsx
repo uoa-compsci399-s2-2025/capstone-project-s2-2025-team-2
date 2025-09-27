@@ -14,7 +14,11 @@ import SearchBar from "../../components/composite/searchbar/SearchBar"
 import useAuthGuard from "@/app/hooks/useAuthGuard"
 // other
 import { User } from "../../../../server/src/business-layer/models/User"
-import { Reagent } from "../../../../server/src/business-layer/models/Reagent"
+import { components } from "@/models/__generated__/schema"
+import client from "../../services/fetch-client"
+
+type Reagent = components["schemas"]["Reagent"]
+type ReagentWithId = Reagent & { id: string }
 import {
   HomeIcon,
   Square3Stack3DIcon,
@@ -51,7 +55,7 @@ const UserProfile = () => {
   const [reagentSearchSort, setReagentSearchSort] = useState<
     "newest" | "oldest" | "nameAZ" | "nameZA" | ""
   >("newest")
-  const [reagents, setReagents] = useState<Reagent[] | null>(null)
+  const [reagents, setReagents] = useState<ReagentWithId[] | null>(null)
 
   const { fetchWithAuth } = useAuthGuard({ redirectToAuth: true })
 
@@ -124,7 +128,7 @@ const UserProfile = () => {
     }
 
     const getReagents = async () => {
-      const result = await fetchWithAuth<Reagent[]>(
+      const result = await fetchWithAuth<ReagentWithId[]>(
         `/users/${idOfUserBeingViewed}/reagents`,
         { protectedEndpoint: true },
       )
@@ -377,19 +381,20 @@ const UserProfile = () => {
               </p>
             ) : (
               <div className="bg-transparent flex flex-wrap gap-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
-                {sorted.map((reagent: Reagent) => (
+                {sorted.map((r) => (
                   <ReagentCard
-                    key={uuidv4()}
-                    name={reagent.name}
-                    tags={reagent.categories || []}
-                    location={reagent.location || "Unknown"}
-                    expiryDate={reagent.expiryDate || "N/A"}
+                    key={r.id}
+                    name={r.name}
+                    tags={Array.isArray(r.categories) ? r.categories : []}
+                    location={r.location}
+                    expiryDate={r.expiryDate}
                     imageUrl={
-                      reagent.images?.[0] !== "string"
-                        ? reagent.images?.[0] || "/placeholder.webp"
+                      r.images?.[0] !== "string"
+                        ? (r.images?.[0] ?? "/placeholder.webp")
                         : "/placeholder.webp"
                     }
-                    description={reagent.description || ""}
+                    type={r.tradingType}
+                    id={r.id}
                   />
                 ))}
               </div>
