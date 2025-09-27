@@ -58,7 +58,10 @@ export const verifyCode = async (
 }
 
 //            function: verifyToken           //
-export const verifyToken = async (preferredName?: string, university?: string): Promise<any> => {
+export const verifyToken = async (
+  preferredName?: string,
+  university?: string,
+): Promise<any> => {
   try {
     // Get ID token from Firebase Auth
     const idToken = await getIdToken()
@@ -92,4 +95,3 @@ export const verifyToken = async (preferredName?: string, university?: string): 
     throw error
   }
 }
-
