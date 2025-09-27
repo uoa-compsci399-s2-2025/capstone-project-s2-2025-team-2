@@ -12,35 +12,35 @@ export class EmailTemplates {
       </div>
     `
   }
-static getExpiryEmailTemplate(
-  username: string,
-  reagents: { name: string; expiryDate: string }[],
-): string {
-  const reagentList = reagents
-    .map(
-      (reagent) => `
+  static getExpiryEmailTemplate(
+    username: string,
+    reagents: { name: string; expiryDate: string }[],
+  ): string {
+    const reagentList = reagents
+      .map(
+        (reagent) => `
     <div>
       <strong>${reagent.name}</strong> - Expiry Date: ${new Date(reagent.expiryDate).toLocaleDateString()}
     </div>
   `,
-    )
-    .join("")
+      )
+      .join("")
 
-  // Handle pluralization
-  const reagentCount = reagents.length
-  const reagentWord = reagentCount === 1 ? 'reagent' : 'reagents'
-  const verbForm = reagentCount === 1 ? 'expires' : 'expire'
-  const pronounForm = reagentCount === 1 ? 'it' : 'them'
+    // Handle pluralization
+    const reagentCount = reagents.length
+    const reagentWord = reagentCount === 1 ? "reagent" : "reagents"
+    const verbForm = reagentCount === 1 ? "expires" : "expire"
+    const pronounForm = reagentCount === 1 ? "it" : "them"
 
-  return `
+    return `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
       <h2 style="color: #333;">Dear ${username}:</h2>
-      <p style="color: #333;">You have ${reagentCount} ${reagentWord} ${verbForm === 'expires' ? 'expiring' : 'expiring'} in 30 days:</p>
+      <p style="color: #333;">You have ${reagentCount} ${reagentWord} ${verbForm === "expires" ? "expiring" : "expiring"} in 30 days:</p>
       <div style="background-color: #f4f4f4; padding: 20px; text-align: center; border-radius: 8px; margin: 20px 0;">
         <h5 style="color: #333; font-size: 16px; margin: 0; letter-spacing: 1px;">${reagentList}</h5>
       </div>
-      <p style="color: #333;">Please sell, trade or giveaway ${reagentCount === 1 ? 'this reagent' : 'those reagents'}, or use ${pronounForm} as soon as possible.</p>
+      <p style="color: #333;">Please sell, trade or giveaway ${reagentCount === 1 ? "this reagent" : "those reagents"}, or use ${pronounForm} as soon as possible.</p>
     </div>
   `
-}
+  }
 }
