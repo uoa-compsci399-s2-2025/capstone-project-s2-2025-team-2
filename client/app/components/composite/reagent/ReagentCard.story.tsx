@@ -8,6 +8,12 @@ const meta = {
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: "centered",
+    nextjs: {
+      appDirectory: true,
+      navigation: {
+        pathname: "/marketplace",
+      },
+    },
   },
   // This component will have an automatically generated Autodocs entry: https://storybook.js.org/docs/writing-docs/autodocs
   tags: ["autodocs"],
@@ -24,13 +30,12 @@ type Story = StoryObj<typeof meta>
 export const DefaultReagentCard: Story = {
   args: {
     name: "Ethanol",
-    tags: ["liquid", "safe", "alchohol", "flammable"],
+    tags: ["liquid", "alchohol", "flammable"],
     location: "UoA, Auckland",
     expiryDate: "25/10/2026",
     imageUrl:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4R4SrdU7Rbyr3DqFDmKBsFH9t9lqjLcJetw&s",
-    // quantity: "1L",
-    formula: "C2H6O",
-    description: "This is an example reagent",
+    type: "trade",
+    id: "abcd",
   },
 }

@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "next/link"
 import Collaborate from "./Icons/Collaborate"
 import ReduceWaste from "./Icons/ReduceWaste"
 import SaveMoney from "./Icons/SaveMoney"
@@ -69,14 +70,16 @@ const Landing = () => {
                     lg:flex-row
                 "
         >
-          <button
-            className="
-                        mt-[3rem] px-[3.5rem] py-3 bg-blue-primary text-white font-semibold rounded-lg hover:bg-blue-secondary
-                        mx-auto dark:bg-[#FF7C5C] lg:mr-[3rem] hover:cursor-pointer
-                    "
-          >
-            Get Started
-          </button>
+          <Link href="/auth">
+            <button
+              className="
+                          mt-[3rem] px-[3.5rem] py-3 bg-blue-primary text-white font-semibold rounded-lg hover:bg-blue-secondary
+                          mx-auto dark:bg-[#FF7C5C] lg:mr-[3rem] hover:cursor-pointer
+                      "
+            >
+              Get Started
+            </button>
+          </Link>
           <button
             className="
                         mt-[3rem] px-[3.9rem] py-3 bg-transparent text-black font-extralight rounded-lg

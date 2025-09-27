@@ -11,6 +11,7 @@ import AuthNotificationBox, {
   AuthNotificationState,
 } from "./AuthNotificationBox"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { firebaseSignIn, getIdToken } from "../../services/firebase-auth"
 import FirebaseSignInRequestDto from "../../models/request-models/FirebaseSignInRequestDto"
 import FirebaseSignInResponseDto from "../../models/response-models/FirebaseSignInResponseDto"
@@ -23,6 +24,7 @@ export default function SignInBox({
   setAuthType: (authType: "signin" | "signup" | "forgotpassword") => void
 }) {
   //            state           //
+  const router = useRouter()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [, setUser] = useState<any>(null)
@@ -56,8 +58,9 @@ export default function SignInBox({
     } catch (error) {
       console.error("Error storing Google OAuth token:", error)
     }
-
+    //welcome alert, redirect to marketplace
     alert(`Welcome, ${userData.displayName || userData.email}!`)
+    router.push("/marketplace")
   }
 
   //            function: handleGoogleError           //
@@ -106,6 +109,10 @@ export default function SignInBox({
 
       // Ensure user data exists in Firestore
       await ensureUserInFirestore()
+
+      //welcome alert, redirect to marketplace
+      alert(`Welcome back, ${response.email}!`)
+      router.push("/marketplace")
     } else {
       setNotificationState("login-fail")
     }

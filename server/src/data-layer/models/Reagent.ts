@@ -9,7 +9,6 @@ export type ReagentVisibility =
   | "private"
 
 export interface Reagent {
-  id: string
   userId: string
   name: string
   description: string
@@ -22,5 +21,6 @@ export interface Reagent {
   categories: ReagentCategory[]
   createdAt: Date
   location: string
+  unit: string
   visibility?: ReagentVisibility
 }

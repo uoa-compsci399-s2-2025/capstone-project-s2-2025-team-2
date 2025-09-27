@@ -65,7 +65,11 @@ const models: TsoaRoute.Models = {
             "categories": {"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"},"required":true},
             "createdAt": {"dataType":"datetime","required":true},
             "location": {"dataType":"string","required":true},
+<<<<<<< HEAD
             "visibility": {"ref":"ReagentVisibility"},
+=======
+            "unit": {"dataType":"string","required":true},
+>>>>>>> origin/main
         },
         "additionalProperties": false,
     },
@@ -89,7 +93,11 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Partial_Reagent_": {
         "dataType": "refAlias",
+<<<<<<< HEAD
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"user_id":{"dataType":"string"},"name":{"dataType":"string"},"description":{"dataType":"string"},"condition":{"dataType":"string"},"price":{"dataType":"double"},"quantity":{"dataType":"double"},"expiryDate":{"dataType":"string"},"tradingType":{"ref":"ReagentTradingType"},"images":{"dataType":"array","array":{"dataType":"string"}},"categories":{"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"}},"createdAt":{"dataType":"datetime"},"location":{"dataType":"string"},"visibility":{"ref":"ReagentVisibility"}},"validators":{}},
+=======
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"user_id":{"dataType":"string"},"name":{"dataType":"string"},"description":{"dataType":"string"},"condition":{"dataType":"string"},"price":{"dataType":"double"},"quantity":{"dataType":"double"},"expiryDate":{"dataType":"string"},"tradingType":{"ref":"ReagentTradingType"},"images":{"dataType":"array","array":{"dataType":"string"}},"categories":{"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"}},"createdAt":{"dataType":"datetime"},"location":{"dataType":"string"},"unit":{"dataType":"string"}},"validators":{}},
+>>>>>>> origin/main
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Order": {
@@ -100,6 +108,8 @@ const models: TsoaRoute.Models = {
             "status": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["pending"]},{"dataType":"enum","enums":["approved"]},{"dataType":"enum","enums":["canceled"]}],"required":true},
             "createdAt": {"dataType":"datetime","required":true},
             "message": {"dataType":"string"},
+            "quantity": {"dataType":"double"},
+            "unit": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -109,6 +119,65 @@ const models: TsoaRoute.Models = {
         "properties": {
             "reagent_id": {"dataType":"string","required":true},
             "message": {"dataType":"string"},
+            "type": {"dataType":"enum","enums":["order"],"required":true},
+            "quantity": {"dataType":"double","required":true},
+            "unit": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Trade": {
+        "dataType": "refObject",
+        "properties": {
+            "requester_id": {"dataType":"string","required":true},
+            "reagent_id": {"dataType":"string","required":true},
+            "status": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["pending"]},{"dataType":"enum","enums":["approved"]},{"dataType":"enum","enums":["canceled"]}],"required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "message": {"dataType":"string"},
+            "quantity": {"dataType":"double"},
+            "unit": {"dataType":"string"},
+            "price": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateTradeRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "reagent_id": {"dataType":"string","required":true},
+            "message": {"dataType":"string"},
+            "price": {"dataType":"double","required":true},
+            "type": {"dataType":"enum","enums":["trade"],"required":true},
+            "quantity": {"dataType":"double","required":true},
+            "unit": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "Exchange": {
+        "dataType": "refObject",
+        "properties": {
+            "requester_id": {"dataType":"string","required":true},
+            "reagent_id": {"dataType":"string","required":true},
+            "status": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["pending"]},{"dataType":"enum","enums":["approved"]},{"dataType":"enum","enums":["canceled"]}],"required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "message": {"dataType":"string"},
+            "quantity": {"dataType":"double"},
+            "unit": {"dataType":"string"},
+            "offeredReagentId": {"dataType":"string","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateExchangeRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "reagent_id": {"dataType":"string","required":true},
+            "message": {"dataType":"string"},
+            "offeredReagentId": {"dataType":"string","required":true},
+            "quantity": {"dataType":"double","required":true},
+            "type": {"dataType":"enum","enums":["exchange"],"required":true},
+            "unit": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -304,6 +373,36 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsUserController_getUserById: Record<string, TsoaRoute.ParameterSchema> = {
+                user_id: {"in":"path","name":"user_id","required":true,"dataType":"string"},
+        };
+        app.get('/users/:user_id',
+            ...(fetchMiddlewares<RequestHandler>(UserController)),
+            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.getUserById)),
+
+            async function UserController_getUserById(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsUserController_getUserById, request, response });
+
+                const controller = new UserController();
+
+              await templateService.apiHandler({
+                methodName: 'getUserById',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsUserController_getEmail: Record<string, TsoaRoute.ParameterSchema> = {
                 request: {"in":"request","name":"request","required":true,"dataType":"object"},
                 user_id: {"in":"path","name":"user_id","required":true,"dataType":"string"},
@@ -340,7 +439,7 @@ export function RegisterRoutes(app: Router) {
                 user_id: {"in":"path","name":"user_id","required":true,"dataType":"string"},
                 request: {"in":"request","name":"request","required":true,"dataType":"object"},
         };
-        app.get('/users/:user_id',
+        app.get('/users/:user_id/jwt',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(UserController)),
             ...(fetchMiddlewares<RequestHandler>(UserController.prototype.getUser)),
@@ -731,6 +830,70 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'createOrder',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 201,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsOrderController_createTrade: Record<string, TsoaRoute.ParameterSchema> = {
+                req: {"in":"body","name":"req","required":true,"ref":"CreateTradeRequest"},
+                request: {"in":"request","name":"request","required":true,"dataType":"object"},
+        };
+        app.post('/orders/trades',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(OrderController)),
+            ...(fetchMiddlewares<RequestHandler>(OrderController.prototype.createTrade)),
+
+            async function OrderController_createTrade(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsOrderController_createTrade, request, response });
+
+                const controller = new OrderController();
+
+              await templateService.apiHandler({
+                methodName: 'createTrade',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 201,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsOrderController_createExchange: Record<string, TsoaRoute.ParameterSchema> = {
+                req: {"in":"body","name":"req","required":true,"ref":"CreateExchangeRequest"},
+                request: {"in":"request","name":"request","required":true,"dataType":"object"},
+        };
+        app.post('/orders/exchanges',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(OrderController)),
+            ...(fetchMiddlewares<RequestHandler>(OrderController.prototype.createExchange)),
+
+            async function OrderController_createExchange(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsOrderController_createExchange, request, response });
+
+                const controller = new OrderController();
+
+              await templateService.apiHandler({
+                methodName: 'createExchange',
                 controller,
                 response,
                 next,

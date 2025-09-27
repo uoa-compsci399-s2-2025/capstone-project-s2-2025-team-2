@@ -176,6 +176,7 @@
   .scrollbar-thin::-webkit-scrollbar {
     width: 6px;
   }
+<<<<<<< HEAD
 
   body {
     background: var(--soft-gray);
@@ -190,4 +191,16 @@
       #474747 100%
     );
   }
+=======
+}
+
+body {
+  background: linear-gradient(
+    to bottom,
+    var(--background) 0%,
+    var(--background) 30%,
+    var(--background-fade) 100%
+  );
+  font-family: "Poppins", sans-serif;
+>>>>>>> origin/main
 }
