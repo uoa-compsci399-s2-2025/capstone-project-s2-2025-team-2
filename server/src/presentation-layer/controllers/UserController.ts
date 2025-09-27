@@ -30,16 +30,6 @@ export class UserController extends Controller {
     console.log(`Returning ${users.length} users`)
     return users
   }
-  @SuccessResponse("200", "User retrieved successfully")
-  @Get("{id}")
-  public async getUser(@Path() id: string): Promise<User> {
-    const user = await new UserService().getUserById(id)
-    if (user === null) {
-      this.setStatus(404)
-      return undefined
-    }
-    return user
-  }
   /**
    * Get email of the current logged in user
    *
