@@ -65,11 +65,8 @@ const models: TsoaRoute.Models = {
             "categories": {"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"},"required":true},
             "createdAt": {"dataType":"datetime","required":true},
             "location": {"dataType":"string","required":true},
-<<<<<<< HEAD
-            "visibility": {"ref":"ReagentVisibility"},
-=======
             "unit": {"dataType":"string","required":true},
->>>>>>> origin/main
+            "visibility": {"ref":"ReagentVisibility"},
         },
         "additionalProperties": false,
     },
@@ -93,11 +90,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Partial_Reagent_": {
         "dataType": "refAlias",
-<<<<<<< HEAD
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"user_id":{"dataType":"string"},"name":{"dataType":"string"},"description":{"dataType":"string"},"condition":{"dataType":"string"},"price":{"dataType":"double"},"quantity":{"dataType":"double"},"expiryDate":{"dataType":"string"},"tradingType":{"ref":"ReagentTradingType"},"images":{"dataType":"array","array":{"dataType":"string"}},"categories":{"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"}},"createdAt":{"dataType":"datetime"},"location":{"dataType":"string"},"visibility":{"ref":"ReagentVisibility"}},"validators":{}},
-=======
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"user_id":{"dataType":"string"},"name":{"dataType":"string"},"description":{"dataType":"string"},"condition":{"dataType":"string"},"price":{"dataType":"double"},"quantity":{"dataType":"double"},"expiryDate":{"dataType":"string"},"tradingType":{"ref":"ReagentTradingType"},"images":{"dataType":"array","array":{"dataType":"string"}},"categories":{"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"}},"createdAt":{"dataType":"datetime"},"location":{"dataType":"string"},"unit":{"dataType":"string"}},"validators":{}},
->>>>>>> origin/main
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"user_id":{"dataType":"string"},"name":{"dataType":"string"},"description":{"dataType":"string"},"condition":{"dataType":"string"},"price":{"dataType":"double"},"quantity":{"dataType":"double"},"expiryDate":{"dataType":"string"},"tradingType":{"ref":"ReagentTradingType"},"images":{"dataType":"array","array":{"dataType":"string"}},"categories":{"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"}},"createdAt":{"dataType":"datetime"},"location":{"dataType":"string"},"unit":{"dataType":"string"},"visibility":{"ref":"ReagentVisibility"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Order": {

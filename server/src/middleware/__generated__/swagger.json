@@ -104,13 +104,11 @@
 					"location": {
 						"type": "string"
 					},
-<<<<<<< HEAD
-					"visibility": {
-						"$ref": "#/components/schemas/ReagentVisibility"
-=======
 					"unit": {
 						"type": "string"
->>>>>>> origin/main
+					},
+					"visibility": {
+						"$ref": "#/components/schemas/ReagentVisibility"
 					}
 				},
 				"required": [
@@ -230,13 +228,11 @@
 					"location": {
 						"type": "string"
 					},
-<<<<<<< HEAD
-					"visibility": {
-						"$ref": "#/components/schemas/ReagentVisibility"
-=======
 					"unit": {
 						"type": "string"
->>>>>>> origin/main
+					},
+					"visibility": {
+						"$ref": "#/components/schemas/ReagentVisibility"
 					}
 				},
 				"type": "object",
