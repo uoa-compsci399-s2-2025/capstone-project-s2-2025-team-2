@@ -3,6 +3,7 @@ import SendVerificationCodeRequestDto from "../models/request-models/SendVerific
 import SendVerificationCodeResponseDto from "../models/response-models/SendVerificationCodeResponseDto"
 import VerifyCodeRequestDto from "../models/request-models/VerifyCodeRequestDto"
 import VerifyCodeResponseDto from "../models/response-models/VerifyCodeResponseDto"
+import VerifyTokenRequestDto from "../models/request-models/VerifyTokenRequestDto"
 import client from "./fetch-client"
 import GoogleOAuthResponseDto from "../models/response-models/GoogleOAuthResponseDto"
 import { getIdToken } from "./firebase-auth"
@@ -57,7 +58,7 @@ export const verifyCode = async (
 }
 
 //            function: verifyToken           //
-export const verifyToken = async (): Promise<any> => {
+export const verifyToken = async (preferredName?: string, university?: string): Promise<any> => {
   try {
     // Get ID token from Firebase Auth
     const idToken = await getIdToken()
@@ -67,8 +68,16 @@ export const verifyToken = async (): Promise<any> => {
     }
 
     // Call backend to verify token and save/verify user in Firestore
+    const requestBody: VerifyTokenRequestDto = {
+      idToken,
+      preferredName,
+      university,
+    }
+
+    console.log("Sending verify token request:", requestBody)
+
     const response = await client.POST(VERIFY_TOKEN_URL, {
-      body: { idToken },
+      body: requestBody,
     })
 
     console.log("Token verification response:", response.data)
@@ -83,3 +92,4 @@ export const verifyToken = async (): Promise<any> => {
     throw error
   }
 }
+
