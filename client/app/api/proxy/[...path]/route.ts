@@ -5,9 +5,10 @@ const BACKEND_URL = "http://54.206.209.62:8000"
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { path: string[] } },
+  context: { params: Promise<{ path: string[] }> },
 ) {
   try {
+    const params = await context.params
     const path = params.path.join("/")
     const url = new URL(request.url)
     const searchParams = url.searchParams.toString()
@@ -22,7 +23,7 @@ export async function GET(
       },
     })
 
-    console.log("✅ Backend response status:", response.status)
+    console.log("Backend response status:", response.status)
 
     if (!response.ok) {
       throw new Error(`Backend error: ${response.status}`)
@@ -30,22 +31,26 @@ export async function GET(
 
     const data = await response.json()
     return NextResponse.json(data)
-  } catch (error) {
-    console.error("❌ Proxy error:", error)
-    return NextResponse.json({ error: "Proxy failed" }, { status: 500 })
+  } catch (error: any) {
+    console.error("Proxy error:", error)
+    return NextResponse.json(
+      { error: "Proxy failed", details: error.message },
+      { status: 500 },
+    )
   }
 }
 
 export async function POST(
   request: NextRequest,
-  { params }: { params: { path: string[] } },
+  context: { params: Promise<{ path: string[] }> },
 ) {
   try {
+    const params = await context.params
     const path = params.path.join("/")
     const body = await request.json()
     const backendUrl = `${BACKEND_URL}/${path}`
 
-    console.log("🔄 Proxying POST to:", backendUrl)
+    console.log("Proxying POST to:", backendUrl)
 
     const response = await fetch(backendUrl, {
       method: "POST",
@@ -61,17 +66,21 @@ export async function POST(
 
     const data = await response.json()
     return NextResponse.json(data)
-  } catch (error) {
-    console.error("❌ Proxy POST error:", error)
-    return NextResponse.json({ error: "Proxy POST failed" }, { status: 500 })
+  } catch (error: any) {
+    console.error("Proxy POST error:", error)
+    return NextResponse.json(
+      { error: "Proxy POST failed", details: error.message },
+      { status: 500 },
+    )
   }
 }
 
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { path: string[] } },
+  context: { params: Promise<{ path: string[] }> },
 ) {
   try {
+    const params = await context.params
     const path = params.path.join("/")
     const body = await request.json()
     const backendUrl = `${BACKEND_URL}/${path}`
@@ -90,17 +99,21 @@ export async function PUT(
 
     const data = await response.json()
     return NextResponse.json(data)
-  } catch (error) {
+  } catch (error: any) {
     console.error("❌ Proxy PUT error:", error)
-    return NextResponse.json({ error: "Proxy PUT failed" }, { status: 500 })
+    return NextResponse.json(
+      { error: "Proxy PUT failed", details: error.message },
+      { status: 500 },
+    )
   }
 }
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { path: string[] } },
+  context: { params: Promise<{ path: string[] }> },
 ) {
   try {
+    const params = await context.params
     const path = params.path.join("/")
     const backendUrl = `${BACKEND_URL}/${path}`
 
@@ -117,8 +130,11 @@ export async function DELETE(
 
     const data = await response.json()
     return NextResponse.json(data)
-  } catch (error) {
+  } catch (error: any) {
     console.error("Proxy DELETE error:", error)
-    return NextResponse.json({ error: "Proxy DELETE failed" }, { status: 500 })
+    return NextResponse.json(
+      { error: "Proxy DELETE failed", details: error.message },
+      { status: 500 },
+    )
   }
 }
