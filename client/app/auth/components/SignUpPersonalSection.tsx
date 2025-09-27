@@ -26,7 +26,7 @@ const NEW_ZEALAND_UNIVERSITIES = [
   "University of Canterbury",
   "Lincoln University",
   "University of Otago",
-  "Other"
+  "Other",
 ]
 
 //            function: SignUpPersonalSection           //

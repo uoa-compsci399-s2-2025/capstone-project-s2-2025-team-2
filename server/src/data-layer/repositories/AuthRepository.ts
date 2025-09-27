@@ -27,7 +27,12 @@ export class AuthRepository {
     return true
   }
 
-  async saveUser(uid: string, email: string, preferredName: string, university: string): Promise<void> {
+  async saveUser(
+    uid: string,
+    email: string,
+    preferredName: string,
+    university: string,
+  ): Promise<void> {
     await db.collection("users").doc(uid).set({
       uid,
       email,
@@ -44,5 +49,4 @@ export class AuthRepository {
     }
     return null
   }
-
 }

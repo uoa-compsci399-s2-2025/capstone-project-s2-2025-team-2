@@ -53,7 +53,9 @@ export default function SignUpBox({
   }
 
   //            function: handlePreferredNameChange           //
-  const handlePreferredNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePreferredNameChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     setPreferredName(e.target.value)
   }
 
@@ -132,8 +134,18 @@ export default function SignUpBox({
 
     try {
       setNotificationState("signing-up")
-      const requestBody: FirebaseSignUpRequestDto = { email, password, preferredName, university }
-      console.log("Signing up with Firebase:", { email, password, preferredName, university })
+      const requestBody: FirebaseSignUpRequestDto = {
+        email,
+        password,
+        preferredName,
+        university,
+      }
+      console.log("Signing up with Firebase:", {
+        email,
+        password,
+        preferredName,
+        university,
+      })
       const response = await firebaseSignUp(requestBody)
       handleSignUpResponse(response)
     } catch (error) {
@@ -174,7 +186,10 @@ export default function SignUpBox({
       const response = await verifyToken(preferredName, university)
 
       if (response && response.success) {
-        console.log("User data saved to Firestore with personal information:", response)
+        console.log(
+          "User data saved to Firestore with personal information:",
+          response,
+        )
       } else {
         console.error("Failed to save user to Firestore:", response)
       }
