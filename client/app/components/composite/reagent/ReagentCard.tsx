@@ -1,13 +1,15 @@
 "use client"
+import Image from "next/image"
+import Button from "../../generic/button/regular/Button"
+
 import {
   MapPinIcon,
   GiftIcon,
   CurrencyDollarIcon,
   ArrowsRightLeftIcon,
-  ClockIcon,
 } from "@heroicons/react/24/outline"
-import { ArrowRightIcon } from "@heroicons/react/24/solid"
-import Image from "next/image"
+import { LuClockAlert } from "react-icons/lu"
+import { IoArrowForward } from "react-icons/io5"
 import { useRouter } from "next/navigation"
 
 type TradingType = "giveaway" | "sell" | "trade"
@@ -22,20 +24,8 @@ interface ReagentCardProps {
   id: string
 }
 
-//trading type display style mapping
-const TRADING_TYPE_STYLES: Record<
-  TradingType,
-  {
-    color: string
-    icon: React.ComponentType<{ className?: string }> | null
-  }
-> = {
-  giveaway: { color: "text-blue-100", icon: GiftIcon },
-  sell: { color: "text-green-100", icon: CurrencyDollarIcon },
-  trade: { color: "text-purple-100", icon: ArrowsRightLeftIcon },
-}
-
 //temp hardcoded since it be bugging out when made into style vars
+
 const BG_LAYERS = [
   { backgroundColor: "rgba(204, 204, 204)" },
   { backgroundColor: "rgba(0, 0, 0, 0.9)" },
@@ -61,9 +51,17 @@ const ReagentCard = ({
   const handleViewClick = () => {
     router.push(`/marketplace/${id}`)
   }
-
   return (
-    <div className="md:w-[18.5rem] md:h-[20.5rem] w-full border border-white/10 border-solid rounded-xl relative">
+    <div
+      className="
+            relative
+            p-2
+           md:w-[19rem] md:h-full
+           min-w-[22rem]
+           w-full
+           border-white/30 border-solid border-[1.5px] rounded-xl
+       "
+    >
       {BG_LAYERS.map((style, index) => (
         <div
           key={index}
@@ -71,88 +69,127 @@ const ReagentCard = ({
           style={style}
         />
       ))}
+      <div className="flex flex-row py-auto gap-4 md:gap-0 md:flex-col m-2 md:m-3 rounded-lg overflow-hidden drop-shadow-xl">
+        <div className="relative w-[7rem] min-h-[6.5rem] flex items-center justify-center md:w-full md:h-[8rem]">
+          <Image
+            src={imageUrl || "./placeholder.webp"}
+            fill
+            className="object-cover rounded-lg h-full"
+            alt=""
+          />
+          <div className="absolute bottom-0 left-0 right-0 p-2 bg-gradient-to-t from-black/60 to-transparent">
+            <div className="hidden md:block flex flex-wrap gap-1">
+              {tags.map((tag, idx) => (
+                <span
+                  key={idx}
+                  className="bg-black/30 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
 
-      <div className="relative z-10 p-4">
-        <div className="flex flex-row gap-3 md:gap-0 md:flex-col">
-          {/*image + tags*/}
-          <div className="relative w-full h-[9.5rem]">
-            <Image
-              src={(imageUrl as string) || "/placeholder.webp"}
-              fill
-              className="object-cover rounded-lg"
-              alt=""
-            />
-            <div className="absolute rounded-b-lg bottom-0 left-0 right-0 p-2">
-              <div className="hidden md:flex flex-wrap gap-1">
-                {tags.map((tag, idx) => (
-                  <span
-                    key={idx}
-                    className="bg-background/70 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm"
-                  >
-                    {tag}
-                  </span>
-                ))}
+        <div className="flex flex-col justify-between flex-1 gap-1 md:pt-4">
+          <div
+            className="
+            flex flex-col justify-between
+            "
+          >
+            <div
+              className="
+                    md:flex md:gap-1
+                "
+            >
+              <p className="text-white/60 text-sm md:text-sm italic mt-1 flex gap-1">
+                {/* Icon */}
+                {type === "trade" ? (
+                  <ArrowsRightLeftIcon className="w-5 h-5 text-orange-200" />
+                ) : type === "sell" ? (
+                  <CurrencyDollarIcon className="w-5 h-5 text-green-400" />
+                ) : type === "giveaway" ? (
+                  <GiftIcon className="w-5 h-5 text-blue-300" />
+                ) : (
+                  <GiftIcon className="w-5 h-5 text-blue-300" />
+                )}
+                {/* Text */}
+                {type === "trade" ? (
+                  <span className="text-orange-200 md:hidden">Trade</span>
+                ) : type === "sell" ? (
+                  <span className="text-green-400 md:hidden">Sell</span>
+                ) : type === "giveaway" ? (
+                  <span className="text-blue-300 md:hidden">Giveaway</span>
+                ) : (
+                  <span className="text-blue-300 md:hidden">Giveaway</span>
+                )}
+              </p>
+              <span className="flex items-center gap-3 md:gap-4">
+                <h4 className="text-white text-base md:text-xl">{name}</h4>
+              </span>
+            </div>
+
+            <p className="text-light-gray flex text-xs gap-0.5 mt-[0.1rem] md:hidden">
+              <MapPinIcon className="w-5 h-5" />
+              {location}
+            </p>
+            <div className="hidden gap-1">
+              {tags.map((tag, idx) => (
+                <span
+                  key={idx}
+                  className="bg-white/20 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+            <div className="hidden md:flex md:justify-between md:items-end">
+              <div className="md:flex md:flex-col">
+                <span className="text-light-gray">Purity</span>
+                <span>Purity not listed</span>
               </div>
+              <p className="hidden md:flex text-warning text-sm md:text-base">
+                <LuClockAlert className="w-4.5 h-4.5 mx-[0.1rem] md:mt-0.5 text-warning" />
+                {expiryDate}
+              </p>
             </div>
           </div>
 
-          {/*reagent details*/}
-          <div className="flex flex-col justify-between flex-1 gap-2 md:gap-2 md:pt-3 min-h-0 overflow-hidden">
-            <div className="flex flex-col justify-between gap-2 overflow-hidden">
-              <h4 className="text-white text-base md:text-lg tracking-wider leading-tight font-normal truncate max-w-9/10">
-                {name}
-              </h4>
+          <div className="hidden md:block bg-light-gray h-[1px] my-2"></div>
+          <div className="md:flex md:w-full md:my-auto md:justify-between md:items-center">
+            <p className="text-light-gray text-xs gap-0.5 mt-[0.1rem] hidden md:flex">
+              <MapPinIcon className="w-5 h-5" />
+              {location}
+            </p>
 
-              <div className="flex items-center justify-between">
-                {/*icon + colour dependent on type*/}
-                {(() => {
-                  const typeStyle = TRADING_TYPE_STYLES[
-                    type?.toLowerCase() as TradingType
-                  ] || { color: "", icon: null }
-                  const IconComponent = typeStyle.icon
-                  return (
-                    <div className="flex flex-col">
-                      <span className="text-white/50 text-xs">Type</span>
-                      <p
-                        className={`flex items-center gap-1 text-sm md:text-base ${typeStyle.color}`}
-                      >
-                        {IconComponent && <IconComponent className="w-5 h-5" />}
-                        {type.charAt(0).toUpperCase() +
-                          type.slice(1).toLowerCase()}
-                      </p>
-                    </div>
-                  )
-                })()}
-
-                {/*expiry*/}
-                <div className="flex flex-col items-end">
-                  <span className="text-white/50 text-xs">Expires</span>
-                  <p className="flex items-center justify-center gap-0.5 text-warning text-sm md:text-base">
-                    <ClockIcon className="w-5 h-5 md:w-6 md:h-6 text-warning" />
-                    {expiryDate}
-                  </p>
+            <div className="flex items-center justify-between py-auto">
+              <div className="flex w-full justify-between items-center">
+                <p className="md:hidden flex text-warning text-sm md:text-base">
+                  <LuClockAlert className="w-4.5 h-4.5 mx-[0.1rem] md:mt-0.5 text-warning" />
+                  {expiryDate}
+                </p>
+                <div className="md:hidden">
+                  <Button
+                    label="View"
+                    textSize="text-xs"
+                    icon={IoArrowForward}
+                    iconPosition="right"
+                    fontWeight="semibold"
+                    className="px-[0.5rem] py-[0.3rem]"
+                  />
+                </div>
+                <div className="hidden md:block">
+                  <Button
+                    label="View"
+                    textSize="text-sm"
+                    icon={IoArrowForward}
+                    iconPosition="right"
+                    fontWeight="semibold"
+                    className="md:px-[0.4rem] md:py-[0.2rem]"
+                    onClick={handleViewClick}
+                  />
                 </div>
               </div>
-            </div>
-
-            <div className="hidden md:block bg-light-gray/30 h-[0.5px] my-1" />
-
-            {/*location + reagent view button*/}
-            <div className="flex items-center justify-between">
-              <div className="flex flex-col">
-                <p className="underline-offset-2 text-white/50 flex text-xs gap-0.5">
-                  <MapPinIcon className="w-5 h-5" />
-                  <span className="truncate max-w-[135px]">{location}</span>
-                </p>
-              </div>
-
-              <button
-                onClick={handleViewClick}
-                className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-secondary rounded-lg"
-              >
-                View
-                <ArrowRightIcon className="w-5 h-5" />
-              </button>
             </div>
           </div>
         </div>

@@ -24,7 +24,12 @@ export default function SearchBar({
   }
 
   return (
-    <form onSubmit={handleSearch} className="flex items-center py-1">
+    <form
+      onSubmit={handleSearch}
+      className="
+        flex items-center py-1 w-full md:w-[calc(100vw-19rem)]
+      "
+    >
       {/* Filter */}
       <div className="relative w-1/5 min-w-27">
         <select
@@ -41,7 +46,13 @@ export default function SearchBar({
       </div>
 
       {/* Search input */}
-      <div className="bg-primary flex items-center flex-1 mx-2 px-2 py-1 shadow-lg">
+      <div
+        className="
+        bg-primary flex items-center flex-1 ml-2 pl-2 py-1 shadow-lg
+        w-full
+        md:mr-2
+      "
+      >
         <MagnifyingGlassIcon className="h-5 w-5 text-secondary mr-2" />
         <input
           type="text"
@@ -61,7 +72,12 @@ export default function SearchBar({
       </div>
 
       {/* Sort */}
-      <div className="relative w-1/5 min-w-27">
+      <div
+        className="
+        relative w-1/5 min-w-27
+        hidden md:block
+      "
+      >
         <select
           value={sort}
           onChange={(e) =>
