@@ -15,6 +15,12 @@
 					"displayName": {
 						"type": "string"
 					},
+					"preferredName": {
+						"type": "string"
+					},
+					"university": {
+						"type": "string"
+					},
 					"role": {
 						"type": "string",
 						"enum": [
@@ -27,6 +33,8 @@
 				"required": [
 					"email",
 					"displayName",
+					"preferredName",
+					"university",
 					"role"
 				],
 				"type": "object",
@@ -761,6 +769,12 @@
 			"VerifyTokenRequest": {
 				"properties": {
 					"idToken": {
+						"type": "string"
+					},
+					"preferredName": {
+						"type": "string"
+					},
+					"university": {
 						"type": "string"
 					}
 				},

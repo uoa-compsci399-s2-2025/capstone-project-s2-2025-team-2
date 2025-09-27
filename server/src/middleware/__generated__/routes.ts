@@ -30,6 +30,8 @@ const models: TsoaRoute.Models = {
         "properties": {
             "email": {"dataType":"string","required":true},
             "displayName": {"dataType":"string","required":true},
+            "preferredName": {"dataType":"string","required":true},
+            "university": {"dataType":"string","required":true},
             "role": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["user"]},{"dataType":"enum","enums":["lab_manager"]},{"dataType":"enum","enums":["admin"]}],"required":true},
         },
         "additionalProperties": false,
@@ -317,6 +319,8 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "idToken": {"dataType":"string","required":true},
+            "preferredName": {"dataType":"string"},
+            "university": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
