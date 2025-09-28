@@ -12,7 +12,6 @@ export class ScheduleService {
         console.log("Expiry notification emails sent successfully.")
       } catch (error) {
         console.error("Error sending expiry notification emails:", error)
-        throw new Error("Failed to send expiry notification emails")
       }
     })
     console.log(
