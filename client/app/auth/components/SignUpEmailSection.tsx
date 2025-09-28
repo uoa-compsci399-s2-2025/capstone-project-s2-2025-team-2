@@ -124,13 +124,14 @@ export default function SignUpEmailSection({
         {/* Next Step Button */}
         <div className="flex justify-center w-full">
           {!isVerificationSuccess || !isEmailValid ? (
-            <DisabledButton label="Next Page" textSize="text-sm" />
+            <DisabledButton label="Next Page" textSize="text-sm" className="justify-center w-full"/>
           ) : (
             <Button
               type="button"
               label="Next Page"
               textSize="text-sm"
               onClick={onNextStep}
+              className="justify-center w-full"
             />
           )}
         </div>
