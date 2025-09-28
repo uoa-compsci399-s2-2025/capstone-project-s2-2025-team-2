@@ -6,11 +6,18 @@ import client from "../../../services/fetch-client"
 
 type ReagentTradingType = components["schemas"]["ReagentTradingType"]
 type ReagentCategory = components["schemas"]["ReagentCategory"]
+type ReagentVisibility = components["schemas"]["ReagentVisibility"]
 type CreateReagentRequest = components["schemas"]["CreateReagentRequest"]
 
 //note: hardcoded for now?
 const TRADING_TYPES: ReagentTradingType[] = ["trade", "giveaway", "sell"]
 const CATEGORIES: ReagentCategory[] = ["chemical", "hazardous", "biological"]
+const VISIBILITY_OPTIONS: ReagentVisibility[] = [
+  "everyone",
+  "region",
+  "institution",
+  "private",
+]
 const MAX_IMAGES = 5
 
 interface ReagentFormProps {
@@ -24,6 +31,7 @@ interface FormData {
   categories: ReagentCategory[]
   description: string
   condition: string
+  visibility: ReagentVisibility
   quantity: string
   price: string
   expiryDate: string
@@ -64,6 +72,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
     categories: ["chemical"],
     description: "",
     condition: "",
+    visibility: "everyone",
     quantity: "1",
     price: "",
     expiryDate: "",
@@ -101,6 +110,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       expiryDate: formData.expiryDate,
       images: formData.images.length ? formData.images : undefined,
       location: formData.location,
+      visibility: formData.visibility,
       //only include price if selling
       price:
         formData.tradingType === "sell" && formData.price
@@ -214,14 +224,37 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
         }
       />
 
-      <FormField
-        label="Condition"
-        required
-        input={formInput("condition", {
-          placeholder: "e.g. New, Opened and unused",
-          required: true,
-        })}
-      />
+      <div className="grid grid-cols-2 gap-4">
+        <FormField
+          label="Condition"
+          required
+          input={formInput("condition", {
+            placeholder: "e.g. New, Opened and unused",
+            required: true,
+          })}
+        />
+        <FormField
+          label="Visibility"
+          input={
+            <select
+              value={formData.visibility}
+              onChange={(e) =>
+                handleFieldChange(
+                  "visibility",
+                  e.target.value as ReagentVisibility,
+                )
+              }
+              className={inputStyles}
+            >
+              {VISIBILITY_OPTIONS.map((option) => (
+                <option key={option} value={option} className="bg-primary">
+                  {option.charAt(0).toUpperCase() + option.slice(1)}
+                </option>
+              ))}
+            </select>
+          }
+        />
+      </div>
 
       <div className="grid grid-cols-2 gap-4">
         <FormField
