@@ -9,7 +9,6 @@ import { VerifyCodeResponse } from "../../service-layer/dtos/response/VerifyCode
 import { VerifyTokenRequest } from "../../service-layer/dtos/request/VerifyTokenRequest"
 import { VerifyTokenResponse } from "../../service-layer/dtos/response/VerifyTokenResponse"
 
-
 @Route("auth")
 @Tags("Authentication")
 export class AuthController extends Controller {
@@ -58,5 +57,4 @@ export class AuthController extends Controller {
     )
     return result
   }
-
 }

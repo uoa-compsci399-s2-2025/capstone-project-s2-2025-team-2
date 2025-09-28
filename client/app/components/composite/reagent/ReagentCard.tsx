@@ -122,8 +122,8 @@ const ReagentCard = ({
                 {name}
               </h4>
               <p className="mt-[-3px] underline-offset-2 text-white/50 flex text-xs gap-0.5 md:hidden">
-                  <MapPinIcon className="w-5 h-5" />
-                  <span className="truncate max-w-[135px]">{location}</span>
+                <MapPinIcon className="w-5 h-5" />
+                <span className="truncate max-w-[135px]">{location}</span>
               </p>
 
               <div className="flex items-center justify-between">
@@ -146,11 +146,12 @@ const ReagentCard = ({
                     </div>
                   )
                 })()}
-                
 
                 {/*expiry*/}
                 <div className="flex flex-col items-end w-full">
-                  <span className="text-white/50 text-xs hidden md:block">Expires</span>
+                  <span className="text-white/50 text-xs hidden md:block">
+                    Expires
+                  </span>
                   <div className="flex justify-between w-full md:hidden">
                     <p className="flex items-center justify-center gap-0.5 text-warning text-sm md:text-base ">
                       <ClockIcon className="w-5 h-5 md:w-6 md:h-6 text-warning" />
