@@ -9,10 +9,9 @@ type ReagentWithId = Reagent & { id: string }
 
 interface ReagentCardProps {
   reagent: ReagentWithId
-  location: string
 }
 
-const ReagentCard = ({ reagent, location }: ReagentCardProps) => (
+const ReagentCard = ({ reagent }: ReagentCardProps) => (
   <BaseCard
     {...reagent}
     reagentId={reagent.id}
@@ -20,7 +19,7 @@ const ReagentCard = ({ reagent, location }: ReagentCardProps) => (
     footerLeft={
       <p className="underline-offset-2 text-white/50 flex text-xs gap-0.5">
         <MapPinIcon className="w-5 h-5" />
-        <span className="truncate max-w-[135px]">{location}</span>
+        <span className="truncate max-w-[135px]">{reagent.location ?? "Unknown"}</span>
       </p>
     }
   />

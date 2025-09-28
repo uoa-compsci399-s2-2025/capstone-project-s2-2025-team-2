@@ -114,7 +114,6 @@ const Marketplace = () => {
           <ReagentCard
             key={r.id}
             reagent={r as ReagentWithId}
-            location={r.location ?? "Unknown"}
           />
         ))}
       </div>

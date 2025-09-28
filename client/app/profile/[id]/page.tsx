@@ -382,17 +382,7 @@ const UserProfile = () => {
                 {sorted.map((r) => (
                   <ReagentCard
                     key={r.id}
-                    name={r.name}
-                    tags={Array.isArray(r.categories) ? r.categories : []}
-                    location={r.location}
-                    expiryDate={r.expiryDate}
-                    imageUrl={
-                      r.images?.[0] !== "string"
-                        ? (r.images?.[0] ?? "/placeholder.webp")
-                        : "/placeholder.webp"
-                    }
-                    type={r.tradingType}
-                    id={r.id}
+                    reagent={r as ReagentWithId}
                   />
                 ))}
               </div>
