@@ -21,7 +21,7 @@ export class ReagentController extends Controller {
    * @returns Promise<Reagent[]> - The list of all reagents filtered.
    */
   @SuccessResponse("200", "All reagents returned successfully")
-  @Get("expiring-soon")
+  @Get("expiring")
   public async getReagentsExpiringSoon(): Promise<Record<string, Reagent[]>> {
     const reagents =
       await new ReagentService().getReagentsExpiringSoonAllUsers()

@@ -29,7 +29,7 @@ export class UserController extends Controller {
    */
   @SuccessResponse("200", "All reagents returned successfully")
   @Security("jwt")
-  @Get("/{user_id}/reagents/expiring-soon")
+  @Get("/{user_id}/reagents/expiring")
   public async getReagentsExpiringSoon(
     @Path() user_id: string,
   ): Promise<Reagent[]> {
