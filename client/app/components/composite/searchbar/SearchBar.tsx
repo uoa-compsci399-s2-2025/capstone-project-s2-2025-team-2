@@ -61,7 +61,7 @@ export default function SearchBar({
       </div>
 
       {/* Sort */}
-      <div className="relative w-1/5 min-w-27 hidden md:flex ">
+      <div className="relative w-1/5 min-w-27 hidden md:flex">
         <select
           value={sort}
           onChange={(e) =>

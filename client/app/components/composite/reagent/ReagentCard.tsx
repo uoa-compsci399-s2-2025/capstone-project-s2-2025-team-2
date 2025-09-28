@@ -63,7 +63,7 @@ const ReagentCard = ({
   }
 
   return (
-    <div className="md:w-[18.5rem] md:h-[20.5rem] w-full border border-white/10 border-solid rounded-xl relative">
+    <div className="md:w-[18.5rem] md:h-[20.5rem] min-w-[23rem] w-full border border-white/10 border-solid rounded-xl relative">
       {BG_LAYERS.map((style, index) => (
         <div
           key={index}
@@ -75,7 +75,7 @@ const ReagentCard = ({
       <div className="relative z-10 p-4">
         <div className="flex flex-row gap-3 md:gap-0 md:flex-col">
           {/*image + tags*/}
-          <div className="relative w-[8.5rem] h-[full] md:w-full md:h-[9.5rem]">
+          <div className="relative w-[7.5rem] h-[full] md:w-full md:h-[9.5rem]">
             <Image
               src={(imageUrl as string) || "/placeholder.webp"}
               fill
@@ -118,13 +118,13 @@ const ReagentCard = ({
                   )
                 })()}
               </div>
-              <h4 className="text-white text-base md:text-lg tracking-wider leading-tight font-normal truncate max-w-9/10">
+              <h4 className="text-white text-base md:text-lg tracking-wider leading-tight font-normal truncate max-w-9/10 text-[1.3rem] mb-[5px] md:mb-0">
                 {name}
               </h4>
-              <p className="underline-offset-2 text-white/50 flex text-xs gap-0.5 md:hidden">
+              <p className="mt-[-3px] underline-offset-2 text-white/50 flex text-xs gap-0.5 md:hidden">
                   <MapPinIcon className="w-5 h-5" />
                   <span className="truncate max-w-[135px]">{location}</span>
-                </p>
+              </p>
 
               <div className="flex items-center justify-between">
                 {/*icon + colour dependent on type*/}
@@ -152,7 +152,7 @@ const ReagentCard = ({
                 <div className="flex flex-col items-end w-full">
                   <span className="text-white/50 text-xs hidden md:block">Expires</span>
                   <div className="flex justify-between w-full md:hidden">
-                    <p className="flex items-center justify-center gap-0.5 text-warning text-sm md:text-base">
+                    <p className="flex items-center justify-center gap-0.5 text-warning text-sm md:text-base ">
                       <ClockIcon className="w-5 h-5 md:w-6 md:h-6 text-warning" />
                       {expiryDate}
                     </p>
