@@ -57,7 +57,11 @@ export default class AuthService {
     return responseBody
   }
 
-  public async verifyIdToken(idToken: string, preferredName?: string, university?: string): Promise<VerifyTokenResponse> {
+  public async verifyIdToken(
+    idToken: string,
+    preferredName?: string,
+    university?: string,
+  ): Promise<VerifyTokenResponse> {
     try {
       // Verify the ID token using Firebase Admin SDK
       const decodedToken = await auth.verifyIdToken(idToken)
@@ -96,7 +100,6 @@ export default class AuthService {
     }
   }
 
-
   private async ensureUserExists(
     uid: string,
     email: string | undefined,
@@ -109,7 +112,12 @@ export default class AuthService {
 
       if (!userDoc) {
         // User doesn't exist in Firestore, create user record
-        await this.authRepository.saveUser(uid, email || "", preferredName || "", university || "")
+        await this.authRepository.saveUser(
+          uid,
+          email || "",
+          preferredName || "",
+          university || "",
+        )
         console.log(`Created user record in Firestore for UID: ${uid}`)
       }
     } catch (error) {

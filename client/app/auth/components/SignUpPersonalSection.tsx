@@ -26,7 +26,7 @@ const NEW_ZEALAND_UNIVERSITIES = [
   "University of Canterbury",
   "Lincoln University",
   "University of Otago",
-  "Other"
+  "Other",
 ]
 
 //            function: SignUpPersonalSection           //
@@ -88,7 +88,11 @@ export default function SignUpPersonalSection({
         {/* Next Step Button */}
         <div className="flex justify-center w-full">
           {!isFormValid ? (
-            <DisabledButton label="Next Page" textSize="text-sm" className="justify-center w-full"/>
+            <DisabledButton
+              label="Next Page"
+              textSize="text-sm"
+              className="justify-center w-full"
+            />
           ) : (
             <Button
               type="button"
