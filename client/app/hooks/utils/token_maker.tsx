@@ -1,17 +1,9 @@
 "use client"
 
 import { useState } from "react"
-import { initializeApp } from "firebase/app"
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth"
+import { signInWithEmailAndPassword } from "firebase/auth"
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDhiNSrOsWNtTyLyAF_iRMfzg0ecUr2TVY",
-  authDomain: "chemically-14e58.firebaseapp.com",
-  projectId: "chemically-14e58",
-}
-
-const app = initializeApp(firebaseConfig)
-const auth = getAuth(app)
+import { auth } from "@/app/config/firebase"
 
 export default function LoginPage() {
   const [email, setEmail] = useState("")

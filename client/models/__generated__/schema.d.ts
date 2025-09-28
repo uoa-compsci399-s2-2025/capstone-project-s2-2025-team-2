@@ -54,6 +54,23 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  "/users/{user_id}/jwt": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description Gets the basic information of a user */
+    get: operations["GetUser"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   "/users/reagents": {
     parameters: {
       query?: never
@@ -165,6 +182,38 @@ export interface paths {
     get: operations["GetOrders"]
     put?: never
     post: operations["CreateOrder"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/orders/trades": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: operations["CreateTrade"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/orders/exchanges": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: operations["CreateExchange"]
     delete?: never
     options?: never
     head?: never
@@ -362,6 +411,8 @@ export interface components {
     ReagentTradingType: "trade" | "giveaway" | "sell"
     /** @enum {string} */
     ReagentCategory: "chemical" | "hazardous" | "biological"
+    /** @enum {string} */
+    ReagentVisibility: "everyone" | "region" | "institution" | "private"
     Reagent: {
       user_id: string
       name: string
@@ -378,6 +429,8 @@ export interface components {
       /** Format: date-time */
       createdAt: string
       location: string
+      unit: string
+      visibility?: components["schemas"]["ReagentVisibility"]
     }
     CreateReagentRequest: {
       name: string
@@ -392,6 +445,7 @@ export interface components {
       tradingType: components["schemas"]["ReagentTradingType"]
       location: string
       images?: string[]
+      visibility?: components["schemas"]["ReagentVisibility"]
     }
     /** @description Make all properties in T optional */
     Partial_Reagent_: {
@@ -410,6 +464,8 @@ export interface components {
       /** Format: date-time */
       createdAt?: string
       location?: string
+      unit?: string
+      visibility?: components["schemas"]["ReagentVisibility"]
     }
     Order: {
       requester_id: string
@@ -419,10 +475,66 @@ export interface components {
       /** Format: date-time */
       createdAt: string
       message?: string
+      /** Format: double */
+      quantity?: number
+      unit?: string
     }
     CreateOrderRequest: {
       reagent_id: string
       message?: string
+      /** @enum {string} */
+      type: "order"
+      /** Format: double */
+      quantity: number
+      unit: string
+    }
+    Trade: {
+      requester_id: string
+      reagent_id: string
+      /** @enum {string} */
+      status: "pending" | "approved" | "canceled"
+      /** Format: date-time */
+      createdAt: string
+      message?: string
+      /** Format: double */
+      quantity?: number
+      unit?: string
+      /** Format: double */
+      price: number
+    }
+    CreateTradeRequest: {
+      reagent_id: string
+      message?: string
+      /** Format: double */
+      price: number
+      /** @enum {string} */
+      type: "trade"
+      /** Format: double */
+      quantity: number
+      unit: string
+    }
+    Exchange: {
+      requester_id: string
+      reagent_id: string
+      /** @enum {string} */
+      status: "pending" | "approved" | "canceled"
+      /** Format: date-time */
+      createdAt: string
+      message?: string
+      /** Format: double */
+      quantity?: number
+      unit?: string
+      offeredReagentId: string
+    }
+    CreateExchangeRequest: {
+      reagent_id: string
+      message?: string
+      offeredReagentId: string
+      /** Format: double */
+      quantity: number
+      /** @enum {string} */
+      type: "exchange"
+      unit: string
     }
     ChatRoom: {
       id?: string
@@ -572,6 +684,29 @@ export interface operations {
           "application/json": {
             email: string
           }
+        }
+      }
+    }
+  }
+  GetUser: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description - the ID of the user to retrieve */
+        user_id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description User information returned successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["User"]
         }
       }
     }
@@ -854,7 +989,10 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["Order"][]
+          "application/json":
+            | components["schemas"]["Order"][]
+            | components["schemas"]["Trade"][]
+            | components["schemas"]["Exchange"][]
         }
       }
     }
@@ -883,6 +1021,54 @@ export interface operations {
       }
     }
   }
+  CreateTrade: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateTradeRequest"]
+      }
+    }
+    responses: {
+      /** @description Trade created successfully */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Trade"]
+        }
+      }
+    }
+  }
+  CreateExchange: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateExchangeRequest"]
+      }
+    }
+    responses: {
+      /** @description Exchange created successfully */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Exchange"]
+        }
+      }
+    }
+  }
   GetOrderById: {
     parameters: {
       query?: never
@@ -900,7 +1086,10 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["Order"]
+          "application/json":
+            | components["schemas"]["Order"]
+            | components["schemas"]["Trade"]
+            | components["schemas"]["Exchange"]
         }
       }
     }
@@ -922,7 +1111,10 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["Order"]
+          "application/json":
+            | components["schemas"]["Order"]
+            | components["schemas"]["Trade"]
+            | components["schemas"]["Exchange"]
         }
       }
     }
@@ -944,7 +1136,10 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["Order"]
+          "application/json":
+            | components["schemas"]["Order"]
+            | components["schemas"]["Trade"]
+            | components["schemas"]["Exchange"]
         }
       }
     }

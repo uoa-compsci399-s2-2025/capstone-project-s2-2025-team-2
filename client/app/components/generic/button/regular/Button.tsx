@@ -1,6 +1,7 @@
 import { ButtonHTMLAttributes } from "react"
 import { getFontWeightClass } from "../font-weight"
 import { getTextSizeClass, type textSize } from "../textSize"
+import { getIconSizeClass } from "../iconSize"
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   backgroundColor?: string
@@ -25,7 +26,7 @@ const BaseButton = ({
     <button
       type="button"
       className={[
-        "py-2 px-2 inline-flex cursor-pointer border-0 rounded-[8px] bg-blue-primary text-white",
+        "py-2 px-2 inline-flex gap-2 cursor-pointer border-0 rounded-[8px] bg-blue-primary text-white",
         className,
       ].join(" ")}
       style={{
@@ -34,7 +35,7 @@ const BaseButton = ({
       {...props}
     >
       {props.icon && iconPosition === "left" && (
-        <props.icon className="w-4.5" />
+        <props.icon className={getIconSizeClass(textSize)} />
       )}
       <h5
         className={[
@@ -45,7 +46,7 @@ const BaseButton = ({
         {label}
       </h5>
       {props.icon && iconPosition === "right" && (
-        <props.icon className="w-4.5" />
+        <props.icon className={getIconSizeClass(textSize)} />
       )}
     </button>
   )

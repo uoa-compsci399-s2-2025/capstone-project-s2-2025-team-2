@@ -3,6 +3,7 @@
 import { useState } from "react"
 import SignUpEmailSection from "./SignUpEmailSection"
 import SignUpPasswordSection from "./SignUpPasswordSection"
+import SignUpPersonalSection from "./SignUpPersonalSection"
 import AuthNotificationBox, {
   AuthNotificationState,
 } from "./AuthNotificationBox"
@@ -29,6 +30,8 @@ export default function SignUpBox({
   const [currentStep, setCurrentStep] = useState(1)
   const [email, setEmail] = useState("")
   const [verificationCode, setVerificationCode] = useState("")
+  const [preferredName, setPreferredName] = useState("")
+  const [university, setUniversity] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [isEmailValid, setIsEmailValid] = useState(false)
@@ -48,6 +51,18 @@ export default function SignUpBox({
     // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     setIsEmailValid(emailRegex.test(emailValue))
+  }
+
+  //            function: handlePreferredNameChange           //
+  const handlePreferredNameChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setPreferredName(e.target.value)
+  }
+
+  //            function: handleUniversityChange           //
+  const handleUniversityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setUniversity(e.target.value)
   }
 
   //            function: onVerifyEmail           //
@@ -90,11 +105,19 @@ export default function SignUpBox({
 
   //            function: handleNextStep           //
   const handleNextStep = () => {
-    if (email && verificationCode) {
-      setNotificationState("not-displaying")
-      setCurrentStep(2)
-    } else {
-      toast("Please fill in all required fields.")
+    if (currentStep === 1) {
+      if (email && verificationCode) {
+        setNotificationState("not-displaying")
+        setCurrentStep(2)
+      } else {
+        toast("Please fill in all required fields.")
+      }
+    } else if (currentStep === 2) {
+      if (preferredName && university) {
+        setCurrentStep(3)
+      } else {
+        toast("Please fill in all required fields.")
+      }
     }
   }
 
@@ -112,8 +135,18 @@ export default function SignUpBox({
 
     try {
       setNotificationState("signing-up")
-      const requestBody: FirebaseSignUpRequestDto = { email, password }
-      console.log("Signing up with Firebase:", { email, password })
+      const requestBody: FirebaseSignUpRequestDto = {
+        email,
+        password,
+        preferredName,
+        university,
+      }
+      console.log("Signing up with Firebase:", {
+        email,
+        password,
+        preferredName,
+        university,
+      })
       const response = await firebaseSignUp(requestBody)
       handleSignUpResponse(response)
     } catch (error) {
@@ -132,7 +165,7 @@ export default function SignUpBox({
 
       //welcome toast, marketplace redirect
       toast(
-        `Welcome, ${response.email}! Your account has been created successfully.`,
+        `Welcome, ${preferredName || response.email}! Your account has been created successfully.`,
       )
       router.push("/marketplace")
 
@@ -140,6 +173,8 @@ export default function SignUpBox({
       console.log("User created and signed in:", {
         uid: response.uid,
         email: response.email,
+        preferredName,
+        university,
       })
     } else {
       setNotificationState("sign-up-fail")
@@ -149,10 +184,13 @@ export default function SignUpBox({
   //            function: saveUserToFirestore           //
   const saveUserToFirestore = async () => {
     try {
-      const response = await verifyToken()
+      const response = await verifyToken(preferredName, university)
 
       if (response && response.success) {
-        console.log("User data saved to Firestore:", response)
+        console.log(
+          "User data saved to Firestore with personal information:",
+          response,
+        )
       } else {
         console.error("Failed to save user to Firestore:", response)
       }
@@ -182,6 +220,15 @@ export default function SignUpBox({
           onVerificationCodeChange={(e) => setVerificationCode(e.target.value)}
           onVerifyEmail={onClickSendVerificationCode}
           onValidateCode={onClickValidateCode}
+          onNextStep={handleNextStep}
+          onSignInClick={handleSignInClick}
+        />
+      ) : currentStep === 2 ? (
+        <SignUpPersonalSection
+          preferredName={preferredName}
+          university={university}
+          onPreferredNameChange={handlePreferredNameChange}
+          onUniversityChange={handleUniversityChange}
           onNextStep={handleNextStep}
           onSignInClick={handleSignInClick}
         />
