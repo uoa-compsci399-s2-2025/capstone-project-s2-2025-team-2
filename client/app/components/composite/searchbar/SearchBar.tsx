@@ -41,7 +41,7 @@ export default function SearchBar({
       </div>
 
       {/* Search input */}
-      <div className="bg-primary flex items-center flex-1 mx-2 px-2 py-1 shadow-lg">
+      <div className="bg-primary flex items-center flex-1 ml-2 px-2 py-1 shadow-lg md:mr-2">
         <MagnifyingGlassIcon className="h-5 w-5 text-secondary mr-2" />
         <input
           type="text"
