@@ -380,10 +380,7 @@ const UserProfile = () => {
             ) : (
               <div className="bg-transparent flex flex-wrap gap-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
                 {sorted.map((r) => (
-                  <ReagentCard
-                    key={r.id}
-                    reagent={r as ReagentWithId}
-                  />
+                  <ReagentCard key={r.id} reagent={r as ReagentWithId} />
                 ))}
               </div>
             )}

@@ -19,7 +19,9 @@ const ReagentCard = ({ reagent }: ReagentCardProps) => (
     footerLeft={
       <p className="underline-offset-2 text-white/50 flex text-xs gap-0.5">
         <MapPinIcon className="w-5 h-5" />
-        <span className="truncate max-w-[135px]">{reagent.location ?? "Unknown"}</span>
+        <span className="truncate max-w-[135px]">
+          {reagent.location ?? "Unknown"}
+        </span>
       </p>
     }
   />

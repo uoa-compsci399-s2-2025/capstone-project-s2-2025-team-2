@@ -21,7 +21,7 @@ export async function GET(
       headers: {
         "Content-Type": "application/json",
         ...(request.headers.get("authorization") && {
-          "Authorization": request.headers.get("authorization")!,
+          Authorization: request.headers.get("authorization")!,
         }),
       },
     })
@@ -60,7 +60,7 @@ export async function POST(
       headers: {
         "Content-Type": "application/json",
         ...(request.headers.get("authorization") && {
-          "Authorization": request.headers.get("authorization")!,
+          Authorization: request.headers.get("authorization")!,
         }),
       },
       body: JSON.stringify(body),
@@ -96,7 +96,7 @@ export async function PUT(
       headers: {
         "Content-Type": "application/json",
         ...(request.headers.get("authorization") && {
-          "Authorization": request.headers.get("authorization")!,
+          Authorization: request.headers.get("authorization")!,
         }),
       },
       body: JSON.stringify(body),
@@ -131,7 +131,7 @@ export async function DELETE(
       headers: {
         "Content-Type": "application/json",
         ...(request.headers.get("authorization") && {
-          "Authorization": request.headers.get("authorization")!,
+          Authorization: request.headers.get("authorization")!,
         }),
       },
     })
