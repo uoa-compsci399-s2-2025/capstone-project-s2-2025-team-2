@@ -117,6 +117,44 @@ export async function PUT(
   }
 }
 
+export async function PATCH(
+  request: NextRequest,
+  context: { params: Promise<{ path: string[] }> },
+) {
+  try {
+    const params = await context.params
+    const path = params.path.join("/")
+    const body = await request.json()
+    const backendUrl = `${BACKEND_URL}/${path}`
+
+    console.log("🔄 Proxying PATCH to:", backendUrl)
+
+    const response = await fetch(backendUrl, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        ...(request.headers.get("authorization") && {
+          Authorization: request.headers.get("authorization")!,
+        }),
+      },
+      body: JSON.stringify(body),
+    })
+
+    if (!response.ok) {
+      throw new Error(`Backend error: ${response.status}`)
+    }
+
+    const data = await response.json()
+    return NextResponse.json(data)
+  } catch (error: any) {
+    console.error("❌ Proxy PATCH error:", error)
+    return NextResponse.json(
+      { error: "Proxy PATCH failed", details: error.message },
+      { status: 500 },
+    )
+  }
+}
+
 export async function DELETE(
   request: NextRequest,
   context: { params: Promise<{ path: string[] }> },
