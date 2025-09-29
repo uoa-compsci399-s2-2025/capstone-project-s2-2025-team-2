@@ -67,23 +67,23 @@ const Sidebar = () => {
       ${isOpen ? "translate-x-0 right-0" : "translate-x-full right-0"}
        lg:left-0 lg:right-auto lg:translate-x-0 lg:block`}
       >
-        <h2 className="hidden lg:block ml-7 mt-7 mb-8">Chemical.ly</h2>
+        <h2 className="hidden lg:block ml-7 mt-7 mb-4">Chemical.ly</h2>
 
         <div className="flex flex-col justify-between h-full">
           <div>
             {links.map(({ href, label, icon: Icon, isButton }, index) => (
               <div key={href}>
                 {isButton ? (
-                  <Link href={href}>
-                    <div className="w-[8.5rem] mx-auto ">
+                  <div className="flex justify-center px-4">
+                    <Link href={href}>
                       <Button
                         className="gap-2 duration-300 flex justify-center"
                         icon={Icon}
                         iconPosition="left"
                         label={label}
                       />
-                    </div>
-                  </Link>
+                    </Link>
+                  </div>
                 ) : (
                   <Link
                     className="flex items-center gap-2 text-[var(--white)] hover:bg-secondary/30 duration-300 p-2 rounded-md m-4 "
