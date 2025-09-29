@@ -14,6 +14,7 @@ export class ExpiryController extends Controller {
   @Get("/send-expiry-emails")
   public async sendExpiryNotifications(): Promise<void> {
     try {
+      let sentCount = 0
       const ExpiryReagentsWithUser =
         await new ReagentService().getReagentsExpiringSoonAllUsers()
       for (const [user_id, reagents] of Object.entries(
@@ -26,9 +27,10 @@ export class ExpiryController extends Controller {
             user.email,
             reagents,
           )
-          console.log("Expiry notification emails sent successfully.")
         }
+        sentCount++
       }
+      console.log(`Expiry notification emails sent successfully to ${sentCount} user(s).`)
     } catch (error) {
       console.error("Error sending expiry notifications:", error)
       throw new Error("Failed to send expiry notifications")
