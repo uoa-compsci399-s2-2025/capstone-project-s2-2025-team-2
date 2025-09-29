@@ -208,25 +208,60 @@ export class OrderService {
       }
       const order = orderDoc.data() as Order
 
+      //read pending orders for requested reagent
       const otherOrdersQuery = this.db
         .collection("orders")
         .where("reagent_id", "==", order.reagent_id)
         .where("status", "==", "pending")
       const otherOrders = await tx.get(otherOrdersQuery)
 
-      //writes, updating status + ownership
+      //read pending orders for offered reagent
+      let otherOfferedOrders: FirebaseFirestore.QuerySnapshot | null = null
+      if ('offeredReagentId' in (order as any)) {
+        const exchange = order as Exchange
+        const otherOfferedOrdersQuery = this.db
+          .collection("orders")
+          .where("reagent_id", "==", exchange.offeredReagentId)
+          .where("status", "==", "pending")
+        otherOfferedOrders = await tx.get(otherOfferedOrdersQuery)
+      }
+
+      //update order status
       tx.update(orderRef, { status: "approved" })
 
-      //transfer ownership
-      const reagentRef = this.db.collection("reagents").doc(order.reagent_id)
-      tx.update(reagentRef, { user_id: order.requester_id })
+      //handle trade based on order type
+      if ('offeredReagentId' in (order as any)) {
+        const exchange = order as Exchange
+        
+        //transfer requested reagent
+        const requestedReagentRef = this.db.collection("reagents").doc(order.reagent_id)
+        tx.update(requestedReagentRef, { user_id: order.requester_id })
+      
+        //transfer offered reagent
+        const offeredReagentRef = this.db.collection("reagents").doc(exchange.offeredReagentId)
+        tx.update(offeredReagentRef, { user_id: order.owner_id })
+        
+        //cancel pending orders for offered reagent
+        if (otherOfferedOrders) {
+          otherOfferedOrders.docs.forEach((doc) => {
+            if (doc.id !== id) {
+              tx.update(doc.ref, { status: "canceled" })
+            }
+          })
+        }
+      } else {
+        //one way transfer for sell/trade
+        const reagentRef = this.db.collection("reagents").doc(order.reagent_id)
+        tx.update(reagentRef, { user_id: order.requester_id })
+      }
 
-      //cancel other pending orders for reagent
+      //cancel pending orders for requested reagent
       otherOrders.docs.forEach((doc) => {
         if (doc.id !== id) {
           tx.update(doc.ref, { status: "canceled" })
         }
       })
+      
       return { ...order, status: "approved" }
     })
   }
