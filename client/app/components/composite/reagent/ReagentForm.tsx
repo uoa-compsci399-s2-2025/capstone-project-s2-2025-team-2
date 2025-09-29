@@ -117,7 +117,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
         return
       }
 
-      const { error } = await client.POST("/users/reagents" as any, {
+      const { error } = await client.POST("/reagents" as any, {
         body: reagentData,
         headers: {
           Authorization: `Bearer ${idToken}`,
