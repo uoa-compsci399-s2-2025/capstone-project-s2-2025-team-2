@@ -60,17 +60,28 @@ export default function Orders() {
     toast(action === "approve" ? "Request approved!" : "Request canceled!")
   }
 
+
   return (
     <Overlay>
-      <div className="p-8 max-w-7xl mx-auto">
-        <h1 className="text-white text-3xl font-bold mb-6">Your Requests</h1>
+      <p className="text-4xl font-medium text-white mt-4 ml-4 md:ml-8 tracking-[0.05em]">
+        Requests
+      </p>
+      <div className="ml-4 md:ml-0">
+        <p className="md:ml-8 text-warning italic font-bold inline mr-2 tracking-[0.05em]">
+          Manage & Track
+        </p>
+        <p className="text-gray-100 italic inline">Your Orders</p>
+      </div>
 
+      <div className="mt-5"></div>
+
+      <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
         {/*loading state*/}
         {loading ? (
-          <div className="text-white text-center">Loading requests...</div>
+          <div className="text-white text-center w-full">Loading requests...</div>
         ) : !orders.length ? (
           //no orders found
-          <div className="bg-primary/50 rounded-lg p-8 border border-muted text-gray-400 text-center">
+          <div className="bg-primary/50 rounded-lg p-8 border border-muted text-gray-400 text-center w-full">
             <h3 className="text-lg font-medium mb-2">No Requests Found.</h3>
             <p className="text-sm">
               Requests tied to your account will appear here.
@@ -78,21 +89,19 @@ export default function Orders() {
           </div>
         ) : (
           //render order cards
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {orders.map((order) => {
-              const reagent = reagents.get(order.reagent_id)
-              if (!reagent) return null
-              return (
-                <OrderCard
-                  key={order.id}
-                  reagent={reagent}
-                  order={order}
-                  onApprove={(id) => handleAction(id, "approve")}
-                  onDecline={(id) => handleAction(id, "cancel")}
-                />
-              )
-            })}
-          </div>
+          orders.map((order) => {
+            const reagent = reagents.get(order.reagent_id)
+            if (!reagent) return null
+            return (
+              <OrderCard
+                key={order.id}
+                reagent={reagent}
+                order={order}
+                onApprove={(id) => handleAction(id, "approve")}
+                onDecline={(id) => handleAction(id, "cancel")}
+              />
+            )
+          })
         )}
       </div>
     </Overlay>
