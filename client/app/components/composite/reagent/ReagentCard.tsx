@@ -63,7 +63,7 @@ const ReagentCard = ({
   }
 
   return (
-    <div className="md:min-w-0 md:w-[17rem] md:h-[20.5rem] min-w-[22rem] mx-auto w-full border border-white/10 border-solid rounded-xl relative ">
+    <div className="md:min-w-0 md:w-[17rem] md:h-[20.5rem] min-w-[22rem] w-full border border-white/10 border-solid rounded-xl relative ">
       {BG_LAYERS.map((style, index) => (
         <div
           key={index}
