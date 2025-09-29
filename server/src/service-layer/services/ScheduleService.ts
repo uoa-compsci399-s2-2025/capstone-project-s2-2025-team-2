@@ -9,7 +9,6 @@ export class ScheduleService {
     cron.schedule("0 9 * * *", async () => {
       try {
         await new ExpiryController().sendExpiryNotifications()
-        console.log("Expiry notification emails sent successfully.")
       } catch (error) {
         console.error("Error sending expiry notification emails:", error)
       }

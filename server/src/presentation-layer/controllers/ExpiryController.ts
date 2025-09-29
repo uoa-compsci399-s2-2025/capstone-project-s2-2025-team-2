@@ -26,6 +26,7 @@ export class ExpiryController extends Controller {
             user.email,
             reagents,
           )
+          console.log("Expiry notification emails sent successfully.")
         }
       }
     } catch (error) {

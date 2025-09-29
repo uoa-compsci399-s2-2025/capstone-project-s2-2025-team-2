@@ -38,7 +38,7 @@ export class UserController extends Controller {
       this.setStatus(401)
       throw new Error("User ID not found")
     }
-    
+
     return await new ReagentService().getReagentsExpiringSoon(user_id)
   }
 
