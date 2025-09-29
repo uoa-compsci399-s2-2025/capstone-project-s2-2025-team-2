@@ -29,12 +29,17 @@ export class UserController extends Controller {
    */
   @SuccessResponse("200", "All reagents returned successfully")
   @Security("jwt")
-  @Get("/{user_id}/reagents/expiring")
+  @Get("/reagents/expiring")
   public async getReagentsExpiringSoon(
-    @Path() user_id: string,
+    @Request() request: AuthRequest,
   ): Promise<Reagent[]> {
-    const reagents = await new ReagentService().getReagentsExpiringSoon(user_id)
-    return reagents
+    const user_id = request.user?.uid
+    if (!user_id) {
+      this.setStatus(401)
+      throw new Error("User ID not found")
+    }
+    
+    return await new ReagentService().getReagentsExpiringSoon(user_id)
   }
 
   @SuccessResponse("200", "Users retrieved successfully")

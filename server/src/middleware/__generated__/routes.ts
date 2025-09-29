@@ -339,9 +339,9 @@ export function RegisterRoutes(app: Router) {
 
     
         const argsUserController_getReagentsExpiringSoon: Record<string, TsoaRoute.ParameterSchema> = {
-                user_id: {"in":"path","name":"user_id","required":true,"dataType":"string"},
+                request: {"in":"request","name":"request","required":true,"dataType":"object"},
         };
-        app.get('/users/:user_id/reagents/expiring-soon',
+        app.get('/users/reagents/expiring',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(UserController)),
             ...(fetchMiddlewares<RequestHandler>(UserController.prototype.getReagentsExpiringSoon)),
@@ -685,7 +685,7 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsReagentController_getReagentsExpiringSoon: Record<string, TsoaRoute.ParameterSchema> = {
         };
-        app.get('/reagents/expiring-soon',
+        app.get('/reagents/expiring',
             ...(fetchMiddlewares<RequestHandler>(ReagentController)),
             ...(fetchMiddlewares<RequestHandler>(ReagentController.prototype.getReagentsExpiringSoon)),
 
