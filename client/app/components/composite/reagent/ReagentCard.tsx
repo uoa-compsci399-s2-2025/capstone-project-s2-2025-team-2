@@ -63,7 +63,7 @@ const ReagentCard = ({
   }
 
   return (
-    <div className="md:w-[18.5rem] md:h-[20.5rem] w-full border border-white/10 border-solid rounded-xl relative">
+    <div className="md:min-w-0 md:w-[17rem] md:h-[20.5rem] min-w-[22rem] w-full border border-white/10 border-solid rounded-xl relative ">
       {BG_LAYERS.map((style, index) => (
         <div
           key={index}
@@ -75,7 +75,7 @@ const ReagentCard = ({
       <div className="relative z-10 p-4">
         <div className="flex flex-row gap-3 md:gap-0 md:flex-col">
           {/*image + tags*/}
-          <div className="relative w-full h-[9.5rem]">
+          <div className="relative w-[7.5rem] h-[full] md:w-full md:h-[9.5rem]">
             <Image
               src={(imageUrl as string) || "/placeholder.webp"}
               fill
@@ -99,9 +99,32 @@ const ReagentCard = ({
           {/*reagent details*/}
           <div className="flex flex-col justify-between flex-1 gap-2 md:gap-2 md:pt-3 min-h-0 overflow-hidden">
             <div className="flex flex-col justify-between gap-2 overflow-hidden">
-              <h4 className="text-white text-base md:text-lg tracking-wider leading-tight font-normal truncate max-w-9/10">
+              <div className="">
+                {(() => {
+                  const typeStyle = TRADING_TYPE_STYLES[
+                    type?.toLowerCase() as TradingType
+                  ] || { color: "", icon: null }
+                  const IconComponent = typeStyle.icon
+                  return (
+                    <div className="flex-col flex md:hidden">
+                      <p
+                        className={`flex items-center gap-1 text-sm md:text-base ${typeStyle.color}`}
+                      >
+                        {IconComponent && <IconComponent className="w-5 h-5" />}
+                        {type.charAt(0).toUpperCase() +
+                          type.slice(1).toLowerCase()}
+                      </p>
+                    </div>
+                  )
+                })()}
+              </div>
+              <h4 className="text-white text-base md:text-lg tracking-wider leading-tight font-normal truncate max-w-9/10 text-[1.3rem] mb-[5px] md:mb-0">
                 {name}
               </h4>
+              <p className="mt-[-3px] underline-offset-2 text-white/50 flex text-xs gap-0.5 md:hidden">
+                <MapPinIcon className="w-5 h-5" />
+                <span className="truncate max-w-[135px]">{location}</span>
+              </p>
 
               <div className="flex items-center justify-between">
                 {/*icon + colour dependent on type*/}
@@ -111,7 +134,7 @@ const ReagentCard = ({
                   ] || { color: "", icon: null }
                   const IconComponent = typeStyle.icon
                   return (
-                    <div className="flex flex-col">
+                    <div className="hidden md:flex-col md:flex">
                       <span className="text-white/50 text-xs">Type</span>
                       <p
                         className={`flex items-center gap-1 text-sm md:text-base ${typeStyle.color}`}
@@ -125,9 +148,24 @@ const ReagentCard = ({
                 })()}
 
                 {/*expiry*/}
-                <div className="flex flex-col items-end">
-                  <span className="text-white/50 text-xs">Expires</span>
-                  <p className="flex items-center justify-center gap-0.5 text-warning text-sm md:text-base">
+                <div className="flex flex-col items-end w-full">
+                  <span className="text-white/50 text-xs hidden md:block">
+                    Expires
+                  </span>
+                  <div className="flex justify-between w-full md:hidden">
+                    <p className="flex items-center justify-center gap-0.5 text-warning text-sm md:text-base ">
+                      <ClockIcon className="w-5 h-5 md:w-6 md:h-6 text-warning" />
+                      {expiryDate}
+                    </p>
+                    <button
+                      onClick={handleViewClick}
+                      className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-secondary rounded-lg"
+                    >
+                      View
+                      <ArrowRightIcon className="w-5 h-5" />
+                    </button>
+                  </div>
+                  <p className="hidden md:flex items-center justify-center gap-0.5 text-warning text-sm md:text-base">
                     <ClockIcon className="w-5 h-5 md:w-6 md:h-6 text-warning" />
                     {expiryDate}
                   </p>
@@ -138,8 +176,8 @@ const ReagentCard = ({
             <div className="hidden md:block bg-light-gray/30 h-[0.5px] my-1" />
 
             {/*location + reagent view button*/}
-            <div className="flex items-center justify-between">
-              <div className="flex flex-col">
+            <div className="hidden md:flex items-center justify-between">
+              <div className="hidden md:flex flex-col">
                 <p className="underline-offset-2 text-white/50 flex text-xs gap-0.5">
                   <MapPinIcon className="w-5 h-5" />
                   <span className="truncate max-w-[135px]">{location}</span>
