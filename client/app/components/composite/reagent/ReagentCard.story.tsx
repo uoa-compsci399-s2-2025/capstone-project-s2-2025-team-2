@@ -42,10 +42,10 @@ export const DefaultReagentCard: Story = {
       description: "High purity ethanol",
       condition: "New",
       quantity: 1,
+      unit: "L",
       createdAt: "2025-01-01T00:00:00.000Z",
       location: "UoA, Auckland",
       price: 0,
     },
-    location: "UoA, Auckland",
   },
 }

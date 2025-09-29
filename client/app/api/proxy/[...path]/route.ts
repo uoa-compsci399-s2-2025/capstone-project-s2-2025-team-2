@@ -128,9 +128,11 @@ export async function PATCH(
 
     console.log("🔄 Proxying PATCH to:", backendUrl)
 
-    const bodyJson = request.headers.get("content-length") && request.headers.get("content-length") !== "0" 
-      ? await request.json().catch(() => undefined) 
-      : undefined
+    const bodyJson =
+      request.headers.get("content-length") &&
+      request.headers.get("content-length") !== "0"
+        ? await request.json().catch(() => undefined)
+        : undefined
 
     const response = await fetch(backendUrl, {
       method: "PATCH",

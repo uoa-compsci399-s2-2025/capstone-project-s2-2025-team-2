@@ -60,7 +60,6 @@ export default function Orders() {
     toast(action === "approve" ? "Request approved!" : "Request canceled!")
   }
 
-
   return (
     <Overlay>
       <p className="text-4xl font-medium text-white mt-4 ml-4 md:ml-8 tracking-[0.05em]">
@@ -78,7 +77,9 @@ export default function Orders() {
       <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
         {/*loading state*/}
         {loading ? (
-          <div className="text-white text-center w-full">Loading requests...</div>
+          <div className="text-white text-center w-full">
+            Loading requests...
+          </div>
         ) : !orders.length ? (
           //no orders found
           <div className="bg-primary/50 rounded-lg p-8 border border-muted text-gray-400 text-center w-full">

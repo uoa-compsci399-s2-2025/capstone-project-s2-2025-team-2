@@ -217,7 +217,7 @@ export class OrderService {
 
       //read pending orders for offered reagent
       let otherOfferedOrders: FirebaseFirestore.QuerySnapshot | null = null
-      if ('offeredReagentId' in (order as any)) {
+      if ("offeredReagentId" in (order as any)) {
         const exchange = order as Exchange
         const otherOfferedOrdersQuery = this.db
           .collection("orders")
@@ -230,17 +230,21 @@ export class OrderService {
       tx.update(orderRef, { status: "approved" })
 
       //handle trade based on order type
-      if ('offeredReagentId' in (order as any)) {
+      if ("offeredReagentId" in (order as any)) {
         const exchange = order as Exchange
-        
+
         //transfer requested reagent
-        const requestedReagentRef = this.db.collection("reagents").doc(order.reagent_id)
+        const requestedReagentRef = this.db
+          .collection("reagents")
+          .doc(order.reagent_id)
         tx.update(requestedReagentRef, { user_id: order.requester_id })
-      
+
         //transfer offered reagent
-        const offeredReagentRef = this.db.collection("reagents").doc(exchange.offeredReagentId)
+        const offeredReagentRef = this.db
+          .collection("reagents")
+          .doc(exchange.offeredReagentId)
         tx.update(offeredReagentRef, { user_id: order.owner_id })
-        
+
         //cancel pending orders for offered reagent
         if (otherOfferedOrders) {
           otherOfferedOrders.docs.forEach((doc) => {
@@ -261,7 +265,7 @@ export class OrderService {
           tx.update(doc.ref, { status: "canceled" })
         }
       })
-      
+
       return { ...order, status: "approved" }
     })
   }

@@ -41,9 +41,19 @@ const Sidebar = () => {
       isButton: true,
       requireSignIn: true,
     },
-    { href: "/marketplace", label: "Marketplace", icon: ShoppingCartIcon, requireSignIn: false },
+    {
+      href: "/marketplace",
+      label: "Marketplace",
+      icon: ShoppingCartIcon,
+      requireSignIn: false,
+    },
     { href: "/inbox", label: "Inbox", icon: EnvelopeIcon, requireSignIn: true },
-    { href: "/requests", label: "Requests", icon: ClipboardDocumentListIcon, requireSignIn: true },
+    {
+      href: "/requests",
+      label: "Requests",
+      icon: ClipboardDocumentListIcon,
+      requireSignIn: true,
+    },
   ]
 
   return (
@@ -79,33 +89,33 @@ const Sidebar = () => {
             )}
             {links
               .filter(({ requireSignIn }) => !requireSignIn || isSignedIn)
-              .map(({ href, label, icon: Icon, isButton }, index) => (
-              <div key={href}>
-                {isButton ? (
-                  <div className="flex justify-center px-4">
-                    <Link href={href}>
-                      <Button
-                        className="gap-2 duration-300 flex justify-center"
-                        icon={Icon}
-                        iconPosition="left"
-                        label={label}
-                      />
+              .map(({ href, label, icon: Icon, isButton }) => (
+                <div key={href}>
+                  {isButton ? (
+                    <div className="flex justify-center px-4">
+                      <Link href={href}>
+                        <Button
+                          className="gap-2 duration-300 flex justify-center"
+                          icon={Icon}
+                          iconPosition="left"
+                          label={label}
+                        />
+                      </Link>
+                    </div>
+                  ) : (
+                    <Link
+                      className="flex items-center gap-2 text-[var(--white)] hover:bg-secondary/30 duration-300 p-2 rounded-md m-4 "
+                      href={href}
+                    >
+                      <Icon className="h-5 w-5" />
+                      {label}
                     </Link>
-                  </div>
-                ) : (
-                  <Link
-                    className="flex items-center gap-2 text-[var(--white)] hover:bg-secondary/30 duration-300 p-2 rounded-md m-4 "
-                    href={href}
-                  >
-                    <Icon className="h-5 w-5" />
-                    {label}
-                  </Link>
-                )}
-                {label === "Profile" && (
-                  <div className="mt-5 h-[2px] w-full bg-gradient-to-r from-transparent from-15% via-blue-primary via-50% to-transparent to-85%" />
-                )}
-              </div>
-            ))}
+                  )}
+                  {label === "Profile" && (
+                    <div className="mt-5 h-[2px] w-full bg-gradient-to-r from-transparent from-15% via-blue-primary via-50% to-transparent to-85%" />
+                  )}
+                </div>
+              ))}
           </div>
           <div className="w-full flex justify-center">
             {isSignedIn ? (

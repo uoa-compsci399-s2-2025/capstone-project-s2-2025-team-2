@@ -93,7 +93,10 @@ export default function ReagentView({ params }: ReagentViewProps) {
                 <h5 className="text-white/80 mb-[0.5rem]">
                   Quantity: {reagent.quantity}
                 </h5>
-                <p className="text-white mb-[1rem]">{reagent.description || "No description provided for this reagent."}</p>
+                <p className="text-white mb-[1rem]">
+                  {reagent.description ||
+                    "No description provided for this reagent."}
+                </p>
               </div>
 
               <div className="px-[2rem] mb-[2rem] md:mb-0 md:px-0 lg:mt-0 gap-[1rem] lg:gap-12 flex flex-col lg:flex-row justify-start md:w-full mt-[1rem]">
@@ -144,14 +147,21 @@ export default function ReagentView({ params }: ReagentViewProps) {
               </div>
               <div className="hidden md:block flex-[1.3] ml-[1rem] ">
                 <div className="rounded-r-[8px] overflow-hidden shadow-[0_4px_6px_rgba(0,0,0,0.4)]">
-                  <div className={`text-center py-[1rem] ${
-                    reagent.tradingType === 'giveaway' ? 'bg-blue-100/75' :
-                    reagent.tradingType === 'sell' ? 'bg-green-100/75' :
-                    reagent.tradingType === 'trade' ? 'bg-blue-primary/75' :
-                    'bg-blue-primary/75'
-                  }`}>
+                  <div
+                    className={`text-center py-[1rem] ${
+                      reagent.tradingType === "giveaway"
+                        ? "bg-blue-100/75"
+                        : reagent.tradingType === "sell"
+                          ? "bg-green-100/75"
+                          : reagent.tradingType === "trade"
+                            ? "bg-blue-primary/75"
+                            : "bg-blue-primary/75"
+                    }`}
+                  >
                     <h4 className="text-white">Trading Type</h4>
-                    <h2 className="text-white capitalize">{reagent.tradingType}</h2>
+                    <h2 className="text-white capitalize">
+                      {reagent.tradingType}
+                    </h2>
                   </div>
                   <div className="flex flex-col bg-primary p-[2rem]">
                     <div className="mb-[1rem]">
@@ -165,7 +175,10 @@ export default function ReagentView({ params }: ReagentViewProps) {
                       )}
                     </div>
                     <div className="">
-                      <p className="text-white">{reagent.description || "No description provided for this reagent."}</p>
+                      <p className="text-white">
+                        {reagent.description ||
+                          "No description provided for this reagent."}
+                      </p>
                       <div className="mt-[2rem] flex">
                         {reagent.categories?.map((tag) => {
                           return (
