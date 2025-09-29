@@ -124,20 +124,23 @@ export async function PATCH(
   try {
     const params = await context.params
     const path = params.path.join("/")
-    const body = await request.json()
     const backendUrl = `${BACKEND_URL}/${path}`
 
     console.log("🔄 Proxying PATCH to:", backendUrl)
 
+    const bodyJson = request.headers.get("content-length") && request.headers.get("content-length") !== "0" 
+      ? await request.json().catch(() => undefined) 
+      : undefined
+
     const response = await fetch(backendUrl, {
       method: "PATCH",
       headers: {
-        "Content-Type": "application/json",
         ...(request.headers.get("authorization") && {
           Authorization: request.headers.get("authorization")!,
         }),
+        ...(bodyJson && { "Content-Type": "application/json" }),
       },
-      body: JSON.stringify(body),
+      ...(bodyJson && { body: JSON.stringify(bodyJson) }),
     })
 
     if (!response.ok) {
