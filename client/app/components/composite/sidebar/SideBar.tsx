@@ -31,16 +31,19 @@ const Sidebar = () => {
   const uid = auth?.currentUser?.uid
   const profileHref = uid ? `/profile/${uid}` : "/auth"
 
+  const isSignedIn = !!auth?.currentUser
+
   const links = [
     {
       href: profileHref,
       label: "Profile",
       icon: UserCircleIcon,
       isButton: true,
+      requireSignIn: true,
     },
-    { href: "/marketplace", label: "Marketplace", icon: ShoppingCartIcon },
-    { href: "/inbox", label: "Inbox", icon: EnvelopeIcon },
-    { href: "/requests", label: "Requests", icon: ClipboardDocumentListIcon },
+    { href: "/marketplace", label: "Marketplace", icon: ShoppingCartIcon, requireSignIn: false },
+    { href: "/inbox", label: "Inbox", icon: EnvelopeIcon, requireSignIn: true },
+    { href: "/requests", label: "Requests", icon: ClipboardDocumentListIcon, requireSignIn: true },
   ]
 
   return (
@@ -71,7 +74,12 @@ const Sidebar = () => {
 
         <div className="flex flex-col justify-between h-full">
           <div>
-            {links.map(({ href, label, icon: Icon, isButton }, index) => (
+            {!isSignedIn && (
+              <div className="mb-5 h-[2px] w-full bg-gradient-to-r from-transparent from-15% via-blue-primary via-50% to-transparent to-85%" />
+            )}
+            {links
+              .filter(({ requireSignIn }) => !requireSignIn || isSignedIn)
+              .map(({ href, label, icon: Icon, isButton }, index) => (
               <div key={href}>
                 {isButton ? (
                   <div className="flex justify-center px-4">
@@ -93,20 +101,29 @@ const Sidebar = () => {
                     {label}
                   </Link>
                 )}
-                {index === 0 && (
+                {label === "Profile" && (
                   <div className="mt-5 h-[2px] w-full bg-gradient-to-r from-transparent from-15% via-blue-primary via-50% to-transparent to-85%" />
                 )}
               </div>
             ))}
           </div>
           <div className="w-full flex justify-center">
-            <div
-              className="flex items-center mb-30 p-2 text-red-70 cursor-pointer hover:text-red-70/80"
-              onClick={handleSignOut}
-            >
-              <ArrowLeftStartOnRectangleIcon className="w-5 h-5" />
-              Sign Out
-            </div>
+            {isSignedIn ? (
+              <div
+                className="flex items-center mb-30 p-2 text-red-70 cursor-pointer hover:text-red-70/80"
+                onClick={handleSignOut}
+              >
+                <ArrowLeftStartOnRectangleIcon className="w-5 h-5" />
+                Sign Out
+              </div>
+            ) : (
+              <Link href="/auth">
+                <div className="flex items-center mb-30 p-2 text-blue-primary cursor-pointer hover:text-blue-secondary">
+                  <UserCircleIcon className="w-5 h-5" />
+                  Sign In
+                </div>
+              </Link>
+            )}
           </div>
         </div>
       </div>
