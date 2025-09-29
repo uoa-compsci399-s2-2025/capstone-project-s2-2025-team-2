@@ -34,6 +34,7 @@ interface FormData {
   condition: string
   visibility: ReagentVisibility
   quantity: string
+  unit: string
   price: string
   expiryDate: string
   location: string
@@ -75,6 +76,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
     condition: "",
     visibility: "everyone",
     quantity: "1",
+    unit: "",
     price: "",
     expiryDate: "",
     location: "",
@@ -118,6 +120,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
           ? Number(formData.price)
           : undefined,
       quantity: Number(formData.quantity),
+      unit: formData.unit,
     }
 
     try {
@@ -277,16 +280,26 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
         />
       </div>
 
-      <FormField
-        label="Quantity"
-        required
-        input={formInput("quantity", {
-          type: "number",
-          placeholder: "10",
-          min: "0",
-          required: true,
-        })}
-      />
+      <div className="grid grid-cols-2 gap-4">
+        <FormField
+          label="Quantity"
+          required
+          input={formInput("quantity", {
+            type: "number",
+            placeholder: "10",
+            min: "0",
+            required: true,
+          })}
+        />
+        <FormField
+          label="Unit"
+          required
+          input={formInput("unit", {
+            placeholder: "g, mL, etc.",
+            required: true,
+          })}
+        />
+      </div>
 
       {formData.tradingType === "sell" && (
         <FormField

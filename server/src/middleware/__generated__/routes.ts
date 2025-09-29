@@ -82,6 +82,7 @@ const models: TsoaRoute.Models = {
             "categories": {"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"},"required":true},
             "price": {"dataType":"double"},
             "quantity": {"dataType":"double","required":true},
+            "unit": {"dataType":"string","required":true},
             "expiryDate": {"dataType":"string","required":true},
             "tradingType": {"ref":"ReagentTradingType","required":true},
             "location": {"dataType":"string","required":true},

@@ -11,6 +11,7 @@ export interface CreateReagentRequest {
   categories: ReagentCategory[]
   price?: number
   quantity: number
+  unit: string
   expiryDate: string
   tradingType: ReagentTradingType
   location: string

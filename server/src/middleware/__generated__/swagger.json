@@ -160,6 +160,9 @@
 						"type": "number",
 						"format": "double"
 					},
+					"unit": {
+						"type": "string"
+					},
 					"expiryDate": {
 						"type": "string"
 					},
@@ -185,6 +188,7 @@
 					"condition",
 					"categories",
 					"quantity",
+					"unit",
 					"expiryDate",
 					"tradingType",
 					"location"
