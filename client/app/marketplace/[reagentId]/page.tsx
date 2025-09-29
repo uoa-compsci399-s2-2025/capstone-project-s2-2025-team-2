@@ -93,7 +93,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                 <h5 className="text-white/80 mb-[0.5rem]">
                   Quantity: {reagent.quantity}
                 </h5>
-                <p className="text-white mb-[1rem]">{reagent.description}</p>
+                <p className="text-white mb-[1rem]">{reagent.description || "No description provided for this reagent."}</p>
               </div>
 
               <div className="px-[2rem] mb-[2rem] md:mb-0 md:px-0 lg:mt-0 gap-[1rem] lg:gap-12 flex flex-col lg:flex-row justify-start md:w-full mt-[1rem]">
@@ -165,7 +165,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                       )}
                     </div>
                     <div className="">
-                      <p className="text-white">{reagent.description}</p>
+                      <p className="text-white">{reagent.description || "No description provided for this reagent."}</p>
                       <div className="mt-[2rem] flex">
                         {reagent.categories?.map((tag) => {
                           return (
