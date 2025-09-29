@@ -144,15 +144,25 @@ export default function ReagentView({ params }: ReagentViewProps) {
               </div>
               <div className="hidden md:block flex-[1.3] ml-[1rem] ">
                 <div className="rounded-r-[8px] overflow-hidden shadow-[0_4px_6px_rgba(0,0,0,0.4)]">
-                  <div className="bg-blue-primary/75 text-center py-[1rem]">
-                    <h4 className="text-white">Current price</h4>
-                    <h2 className="text-white">${reagent.price}</h2>
+                  <div className={`text-center py-[1rem] ${
+                    reagent.tradingType === 'giveaway' ? 'bg-blue-100/75' :
+                    reagent.tradingType === 'sell' ? 'bg-green-100/75' :
+                    reagent.tradingType === 'trade' ? 'bg-blue-primary/75' :
+                    'bg-blue-primary/75'
+                  }`}>
+                    <h4 className="text-white">Trading Type</h4>
+                    <h2 className="text-white capitalize">{reagent.tradingType}</h2>
                   </div>
                   <div className="flex flex-col bg-primary p-[2rem]">
                     <div className="mb-[1rem]">
                       <h5 className="text-white/80">
                         Quantity: {reagent.quantity}
                       </h5>
+                      {reagent.price && (
+                        <h5 className="text-white/80 mt-2">
+                          Price: ${reagent.price}
+                        </h5>
+                      )}
                     </div>
                     <div className="">
                       <p className="text-white">{reagent.description}</p>
