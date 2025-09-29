@@ -136,10 +136,10 @@ export default function SignInBox({
 
   //            render: SignIn           //
   return (
-    <div className="max-w-md w-full space-y-8 p-8 bg-primary rounded-lg shadow-lg">
+    <div className="max-w-md min-w-full w-full md:min-w-0 space-y-8 p-4 bg-primary rounded-lg shadow-lg">
       {/* Header Section */}
-      <div className="text-center">
-        <h2>Sign In</h2>
+      <div className="text-left md:text-center mb-12 md:mb-8">
+        <h2 className="text-2xl md:text-3xl">Sign In</h2>
         <p className="mt-2 text-secondary">Sign in to your account</p>
       </div>
 
@@ -198,7 +198,12 @@ export default function SignInBox({
 
         {/* 3. Submit Button */}
         <div className="flex justify-center w-full">
-          <Button type="submit" label="Sign In" textSize="text-sm" />
+          <Button
+            type="submit"
+            label="Sign In"
+            textSize="text-sm"
+            className="justify-center w-full"
+          />
         </div>
 
         {/* 4. Sign Up Link */}

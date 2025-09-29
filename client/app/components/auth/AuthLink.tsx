@@ -11,7 +11,7 @@ export default function AuthLink({
 }: AuthLinkProps) {
   return (
     <button
-      className={`font-medium text-blue-primary hover:text-blue-secondary ${className}`}
+      className={`font-normal text-sm text-blue-primary hover:text-blue-secondary ${className}`}
       onClick={onClick}
     >
       {children}
