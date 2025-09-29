@@ -50,13 +50,12 @@ export async function POST(
     const body = await request.json()
     const backendUrl = `${BACKEND_URL}/${path}`
 
-    console.log("Proxying POST to:", backendUrl)
+    const headers = new Headers(request.headers)
+    headers.set("Content-Type", "application/json")
 
     const response = await fetch(backendUrl, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers,
       body: JSON.stringify(body),
     })
 
