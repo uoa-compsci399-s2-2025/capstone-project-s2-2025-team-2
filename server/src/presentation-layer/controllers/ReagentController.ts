@@ -62,7 +62,7 @@ export class ReagentController extends Controller {
    * @returns Promise<Reagent> - a reagent bundled with a generated id
    */
   @SuccessResponse("201", "Reagent created successfully")
-  @Post("{id}")
+  @Post()
   public async createReagent(
     @Body() requestObject: CreateReagentRequest,
   ): Promise<Reagent> {
