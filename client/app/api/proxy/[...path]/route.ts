@@ -64,13 +64,15 @@ export async function POST(
       },
       body: JSON.stringify(body),
     })
-
+    const data = await response.json()
     if (!response.ok) {
-      const errorText = await response.text()
-      console.error("Backend error response:", errorText)
+      console.error("Backend error response:", data)
+      return NextResponse.json(
+        { error: data.message || "Backend request failed", details: data },
+        { status: response.status },
+      )
     }
 
-    const data = await response.json()
     return NextResponse.json(data)
   } catch (error: any) {
     console.error("Proxy POST error:", error)
