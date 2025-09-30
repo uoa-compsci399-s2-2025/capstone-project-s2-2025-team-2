@@ -118,7 +118,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       price:
         formData.tradingType === "sell" && formData.price
           ? Number(formData.price)
-          : undefined,
+          : 0,
       quantity: Number(formData.quantity),
       unit: formData.unit,
     }
