@@ -6,6 +6,7 @@ import ReagentCard from "../components/composite/reagent/ReagentCard"
 import ReagentForm from "../components/composite/reagent/ReagentForm"
 import { components } from "@/models/__generated__/schema"
 import { usePagaination } from "../hooks/usePagination"
+import Pagination from "../components/composite/pagination/Pagination"
 
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
@@ -86,7 +87,7 @@ const Marketplace = () => {
     }
   })
 
-  const { currentPage, setCurrentPage, currentData, totalCount} =
+  const { currentPage, setCurrentPage, currentData, totalCount, totalPages} =
     usePagaination(sorted, 8);
 
   return (
@@ -132,10 +133,9 @@ const Marketplace = () => {
           />
         ))}
       </div>
-      <Pagaination
+      <Pagination
         currentPage={currentPage}
-        totalCount={totalCount}
-        pageSize={8}
+        totalPages={totalPages}
         onPageChange={setCurrentPage}
       />
 
