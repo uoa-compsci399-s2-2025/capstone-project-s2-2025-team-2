@@ -115,7 +115,7 @@ const Marketplace = () => {
       </div>
 
       <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
-        {sorted.map((r) => (
+        {currentData.map((r) => (
           <ReagentCard
             key={r.id}
             name={r.name}
