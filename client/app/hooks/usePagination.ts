@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react"
+
 export function usePagaination<T>(data: T[], pageSize: number) {
   const [currentPage, setCurrentPage] = useState(1)
 
@@ -15,6 +16,5 @@ export function usePagaination<T>(data: T[], pageSize: number) {
     setCurrentPage,
     currentData,
     totalPages,
-    totalCount: data.length,
   }
 }

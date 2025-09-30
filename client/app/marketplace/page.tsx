@@ -7,6 +7,7 @@ import ReagentForm from "../components/composite/reagent/ReagentForm"
 import { components } from "@/models/__generated__/schema"
 import { usePagaination } from "../hooks/usePagination"
 import Pagination from "../components/composite/pagination/Pagination"
+import { usePageSize } from "../hooks/usePageSize"
 
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
@@ -86,9 +87,9 @@ const Marketplace = () => {
         return 0
     }
   })
-
-  const { currentPage, setCurrentPage, currentData, totalCount, totalPages} =
-    usePagaination(sorted, 8);
+  const pageSize = usePageSize()
+  const { currentPage, setCurrentPage, currentData, totalPages } =
+    usePagaination(sorted, pageSize)
 
   return (
     <Overlay>
@@ -138,7 +139,6 @@ const Marketplace = () => {
         totalPages={totalPages}
         onPageChange={setCurrentPage}
       />
-
 
       {isSignedIn && (
         <button
