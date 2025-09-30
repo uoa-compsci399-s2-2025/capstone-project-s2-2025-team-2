@@ -164,7 +164,7 @@ export class ReagentService {
       const expiringReagents = reagents.filter((reagent) => {
         if (!reagent.expiryDate) return false
         const daysLeft = daysUntilExpiry(reagent.expiryDate)
-        return daysLeft == 30
+        return daysLeft == 29
       })
 
       const groupedReagents: Record<string, Reagent[]> = {}
