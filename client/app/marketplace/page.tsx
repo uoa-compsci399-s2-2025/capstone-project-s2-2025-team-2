@@ -5,10 +5,12 @@ import SearchBar from "../components/composite/searchbar/SearchBar"
 import ReagentCard from "../components/composite/reagent/ReagentCard"
 import ReagentForm from "../components/composite/reagent/ReagentForm"
 import { components } from "@/models/__generated__/schema"
+import { usePagaination } from "../hooks/usePagination"
 
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
 import client from "../services/fetch-client"
+import { set } from "zod"
 
 const Marketplace = () => {
   const [reagents, setReagents] = useState<ReagentWithId[]>([])
@@ -84,6 +86,9 @@ const Marketplace = () => {
     }
   })
 
+  const { currentPage, setCurrentPage, currentData, totalCount} =
+    usePagaination(sorted, 8);
+
   return (
     <Overlay>
       <p className="text-4xl font-medium text-white mt-4 ml-4 md:ml-8 tracking-[0.05em]">
@@ -127,6 +132,13 @@ const Marketplace = () => {
           />
         ))}
       </div>
+      <Pagaination
+        currentPage={currentPage}
+        totalCount={totalCount}
+        pageSize={8}
+        onPageChange={setCurrentPage}
+      />
+
 
       {isSignedIn && (
         <button
