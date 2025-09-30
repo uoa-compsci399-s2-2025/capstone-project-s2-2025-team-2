@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 
-const BACKEND_URL = "http://54.206.209.62:8000"
+const BACKEND_URL = "http://localhost:8000"
 
 export async function GET(
   request: NextRequest,
