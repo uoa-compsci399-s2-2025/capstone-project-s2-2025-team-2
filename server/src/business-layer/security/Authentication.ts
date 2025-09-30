@@ -45,7 +45,7 @@ export function expressAuthentication(
                   )
                 }
               }
-              let role: "user" | "lab_manager" | "admin"
+              let role: "user" | "lab_manager" | "admin" = "user"
               try {
                 const userService = new UserService()
 
@@ -72,7 +72,7 @@ export function expressAuthentication(
                 email: user.email,
                 name: user.displayName || null,
               }
-
+              console.log("authentication successful:", request.user)
               resolve(request.user)
             })
             .catch((reason) => {
