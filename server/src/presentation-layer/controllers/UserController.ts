@@ -182,6 +182,7 @@ export class UserController extends Controller {
     const user = request.user
     if (!user || !["admin", "lab_manager"].includes(user.role)) {
       console.error("You don't have permission to create reagents")
+      throw new Error("Forbidden")
     }
     const user_id = request.user.uid
     const data = {
