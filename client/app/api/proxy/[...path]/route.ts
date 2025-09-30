@@ -52,7 +52,15 @@ export async function POST(
     const body = await request.json()
     const backendUrl = `${BACKEND_URL}/${path}`
 
+    console.log("==================== POST Request ====================")
     console.log("Proxying POST to:", backendUrl)
+    console.log("Request body:", JSON.stringify(body, null, 2))
+    console.log("Authorization header:", request.headers.get("authorization"))
+    console.log(
+      "All request headers:",
+      Object.fromEntries(request.headers.entries()),
+    )
+    console.log("====================================================")
 
     const response = await fetch(backendUrl, {
       method: "POST",
@@ -64,7 +72,34 @@ export async function POST(
       },
       body: JSON.stringify(body),
     })
-    const data = await response.json()
+
+    console.log("Backend response status:", response.status)
+    console.log(
+      "Backend response content-type:",
+      response.headers.get("content-type"),
+    )
+
+    const responseText = await response.text()
+    console.log("Backend response body:", responseText)
+
+    let data
+    try {
+      data = JSON.parse(responseText)
+    } catch (parseError) {
+      console.error(
+        "Failed to parse response as JSON:",
+        responseText.substring(0, 200),
+      )
+      return NextResponse.json(
+        {
+          error: "Backend returned invalid JSON",
+          details: responseText.substring(0, 500),
+          status: response.status,
+        },
+        { status: 502 },
+      )
+    }
+
     if (!response.ok) {
       console.error("Backend error response:", data)
       return NextResponse.json(
@@ -110,6 +145,7 @@ export async function PUT(
     }
 
     const data = await response.json()
+    console.log("data", data)
     return NextResponse.json(data)
   } catch (error: any) {
     console.error("❌ Proxy PUT error:", error)

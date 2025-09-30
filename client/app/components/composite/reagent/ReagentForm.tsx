@@ -111,7 +111,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       tradingType: formData.tradingType,
       categories: formData.categories,
       expiryDate: formData.expiryDate,
-      images: formData.images.length ? formData.images : undefined,
+      images: formData.images,
       location: formData.location,
       visibility: formData.visibility,
       //only include price if selling
@@ -130,6 +130,8 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
         toast("Please sign in to create a reagent.")
         return
       }
+      console.log("Token:", idToken)
+      console.log("Token starts with Bearer?:", idToken.startsWith("Bearer "))
 
       const { error } = await client.POST("/users/reagents" as any, {
         body: reagentData,
