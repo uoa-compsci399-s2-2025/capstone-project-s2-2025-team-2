@@ -723,7 +723,7 @@ export function RegisterRoutes(app: Router) {
         const argsReagentController_createReagent: Record<string, TsoaRoute.ParameterSchema> = {
                 requestObject: {"in":"body","name":"requestObject","required":true,"ref":"CreateReagentRequest"},
         };
-        app.post('/reagents/:id',
+        app.post('/reagents',
             ...(fetchMiddlewares<RequestHandler>(ReagentController)),
             ...(fetchMiddlewares<RequestHandler>(ReagentController.prototype.createReagent)),
 

@@ -66,13 +66,15 @@ export async function POST(
     })
 
     if (!response.ok) {
-      throw new Error(`Backend error: ${response.status}`)
+      const errorText = await response.text()
+      console.error("Backend error response:", errorText)
     }
 
     const data = await response.json()
     return NextResponse.json(data)
   } catch (error: any) {
     console.error("Proxy POST error:", error)
+    console.log(error.stack)
     return NextResponse.json(
       { error: "Proxy POST failed", details: error.message },
       { status: 500 },
