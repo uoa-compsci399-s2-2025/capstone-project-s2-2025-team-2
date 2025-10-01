@@ -254,7 +254,7 @@ const UserProfile = () => {
             className="w-25 h-25 rounded-full border-3 border-[#6C6C6C] dark:border-white"
           />
           <div className="flex flex-col gap-2">
-            <h1 className="font-light text-midnight dark:text-pearl text-xl md:text-4xl">
+            <h1 className="font-light text-pearl text-xl md:text-4xl">
               {idOfUserBeingViewed === userUid
                 ? `Welcome back, ${userBeingViewed && userBeingViewed?.displayName}`
                 : `${userBeingViewed && userBeingViewed?.displayName}'s Profile`}
@@ -356,7 +356,7 @@ const UserProfile = () => {
           </div>
           {/* reagent search bar + results */}
           <div className="flex flex-col gap-2">
-            <h4 className="font-light text-midnight text-lg md:text-xl dark:text-tint">
+            <h4 className="font-light text-lg md:text-xl text-tint">
               {idOfUserBeingViewed === userUid
                 ? "Your Reagents"
                 : `${userBeingViewed?.displayName}'s Reagents`}
