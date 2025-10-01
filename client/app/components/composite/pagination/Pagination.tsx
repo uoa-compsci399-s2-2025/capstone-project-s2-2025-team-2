@@ -1,3 +1,5 @@
+import { ChevronRightIcon,ChevronLeftIcon } from "@heroicons/react/24/outline"
+
 interface PaginationProps {
   currentPage: number
   totalPages: number
@@ -45,14 +47,14 @@ export default function Pagination({
    const pages = getPageNumbers()         
 return (
   <div className="flex items-center gap-2 justify-center mb-[2rem]">
-    <button
-      onClick={() => onPageChange(currentPage - 1)}
-      disabled={currentPage === 1}
-      className="px-4"
-    >
-      Previous
-    </button>
-    <div className="flex gap-1">
+<button
+  onClick={() => onPageChange(currentPage - 1)}
+  disabled={currentPage === 1}
+  className={`px-4 ${currentPage === 1 ? 'invisible' : ''}`}
+>
+  <ChevronLeftIcon className="h-5 w-5 text-white" />
+</button>
+    <div className="flex gap-1 justify-center">
       {pages.map((page, index) => {
         if (page === '...') {
           return (
@@ -78,13 +80,14 @@ return (
         )
       })}
     </div>
-    <button
-      onClick={() => onPageChange(currentPage + 1)}
-      disabled={currentPage === totalPages}
-      className="px-4"
-    >
-      Next
-    </button>
+<button
+  onClick={() => onPageChange(currentPage + 1)}
+  disabled={currentPage === totalPages}
+  className={`px-4 ${currentPage === totalPages ? 'invisible' : ''}`}
+>
+  <ChevronRightIcon className="h-5 w-5 text-white" />
+</button>
+
   </div>
 )
 }
