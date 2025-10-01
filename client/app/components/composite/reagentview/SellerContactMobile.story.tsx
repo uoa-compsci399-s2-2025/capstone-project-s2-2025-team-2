@@ -17,8 +17,20 @@ type Story = StoryObj<typeof SellerContactMobile>
 
 export const DefaultSellerContact: Story = {
   args: {
-    name: "Violet Chen",
-    location: "University of Auckland",
     rating: 99,
+    reagent: {
+      id: "test-id",
+      user_id: "user_1",
+      name: "Test Reagent",
+      description: "Test description",
+      condition: "New",
+      quantity: 1,
+      unit: "g",
+      expiryDate: "2025-12-31",
+      tradingType: "trade",
+      location: "University of Auckland",
+      categories: ["chemical"],
+      createdAt: "2025-01-01T00:00:00.000Z",
+    },
   },
 }

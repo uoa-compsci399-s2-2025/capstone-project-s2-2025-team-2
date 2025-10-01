@@ -17,8 +17,6 @@ type Story = StoryObj<typeof SellerContact>
 
 export const DefaultSellerContact: Story = {
   args: {
-    name: "Violet Chen",
-    location: "University of Auckland",
     rating: 99,
   },
 }

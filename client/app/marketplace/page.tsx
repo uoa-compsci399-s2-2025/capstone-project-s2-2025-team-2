@@ -5,10 +5,10 @@ import SearchBar from "../components/composite/searchbar/SearchBar"
 import ReagentCard from "../components/composite/reagent/ReagentCard"
 import ReagentForm from "../components/composite/reagent/ReagentForm"
 import { components } from "@/models/__generated__/schema"
+import client from "../services/fetch-client"
 
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
-import client from "../services/fetch-client"
 
 const Marketplace = () => {
   const [reagents, setReagents] = useState<ReagentWithId[]>([])
@@ -111,20 +111,7 @@ const Marketplace = () => {
 
       <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
         {sorted.map((r) => (
-          <ReagentCard
-            key={r.id}
-            name={r.name}
-            tags={Array.isArray(r.categories) ? r.categories : []}
-            location={r.location ?? "Unknown"}
-            expiryDate={r.expiryDate ?? "N/A"}
-            imageUrl={
-              r.images?.[0] !== "string"
-                ? (r.images?.[0] ?? "/placeholder.webp")
-                : "/placeholder.webp"
-            }
-            type={r.tradingType ?? "sell"}
-            id={r.id}
-          />
+          <ReagentCard key={r.id} reagent={r as ReagentWithId} />
         ))}
       </div>
 

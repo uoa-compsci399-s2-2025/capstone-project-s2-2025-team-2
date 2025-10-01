@@ -3,6 +3,6 @@ export interface CreateTradeRequest {
   message?: string
   price: number
   type: "trade"
-  quantity: number
-  unit: string
+  quantity?: number
+  unit?: string
 }

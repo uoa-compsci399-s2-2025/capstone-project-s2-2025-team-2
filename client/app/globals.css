@@ -187,3 +187,23 @@ body {
   );
   font-family: "Poppins", sans-serif;
 }
+
+/*toast notification styling*/
+[data-sonner-toaster] [data-sonner-toast] {
+  background: #5e60ff !important;
+  border: 1px solid #ffffff !important;
+  color: #ffffff !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+
+[data-sonner-toaster] [data-sonner-toast][data-type="success"] {
+  background: #0f2e0f !important;
+  border-color: #53be5a !important;
+  color: #7afb83 !important;
+}
+
+[data-sonner-toaster] [data-sonner-toast][data-type="error"] {
+  background: #2e0f0f !important;
+  border-color: #ef4b52 !important;
+  color: #ff6b6b !important;
+}

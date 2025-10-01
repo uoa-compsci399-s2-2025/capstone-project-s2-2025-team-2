@@ -11,6 +11,7 @@ import {
 } from "@heroicons/react/24/outline"
 import Button from "../../generic/button/regular/Button"
 import { firebaseSignOut } from "../../../services/firebase-auth"
+import { toast } from "sonner"
 import { auth } from "@/app/config/firebase"
 
 const Sidebar = () => {
@@ -23,12 +24,14 @@ const Sidebar = () => {
       localStorage.removeItem("authToken")
       window.location.reload()
     } catch {
-      alert("Sign out failed!")
+      toast("Sign out failed!")
     }
   }
 
   const uid = auth?.currentUser?.uid
   const profileHref = uid ? `/profile/${uid}` : "/auth"
+
+  const isSignedIn = !!auth?.currentUser
 
   const links = [
     {
@@ -36,10 +39,21 @@ const Sidebar = () => {
       label: "Profile",
       icon: UserCircleIcon,
       isButton: true,
+      requireSignIn: true,
     },
-    { href: "/marketplace", label: "Marketplace", icon: ShoppingCartIcon },
-    { href: "/inbox", label: "Inbox", icon: EnvelopeIcon },
-    { href: "/orders", label: "Orders", icon: ClipboardDocumentListIcon },
+    {
+      href: "/marketplace",
+      label: "Marketplace",
+      icon: ShoppingCartIcon,
+      requireSignIn: false,
+    },
+    { href: "/inbox", label: "Inbox", icon: EnvelopeIcon, requireSignIn: true },
+    {
+      href: "/requests",
+      label: "Requests",
+      icon: ClipboardDocumentListIcon,
+      requireSignIn: true,
+    },
   ]
 
   return (
@@ -66,46 +80,60 @@ const Sidebar = () => {
       ${isOpen ? "translate-x-0 right-0" : "translate-x-full right-0"}
        lg:left-0 lg:right-auto lg:translate-x-0 lg:block`}
       >
-        <h2 className="hidden lg:block ml-7 mt-7 mb-8">Chemical.ly</h2>
+        <h2 className="hidden lg:block ml-7 mt-7 mb-4">Chemical.ly</h2>
 
         <div className="flex flex-col justify-between h-full">
           <div>
-            {links.map(({ href, label, icon: Icon, isButton }, index) => (
-              <div key={href}>
-                {isButton ? (
-                  <Link href={href}>
-                    <div className="w-[8.5rem] mx-auto ">
-                      <Button
-                        className="gap-2 duration-300 flex justify-center"
-                        icon={Icon}
-                        iconPosition="left"
-                        label={label}
-                      />
+            {!isSignedIn && (
+              <div className="mb-5 h-[2px] w-full bg-gradient-to-r from-transparent from-15% via-blue-primary via-50% to-transparent to-85%" />
+            )}
+            {links
+              .filter(({ requireSignIn }) => !requireSignIn || isSignedIn)
+              .map(({ href, label, icon: Icon, isButton }) => (
+                <div key={href}>
+                  {isButton ? (
+                    <div className="flex justify-center px-4">
+                      <Link href={href}>
+                        <Button
+                          className="gap-2 duration-300 flex justify-center"
+                          icon={Icon}
+                          iconPosition="left"
+                          label={label}
+                        />
+                      </Link>
                     </div>
-                  </Link>
-                ) : (
-                  <Link
-                    className="flex items-center gap-2 text-[var(--white)] hover:bg-secondary/30 duration-300 p-2 rounded-md m-4 "
-                    href={href}
-                  >
-                    <Icon className="h-5 w-5" />
-                    {label}
-                  </Link>
-                )}
-                {index === 0 && (
-                  <div className="mt-5 h-[2px] w-full bg-gradient-to-r from-transparent from-15% via-blue-primary via-50% to-transparent to-85%" />
-                )}
-              </div>
-            ))}
+                  ) : (
+                    <Link
+                      className="flex items-center gap-2 text-[var(--white)] hover:bg-secondary/30 duration-300 p-2 rounded-md m-4 "
+                      href={href}
+                    >
+                      <Icon className="h-5 w-5" />
+                      {label}
+                    </Link>
+                  )}
+                  {label === "Profile" && (
+                    <div className="mt-5 h-[2px] w-full bg-gradient-to-r from-transparent from-15% via-blue-primary via-50% to-transparent to-85%" />
+                  )}
+                </div>
+              ))}
           </div>
           <div className="w-full flex justify-center">
-            <div
-              className="flex items-center mb-30 p-2 text-red-70 cursor-pointer hover:text-red-70/80"
-              onClick={handleSignOut}
-            >
-              <ArrowLeftStartOnRectangleIcon className="w-5 h-5" />
-              Sign Out
-            </div>
+            {isSignedIn ? (
+              <div
+                className="flex items-center mb-30 p-2 text-red-70 cursor-pointer hover:text-red-70/80"
+                onClick={handleSignOut}
+              >
+                <ArrowLeftStartOnRectangleIcon className="w-5 h-5" />
+                Sign Out
+              </div>
+            ) : (
+              <Link href="/auth">
+                <div className="flex items-center mb-30 p-2 text-blue-primary cursor-pointer hover:text-blue-secondary">
+                  <UserCircleIcon className="w-5 h-5" />
+                  Sign In
+                </div>
+              </Link>
+            )}
           </div>
         </div>
       </div>
