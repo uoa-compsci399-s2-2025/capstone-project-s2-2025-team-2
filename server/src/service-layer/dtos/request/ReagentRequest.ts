@@ -6,7 +6,7 @@ import type {
 
 export interface CreateReagentRequest {
   name: string
-  description: string
+  description?: string
   condition: string
   categories: ReagentCategory[]
   price?: number

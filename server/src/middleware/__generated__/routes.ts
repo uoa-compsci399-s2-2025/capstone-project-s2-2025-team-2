@@ -77,7 +77,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "name": {"dataType":"string","required":true},
-            "description": {"dataType":"string","required":true},
+            "description": {"dataType":"string"},
             "condition": {"dataType":"string","required":true},
             "categories": {"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"},"required":true},
             "price": {"dataType":"double"},
