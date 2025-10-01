@@ -86,7 +86,7 @@ export async function POST(
     let data
     try {
       data = JSON.parse(responseText)
-    } catch (parseError) {
+    } catch {
       console.error(
         "Failed to parse response as JSON:",
         responseText.substring(0, 200),

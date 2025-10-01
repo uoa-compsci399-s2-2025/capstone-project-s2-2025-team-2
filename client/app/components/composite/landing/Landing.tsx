@@ -76,7 +76,7 @@ const Landing = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
           {/* Card 1 */}
           <div className="flex flex-col items-center bg-white dark:bg-primary rounded-2xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-gray-100 dark:border-gray-800 h-full">
-            <ReduceWaste className="w-10 h-10" />
+            <ReduceWaste />
             <h3 className="mt-4 text-xl font-bold text-blue-primary dark:text-[#FFB276] text-center">
               Sustainable Research
             </h3>
@@ -89,7 +89,7 @@ const Landing = () => {
 
           {/* Card 2 */}
           <div className="flex flex-col items-center bg-white dark:bg-primary rounded-2xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-gray-100 dark:border-gray-800 h-full">
-            <SaveMoney className="w-10 h-10" />
+            <SaveMoney />
             <h3 className="mt-4 text-xl font-bold text-blue-primary dark:text-[#FFB276] text-center">
               Budget Optimization
             </h3>
@@ -102,7 +102,7 @@ const Landing = () => {
 
           {/* Card 3 */}
           <div className="flex flex-col items-center bg-white dark:bg-primary rounded-2xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-gray-100 dark:border-gray-800 h-full">
-            <Collaborate className="w-10 h-10" />
+            <Collaborate />
             <h3 className="mt-4 text-xl font-bold text-blue-primary dark:text-[#FFB276] text-center">
               Scientific Community
             </h3>

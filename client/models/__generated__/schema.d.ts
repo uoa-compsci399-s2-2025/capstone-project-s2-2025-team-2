@@ -142,7 +142,9 @@ export interface paths {
     /** @description Get all reagents with an option to filter them by category. */
     get: operations["GetAllReagents"]
     put?: never
-    post?: never
+    /** @description Get a reagent by its ID.
+     *     Can only be done by lab_admin and admin */
+    post: operations["CreateReagent"]
     delete?: never
     options?: never
     head?: never
@@ -159,9 +161,7 @@ export interface paths {
     /** @description Get a reagent by its ID. */
     get: operations["GetReagent"]
     put?: never
-    /** @description Get a reagent by its ID.
-     *     Can only be done by lab_admin and admin */
-    post: operations["CreateReagent"]
+    post?: never
     /** @description Delete a reagent by its ID.
      *     Can only be done by lab_admin (who owns the reagent) and admin */
     delete: operations["DeleteReagent"]
@@ -883,29 +883,6 @@ export interface operations {
       }
     }
   }
-  GetReagent: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description - The ID of the reagent to retrieve. */
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Reagent retrieved successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Reagent"]
-        }
-      }
-    }
-  }
   CreateReagent: {
     parameters: {
       query?: never
@@ -922,6 +899,29 @@ export interface operations {
     responses: {
       /** @description Reagent created successfully */
       201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Reagent"]
+        }
+      }
+    }
+  }
+  GetReagent: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description - The ID of the reagent to retrieve. */
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Reagent retrieved successfully */
+      200: {
         headers: {
           [name: string]: unknown
         }
