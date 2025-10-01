@@ -11,42 +11,31 @@ export default function Pagination({
   totalPages,
   onPageChange,
 }: PaginationProps) {
-     const getPageNumbers = (): (number | string)[] => {
-  const pages: (number | string)[] = []
-  const showPaginationStart = currentPage > 2
-  const showPaginationEnd = currentPage < totalPages - 2
-  
-  if (totalPages <= 5) {
-    for (let i = 1; i <= totalPages; i++) {
-      pages.push(i)
-    }
-  } else {
-    pages.push(1)
-    if (showPaginationStart) {
-      pages.push('...')
-      const startPage = Math.max(2, currentPage - 1)
-      const endPage = Math.min(totalPages - 1, currentPage + 1)
+const getPageNumbers = (currentPage: number, totalPages: number) => {
+  const pages: number[] = []
+  const windowSize = 5
 
-      for (let i = startPage; i <= endPage; i++) {
-        pages.push(i)
-      }
-      if (showPaginationEnd) {
-        pages.push('...')
-      }
-    } else {
-      for (let i = 2; i <= Math.min(4, totalPages - 1); i++) {
-        pages.push(i)
-      }
-      pages.push('...')
-    }
-    pages.push(totalPages)
+  const block = Math.floor((currentPage - 1) / windowSize)
+  const start = block * windowSize + 1
+  let end = start + windowSize - 1
+
+  if (end > totalPages) {
+    end = totalPages
   }
-  
+
+  for (let i = start; i <= end; i++) {
+    pages.push(i)
+  }
+
   return pages
 }
-   const pages = getPageNumbers()         
+
+
+
+
+const pages = getPageNumbers(currentPage, totalPages)  
 return (
-  <div className="flex items-center gap-2 justify-center mb-[2rem]">
+  <div className="flex items-center justify-center mb-[2rem]">
 <button
   onClick={() => onPageChange(currentPage - 1)}
   disabled={currentPage === 1}
@@ -55,23 +44,17 @@ return (
   <ChevronLeftIcon className="h-5 w-5 text-white" />
 </button>
     <div className="flex gap-1 justify-center">
-      {pages.map((page, index) => {
-        if (page === '...') {
-          return (
-            <span key={`ellipsis-${index}`} className="px-2">
-              ...
-            </span>
-          )
-        }
+      {pages.map((page) => {
+
         return (
           <button
             key={page}
             onClick={() => onPageChange(page as number)}
             className={
-              `px-3 py-2 rounded-md border ${
+              `min-w-[2.5rem] px-2 py-2 rounded-md border ${
                 currentPage === page
-                  ? 'bg-secondary text-white border-secondary'
-                  : 'bg-white text-primary border-primary hover:bg-secondary hover:text-white hover:border-secondary transition-colors duration-200'
+                  ? 'bg-white text-primary border-primary'
+                  : 'bg-primary text-white border-secondary hover:bg-secondary transition-colors duration-200'
               }`
             }
           >

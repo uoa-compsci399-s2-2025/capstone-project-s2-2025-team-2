@@ -116,7 +116,7 @@ const Marketplace = () => {
         />
       </div>
 
-      <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
+      <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[2rem]">
         {currentData.map((r) => (
           <ReagentCard
             key={r.id}
@@ -134,11 +134,14 @@ const Marketplace = () => {
           />
         ))}
       </div>
+      <div className="pb-[4rem] md:pb-0">
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={setCurrentPage}
-      />
+      />        
+      </div>
+
 
       {isSignedIn && (
         <button
