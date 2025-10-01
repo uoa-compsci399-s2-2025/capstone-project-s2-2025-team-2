@@ -184,7 +184,6 @@
 				},
 				"required": [
 					"name",
-					"description",
 					"condition",
 					"categories",
 					"quantity",
