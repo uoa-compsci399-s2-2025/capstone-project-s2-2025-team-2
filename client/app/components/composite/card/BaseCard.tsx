@@ -81,7 +81,11 @@ const BaseCard = ({
   )
 
   const TradingTypeDisplay = ({ mobile = false }: { mobile?: boolean }) => (
-    <div className={mobile ? "flex-col flex md:hidden" : "hidden md:flex-col md:flex"}>
+    <div
+      className={
+        mobile ? "flex-col flex md:hidden" : "hidden md:flex-col md:flex"
+      }
+    >
       {!mobile && <span className="text-white/50 text-xs">Type</span>}
       <p className={`flex items-center gap-1 text-sm md:text-base ${color}`}>
         <Icon className="w-5 h-5" />
@@ -124,12 +128,12 @@ const BaseCard = ({
             <div className="flex flex-col justify-between gap-2 overflow-hidden">
               {/*mobile: trading type above name*/}
               <TradingTypeDisplay mobile />
-              
+
               {/*reagent name*/}
               <h4 className="text-white text-base md:text-lg tracking-wider leading-tight font-normal truncate max-w-9/10 text-[1.3rem] mb-[5px] md:mb-0">
                 {name}
               </h4>
-              
+
               {/*mobile: location*/}
               <p className="mt-[-3px] underline-offset-2 text-white/50 flex text-xs gap-0.5 md:hidden">
                 <span className="truncate max-w-[135px]">{footerLeft}</span>
@@ -138,7 +142,7 @@ const BaseCard = ({
               {/*desktop: trading type*/}
               <div className="flex items-center justify-between">
                 <TradingTypeDisplay />
-                
+
                 {/*expiry render*/}
                 <div className="flex flex-col items-end w-full">
                   <span className="text-white/50 text-xs hidden md:block">
