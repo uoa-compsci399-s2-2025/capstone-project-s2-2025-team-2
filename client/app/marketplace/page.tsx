@@ -5,6 +5,9 @@ import SearchBar from "../components/composite/searchbar/SearchBar"
 import ReagentCard from "../components/composite/reagent/ReagentCard"
 import ReagentForm from "../components/composite/reagent/ReagentForm"
 import { components } from "@/models/__generated__/schema"
+import { usePagaination } from "../hooks/usePagination"
+import Pagination from "../components/composite/pagination/Pagination"
+import { usePageSize } from "../hooks/usePageSize"
 import client from "../services/fetch-client"
 
 type Reagent = components["schemas"]["Reagent"]
@@ -83,6 +86,17 @@ const Marketplace = () => {
         return 0
     }
   })
+  const pageSize = usePageSize()
+  const { currentPage, setCurrentPage, currentData, totalPages } =
+    usePagaination(sorted, pageSize)
+
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages)
+    } else if (currentPage < 1) {
+      setCurrentPage(1)
+    }
+  }, [currentPage, totalPages])
 
   return (
     <Overlay>
@@ -110,9 +124,16 @@ const Marketplace = () => {
       </div>
 
       <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
-        {sorted.map((r) => (
+        {currentData.map((r) => (
           <ReagentCard key={r.id} reagent={r as ReagentWithId} />
         ))}
+      </div>
+      <div className="pb-[4rem] md:pb-0">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
 
       {isSignedIn && (

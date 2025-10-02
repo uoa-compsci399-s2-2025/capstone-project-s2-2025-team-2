@@ -7,6 +7,9 @@ import client from "../services/fetch-client"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import type { components } from "@/models/__generated__/schema"
+import { usePageSize } from "../hooks/usePageSize"
+import { usePagaination } from "../hooks/usePagination"
+import Pagination from "../components/composite/pagination/Pagination"
 
 type Order = components["schemas"]["Order"]
 type OrderWithId = Order & { id: string; owner_id: string }
@@ -59,7 +62,19 @@ export default function Orders() {
     await fetchOrders()
     toast(action === "approve" ? "Request approved!" : "Request canceled!")
   }
-
+  // pagination
+  const pageSize = usePageSize()
+  const { currentPage, setCurrentPage, totalPages } = usePagaination(
+    orders,
+    pageSize,
+  )
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages)
+    } else if (currentPage < 1) {
+      setCurrentPage(1)
+    }
+  }, [currentPage, totalPages])
   return (
     <Overlay>
       <p className="text-4xl font-medium text-white mt-4 ml-4 md:ml-8 tracking-[0.05em]">
@@ -104,6 +119,13 @@ export default function Orders() {
             )
           })
         )}
+      </div>
+      <div className="pb-[4rem] md:pb-0">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </Overlay>
   )

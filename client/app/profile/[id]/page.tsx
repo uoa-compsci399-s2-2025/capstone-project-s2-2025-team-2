@@ -9,11 +9,14 @@ import Overlay from "../../components/composite/Overlay"
 import Button from "@/app/components/generic/button/regular/Button"
 import OutlinedButton from "../../components/generic/button/outlined/OutlinedButton"
 import SearchBar from "../../components/composite/searchbar/SearchBar"
+import Pagination from "../../components/composite/pagination/Pagination"
 // services
 import useAuthGuard from "@/app/hooks/useAuthGuard"
 // other
 import { User } from "../../../../server/src/business-layer/models/User"
 import { components } from "@/models/__generated__/schema"
+import { usePagaination } from "../../hooks/usePagination"
+import { usePageSize } from "../../hooks/usePageSize"
 
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
@@ -210,7 +213,17 @@ const UserProfile = () => {
         return 0
     }
   })
-
+  // pagination
+  const pageSize = usePageSize()
+  const { currentPage, setCurrentPage, currentData, totalPages } =
+    usePagaination(sorted, pageSize)
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages)
+    } else if (currentPage < 1) {
+      setCurrentPage(1)
+    }
+  }, [currentPage, totalPages])
   // return loading state if data hasn't finished loading
   if (!userBeingViewed || !reagents) {
     return (
@@ -371,7 +384,7 @@ const UserProfile = () => {
               setSort={setReagentSearchSort}
             />
             {/* if raw reagent array AND sorted array are both length 0, it means user has no reagents */}
-            {sorted.length === 0 ? (
+            {currentData.length === 0 ? (
               <p className="flex justify-center mt-8 italic text-gray-100 dark:text-light-gray">
                 {reagents.length === 0
                   ? "This user has no reagents"
@@ -379,13 +392,20 @@ const UserProfile = () => {
               </p>
             ) : (
               <div className="bg-transparent flex flex-wrap gap-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
-                {sorted.map((r) => (
+                {currentData.map((r) => (
                   <ReagentCard key={r.id} reagent={r as ReagentWithId} />
                 ))}
               </div>
             )}
           </div>
         </div>
+      </div>
+      <div className="pb-[4rem] md:pb-0">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </Overlay>
   )
