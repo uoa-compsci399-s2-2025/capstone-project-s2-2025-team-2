@@ -60,7 +60,7 @@ const BaseCard = ({
       ? images[0]
       : "/placeholder.webp"
 
-  //reused components for both mobile and desktop view
+  //reusable components for both mobile and desktop view
   const tradingTypeLabel = tradingType[0].toUpperCase() + tradingType.slice(1)
 
   const ExpiryDisplay = () => (
@@ -90,7 +90,7 @@ const BaseCard = ({
     </div>
   )
   return (
-    <div className="md:w-[18.5rem] md:h-[20.5rem] w-full border border-white/10 rounded-xl relative">
+    <div className="md:min-w-0 md:w-[18.5rem] md:h-[20.5rem] min-w-[22rem] w-full border border-white/10 border-solid rounded-xl relative">
       {BG_LAYERS.map((style, i) => (
         <div key={i} className="absolute inset-0 rounded-xl" style={style} />
       ))}
@@ -98,7 +98,7 @@ const BaseCard = ({
       <div className="relative z-10 p-4">
         <div className="flex flex-row gap-3 md:gap-0 md:flex-col">
           {/*image + tags*/}
-          <div className="relative w-full h-[9.5rem]">
+          <div className="relative w-[7.5rem] h-[full] md:w-full md:h-[9.5rem]">
             <Image
               src={imageUrl}
               fill
