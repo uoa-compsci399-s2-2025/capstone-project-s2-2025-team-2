@@ -12,8 +12,6 @@ import client from "../services/fetch-client"
 
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
-import client from "../services/fetch-client"
-import { set } from "zod"
 
 const Marketplace = () => {
   const [reagents, setReagents] = useState<ReagentWithId[]>([])
