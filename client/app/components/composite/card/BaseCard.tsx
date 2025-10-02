@@ -59,6 +59,36 @@ const BaseCard = ({
       images[0].startsWith("http"))
       ? images[0]
       : "/placeholder.webp"
+
+  //reused components for both mobile and desktop view
+  const tradingTypeLabel = tradingType[0].toUpperCase() + tradingType.slice(1)
+
+  const ExpiryDisplay = () => (
+    <p className="flex items-center justify-center gap-0.5 text-warning text-sm md:text-base">
+      <ClockIcon className="w-5 h-5 md:w-6 md:h-6 text-warning" />
+      {expiryDate}
+    </p>
+  )
+
+  const ViewButton = () => (
+    <button
+      onClick={() => router.push(`/marketplace/${reagentId}`)}
+      className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-secondary rounded-lg"
+    >
+      View
+      <ArrowRightIcon className="w-5 h-5" />
+    </button>
+  )
+
+  const TradingTypeDisplay = ({ mobile = false }: { mobile?: boolean }) => (
+    <div className={mobile ? "flex-col flex md:hidden" : "hidden md:flex-col md:flex"}>
+      {!mobile && <span className="text-white/50 text-xs">Type</span>}
+      <p className={`flex items-center gap-1 text-sm md:text-base ${color}`}>
+        <Icon className="w-5 h-5" />
+        {tradingTypeLabel}
+      </p>
+    </div>
+  )
   return (
     <div className="md:w-[18.5rem] md:h-[20.5rem] w-full border border-white/10 rounded-xl relative">
       {BG_LAYERS.map((style, i) => (
