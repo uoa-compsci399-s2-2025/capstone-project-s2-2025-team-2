@@ -161,16 +161,14 @@ const BaseCard = ({
 
             <div className="hidden md:block bg-light-gray/30 h-[0.5px] my-1" />
 
-            {/*conditional footer + view button*/}
-            <div className="flex items-center justify-between">
-              {footerLeft}
-              <button
-                onClick={() => router.push(`/marketplace/${reagentId}`)}
-                className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-secondary rounded-lg"
-              >
-                View
-                <ArrowRightIcon className="w-5 h-5" />
-              </button>
+            {/*desktop: location + view button footer*/}
+            <div className="hidden md:flex items-center justify-between">
+              <div className="hidden md:flex flex-col">
+                <p className="underline-offset-2 text-white/50 flex text-xs gap-0.5">
+                  <span className="truncate max-w-[135px]">{footerLeft}</span>
+                </p>
+              </div>
+              <ViewButton />
             </div>
           </div>
         </div>
