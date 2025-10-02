@@ -233,13 +233,14 @@ export class OrderService {
       if ("offeredReagentId" in (order as any)) {
         const exchange = order as Exchange
 
-        //transfer requested reagent
+        //transfer requested reagent, set to private
         const requestedReagentRef = this.db
           .collection("reagents")
           .doc(order.reagent_id)
         tx.update(requestedReagentRef, { user_id: order.requester_id })
+        tx.update(requestedReagentRef, { visibility: "private" })
 
-        //transfer offered reagent
+        //transfer offered reagent, set to private
         const offeredReagentRef = this.db
           .collection("reagents")
           .doc(exchange.offeredReagentId)
@@ -254,9 +255,10 @@ export class OrderService {
           })
         }
       } else {
-        //one way transfer for sell/trade
+        //one way transfer for sell/trade, set to private
         const reagentRef = this.db.collection("reagents").doc(order.reagent_id)
         tx.update(reagentRef, { user_id: order.requester_id })
+        tx.update(reagentRef, { visibility: "private" })
       }
 
       //cancel pending orders for requested reagent
