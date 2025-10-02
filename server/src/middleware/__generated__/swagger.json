@@ -1237,7 +1237,7 @@
 						}
 					}
 				},
-				"description": "Get a reagent by its ID.\nCan only be done by lab_admin and admin",
+				"description": "Get a reagent by its ID.\r\nCan only be done by lab_admin and admin",
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -1297,7 +1297,7 @@
 						}
 					}
 				},
-				"description": "Delete a reagent by its ID.\nCan only be done by lab_admin (who owns the reagent) and admin",
+				"description": "Delete a reagent by its ID.\r\nCan only be done by lab_admin (who owns the reagent) and admin",
 				"security": [],
 				"parameters": [
 					{
@@ -1325,7 +1325,7 @@
 						}
 					}
 				},
-				"description": "Update a reagent by its ID.\nCan only be done by lab_admin (who owns the reagent) and admin",
+				"description": "Update a reagent by its ID.\r\nCan only be done by lab_admin (who owns the reagent) and admin",
 				"security": [],
 				"parameters": [
 					{
