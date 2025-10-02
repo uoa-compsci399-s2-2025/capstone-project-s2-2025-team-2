@@ -122,29 +122,39 @@ const BaseCard = ({
           {/*reagent details*/}
           <div className="flex flex-col justify-between flex-1 gap-2 md:gap-2 md:pt-3 min-h-0 overflow-hidden">
             <div className="flex flex-col justify-between gap-2 overflow-hidden">
-              <h4 className="text-white text-base md:text-lg tracking-wider leading-tight font-normal truncate max-w-9/10">
+              {/*mobile: trading type above name*/}
+              <TradingTypeDisplay mobile />
+              
+              {/*reagent name*/}
+              <h4 className="text-white text-base md:text-lg tracking-wider leading-tight font-normal truncate max-w-9/10 text-[1.3rem] mb-[5px] md:mb-0">
                 {name}
               </h4>
+              
+              {/*mobile: location*/}
+              <p className="mt-[-3px] underline-offset-2 text-white/50 flex text-xs gap-0.5 md:hidden">
+                <span className="truncate max-w-[135px]">{footerLeft}</span>
+              </p>
 
-              {/*icon + colour dependent on type*/}
-              <div className="flex items-start justify-between">
-                <div className="flex flex-col">
-                  <span className="text-white/50 text-xs">Type</span>
-                  <p
-                    className={`flex items-center gap-1 text-sm md:text-base ${color}`}
-                  >
-                    {Icon && <Icon className="w-5 h-5" />}
-                    {tradingType[0].toUpperCase() + tradingType.slice(1)}
-                  </p>
-                </div>
+              {/*desktop: trading type*/}
+              <div className="flex items-center justify-between">
+                <TradingTypeDisplay />
+                
+                {/*expiry render*/}
+                <div className="flex flex-col items-end w-full">
+                  <span className="text-white/50 text-xs hidden md:block">
+                    Expires
+                  </span>
 
-                {/*expiry*/}
-                <div className="flex flex-col items-end">
-                  <span className="text-white/50 text-xs">Expires</span>
-                  <p className="flex items-center gap-1 text-warning text-sm md:text-base">
-                    <ClockIcon className="w-5 h-5 md:w-6 md:h-6" />
-                    {expiryDate}
-                  </p>
+                  {/*mobile: expiry + view button footer*/}
+                  <div className="flex justify-between w-full md:hidden">
+                    <ExpiryDisplay />
+                    <ViewButton />
+                  </div>
+
+                  {/*desktop: expiry inline with trading type*/}
+                  <div className="hidden md:block">
+                    <ExpiryDisplay />
+                  </div>
                 </div>
               </div>
             </div>
