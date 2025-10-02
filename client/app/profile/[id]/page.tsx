@@ -249,7 +249,6 @@ const UserProfile = () => {
     )
   }
 
-
   return (
     <Overlay>
       <div className="px-5 pt-5">
@@ -394,13 +393,13 @@ const UserProfile = () => {
           </div>
         </div>
       </div>
-                  <div className="pb-[4rem] md:pb-0">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={setCurrentPage}
-            />        
-            </div>
+      <div className="pb-[4rem] md:pb-0">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      </div>
     </Overlay>
   )
 }

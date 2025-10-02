@@ -30,6 +30,6 @@ export const Default: Story = {
   args: {
     currentPage: 1,
     totalPages: 100,
-     onPageChange: (page: number) => console.log("Page changed to:", page),
+    onPageChange: (page: number) => console.log("Page changed to:", page),
   },
-};
+}

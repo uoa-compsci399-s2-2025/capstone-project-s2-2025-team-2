@@ -90,7 +90,6 @@ const Marketplace = () => {
   const { currentPage, setCurrentPage, currentData, totalPages } =
     usePagaination(sorted, pageSize)
 
-
   return (
     <Overlay>
       <p className="text-4xl font-medium text-white mt-4 ml-4 md:ml-8 tracking-[0.05em]">
@@ -121,12 +120,12 @@ const Marketplace = () => {
           <ReagentCard key={r.id} reagent={r as ReagentWithId} />
         ))}
       </div>
-            <div className="pb-[4rem] md:pb-0">
-      <Pagination
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onPageChange={setCurrentPage}
-      />        
+      <div className="pb-[4rem] md:pb-0">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
 
       {isSignedIn && (

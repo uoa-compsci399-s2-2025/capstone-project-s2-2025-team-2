@@ -64,8 +64,10 @@ export default function Orders() {
   }
   // pagination
   const pageSize = usePageSize()
-  const { currentPage, setCurrentPage, totalPages } =
-    usePagaination(orders, pageSize)
+  const { currentPage, setCurrentPage, totalPages } = usePagaination(
+    orders,
+    pageSize,
+  )
   return (
     <Overlay>
       <p className="text-4xl font-medium text-white mt-4 ml-4 md:ml-8 tracking-[0.05em]">
@@ -111,13 +113,13 @@ export default function Orders() {
           })
         )}
       </div>
-                        <div className="pb-[4rem] md:pb-0">
-                  <Pagination
-                    currentPage={currentPage}
-                    totalPages={totalPages}
-                    onPageChange={setCurrentPage}
-                  />        
-                  </div>
+      <div className="pb-[4rem] md:pb-0">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      </div>
     </Overlay>
   )
 }
