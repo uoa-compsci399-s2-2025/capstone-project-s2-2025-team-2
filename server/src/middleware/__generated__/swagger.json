@@ -1237,7 +1237,7 @@
 						}
 					}
 				},
-				"description": "Get a reagent by its ID.\nCan only be done by lab_admin and admin",
+				"description": "Get a reagent by its ID.\r\nCan only be done by lab_admin and admin",
 				"security": [],
 				"parameters": [],
 				"requestBody": {
