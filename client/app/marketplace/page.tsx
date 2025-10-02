@@ -90,6 +90,12 @@ const Marketplace = () => {
   const { currentPage, setCurrentPage, currentData, totalPages } =
     usePagaination(sorted, pageSize)
 
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages)
+    }
+  }, [currentPage, totalPages])
+
   return (
     <Overlay>
       <p className="text-4xl font-medium text-white mt-4 ml-4 md:ml-8 tracking-[0.05em]">

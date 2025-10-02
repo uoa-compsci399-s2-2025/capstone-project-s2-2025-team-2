@@ -12,6 +12,7 @@ export default function Pagination({
   onPageChange,
 }: PaginationProps) {
   if (totalPages <= 1) return null
+
   const getPageNumbers = (currentPage: number, totalPages: number) => {
     const pages: number[] = []
     const windowSize = 4
