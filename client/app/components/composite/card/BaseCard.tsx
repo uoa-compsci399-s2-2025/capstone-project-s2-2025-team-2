@@ -94,7 +94,7 @@ const BaseCard = ({
     </div>
   )
   return (
-    <div className="md:min-w-0 md:w-[18.5rem] md:h-[20.5rem] min-w-[22rem] w-full border border-white/10 border-solid rounded-xl relative">
+    <div className="md:min-w-0 md:w-[18.5rem] md:h-[20.5rem] min-w-[20rem] w-full border border-white/10 border-solid rounded-xl relative">
       {BG_LAYERS.map((style, i) => (
         <div key={i} className="absolute inset-0 rounded-xl" style={style} />
       ))}
