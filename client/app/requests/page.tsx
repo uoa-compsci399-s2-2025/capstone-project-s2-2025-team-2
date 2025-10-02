@@ -68,6 +68,13 @@ export default function Orders() {
     orders,
     pageSize,
   )
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages)
+    } else if (currentPage < 1) {
+      setCurrentPage(1)
+    }
+  }, [currentPage, totalPages])
   return (
     <Overlay>
       <p className="text-4xl font-medium text-white mt-4 ml-4 md:ml-8 tracking-[0.05em]">

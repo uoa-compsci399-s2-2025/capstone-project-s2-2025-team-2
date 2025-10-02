@@ -91,8 +91,10 @@ const Marketplace = () => {
     usePagaination(sorted, pageSize)
 
   useEffect(() => {
-    if (currentPage > totalPages) {
+    if (currentPage > totalPages && totalPages > 0) {
       setCurrentPage(totalPages)
+    } else if (currentPage < 1) {
+      setCurrentPage(1)
     }
   }, [currentPage, totalPages])
 
