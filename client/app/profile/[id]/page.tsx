@@ -254,7 +254,7 @@ const UserProfile = () => {
             className="w-25 h-25 rounded-full border-3 border-[#6C6C6C] dark:border-white"
           />
           <div className="flex flex-col gap-2">
-            <h1 className="font-light text-midnight dark:text-pearl text-xl md:text-4xl">
+            <h1 className="font-light text-pearl text-xl md:text-4xl">
               {idOfUserBeingViewed === userUid
                 ? `Welcome back, ${userBeingViewed && userBeingViewed?.displayName}`
                 : `${userBeingViewed && userBeingViewed?.displayName}'s Profile`}
@@ -356,7 +356,7 @@ const UserProfile = () => {
           </div>
           {/* reagent search bar + results */}
           <div className="flex flex-col gap-2">
-            <h4 className="font-light text-midnight text-lg md:text-xl dark:text-tint">
+            <h4 className="font-light text-lg md:text-xl text-tint">
               {idOfUserBeingViewed === userUid
                 ? "Your Reagents"
                 : `${userBeingViewed?.displayName}'s Reagents`}
@@ -380,20 +380,7 @@ const UserProfile = () => {
             ) : (
               <div className="bg-transparent flex flex-wrap gap-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
                 {sorted.map((r) => (
-                  <ReagentCard
-                    key={r.id}
-                    name={r.name}
-                    tags={Array.isArray(r.categories) ? r.categories : []}
-                    location={r.location}
-                    expiryDate={r.expiryDate}
-                    imageUrl={
-                      r.images?.[0] !== "string"
-                        ? (r.images?.[0] ?? "/placeholder.webp")
-                        : "/placeholder.webp"
-                    }
-                    type={r.tradingType}
-                    id={r.id}
-                  />
+                  <ReagentCard key={r.id} reagent={r as ReagentWithId} />
                 ))}
               </div>
             )}

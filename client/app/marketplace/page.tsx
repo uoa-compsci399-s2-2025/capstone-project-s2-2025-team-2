@@ -8,6 +8,8 @@ import { components } from "@/models/__generated__/schema"
 import { usePagaination } from "../hooks/usePagination"
 import Pagination from "../components/composite/pagination/Pagination"
 import { usePageSize } from "../hooks/usePageSize"
+import client from "../services/fetch-client"
+
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
 import client from "../services/fetch-client"
@@ -116,32 +118,18 @@ const Marketplace = () => {
         />
       </div>
 
-<div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[2rem]">
-  {currentData.map((r) => (
-    <ReagentCard
-      key={r.id}
-      name={r.name}
-      tags={Array.isArray(r.categories) ? r.categories : []}
-      location={r.location ?? "Unknown"}
-      expiryDate={r.expiryDate ?? "N/A"}
-      imageUrl={
-        r.images?.[0] !== "string"
-          ? (r.images?.[0] ?? "/placeholder.webp")
-          : "/placeholder.webp"
-      }
-      type={r.tradingType ?? "sell"}
-      id={r.id}
-    />
-  ))}
-</div>
-      <div className="pb-[4rem] md:pb-0">
+      <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
+        {currentData.map((r) => (
+          <ReagentCard key={r.id} reagent={r as ReagentWithId} />
+        ))}
+      </div>
+            <div className="pb-[4rem] md:pb-0">
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
         onPageChange={setCurrentPage}
       />        
       </div>
-
 
       {isSignedIn && (
         <button

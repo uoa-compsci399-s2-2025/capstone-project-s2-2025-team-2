@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo } from "react"
 import type { components } from "@/models/__generated__/schema"
 import client from "../../../services/fetch-client"
+import { toast } from "sonner"
 
 type ReagentTradingType = components["schemas"]["ReagentTradingType"]
 type ReagentCategory = components["schemas"]["ReagentCategory"]
@@ -33,6 +34,7 @@ interface FormData {
   condition: string
   visibility: ReagentVisibility
   quantity: string
+  unit: string
   price: string
   expiryDate: string
   location: string
@@ -74,6 +76,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
     condition: "",
     visibility: "everyone",
     quantity: "1",
+    unit: "",
     price: "",
     expiryDate: "",
     location: "",
@@ -97,7 +100,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
 
     //at least one category selected
     if (!formData.categories.length) {
-      alert("Please select at least one tag")
+      toast("Please select at least one tag")
       return
     }
 
@@ -108,24 +111,27 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       tradingType: formData.tradingType,
       categories: formData.categories,
       expiryDate: formData.expiryDate,
-      images: formData.images.length ? formData.images : undefined,
+      images: formData.images,
       location: formData.location,
       visibility: formData.visibility,
       //only include price if selling
       price:
         formData.tradingType === "sell" && formData.price
           ? Number(formData.price)
-          : undefined,
+          : 0,
       quantity: Number(formData.quantity),
+      unit: formData.unit,
     }
 
     try {
       //fetch token from localStorage
       const idToken = localStorage.getItem("authToken")
       if (!idToken) {
-        alert("Please sign in to create a reagent.")
+        toast("Please sign in to create a reagent.")
         return
       }
+      console.log("Token:", idToken)
+      console.log("Token starts with Bearer?:", idToken.startsWith("Bearer "))
 
       const { error } = await client.POST("/users/reagents" as any, {
         body: reagentData,
@@ -138,10 +144,10 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
         throw new Error("Failed to create reagent")
       }
 
-      alert("Reagent created successfully!")
+      toast("Reagent created successfully!")
       onSubmit(reagentData)
     } catch {
-      alert("Failed to create reagent!")
+      toast("Failed to create reagent!")
     }
   }
 
@@ -152,13 +158,13 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
     if (!url) return
     if (formData.images.length >= MAX_IMAGES) return
     if (formData.images.includes(url)) {
-      alert("URL has already been added")
+      toast("URL has already been added")
       return
     }
     try {
       new URL(url)
     } catch {
-      alert("Invalid URL")
+      toast("Invalid URL")
       return
     }
 
@@ -276,16 +282,26 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
         />
       </div>
 
-      <FormField
-        label="Quantity"
-        required
-        input={formInput("quantity", {
-          type: "number",
-          placeholder: "10",
-          min: "0",
-          required: true,
-        })}
-      />
+      <div className="grid grid-cols-2 gap-4">
+        <FormField
+          label="Quantity"
+          required
+          input={formInput("quantity", {
+            type: "number",
+            placeholder: "10",
+            min: "0",
+            required: true,
+          })}
+        />
+        <FormField
+          label="Unit"
+          required
+          input={formInput("unit", {
+            placeholder: "g, mL, etc.",
+            required: true,
+          })}
+        />
+      </div>
 
       {formData.tradingType === "sell" && (
         <FormField

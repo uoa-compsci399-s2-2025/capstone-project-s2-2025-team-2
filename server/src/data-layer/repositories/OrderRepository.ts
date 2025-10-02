@@ -27,9 +27,12 @@ export class OrderService {
     const order: Order = {
       requester_id: user_id,
       reagent_id: requestBody.reagent_id,
+      owner_id: reagent.user_id,
       status: "pending",
       createdAt: new Date(),
       ...(requestBody.message && { message: requestBody.message }),
+      ...(requestBody.quantity && { quantity: requestBody.quantity }),
+      ...(requestBody.unit && { unit: requestBody.unit }),
     }
 
     console.log("Order: ", order)
@@ -67,10 +70,13 @@ export class OrderService {
     const order: Trade = {
       requester_id: user_id,
       reagent_id: requestBody.reagent_id,
+      owner_id: reagent.user_id,
       status: "pending",
       createdAt: new Date(),
       ...(requestBody.message && { message: requestBody.message }),
       price: requestBody.price,
+      ...(requestBody.quantity && { quantity: requestBody.quantity }),
+      ...(requestBody.unit && { unit: requestBody.unit }),
     }
 
     console.log("Order: ", order)
@@ -111,11 +117,13 @@ export class OrderService {
     const order: Exchange = {
       requester_id: user_id,
       reagent_id: requestBody.reagent_id,
+      owner_id: reagent.user_id,
       status: "pending",
       createdAt: new Date(),
       ...(requestBody.message && { message: requestBody.message }),
       offeredReagentId: requestBody.offeredReagentId,
-      quantity: requestBody.quantity,
+      ...(requestBody.quantity && { quantity: requestBody.quantity }),
+      ...(requestBody.unit && { unit: requestBody.unit }),
     }
 
     console.log("Order: ", order)
@@ -189,5 +197,76 @@ export class OrderService {
         `Failed to update order status: ${(err as Error).message}`,
       )
     }
+  }
+
+  async approveOrder(id: string): Promise<Order> {
+    return await this.db.runTransaction(async (tx) => {
+      const orderRef = FirestoreCollections.orders.doc(id)
+      const orderDoc = await tx.get(orderRef)
+      if (!orderDoc.exists) {
+        throw new Error(`Order ${id} not found`)
+      }
+      const order = orderDoc.data() as Order
+
+      //read pending orders for requested reagent
+      const otherOrdersQuery = this.db
+        .collection("orders")
+        .where("reagent_id", "==", order.reagent_id)
+        .where("status", "==", "pending")
+      const otherOrders = await tx.get(otherOrdersQuery)
+
+      //read pending orders for offered reagent
+      let otherOfferedOrders: FirebaseFirestore.QuerySnapshot | null = null
+      if ("offeredReagentId" in (order as any)) {
+        const exchange = order as Exchange
+        const otherOfferedOrdersQuery = this.db
+          .collection("orders")
+          .where("reagent_id", "==", exchange.offeredReagentId)
+          .where("status", "==", "pending")
+        otherOfferedOrders = await tx.get(otherOfferedOrdersQuery)
+      }
+
+      //update order status
+      tx.update(orderRef, { status: "approved" })
+
+      //handle trade based on order type
+      if ("offeredReagentId" in (order as any)) {
+        const exchange = order as Exchange
+
+        //transfer requested reagent
+        const requestedReagentRef = this.db
+          .collection("reagents")
+          .doc(order.reagent_id)
+        tx.update(requestedReagentRef, { user_id: order.requester_id })
+
+        //transfer offered reagent
+        const offeredReagentRef = this.db
+          .collection("reagents")
+          .doc(exchange.offeredReagentId)
+        tx.update(offeredReagentRef, { user_id: order.owner_id })
+
+        //cancel pending orders for offered reagent
+        if (otherOfferedOrders) {
+          otherOfferedOrders.docs.forEach((doc) => {
+            if (doc.id !== id) {
+              tx.update(doc.ref, { status: "canceled" })
+            }
+          })
+        }
+      } else {
+        //one way transfer for sell/trade
+        const reagentRef = this.db.collection("reagents").doc(order.reagent_id)
+        tx.update(reagentRef, { user_id: order.requester_id })
+      }
+
+      //cancel pending orders for requested reagent
+      otherOrders.docs.forEach((doc) => {
+        if (doc.id !== id) {
+          tx.update(doc.ref, { status: "canceled" })
+        }
+      })
+
+      return { ...order, status: "approved" }
+    })
   }
 }

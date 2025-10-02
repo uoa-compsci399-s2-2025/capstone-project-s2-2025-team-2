@@ -77,11 +77,12 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "name": {"dataType":"string","required":true},
-            "description": {"dataType":"string","required":true},
+            "description": {"dataType":"string"},
             "condition": {"dataType":"string","required":true},
             "categories": {"dataType":"array","array":{"dataType":"refAlias","ref":"ReagentCategory"},"required":true},
             "price": {"dataType":"double"},
             "quantity": {"dataType":"double","required":true},
+            "unit": {"dataType":"string","required":true},
             "expiryDate": {"dataType":"string","required":true},
             "tradingType": {"ref":"ReagentTradingType","required":true},
             "location": {"dataType":"string","required":true},
@@ -101,6 +102,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "requester_id": {"dataType":"string","required":true},
             "reagent_id": {"dataType":"string","required":true},
+            "owner_id": {"dataType":"string","required":true},
             "status": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["pending"]},{"dataType":"enum","enums":["approved"]},{"dataType":"enum","enums":["canceled"]}],"required":true},
             "createdAt": {"dataType":"datetime","required":true},
             "message": {"dataType":"string"},
@@ -116,8 +118,8 @@ const models: TsoaRoute.Models = {
             "reagent_id": {"dataType":"string","required":true},
             "message": {"dataType":"string"},
             "type": {"dataType":"enum","enums":["order"],"required":true},
-            "quantity": {"dataType":"double","required":true},
-            "unit": {"dataType":"string","required":true},
+            "quantity": {"dataType":"double"},
+            "unit": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -127,6 +129,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "requester_id": {"dataType":"string","required":true},
             "reagent_id": {"dataType":"string","required":true},
+            "owner_id": {"dataType":"string","required":true},
             "status": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["pending"]},{"dataType":"enum","enums":["approved"]},{"dataType":"enum","enums":["canceled"]}],"required":true},
             "createdAt": {"dataType":"datetime","required":true},
             "message": {"dataType":"string"},
@@ -144,8 +147,8 @@ const models: TsoaRoute.Models = {
             "message": {"dataType":"string"},
             "price": {"dataType":"double","required":true},
             "type": {"dataType":"enum","enums":["trade"],"required":true},
-            "quantity": {"dataType":"double","required":true},
-            "unit": {"dataType":"string","required":true},
+            "quantity": {"dataType":"double"},
+            "unit": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -155,6 +158,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "requester_id": {"dataType":"string","required":true},
             "reagent_id": {"dataType":"string","required":true},
+            "owner_id": {"dataType":"string","required":true},
             "status": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["pending"]},{"dataType":"enum","enums":["approved"]},{"dataType":"enum","enums":["canceled"]}],"required":true},
             "createdAt": {"dataType":"datetime","required":true},
             "message": {"dataType":"string"},
@@ -171,9 +175,9 @@ const models: TsoaRoute.Models = {
             "reagent_id": {"dataType":"string","required":true},
             "message": {"dataType":"string"},
             "offeredReagentId": {"dataType":"string","required":true},
-            "quantity": {"dataType":"double","required":true},
+            "quantity": {"dataType":"double"},
             "type": {"dataType":"enum","enums":["exchange"],"required":true},
-            "unit": {"dataType":"string","required":true},
+            "unit": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -371,6 +375,37 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsUserController_getReagents: Record<string, TsoaRoute.ParameterSchema> = {
+                request: {"in":"request","name":"request","required":true,"dataType":"object"},
+        };
+        app.get('/users/reagents',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(UserController)),
+            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.getReagents)),
+
+            async function UserController_getReagents(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsUserController_getReagents, request, response });
+
+                const controller = new UserController();
+
+              await templateService.apiHandler({
+                methodName: 'getReagents',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsUserController_getUserById: Record<string, TsoaRoute.ParameterSchema> = {
                 user_id: {"in":"path","name":"user_id","required":true,"dataType":"string"},
         };
@@ -454,37 +489,6 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'getUser',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: 200,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsUserController_getReagents: Record<string, TsoaRoute.ParameterSchema> = {
-                request: {"in":"request","name":"request","required":true,"dataType":"object"},
-        };
-        app.get('/users/reagents',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<RequestHandler>(UserController)),
-            ...(fetchMiddlewares<RequestHandler>(UserController.prototype.getReagents)),
-
-            async function UserController_getReagents(request: ExRequest, response: ExResponse, next: any) {
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsUserController_getReagents, request, response });
-
-                const controller = new UserController();
-
-              await templateService.apiHandler({
-                methodName: 'getReagents',
                 controller,
                 response,
                 next,
@@ -719,7 +723,7 @@ export function RegisterRoutes(app: Router) {
         const argsReagentController_createReagent: Record<string, TsoaRoute.ParameterSchema> = {
                 requestObject: {"in":"body","name":"requestObject","required":true,"ref":"CreateReagentRequest"},
         };
-        app.post('/reagents/:id',
+        app.post('/reagents',
             ...(fetchMiddlewares<RequestHandler>(ReagentController)),
             ...(fetchMiddlewares<RequestHandler>(ReagentController.prototype.createReagent)),
 
