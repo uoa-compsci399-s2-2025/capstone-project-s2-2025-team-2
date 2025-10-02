@@ -135,8 +135,8 @@ const BaseCard = ({
               </h4>
 
               {/*mobile: location*/}
-              <div className="mt-[-3px] underline-offset-2 text-white/50 flex text-xs gap-0.5 md:hidden">
-                <span className="truncate max-w-[135px]">{footerLeft}</span>
+              <div className="mt-[-3px] underline-offset-2 text-white/50 text-xs md:hidden truncate">
+                {footerLeft}
               </div>
 
               {/*desktop: trading type*/}
@@ -169,7 +169,7 @@ const BaseCard = ({
             <div className="hidden md:flex items-center justify-between">
               <div className="hidden md:flex flex-col">
                 <div className="underline-offset-2 text-white/50 flex text-xs gap-0.5">
-                  <span className="truncate max-w-[135px]">{footerLeft}</span>
+                  <span className="truncate max-w-[10rem]">{footerLeft}</span>
                 </div>
               </div>
               <ViewButton />
