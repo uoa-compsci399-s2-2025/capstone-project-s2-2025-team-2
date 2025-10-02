@@ -59,8 +59,42 @@ const BaseCard = ({
       images[0].startsWith("http"))
       ? images[0]
       : "/placeholder.webp"
+
+  //reusable components for both mobile and desktop view
+  const tradingTypeLabel = tradingType[0].toUpperCase() + tradingType.slice(1)
+
+  const ExpiryDisplay = () => (
+    <p className="flex items-center justify-center gap-0.5 text-warning text-sm md:text-base">
+      <ClockIcon className="w-5 h-5 md:w-6 md:h-6 text-warning" />
+      {expiryDate}
+    </p>
+  )
+
+  const ViewButton = () => (
+    <button
+      onClick={() => router.push(`/marketplace/${reagentId}`)}
+      className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-secondary rounded-lg"
+    >
+      View
+      <ArrowRightIcon className="w-5 h-5" />
+    </button>
+  )
+
+  const TradingTypeDisplay = ({ mobile = false }: { mobile?: boolean }) => (
+    <div
+      className={
+        mobile ? "flex-col flex md:hidden" : "hidden md:flex-col md:flex"
+      }
+    >
+      {!mobile && <span className="text-white/50 text-xs">Type</span>}
+      <p className={`flex items-center gap-1 text-sm md:text-base ${color}`}>
+        <Icon className="w-5 h-5" />
+        {tradingTypeLabel}
+      </p>
+    </div>
+  )
   return (
-    <div className="md:w-[18.5rem] md:h-[20.5rem] w-full border border-white/10 rounded-xl relative">
+    <div className="md:min-w-0 md:w-[18.5rem] md:h-[20.5rem] min-w-[20rem] w-full border border-white/10 border-solid rounded-xl relative">
       {BG_LAYERS.map((style, i) => (
         <div key={i} className="absolute inset-0 rounded-xl" style={style} />
       ))}
@@ -68,7 +102,7 @@ const BaseCard = ({
       <div className="relative z-10 p-4">
         <div className="flex flex-row gap-3 md:gap-0 md:flex-col">
           {/*image + tags*/}
-          <div className="relative w-full h-[9.5rem]">
+          <div className="relative w-[7.5rem] h-[full] md:w-full md:h-[9.5rem]">
             <Image
               src={imageUrl}
               fill
@@ -92,45 +126,53 @@ const BaseCard = ({
           {/*reagent details*/}
           <div className="flex flex-col justify-between flex-1 gap-2 md:gap-2 md:pt-3 min-h-0 overflow-hidden">
             <div className="flex flex-col justify-between gap-2 overflow-hidden">
-              <h4 className="text-white text-base md:text-lg tracking-wider leading-tight font-normal truncate max-w-9/10">
+              {/*mobile: trading type above name*/}
+              <TradingTypeDisplay mobile />
+
+              {/*reagent name*/}
+              <h4 className="text-white text-base md:text-lg tracking-wider leading-tight font-normal truncate max-w-9/10 text-[1.3rem] mb-[5px] md:mb-0">
                 {name}
               </h4>
 
-              {/*icon + colour dependent on type*/}
-              <div className="flex items-start justify-between">
-                <div className="flex flex-col">
-                  <span className="text-white/50 text-xs">Type</span>
-                  <p
-                    className={`flex items-center gap-1 text-sm md:text-base ${color}`}
-                  >
-                    {Icon && <Icon className="w-5 h-5" />}
-                    {tradingType[0].toUpperCase() + tradingType.slice(1)}
-                  </p>
-                </div>
+              {/*mobile: location*/}
+              <div className="mt-[-3px] underline-offset-2 text-white/50 text-xs md:hidden truncate">
+                {footerLeft}
+              </div>
 
-                {/*expiry*/}
-                <div className="flex flex-col items-end">
-                  <span className="text-white/50 text-xs">Expires</span>
-                  <p className="flex items-center gap-1 text-warning text-sm md:text-base">
-                    <ClockIcon className="w-5 h-5 md:w-6 md:h-6" />
-                    {expiryDate}
-                  </p>
+              {/*desktop: trading type*/}
+              <div className="flex items-center justify-between">
+                <TradingTypeDisplay />
+
+                {/*expiry render*/}
+                <div className="flex flex-col items-end w-full">
+                  <span className="text-white/50 text-xs hidden md:block">
+                    Expires
+                  </span>
+
+                  {/*mobile: expiry + view button footer*/}
+                  <div className="flex justify-between w-full md:hidden">
+                    <ExpiryDisplay />
+                    <ViewButton />
+                  </div>
+
+                  {/*desktop: expiry inline with trading type*/}
+                  <div className="hidden md:block">
+                    <ExpiryDisplay />
+                  </div>
                 </div>
               </div>
             </div>
 
             <div className="hidden md:block bg-light-gray/30 h-[0.5px] my-1" />
 
-            {/*conditional footer + view button*/}
-            <div className="flex items-center justify-between">
-              {footerLeft}
-              <button
-                onClick={() => router.push(`/marketplace/${reagentId}`)}
-                className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-secondary rounded-lg"
-              >
-                View
-                <ArrowRightIcon className="w-5 h-5" />
-              </button>
+            {/*desktop: location + view button footer*/}
+            <div className="hidden md:flex items-center justify-between">
+              <div className="hidden md:flex flex-col">
+                <div className="underline-offset-2 text-white/50 flex text-xs gap-0.5">
+                  <span className="truncate max-w-[10rem]">{footerLeft}</span>
+                </div>
+              </div>
+              <ViewButton />
             </div>
           </div>
         </div>
