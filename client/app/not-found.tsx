@@ -7,7 +7,7 @@ const NotFound = () => (
     <h1 className="text-white">404</h1>
     <h2 className="text-white/70">Page Not Found</h2>
     <p className="md:w-full w-[300px] text-center">
-      Sorry, we couldn't find the page you're looking for.
+      {`Sorry, we couldn't find the page you're looking for.`}
     </p>
     <a href="/marketplace" className="mt-4">
       <Button
