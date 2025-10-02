@@ -9,9 +9,9 @@ const NotFound = () => (
     <p>Sorry, we couldn't find the page you're looking for.</p>
     <a href="/marketplace" className="mt-4">
       <Button
-        label="Go back to marketplace"
-        className="hover:bg-blue-primary/75 duration-300 m-2 p-2"
-        textSize="text-sm"
+        label="Go Back"
+        className="hover:bg-blue-primary/75 duration-300 m-2 px-4"
+        textSize="text-lg"
         fontWeight="semibold"
       />
     </a>
