@@ -13,7 +13,7 @@ export function usePageSize() {
       } else if (window.innerWidth > 768) {
         setPageSize(12)
       } else {
-        setPageSize(8)
+        setPageSize(2)
       }
     }
     updatePageSize()

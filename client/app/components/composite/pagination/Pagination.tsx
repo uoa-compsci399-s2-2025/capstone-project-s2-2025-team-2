@@ -13,22 +13,27 @@ export default function Pagination({
 }: PaginationProps) {
 const getPageNumbers = (currentPage: number, totalPages: number) => {
   const pages: number[] = []
-  const windowSize = 5
+  const windowSize = 4
 
-  const block = Math.floor((currentPage - 1) / windowSize)
-  const start = block * windowSize + 1
+  const block = Math.floor((currentPage - 1) / (windowSize - 1))
+
+  const start = block * (windowSize - 1) + 1
+
   let end = start + windowSize - 1
-
   if (end > totalPages) {
     end = totalPages
   }
 
-  for (let i = start; i <= end; i++) {
-    pages.push(i)
+for (let i = start; i <= end; i++) {
+  if (i == start && i !== 1 && block !== 0) {
+    pages.push(i-1)
   }
+  pages.push(i)
+}
 
   return pages
 }
+
 
 
 
