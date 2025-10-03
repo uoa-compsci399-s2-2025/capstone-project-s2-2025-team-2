@@ -116,7 +116,7 @@ export default function ChatBox({
   return (
     <div className="h-screen w-full flex-1 flex flex-col bg-background">
       {/* Header */}
-      <div className="p-4 border-b border-[var(--gray-100)] bg-background md:w-full w-[400px]">
+      <div className="p-4 border-b border-[var(--gray-100)] bg-background md:w-full">
         <div className="md:flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <img
