@@ -7,7 +7,6 @@ import { LuClockAlert } from "react-icons/lu"
 import { LuHouse } from "react-icons/lu"
 import Image from "next/image"
 import SellerContact from "@/app/components/composite/reagentview/SellerContact"
-import SellerContactMobile from "@/app/components/composite/reagentview/SellerContactMobile"
 import ImageCarousel from "@/app/components/generic/image_carousel/ImageCarousel"
 import Overlay from "@/app/components/composite/Overlay"
 
