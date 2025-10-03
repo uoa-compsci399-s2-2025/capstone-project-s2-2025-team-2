@@ -90,10 +90,10 @@ export default function InboxPage() {
       <div className="min-h-screen flex bg-background">
         <div className="flex w-full">
           <button
-            className="md:hidden fixed m-4 hover:bg-blue-primary/75 duration-300 text-white cursor-pointer bg-blue-primary/85 border border-white/50 px-3 py-2 rounded-md"
+            className="md:hidden fixed mt-30 ml-6 hover:bg-blue-primary/75 duration-300 text-white cursor-pointer bg-blue-primary/85 border border-white/50 px-3 py-2 rounded-md"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            show inbox
+            inbox
           </button>
           {/* Left side - Message List */}{" "}
           <div className="md:block hidden">

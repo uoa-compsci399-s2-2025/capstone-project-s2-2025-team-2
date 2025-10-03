@@ -114,10 +114,10 @@ export default function ChatBox({
   const messages = getMessages()
 
   return (
-    <div className="h-screen flex-1 flex flex-col bg-background">
+    <div className="h-screen w-full flex-1 flex flex-col bg-background">
       {/* Header */}
-      <div className="p-4 border-b border-[var(--gray-100)] bg-background">
-        <div className="flex items-center justify-between">
+      <div className="p-4 border-b border-[var(--gray-100)] bg-background md:w-full w-[400px]">
+        <div className="md:flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <img
               src="/placeholder.webp"
@@ -134,14 +134,14 @@ export default function ChatBox({
             </div>
           </div>
 
-          <div className="flex space-x-2">
-            <button className="px-4 py-2 text-sm bg-[var(--dark-gray)] text-white text-light-gray hover:bg-primary rounded-2xl transition-colors">
+          <div className="flex space-x-2 md:m-0 mt-4">
+            <button className="md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--dark-gray)] text-white text-light-gray hover:bg-primary rounded-2xl transition-colors">
               View Listing
             </button>
-            <button className="px-4 py-2 text-sm bg-[var(--dark-gray)] text-white text-light-gray hover:bg-primary rounded-2xl transition-colors">
+            <button className="md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--dark-gray)] text-white text-light-gray hover:bg-primary rounded-2xl transition-colors">
               Edit Request
             </button>
-            <button className="px-4 py-2 text-sm bg-[var(--succ-green-light)] hover:bg-green-700 text-white rounded-2xl transition-colors">
+            <button className="md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--succ-green-light)] hover:bg-green-700 text-white rounded-2xl transition-colors">
               Confirm Trade
             </button>
           </div>
