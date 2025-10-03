@@ -97,7 +97,7 @@ export default function ChatBox({
   //            render: ChatBox           //
   if (!selectedConversation) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-background">
+      <div className="h-[calc(100vh-4rem)] md:h-[calc(100vh-2rem)]  flex-1 flex items-center justify-center bg-background">
         <div className="text-center">
           <h2 className="text-xl font-semibold text-secondary mb-2">
             Select a conversation
@@ -113,7 +113,7 @@ export default function ChatBox({
   const messages = getMessages()
 
   return (
-    <div className="h-[calc(100vh-4rem)] w-full flex-1 flex flex-col bg-background">
+    <div className="h-[calc(100vh-4rem)] md:h-[calc(100vh-2rem)] w-full flex-1 flex flex-col bg-background">
       {/* Header */}
       <div className="p-4 border-b border-[var(--gray-100)] bg-background md:w-full">
         <div className="md:flex items-center justify-between">
