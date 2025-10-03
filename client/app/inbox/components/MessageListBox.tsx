@@ -83,7 +83,7 @@ export default function MessageListBox({
 
   //            render: MessageListBox           //
   return (
-    <div className="w-full bg-background flex flex-col h-screen">
+    <div className="w-full bg-background flex flex-col h-[calc(100vh-4rem)] lg:h-[calc(100vh-2rem)]">
       {/* Header */}
       <div className="p-4">
         <div className="flex items-center justify-between mb-4">
