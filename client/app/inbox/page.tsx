@@ -8,7 +8,7 @@ import { getConversations } from "../services/inbox"
 import { ConversationListResponseDto } from "../models/response-models/ChatRoomResponseDto"
 import { onAuthStateChanged, User } from "firebase/auth"
 import { auth } from "../config/firebase"
-import { ChevronRightIcon, ChevronLeftIcon } from "@heroicons/react/24/outline"
+import { ChevronLeftIcon } from "@heroicons/react/24/outline"
 
 //            function: InboxPage           //
 export default function InboxPage() {
