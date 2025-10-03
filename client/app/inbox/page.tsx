@@ -75,7 +75,7 @@ export default function InboxPage() {
     <Overlay>
       <div className="min-h-screen flex bg-background">
         <div className="flex w-full">
-          {/* Left side - Message List */}
+          {/* Left side - Message List */}{" "}
           <MessageListBox
             conversations={conversations}
             loading={loading}
