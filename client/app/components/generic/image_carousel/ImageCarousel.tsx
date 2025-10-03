@@ -11,7 +11,7 @@ interface IImageCarousel extends React.HTMLAttributes<HTMLDivElement> {
 const ImageCarousel = ({
   className,
   images,
-  autoPlay = false,
+  autoPlay = true,
   interval = 5000,
   showIndicators = true,
   ...props
