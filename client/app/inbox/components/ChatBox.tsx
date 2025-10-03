@@ -113,7 +113,7 @@ export default function ChatBox({
   const messages = getMessages()
 
   return (
-    <div className="w-full flex-1 flex flex-col bg-background">
+    <div className="h-[calc(100vh-4rem)] w-full flex-1 flex flex-col bg-background">
       {/* Header */}
       <div className="p-4 border-b border-[var(--gray-100)] bg-background md:w-full">
         <div className="md:flex items-center justify-between">
