@@ -6,7 +6,6 @@ import { sendMessage, getChatRoomById } from "../../services/inbox"
 import { onAuthStateChanged, User } from "firebase/auth"
 import { auth } from "../../config/firebase"
 import { formatTime } from "../../hooks/utils/timeFormatter"
-import MessageListBox from "./MessageListBox"
 
 //            function: ChatBox           //
 export default function ChatBox({
