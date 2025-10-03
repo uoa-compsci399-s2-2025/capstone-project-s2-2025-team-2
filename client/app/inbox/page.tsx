@@ -18,7 +18,8 @@ export default function InboxPage() {
   const [error, setError] = useState<string | null>(null)
   const [user, setUser] = useState<User | null>(null)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-
+  const [isVisible, setIsVisible] = useState(false)
+  const [menuAnim, setMenuAnim] = useState("-translate-x-full")
   //            effect: auth state change           //
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -26,6 +27,18 @@ export default function InboxPage() {
     })
     return () => unsubscribe()
   }, [])
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      setIsVisible(true)
+      setMenuAnim("-translate-x-full")
+      setTimeout(() => setMenuAnim("translate-x-0"), 10)
+    } else {
+      setMenuAnim("-translate-x-full")
+      const timer = setTimeout(() => setIsVisible(false), 300)
+      return () => clearTimeout(timer)
+    }
+  }, [isMenuOpen])
 
   //            function: loadConversations           //
   const loadConversations = async () => {
@@ -77,7 +90,7 @@ export default function InboxPage() {
       <div className="min-h-screen flex bg-background">
         <div className="flex w-full">
           <button
-            className="md:hidden fixed m-4 text-white bg-blue-primary/75 border border-white px-3 rounded-md"
+            className="md:hidden fixed m-4 hover:bg-blue-primary/75 duration-300 text-white cursor-pointer bg-blue-primary/85 border border-white/50 px-3 py-2 rounded-md"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             show inbox
@@ -94,9 +107,17 @@ export default function InboxPage() {
               onRefresh={loadConversations}
             />
           </div>
-          {isMenuOpen && (
+          {isVisible && (
             <div className="fixed inset-0 bg-black/60 z-50 flex">
-              <div className="w-4/5 max-w-xs h-full shadow-2xl">
+              <div
+                className={`
+                w-4/5 max-w-xs h-full shadow-2xl bg-background
+                transition-transform duration-300
+                ${menuAnim}
+                absolute left-0 top-0
+              `}
+                style={{ willChange: "transform" }}
+              >
                 <MessageListBox
                   conversations={conversations}
                   loading={loading}
