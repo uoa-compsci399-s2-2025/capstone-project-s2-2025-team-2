@@ -87,7 +87,7 @@ export default function InboxPage() {
   //            render: InboxPage           //
   return (
     <Overlay>
-      <div className="min-h-screen flex bg-background">
+      <div className="min-h-[calc(100vh-4rem)] flex bg-background">
         <div className="flex w-full">
           <button
             className="md:hidden fixed mt-30 ml-6 hover:bg-blue-primary/75 duration-300 text-white cursor-pointer bg-blue-primary/85 border border-white/50 px-3 py-2 rounded-md"
