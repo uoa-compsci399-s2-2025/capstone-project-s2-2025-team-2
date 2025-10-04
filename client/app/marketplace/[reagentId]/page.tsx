@@ -18,7 +18,6 @@ export default function ReagentView({ params }: ReagentViewProps) {
   const { reagentId } = use(params)
 
   const [reagent, setReagent] = useState<Reagent | null>(null)
-
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [reagentId])
@@ -92,7 +91,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                 <div className="flex flex-col md:flex-row justify-center items-center w-full gap-3 md:gap-7">
                   <h5 className="flex text-[#43C05A] dark:text-[#78F58F] items-center text-[0.8rem]">
                     <FaRegClock className="text-[#43C05A] dark:text-[#78F58F] mr-[0.3rem] w-5 h-5" />{" "}
-                    Listed — {reagent.expiryDate}
+                    Listed — {reagent.createdAt ? new Date(reagent.createdAt).toLocaleString() : 'N/A'}
                   </h5>
                   <h5 className="flex text-[#E5595B] dark:text-[#FF797B] items-center text-[0.8rem]">
                     <LuClockAlert className="text-[#E5595B] dark:text-[#FF797B] mr-[0.3rem] w-5 h-5" />
