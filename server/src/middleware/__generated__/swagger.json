@@ -779,7 +779,7 @@
 		"contact": {}
 	},
 	"paths": {
-		"/users/{user_id}/reagents/expiring-soon": {
+		"/users/reagents/expiring": {
 			"get": {
 				"operationId": "GetReagentsExpiringSoon",
 				"responses": {
@@ -806,17 +806,7 @@
 						"jwt": []
 					}
 				],
-				"parameters": [
-					{
-						"description": "- user id to query with",
-						"in": "path",
-						"name": "user_id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
+				"parameters": []
 			}
 		},
 		"/users": {
@@ -1198,7 +1188,7 @@
 				]
 			}
 		},
-		"/reagents/expiring-soon": {
+		"/reagents/expiring": {
 			"get": {
 				"operationId": "GetReagentsExpiringSoon",
 				"responses": {
