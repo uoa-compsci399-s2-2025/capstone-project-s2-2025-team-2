@@ -84,6 +84,8 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
     images: [],
   })
 
+  const [dataSubmitting, setDataSubmitting] = useState(false)
+
   //today date calc
   const todaysDate = useMemo(() => new Date().toISOString().split("T")[0], [])
 
@@ -98,6 +100,11 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    // stop people from spamming the fk out of the submit btn
+    if (dataSubmitting) return
+
+    setDataSubmitting(true)
+
     //at least one category selected
     if (!formData.categories.length) {
       toast("Please select at least one tag")
@@ -109,6 +116,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       const idToken = localStorage.getItem("authToken")
       if (!idToken) {
         toast("Please sign in to create a reagent.")
+        setDataSubmitting(false)
         return
       }
 
@@ -186,6 +194,8 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       onSubmit(reagentData)
     } catch {
       toast("Failed to create reagent!")
+    } finally {
+      setDataSubmitting(false)
     }
   }
 
@@ -459,9 +469,10 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
         </button>
         <button
           type="submit"
-          className={`${buttonStyles} min-w-[120px] bg-blue-primary hover:bg-blue-primary/80`}
+          disabled={dataSubmitting}
+          className={`${buttonStyles} min-w-[120px] bg-blue-primary hover:bg-blue-primary/80 disabled:opacity-50 disabled:cursor-not-allowed`}
         >
-          Create Reagent
+          {dataSubmitting ? "Submitting..." : "Create Reagent"}
         </button>
       </div>
     </form>
