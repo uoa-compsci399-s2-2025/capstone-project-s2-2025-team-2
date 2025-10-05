@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app"
 import { getAuth } from "firebase/auth"
+import { getStorage } from "firebase/storage"
 
 // Firebase configuration
 const firebaseConfig = {
@@ -19,6 +20,7 @@ const firebaseConfig = {
 // Initialize Firebase only if we have valid config
 let app: any = null
 let auth: any = null
+let storage: any = null
 
 if (
   process.env.NEXT_PUBLIC_FIREBASE_API_KEY &&
@@ -27,10 +29,11 @@ if (
   try {
     app = initializeApp(firebaseConfig)
     auth = getAuth(app)
+    storage = getStorage(app)
   } catch (error) {
     console.warn("Firebase initialization failed:", error)
   }
 }
 
-export { auth }
+export { auth, storage }
 export default app
