@@ -187,7 +187,6 @@ export class UserController extends Controller {
     const user_id = request.user.uid
     const data = {
       ...requestObject,
-      createdAt: new Date(),
       user_id,
     }
     const newReagent = await new ReagentService().createReagent(data as Reagent)

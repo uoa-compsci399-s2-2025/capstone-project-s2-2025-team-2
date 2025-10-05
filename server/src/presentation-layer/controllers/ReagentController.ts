@@ -69,7 +69,6 @@ export class ReagentController extends Controller {
     // AuthSerice should be used to get the userId
     const data = {
       ...requestObject,
-      createdAt: new Date(),
       // <userId> This should be replaced with the authenticated user's ID
     }
     const newReagent = await new ReagentService().createReagent(data as Reagent)
