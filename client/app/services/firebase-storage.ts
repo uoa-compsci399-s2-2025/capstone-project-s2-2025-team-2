@@ -9,10 +9,7 @@ export const uploadReagentImage = async (
   file: File,
 ): Promise<string | null> => {
   const fileId = uuidv4() // unlike firestore db where uids are randomly generated, this isnt the case for firebase storage
-  const reagentImgRef = ref(
-    storage,
-    `reagents/${reagentUid}/${fileId}-${file.name}`,
-  )
+  const reagentImgRef = ref(storage, `reagents/${reagentUid}/${fileId}`)
 
   try {
     await uploadBytes(reagentImgRef, file)
