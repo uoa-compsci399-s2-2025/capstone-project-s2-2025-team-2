@@ -8,6 +8,7 @@ import { getConversations } from "../services/inbox"
 import { ConversationListResponseDto } from "../models/response-models/ChatRoomResponseDto"
 import { onAuthStateChanged, User } from "firebase/auth"
 import { auth } from "../config/firebase"
+import { ChevronLeftIcon } from "@heroicons/react/24/outline"
 
 //            function: InboxPage           //
 export default function InboxPage() {
@@ -17,7 +18,9 @@ export default function InboxPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [user, setUser] = useState<User | null>(null)
-
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isVisible, setIsVisible] = useState(false)
+  const [menuAnim, setMenuAnim] = useState("-translate-x-full")
   //            effect: auth state change           //
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -25,6 +28,18 @@ export default function InboxPage() {
     })
     return () => unsubscribe()
   }, [])
+
+  useEffect(() => {
+    if (isMenuOpen) {
+      setIsVisible(true)
+      setMenuAnim("-translate-x-full")
+      setTimeout(() => setMenuAnim("translate-x-0"), 10)
+    } else {
+      setMenuAnim("-translate-x-full")
+      const timer = setTimeout(() => setIsVisible(false), 300)
+      return () => clearTimeout(timer)
+    }
+  }, [isMenuOpen])
 
   //            function: loadConversations           //
   const loadConversations = async () => {
@@ -73,17 +88,50 @@ export default function InboxPage() {
   //            render: InboxPage           //
   return (
     <Overlay>
-      <div className="min-h-screen flex bg-background">
+      <div className="min-h-[calc(100vh-4rem)] flex bg-background">
         <div className="flex w-full">
-          {/* Left side - Message List */}
-          <MessageListBox
-            conversations={conversations}
-            loading={loading}
-            error={error}
-            selectedConversation={selectedConversation}
-            setSelectedConversation={handleConversationSelect}
-            onRefresh={loadConversations}
-          />
+          <button
+            className="md:hidden fixed right-0 mr-3 mt-[1rem] hover:text-grey duration-300 text-white cursor-pointer px-3 py-2 flex items-center gap-1 border rounded-lg"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            <ChevronLeftIcon className="h-3.5 w-3.5 text-white"></ChevronLeftIcon>
+            inbox
+          </button>
+          {/* Left side - Message List */}{" "}
+          <div className="md:block hidden">
+            {" "}
+            <MessageListBox
+              conversations={conversations}
+              loading={loading}
+              error={error}
+              selectedConversation={selectedConversation}
+              setSelectedConversation={handleConversationSelect}
+              onRefresh={loadConversations}
+            />
+          </div>
+          {isVisible && (
+            <div className="fixed inset-0 bg-black/60 z-50 flex">
+              <div
+                className={`
+                w-4/5 max-w-xs h-full shadow-2xl bg-background
+                transition-transform duration-300
+                ${menuAnim}
+                absolute left-0 top-0
+              `}
+                style={{ willChange: "transform" }}
+              >
+                <MessageListBox
+                  conversations={conversations}
+                  loading={loading}
+                  error={error}
+                  selectedConversation={selectedConversation}
+                  setSelectedConversation={handleConversationSelect}
+                  onRefresh={loadConversations}
+                />
+              </div>
+              <div className="flex-1" onClick={() => setIsMenuOpen(false)} />
+            </div>
+          )}
           {/* Right side - Chat Box */}
           <ChatBox
             selectedConversation={selectedConversation}

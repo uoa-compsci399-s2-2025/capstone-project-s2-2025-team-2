@@ -55,7 +55,7 @@ export default function ConversationItem({
 
         {/* conversation */}
         <div className="ml-13">
-          <p className="text-sm text-light-gray truncate">
+          <p className="text-sm text-light-gray truncate max-w-[15rem]">
             {conversation.lastMessage}
           </p>
         </div>

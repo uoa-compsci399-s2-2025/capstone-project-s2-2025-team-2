@@ -51,6 +51,9 @@ const Marketplace = () => {
   }
 
   const filtered = reagents.filter((r) => {
+    //private listings are hidden from public marketplace
+    if (r.visibility === "private") return false
+
     const query = search.trim().toLowerCase()
     if (!query) return true
 
