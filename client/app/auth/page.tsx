@@ -20,8 +20,11 @@ export default function AuthPage() {
         {/* Right side - Sign In Box */}
         {authType === "signin" ? (
           <SignInBox setAuthType={setAuthType} />
-        ) : (
+        ) : authType === "signup" ? (
           <SignUpBox setAuthType={setAuthType} />
+        ) : (
+          //route forgot password to sign in for now
+          <SignInBox setAuthType={setAuthType} />
         )}
       </div>
     </div>
