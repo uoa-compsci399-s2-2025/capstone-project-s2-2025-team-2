@@ -138,6 +138,13 @@ export default class AuthService {
     // as some email domain objects within the db's collection have more than 1 domain, we need to flatten the array before returning it
     return validEmailDomains.flat(Infinity)
   }
-}
 
-new AuthService().getValidEmailDomains()
+  async validateEmailDomain(email: string): Promise<boolean> {
+    // get all current valid email domains and check users email against them
+    const validEmails = await new AuthService().getValidEmailDomains()
+    const userEmailDomain = email.slice(email.indexOf("@"))
+
+    // .includes ensures we account for subdomains (e.g. @canterbury.ac.nz & @math.canterbury.ac.nz)
+    return validEmails.includes(userEmailDomain)
+  }
+}
