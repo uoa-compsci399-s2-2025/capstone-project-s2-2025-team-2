@@ -145,21 +145,23 @@ export default function SignInBox({
 
       <AuthNotificationBox state={notificationState} />
 
-      {/* Google OAuth Button */}
-      <div className="w-full flex justify-center items-center">
-        {/* 1. Google OAuth Button Rendering */}
-        {/* 2. Pass call back functions into the GoogleOAuthBtn component */}
-        <GoogleOAuthBtn
-          onSuccess={handleGoogleSuccess}
-          onError={handleGoogleError}
-        />
-      </div>
+      {/* Shared container for button/field width*/}
+      <div className="w-full max-w-[400px] mx-auto">
+        {/* Google OAuth Button */}
+        <div className="w-full flex mb-6 md:mb-8">
+          {/* 1. Google OAuth Button Rendering */}
+          {/* 2. Pass call back functions into the GoogleOAuthBtn component */}
+          <GoogleOAuthBtn
+            onSuccess={handleGoogleSuccess}
+            onError={handleGoogleError}
+          />
+        </div>
 
-      {/* Divider */}
-      <AuthDivider text="or use your account" />
+        {/* Divider */}
+        <AuthDivider text="or use your account" />
 
-      {/* Form Section */}
-      <form className="mt-4 space-y-6" onSubmit={handleSubmit}>
+        {/* Form Section */}
+        <form className="mt-4 space-y-6" onSubmit={handleSubmit}>
         {/* 1. Input Fields */}
         <div className="space-y-4">
           <AuthInputBox
@@ -211,7 +213,8 @@ export default function SignInBox({
           Don&apos;t have an account?{" "}
           <AuthLink onClick={handleSignUpClick}>Sign up</AuthLink>
         </AuthText>
-      </form>
+        </form>
+      </div>
     </div>
   )
 }
