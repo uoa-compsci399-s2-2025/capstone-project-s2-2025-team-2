@@ -1,6 +1,7 @@
 import FirestoreCollections from "../adapters/FirestoreCollections"
 import { Reagent, ReagentCategory } from "../../business-layer/models/Reagent"
 import { FieldValue } from "firebase-admin/firestore";
+import { daysUntilExpiry } from "../../utils/dateCalculate"
 
 export class ReagentService {
   /**
@@ -133,5 +134,63 @@ async createReagent(newReagent: Reagent): Promise<Reagent> {
       .where("user_id", "==", user_id)
       .get()
     return reagentsSnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))
+  }
+
+  /**
+   * Retrieves reagents expiring in 60 days or less for a certain user.
+   *
+   * @returns Promise<Reagent[]> - Returns an array of reagents.
+   */
+  async getReagentsExpiringSoon(user_id: string): Promise<Reagent[]> {
+    try {
+      const reagentsSnapshot = await FirestoreCollections.reagents
+        .where("user_id", "==", user_id)
+        .get()
+      const reagents = reagentsSnapshot.docs.map((doc) => doc.data())
+      return reagents.filter((reagent) => {
+        if (!reagent.expiryDate) return false
+        const daysLeft = daysUntilExpiry(reagent.expiryDate)
+        return daysLeft <= 60 && daysLeft >= 0
+      })
+    } catch (err) {
+      console.log(err)
+      throw new Error(`Failed to get reagents expiring soon: ${err}`)
+    }
+  }
+
+  /**
+   * Retrieves reagents expiring in exactly 30 days for all users, grouped by their user ID.
+   *
+   * @returns Promise<Record<string, Reagent[]>> - Returns a dictionary with userID as key and array of reagents as value.
+   *
+   */
+  async getReagentsExpiringSoonAllUsers(): Promise<Record<string, Reagent[]>> {
+    try {
+      const reagentsSnapshot = await FirestoreCollections.reagents.get()
+      const reagents = reagentsSnapshot.docs.map((doc) => doc.data())
+
+      const expiringReagents = reagents.filter((reagent) => {
+        if (!reagent.expiryDate) return false
+        const daysLeft = daysUntilExpiry(reagent.expiryDate)
+        return daysLeft == 29
+      })
+
+      const groupedReagents: Record<string, Reagent[]> = {}
+
+      expiringReagents.forEach((reagent) => {
+        const userId = reagent.user_id
+        if (!groupedReagents[userId]) {
+          groupedReagents[userId] = []
+        }
+        groupedReagents[userId].push(reagent)
+      })
+
+      return groupedReagents
+    } catch (err) {
+      console.log(err)
+      throw new Error(
+        `Failed to get reagents expiring soon for all users: ${err}`,
+      )
+    }
   }
 }
