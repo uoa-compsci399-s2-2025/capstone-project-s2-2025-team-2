@@ -1,4 +1,6 @@
 import { db } from "../../business-layer/security/Firebase"
+import FirestoreCollections from "data-layer/adapters/FirestoreCollections"
+import { AuthDomain } from "business-layer/models/AuthDomain"
 
 export class AuthRepository {
   async saveVerificationCode(
@@ -48,5 +50,33 @@ export class AuthRepository {
       return doc.data()
     }
     return null
+  }
+
+  async removeValidSignupEmailDomain(domain_id: string): Promise<AuthDomain> {
+    try {
+      const docRef = FirestoreCollections.authDomains.doc(domain_id)
+      if (!docRef)
+        throw new Error(`Signup email domain with ID '${domain_id}' not found`)
+
+      const domain = (await docRef.get()).data() as AuthDomain
+      await docRef.delete()
+      return domain
+    } catch (err) {
+      console.error(err)
+      throw new Error(
+        `Failed to remove valid signup email domain with ID '${domain_id}': ${err}`,
+      )
+    }
+  }
+
+  async addValidSignupEmailDomain(newDomain: AuthDomain): Promise<AuthDomain> {
+    try {
+      const docRef = await FirestoreCollections.authDomains.add(newDomain)
+      const createdDomain = { ...newDomain, id: docRef.id }
+      return createdDomain
+    } catch (err) {
+      console.error(err)
+      throw new Error(`Failed to add a new valid signup email domain: ${err}`)
+    }
   }
 }
