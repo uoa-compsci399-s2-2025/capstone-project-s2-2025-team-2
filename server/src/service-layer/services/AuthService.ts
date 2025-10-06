@@ -125,4 +125,19 @@ export default class AuthService {
       // Don't throw error here as token verification was successful
     }
   }
+
+  async getValidEmailDomains() {
+    const emailDomainDocs =
+      await this.authRepository.getValidSignupEmailDomains()
+
+    const validEmailDomains: string[][] = []
+    emailDomainDocs.forEach((doc) => {
+      validEmailDomains.push(doc.emailDomains)
+    })
+
+    // as some email domain objects within the db's collection have more than 1 domain, we need to flatten the array before returning it
+    return validEmailDomains.flat(Infinity)
+  }
 }
+
+new AuthService().getValidEmailDomains()

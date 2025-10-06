@@ -1,6 +1,6 @@
 import { db } from "../../business-layer/security/Firebase"
-import FirestoreCollections from "data-layer/adapters/FirestoreCollections"
-import { AuthDomain } from "business-layer/models/AuthDomain"
+import FirestoreCollections from "../adapters/FirestoreCollections"
+import { AuthDomain } from "../../business-layer/models/AuthDomain"
 
 export class AuthRepository {
   async saveVerificationCode(
@@ -79,4 +79,23 @@ export class AuthRepository {
       throw new Error(`Failed to add a new valid signup email domain: ${err}`)
     }
   }
+
+  async getValidSignupEmailDomains(): Promise<AuthDomain[]> {
+    try {
+      const snapshot = await FirestoreCollections.authDomains.get()
+      if (snapshot.empty) return []
+
+      const authDomains: AuthDomain[] = []
+      snapshot.forEach((doc) => {
+        authDomains.push(doc.data())
+      })
+
+      return authDomains
+    } catch (err) {
+      console.error(err)
+      throw new Error(`Failed to get valid signup email domains: ${err}`)
+    }
+  }
 }
+
+new AuthRepository().getValidSignupEmailDomains()
