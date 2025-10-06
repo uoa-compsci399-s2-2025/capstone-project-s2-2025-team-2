@@ -13,7 +13,7 @@ import { sendVerificationCode, verifyCode } from "../../services/auth"
 
 import VerifyCodeRequestDto from "../../models/request-models/VerifyCodeRequestDto"
 import VerifyCodeResponseDto from "../../models/response-models/VerifyCodeResponseDto"
-import { firebaseSignUp } from "../../services/firebase-auth"
+import { firebaseSignUp, getIdToken } from "../../services/firebase-auth"
 import FirebaseSignUpRequestDto from "../../models/request-models/FirebaseSignUpRequestDto"
 import FirebaseSignUpResponseDto from "../../models/response-models/FirebaseSignUpResponseDto"
 import { verifyToken } from "../../services/auth"
@@ -160,14 +160,29 @@ export default function SignUpBox({
     if (response.success) {
       setNotificationState("sign-up-success")
 
-      //save user to firestore
+      //store id token in local storage
+      try {
+        const idToken = await getIdToken()
+        if (!idToken) {
+          console.error("ID token not found")
+          setNotificationState("sign-up-fail")
+          return
+        }
+        localStorage.setItem("authToken", idToken)
+      } catch (error) {
+        console.error("Error obtaining token after sign-up:", error)
+        setNotificationState("sign-up-fail")
+        return
+      }
+
+      //save user to firestore 
       await saveUserToFirestore()
 
       //welcome toast, marketplace redirect
       toast(
         `Welcome, ${preferredName || response.email}! Your account has been created successfully.`,
       )
-      router.push("/marketplace")
+      router.replace("/marketplace")
 
       // User is automatically signed in after successful sign up
       console.log("User created and signed in:", {
