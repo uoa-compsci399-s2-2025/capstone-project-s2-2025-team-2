@@ -106,8 +106,10 @@
 						"type": "array"
 					},
 					"createdAt": {
-						"type": "string",
-						"format": "date-time"
+						"type": "string"
+					},
+					"createdAtReadable": {
+						"type": "string"
 					},
 					"location": {
 						"type": "string"
@@ -129,6 +131,7 @@
 					"tradingType",
 					"categories",
 					"createdAt",
+					"createdAtReadable",
 					"location",
 					"unit"
 				],
@@ -236,8 +239,10 @@
 						"type": "array"
 					},
 					"createdAt": {
-						"type": "string",
-						"format": "date-time"
+						"type": "string"
+					},
+					"createdAtReadable": {
+						"type": "string"
 					},
 					"location": {
 						"type": "string"

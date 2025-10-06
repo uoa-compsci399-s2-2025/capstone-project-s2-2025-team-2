@@ -18,6 +18,7 @@ export interface Reagent {
   images?: string[]
   categories: ReagentCategory[]
   createdAt: string
+  createdAtReadable:string
   location: string
   unit: string
   visibility?: ReagentVisibility
