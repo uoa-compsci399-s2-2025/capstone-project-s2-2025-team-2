@@ -136,7 +136,7 @@ export default class AuthService {
     })
 
     // as some email domain objects within the db's collection have more than 1 domain, we need to flatten the array before returning it
-    return validEmailDomains.flat(Infinity)
+    return validEmailDomains.flat(Infinity) as string[]
   }
 
   async validateEmailDomain(email: string): Promise<boolean> {
