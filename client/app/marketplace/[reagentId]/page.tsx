@@ -105,20 +105,11 @@ export default function ReagentView({ params }: ReagentViewProps) {
               </div>
               <div className="flex md:flex-row flex-col justify-center items-center mt-12 gap-12 md:gap-0">
                 {/* img carousel */}
-                <div className="order-2 md:order-1">
-                  <ImageCarousel
-                    images={
-                      reagent.images?.[0]
-                        ? reagent.images
-                        : [
-                            "/placeholder.webp",
-                            "/placeholder2.webp",
-                            "/placeholder3.webp",
-                            "/placeholder4.webp",
-                          ]
-                    }
-                  />
-                </div>
+                {reagent.images && (
+                  <div className="order-2 md:order-1">
+                    <ImageCarousel images={reagent.images} />
+                  </div>
+                )}
                 {/* reagent info */}
                 <div className="flex-[1.2] order-1 md:order-2 w-full px-9">
                   <div className="rounded-[8px] overflow-hidden shadow-[0_4px_6px_rgba(0,0,0,0.4)]">
