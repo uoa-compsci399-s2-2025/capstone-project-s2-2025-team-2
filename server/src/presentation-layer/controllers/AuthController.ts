@@ -76,7 +76,7 @@ export class AuthController extends Controller {
    * Allows admins to remove a valid signup email domain
    *
    * @param jwt - jwt token is needed for the user to be verified
-   * @param  - the ID of the domain to delete
+   * @param domain_id - the ID of the domain to delete
    * @returns Promise<AuthDomain>
    */
   @Security("jwt")
@@ -108,7 +108,7 @@ export class AuthController extends Controller {
    * Allows admins to add a new valid signup email domain
    *
    * @param jwt - jwt token is needed for the user to be verified
-   * @param  - the ID of the domain to delete
+   * @Body requestObj - the request object containing data for the new domain
    * @returns Promise<AuthDomain>
    */
   @Security("jwt")
