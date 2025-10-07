@@ -3,6 +3,7 @@ import { auth, db } from "../../business-layer/security/Firebase"
 import type { UserRecord } from "firebase-admin/auth"
 import { GoogleOAuthResponse } from "../dtos/response/OAuthVerifyResponse"
 import GoogleOAuthUser from "../../business-layer/models/GoogleOAuthUser"
+import AuthService from "../../service-layer/services/AuthService"
 
 export default class GoogleOAuthService {
   private oauth2Client: OAuth2Client
@@ -196,6 +197,14 @@ export default class GoogleOAuthService {
     try {
       // Verify Google ID token
       const googleUserInfo = await this.verifyGoogleToken(idToken)
+
+      // check if users email contains a valid (institutional) domain
+      const emailValidated = await new AuthService().validateEmailDomain(
+        googleUserInfo.email,
+      )
+      if (!emailValidated) {
+        return { success: false, message: "Please use an accepted institutional email" }
+      }
 
       // Create or update Firebase user
       const userRecord = await this.createOrUpdateUser(googleUserInfo)

@@ -9,6 +9,7 @@ import {
   Delete,
   Path,
   Request,
+  Get,
 } from "tsoa"
 import { SendVerificationCodeRequest } from "../../service-layer/dtos/request/SendVerificationCodeRequest"
 import { SendVerificationCodeResponse } from "../../service-layer/dtos/response/SendVerificationCodeResponse"
@@ -70,6 +71,23 @@ export class AuthController extends Controller {
       requestBody.university,
     )
     return result
+  }
+
+  /**
+   * Gets all valid valid email domains for signup
+   *
+   * @returns Promise<string[]>
+   */
+  @SuccessResponse("200", "Valid email domains retrieved successfully")
+  @Get("valid-email-domains")
+  public async getValidEmailDomains(): Promise<string[]> {
+    try {
+      const validDomains = await this.authService.getValidEmailDomains()
+      return validDomains
+    } catch (err) {
+      this.setStatus(500)
+      throw new Error(`Failed to get valid signup email domains: ${err}`)
+    }
   }
 
   /**
