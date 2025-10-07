@@ -269,12 +269,12 @@ const UserProfile = () => {
           <div className="flex flex-col gap-2">
             <h1 className="font-light text-pearl text-xl md:text-4xl">
               {idOfUserBeingViewed === userUid
-                ? `Welcome back, ${userBeingViewed && userBeingViewed?.displayName}`
+                ? `Welcome back, ${userBeingViewed && userBeingViewed?.preferredName}`
                 : `${userBeingViewed && userBeingViewed?.displayName}'s Profile`}
             </h1>
-            <p className="flex items-center gap-2 text-xs md:text-sm text-[#FF7309] dark:text-orange-200">
+            <p className="flex items-center gap-2 text-xs md:text-sm text-blue-primary dark:text-orange-200">
               <HomeIcon className="w-5 h-5 md:w-6 md:h-6" />
-              HOME_INSTITUTION
+              {userBeingViewed.university}
             </p>
             {/* show 'edit profile' btn if user is viewing their own profile */}
             {idOfUserBeingViewed === userUid && (

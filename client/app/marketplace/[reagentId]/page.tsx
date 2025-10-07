@@ -123,7 +123,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                           : reagent.tradingType === "sell"
                             ? "bg-[#9AE39C] dark:bg-[#3F6340] dark:text-[#AFFFB2] text-[#428B44]"
                             : reagent.tradingType === "trade"
-                              ? "bg-[#9D00FF] dark:bg-[#826387] dark:text-[#FFDBB6] text-[#9B7856]"
+                              ? "bg-blue-primary dark:bg-[#826387] dark:text-[#FFDBB6] text-[#9B7856]"
                               : "bg-blue-primary/75"
                       }`}
                     >
@@ -136,6 +136,9 @@ export default function ReagentView({ params }: ReagentViewProps) {
                       <div className="mb-[1rem]">
                         <h5 className="text-white/80">
                           Quantity: {reagent.quantity}
+                        </h5>
+                        <h5 className="text-white/80">
+                          Unit: {reagent.unit || "Not specified"}
                         </h5>
                       </div>
                       <div className="">

@@ -18,7 +18,7 @@ export default function InboxPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [user, setUser] = useState<User | null>(null)
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(true)
   const [isVisible, setIsVisible] = useState(false)
   const [menuAnim, setMenuAnim] = useState("-translate-x-full")
   //            effect: auth state change           //
@@ -91,7 +91,7 @@ export default function InboxPage() {
       <div className="min-h-[calc(100vh-4rem)] flex bg-background">
         <div className="flex w-full">
           <button
-            className="md:hidden fixed right-0 mr-3 mt-[1rem] hover:text-grey duration-300 text-white cursor-pointer px-3 py-2 flex items-center gap-1 border rounded-lg"
+            className="md:hidden fixed right-0 mr-3 mt-[1rem] hover:text-white/70 hover:border-white/70 duration-300 text-white cursor-pointer px-3 py-2 flex items-center gap-1 border rounded-lg"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             <ChevronLeftIcon className="h-3.5 w-3.5 text-white"></ChevronLeftIcon>
@@ -110,7 +110,7 @@ export default function InboxPage() {
             />
           </div>
           {isVisible && (
-            <div className="fixed inset-0 bg-black/60 z-50 flex">
+            <div className="fixed inset-0 md:hidden bg-black/60 z-50 flex">
               <div
                 className={`
                 w-4/5 max-w-xs h-full shadow-2xl bg-background
