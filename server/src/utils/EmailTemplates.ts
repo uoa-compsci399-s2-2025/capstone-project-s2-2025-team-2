@@ -12,7 +12,7 @@ export class EmailTemplates {
       </div>
     `
   }
-    static getExpiryEmailTemplate(
+  static getExpiryEmailTemplate(
     username: string,
     reagents: { name: string; expiryDate: string }[],
   ): string {

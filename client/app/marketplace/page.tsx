@@ -10,22 +10,22 @@ import { usePageSize } from "../hooks/usePageSize"
 import client from "../services/fetch-client"
 
 type FirestoreReagent = {
-  id: string;
-  categories: string[];
-  condition: string;
-  createdAt: any;
-  createdAtReadable: string;
-  description: string;
-  expiryDate: string;
-  images: string[];
-  location: string;
-  name: string;
-  price: number;
-  quantity: number;
-  tradingType: string;
-  unit: string;
-  user_id: string;
-  visibility: string;
+  id: string
+  categories: string[]
+  condition: string
+  createdAt: any
+  createdAtReadable: string
+  description: string
+  expiryDate: string
+  images: string[]
+  location: string
+  name: string
+  price: number
+  quantity: number
+  tradingType: string
+  unit: string
+  user_id: string
+  visibility: string
 }
 
 const Marketplace = () => {
@@ -91,57 +91,59 @@ const Marketplace = () => {
     }
   })
 
-const sorted = [...filtered].sort((a, b) => {
-  switch (sort) {
-    case "newest":
-    case "oldest": {
-      const getTimestamp = (item: FirestoreReagent): number => {
-        const date = item.createdAt;
+  const sorted = [...filtered].sort((a, b) => {
+    switch (sort) {
+      case "newest":
+      case "oldest": {
+        const getTimestamp = (item: FirestoreReagent): number => {
+          const date = item.createdAt
 
-        if (!date) return 0;
+          if (!date) return 0
 
-        if (typeof date === "object" && "_seconds" in date) {
-          return date._seconds * 1000 + (date._nanoseconds || 0) / 1e6;
+          if (typeof date === "object" && "_seconds" in date) {
+            return date._seconds * 1000 + (date._nanoseconds || 0) / 1e6
+          }
+
+          if (
+            typeof date === "object" &&
+            "toMillis" in date &&
+            typeof date.toMillis === "function"
+          ) {
+            return date.toMillis()
+          }
+
+          if (typeof date === "string") {
+            const parsed = new Date(date).getTime()
+            return isNaN(parsed) ? 0 : parsed
+          }
+
+          if (date instanceof Date) return date.getTime()
+
+          if (typeof date === "number") return date
+
+          return 0
         }
 
-        if (typeof date === "object" && "toMillis" in date && typeof date.toMillis === "function") {
-          return date.toMillis();
-        }
+        const aTime = getTimestamp(a)
+        const bTime = getTimestamp(b)
 
-        if (typeof date === "string") {
-          const parsed = new Date(date).getTime();
-          return isNaN(parsed) ? 0 : parsed;
-        }
+        if (aTime === 0 && bTime === 0) return a.name.localeCompare(b.name)
+        if (aTime === 0) return 1
+        if (bTime === 0) return -1
 
-        if (date instanceof Date) return date.getTime();
+        return sort === "newest" ? bTime - aTime : aTime - bTime
+      }
 
-        if (typeof date === "number") return date;
+      case "nameAZ":
+        return (a.name || "").localeCompare(b.name || "")
 
-        return 0;
-      };
+      case "nameZA":
+        return (b.name || "").localeCompare(a.name || "")
 
-      const aTime = getTimestamp(a);
-      const bTime = getTimestamp(b);
-
-      if (aTime === 0 && bTime === 0) return a.name.localeCompare(b.name);
-      if (aTime === 0) return 1;  
-      if (bTime === 0) return -1; 
-
-      return sort === "newest" ? bTime - aTime : aTime - bTime;
+      default:
+        return 0
     }
-
-    case "nameAZ":
-      return (a.name || "").localeCompare(b.name || "");
-
-    case "nameZA":
-      return (b.name || "").localeCompare(a.name || "");
-
-    default:
-      return 0;
-  }
-});
-
-
+  })
 
   const pageSize = usePageSize()
   const { currentPage, setCurrentPage, currentData, totalPages } =
@@ -182,22 +184,32 @@ const sorted = [...filtered].sort((a, b) => {
 
       <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
         {currentData.map((r) => {
-          const allowedTradingTypes = ["trade", "giveaway", "sell"] as const;
+          const allowedTradingTypes = ["trade", "giveaway", "sell"] as const
           const tradingType = allowedTradingTypes.includes(r.tradingType as any)
             ? (r.tradingType as "trade" | "giveaway" | "sell")
-            : "trade"; 
+            : "trade"
 
-          const allowedCategories = ["chemical", "hazardous", "biological"] as const;
+          const allowedCategories = [
+            "chemical",
+            "hazardous",
+            "biological",
+          ] as const
           const categories = Array.isArray(r.categories)
-            ? r.categories.filter((c): c is typeof allowedCategories[number] =>
-                allowedCategories.includes(c as any)
+            ? r.categories.filter(
+                (c): c is (typeof allowedCategories)[number] =>
+                  allowedCategories.includes(c as any),
               )
-            : [];
+            : []
 
-          const allowedVisibility = ["everyone", "region", "institution", "private"] as const;
+          const allowedVisibility = [
+            "everyone",
+            "region",
+            "institution",
+            "private",
+          ] as const
           const visibility = allowedVisibility.includes(r.visibility as any)
-            ? (r.visibility as typeof allowedVisibility[number])
-            : undefined;
+            ? (r.visibility as (typeof allowedVisibility)[number])
+            : undefined
 
           return (
             <ReagentCard
@@ -209,7 +221,7 @@ const sorted = [...filtered].sort((a, b) => {
                 visibility,
               }}
             />
-          );
+          )
         })}
       </div>
       <div className="pb-[4rem] md:pb-0">

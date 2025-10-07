@@ -18,7 +18,7 @@ export interface Reagent {
   images?: string[]
   categories: ReagentCategory[]
   createdAt?: FirebaseFirestore.Timestamp
-  createdAtReadable?:string
+  createdAtReadable?: string
   location: string
   unit: string
   visibility?: ReagentVisibility

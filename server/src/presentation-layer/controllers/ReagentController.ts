@@ -16,17 +16,17 @@ import { CreateReagentRequest } from "service-layer/dtos/request/ReagentRequest"
 
 @Route("reagents")
 export class ReagentController extends Controller {
-
   /**
    
 Get all reagents that are expiring in 30 days
 @returns Promise<Reagent[]> - The list of all reagents filtered.*/
-@SuccessResponse("200", "All reagents returned successfully")@Get("expiring")
-public async getReagentsExpiringSoon(): Promise<Record<string, Reagent[]>> {
-  const reagents =
-    await new ReagentService().getReagentsExpiringSoonAllUsers()
-  return reagents}
-
+  @SuccessResponse("200", "All reagents returned successfully")
+  @Get("expiring")
+  public async getReagentsExpiringSoon(): Promise<Record<string, Reagent[]>> {
+    const reagents =
+      await new ReagentService().getReagentsExpiringSoonAllUsers()
+    return reagents
+  }
 
   /**
    * Get all reagents with an option to filter them by category.

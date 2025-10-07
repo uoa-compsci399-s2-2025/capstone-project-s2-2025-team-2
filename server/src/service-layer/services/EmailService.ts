@@ -34,7 +34,7 @@ export default class EmailService {
     }
   }
 
-/**
+  /**
    * Sends an email notification to the user about reagents expiring in 30 days.
    *
    * @param email - The email address of the user to notify.

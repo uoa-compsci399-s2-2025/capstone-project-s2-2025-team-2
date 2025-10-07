@@ -22,7 +22,6 @@ import { AuthRequest } from "../../service-layer/dtos/request/AuthRequest"
 @Tags("User")
 @Route("users")
 export class UserController extends Controller {
-
   /**
    * Get reagents those are expiring in 60 days or less under a user by their user id
    * @param user_id - user id to query with
@@ -42,8 +41,6 @@ export class UserController extends Controller {
 
     return await new ReagentService().getReagentsExpiringSoon(user_id)
   }
-
-
 
   @SuccessResponse("200", "Users retrieved successfully")
   @Get()

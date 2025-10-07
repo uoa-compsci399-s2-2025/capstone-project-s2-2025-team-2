@@ -30,7 +30,9 @@ export class ExpiryController extends Controller {
         }
         sentCount++
       }
-      console.log(`Expiry notification emails sent successfully to ${sentCount} user(s).`)
+      console.log(
+        `Expiry notification emails sent successfully to ${sentCount} user(s).`,
+      )
     } catch (error) {
       console.error("Error sending expiry notifications:", error)
       throw new Error("Failed to send expiry notifications")
