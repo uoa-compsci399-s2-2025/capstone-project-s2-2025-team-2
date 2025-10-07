@@ -203,7 +203,10 @@ export default class GoogleOAuthService {
         googleUserInfo.email,
       )
       if (!emailValidated) {
-        return { success: false, message: "Please use an accepted institutional email" }
+        return {
+          success: false,
+          message: "Please use an accepted institutional email",
+        }
       }
 
       // Create or update Firebase user
