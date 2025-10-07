@@ -58,11 +58,6 @@ const Marketplace = () => {
     if (!query) return true
 
     switch (filter) {
-      case "tag":
-        return (
-          Array.isArray(r.categories) &&
-          r.categories.some((c) => c.toLowerCase().includes(query))
-        )
       case "category":
         return (
           Array.isArray(r.categories) &&

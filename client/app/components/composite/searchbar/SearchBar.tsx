@@ -35,7 +35,6 @@ export default function SearchBar({
           <option value="all">Filter by...</option>
           <option value="category">Category</option>
           <option value="date">Date</option>
-          <option value="tag">Tag</option>
         </select>
         <ChevronDownIcon className="absolute right-2 top-1/2 -translate-y-1/2 h-5 w-5 text-secondary pointer-events-none shadow-lg" />
       </div>
