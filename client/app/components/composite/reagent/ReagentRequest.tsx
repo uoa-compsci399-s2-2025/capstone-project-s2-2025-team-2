@@ -7,6 +7,7 @@ import client from "../../../services/fetch-client"
 import { toast } from "sonner"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../../../config/firebase"
+import LoadingState from "../LoadingState"
 
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
@@ -342,7 +343,7 @@ export const ReagentRequest = ({
         {isInitialising ? (
           //loading state while validating/initialising
           <div className="text-center">
-            <h2 className="text-white text-2xl font-medium mb-4">Loading...</h2>
+            <LoadingState pageName="Message"/>
           </div>
         ) : error ? (
           //error window
