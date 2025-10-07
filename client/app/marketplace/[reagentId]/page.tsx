@@ -180,6 +180,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                       ? {
                           ...reagent,
                           id: reagentId,
+                          createdAt: reagent.createdAt ?? "",
                         }
                       : undefined
                   }
@@ -203,6 +204,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                     ? {
                         ...reagent,
                         id: reagentId,
+                        createdAt: reagent.createdAt ?? "",
                       }
                     : undefined
                 }

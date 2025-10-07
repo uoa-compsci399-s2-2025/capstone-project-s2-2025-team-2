@@ -23,6 +23,28 @@
 					"biological"
 				]
 			},
+			"Timestamp": {
+				"properties": {
+					"type": {
+						"type": "string"
+					},
+					"nanoseconds": {
+						"type": "number",
+						"format": "double"
+					},
+					"seconds": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"type",
+					"nanoseconds",
+					"seconds"
+				],
+				"type": "object",
+				"description": "A `Timestamp` represents a point in time independent of any time zone or\ncalendar, represented as seconds and fractions of seconds at nanosecond\nresolution in UTC Epoch time.\n\nIt is encoded using the Proleptic Gregorian Calendar which extends the\nGregorian calendar backwards to year one. It is encoded assuming all minutes\nare 60 seconds long, i.e. leap seconds are \"smeared\" so that no leap second\ntable is needed for interpretation. Range is from 0001-01-01T00:00:00Z to\n9999-12-31T23:59:59.999999999Z.\n\nFor examples and further specifications, refer to the\n{@link https://github.com/google/protobuf/blob/master/src/google/protobuf/timestamp.proto Timestamp definition}."
+			},
 			"ReagentVisibility": {
 				"type": "string",
 				"enum": [
@@ -73,7 +95,7 @@
 						"type": "array"
 					},
 					"createdAt": {
-						"type": "string"
+						"$ref": "#/components/schemas/Timestamp"
 					},
 					"createdAtReadable": {
 						"type": "string"
@@ -97,8 +119,6 @@
 					"expiryDate",
 					"tradingType",
 					"categories",
-					"createdAt",
-					"createdAtReadable",
 					"location",
 					"unit"
 				],
@@ -239,7 +259,7 @@
 						"type": "array"
 					},
 					"createdAt": {
-						"type": "string"
+						"$ref": "#/components/schemas/Timestamp"
 					},
 					"createdAtReadable": {
 						"type": "string"
