@@ -9,7 +9,7 @@ import { usePagaination } from "../hooks/usePagination"
 import Pagination from "../components/composite/pagination/Pagination"
 import { usePageSize } from "../hooks/usePageSize"
 import client from "../services/fetch-client"
-import LoadingState from "../components/composite/LoadingState"
+import LoadingState from "../components/composite/loadingstate/LoadingState"
 
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
@@ -147,7 +147,6 @@ const Marketplace = () => {
             No reagents found for "{search}"
           </div>
         )}
-
       </div>
       <div className="pb-[4rem] md:pb-0">
         <Pagination

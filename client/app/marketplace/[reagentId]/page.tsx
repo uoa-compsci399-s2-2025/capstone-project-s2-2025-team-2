@@ -9,7 +9,7 @@ import Image from "next/image"
 import SellerContact from "@/app/components/composite/reagentview/SellerContact"
 import ImageCarousel from "@/app/components/generic/image_carousel/ImageCarousel"
 import Overlay from "@/app/components/composite/Overlay"
-import LoadingState from "@/app/components/composite/LoadingState"
+import LoadingState from "@/app/components/composite/loadingstate/LoadingState"
 
 interface ReagentViewProps {
   params: Promise<{ reagentId: string }>
@@ -37,7 +37,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
     return (
       <div className="bg-transparent h-[100vh] w-full">
         <div className="bg-transparent w-full items-center gap-4 text-white flex justify-center mt-[50vh]">
-          <LoadingState pageName="Reagent"/>
+          <LoadingState pageName="Reagent" />
         </div>
       </div>
     )

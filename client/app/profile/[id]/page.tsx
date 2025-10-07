@@ -27,7 +27,7 @@ import {
   ExclamationTriangleIcon,
   LockClosedIcon,
 } from "@heroicons/react/24/outline"
-import LoadingState from "@/app/components/composite/LoadingState"
+import LoadingState from "@/app/components/composite/loadingstate/LoadingState"
 
 /*
 TO DO!!
@@ -252,7 +252,7 @@ const UserProfile = () => {
             </path>
           </svg>
           <h3>Loading...</h3> */}
-          <LoadingState pageName="Profile"/>
+          <LoadingState pageName="Profile" />
         </div>
       </div>
     )

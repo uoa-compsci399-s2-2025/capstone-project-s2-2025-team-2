@@ -5,7 +5,7 @@ import { useState, useMemo } from "react"
 import ConversationItem from "./ConversationItem"
 import { ConversationListResponseDto } from "../../models/response-models/ChatRoomResponseDto"
 import { formatTime } from "../../hooks/utils/timeFormatter"
-import LoadingState from "@/app/components/composite/LoadingState"
+import LoadingState from "@/app/components/composite/loadingstate/LoadingState"
 
 //            function: MessageListBox           //
 export default function MessageListBox({
@@ -138,9 +138,7 @@ export default function MessageListBox({
       </div>
 
       {/* Loading State */}
-      {loading && (
-        <LoadingState pageName="Conversations"/>
-      )}
+      {loading && <LoadingState pageName="Conversations" />}
 
       {/* Error State */}
       {error && (
