@@ -5,8 +5,12 @@ import { generateVerificationCode } from "../../utils/generateVerificationCode"
 import EmailService from "./EmailService"
 import { SendVerificationCodeResponse } from "../dtos/response/SendVerificationCodeResponse"
 import { VerifyCodeResponse } from "../dtos/response/VerifyCodeResponse"
-
 import { VerifyTokenResponse } from "../dtos/response/VerifyTokenResponse"
+
+import {
+  EmailDomainValidationSchema,
+  type EmailDomainValidationType,
+} from "../../../../shared/zod-schemas/signup-email-validation"
 
 export default class AuthService {
   private authRepository: AuthRepository
@@ -142,9 +146,18 @@ export default class AuthService {
   async validateEmailDomain(email: string): Promise<boolean> {
     // get all current valid email domains and check users email against them
     const validEmails = await new AuthService().getValidEmailDomains()
-    const userEmailDomain = email.slice(email.indexOf("@"))
 
-    // .includes ensures we account for subdomains (e.g. @canterbury.ac.nz & @math.canterbury.ac.nz)
-    return validEmails.includes(userEmailDomain)
+    try {
+      // validate user email against zod input
+      EmailDomainValidationSchema(validEmails).parse({
+        email,
+      }) as EmailDomainValidationType
+      return true
+    } catch (err) {
+      console.error(
+        `User email is a not an accepted institutional email: ${err}`,
+      )
+      return false
+    }
   }
 }
