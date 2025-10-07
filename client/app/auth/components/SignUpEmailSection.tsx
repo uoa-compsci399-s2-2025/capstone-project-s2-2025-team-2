@@ -6,6 +6,7 @@ import DisabledButton from "../../components/generic/button/disabled/DisabledBut
 import AuthText from "../../components/auth/AuthText"
 import AuthLink from "../../components/auth/AuthLink"
 import { useEffect, useState } from "react"
+import { useEmailValidation } from "../../hooks/useSignupEmailValidation"
 
 interface SignUpEmailSectionProps {
   email: string
@@ -34,6 +35,11 @@ export default function SignUpEmailSection({
   onValidateCode,
 }: SignUpEmailSectionProps) {
   const [isVerificationCodeValid, setIsVerificationCodeValid] = useState(false)
+  const {
+    validateEmail,
+    isValid: isUserEmailDomainValid,
+    errorMessage: emailDomainErrorMessage,
+  } = useEmailValidation()
 
   useEffect(() => {
     if (verificationCode.length >= 4) {
@@ -42,6 +48,11 @@ export default function SignUpEmailSection({
       setIsVerificationCodeValid(false)
     }
   }, [verificationCode])
+
+  // validate email in real-time as user types
+  useEffect(() => {
+    if (email) validateEmail(email)
+  }, [email, validateEmail])
 
   //            render: SignUpEmailSection           //
   return (
@@ -56,32 +67,52 @@ export default function SignUpEmailSection({
             Email
           </label>
           <div className="mt-1 flex space-x-2">
-            <input
-              id="email"
-              name="email"
-              type="email"
-              required
-              value={email}
-              onChange={onEmailChange}
-              className="flex-1 px-3 py-2 border border-muted rounded-md shadow-sm placeholder-secondary bg-primary text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-blue-primary transition-colors"
-              placeholder="Enter your email"
-            />
-            {!isEmailValid ? (
+            <div className="flex-1">
+              <input
+                id="email"
+                name="email"
+                type="email"
+                required
+                value={email}
+                onChange={onEmailChange}
+                className={`flex-1 w-full px-3 py-2 border rounded-md shadow-sm placeholder-secondary bg-primary text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-blue-primary transition-colors ${
+                  email && !isUserEmailDomainValid
+                    ? "border-red-500"
+                    : email && isUserEmailDomainValid
+                      ? "border-green-500"
+                      : "border-muted"
+                }`}
+                placeholder="Enter your email"
+              />
+            </div>
+            {!isEmailValid || !isUserEmailDomainValid ? (
               <DisabledButton
                 label="Verify"
                 textSize="text-sm"
-                className={`!w-[92px]`}
+                className={`!w-[92px] flex justify-center items-center`}
               />
             ) : (
               <Button
                 onClick={onVerifyEmail}
                 label="Verify"
                 textSize="text-sm"
-                className={`!w-[92px]`}
+                className={`!w-[92px] flex justify-center items-center`}
               />
             )}
           </div>
         </div>
+        {/* real-time valiadtion feedback based on zod schemas errors */}
+        {email && (
+          <div className="mt-1">
+            {isUserEmailDomainValid ? (
+              <p className="text-sm text-green-400">
+                Valid institutional email
+              </p>
+            ) : emailDomainErrorMessage ? (
+              <p className="text-sm text-red-400">{emailDomainErrorMessage}</p>
+            ) : null}
+          </div>
+        )}
 
         {/* Verification Code Input */}
         <div>
@@ -123,7 +154,9 @@ export default function SignUpEmailSection({
       <div className="mt-auto space-y-6">
         {/* Next Step Button */}
         <div className="flex justify-center w-full">
-          {!isVerificationSuccess || !isEmailValid ? (
+          {!isVerificationSuccess ||
+          !isEmailValid ||
+          !isUserEmailDomainValid ? (
             <DisabledButton
               label="Next Page"
               textSize="text-sm"
