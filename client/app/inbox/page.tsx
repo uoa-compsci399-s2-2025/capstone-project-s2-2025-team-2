@@ -18,7 +18,7 @@ export default function InboxPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [user, setUser] = useState<User | null>(null)
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(true)
   const [isVisible, setIsVisible] = useState(false)
   const [menuAnim, setMenuAnim] = useState("-translate-x-full")
   //            effect: auth state change           //
@@ -110,7 +110,7 @@ export default function InboxPage() {
             />
           </div>
           {isVisible && (
-            <div className="fixed inset-0 bg-black/60 z-50 flex">
+            <div className="fixed inset-0 md:hidden bg-black/60 z-50 flex">
               <div
                 className={`
                 w-4/5 max-w-xs h-full shadow-2xl bg-background
