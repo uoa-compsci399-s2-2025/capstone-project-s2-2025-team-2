@@ -30,7 +30,7 @@ export default function SearchBar({
         <select
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
-          className="appearance-none bg-primary rounded-tl-md rounded-bl-md text-white px-2 py-1 outline-none cursor-pointer w-full shadow-lg"
+          className="appearance-none bg-primary rounded-tl-md rounded-bl-md text-white px-2 py-1 outline-none cursor-pointer w-full shadow-lg border border-secondary/20"
         >
           <option value="all">Filter by...</option>
           <option value="category">Category</option>
@@ -40,7 +40,7 @@ export default function SearchBar({
       </div>
 
       {/* Search input */}
-      <div className="bg-primary flex items-center flex-1 px-2 py-1 shadow-lg">
+      <div className="bg-primary flex items-center flex-1 px-2 py-1 shadow-lg border border-secondary/20">
         <MagnifyingGlassIcon className="h-5 w-5 text-secondary mr-2" />
         <input
           type="text"
@@ -68,7 +68,7 @@ export default function SearchBar({
               e.target.value as "newest" | "oldest" | "nameAZ" | "nameZA" | "",
             )
           }
-          className="appearance-none bg-primary rounded-tr-md rounded-br-md text-white px-2 py-1 outline-none cursor-pointer w-full shadow-lg"
+          className="appearance-none bg-primary rounded-tr-md rounded-br-md text-white px-2 py-1 outline-none cursor-pointer w-full shadow-lg border border-secondary/20"
         >
           <option value="">Sort by...</option>
           <option value="newest">Newest</option>
