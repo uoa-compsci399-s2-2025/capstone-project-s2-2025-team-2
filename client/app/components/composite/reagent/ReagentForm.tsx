@@ -1,9 +1,10 @@
 "use client"
 
 import { useState, useCallback, useMemo } from "react"
+import { toast } from "sonner"
 import type { components } from "@/models/__generated__/schema"
 import client from "../../../services/fetch-client"
-import { toast } from "sonner"
+import { uploadReagentImage } from "../../../services/firebase-storage"
 
 type ReagentTradingType = components["schemas"]["ReagentTradingType"]
 type ReagentCategory = components["schemas"]["ReagentCategory"]
@@ -38,7 +39,7 @@ interface FormData {
   price: string
   expiryDate: string
   location: string
-  images: string[]
+  images: File[]
 }
 
 //reusable styling classes
@@ -82,7 +83,8 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
     location: "",
     images: [],
   })
-  const [imageUrl, setImageUrl] = useState("")
+
+  const [dataSubmitting, setDataSubmitting] = useState(false)
 
   //today date calc
   const todaysDate = useMemo(() => new Date().toISOString().split("T")[0], [])
@@ -98,29 +100,15 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
+    // stop people from spamming the fk out of the submit btn
+    if (dataSubmitting) return
+
+    setDataSubmitting(true)
+
     //at least one category selected
     if (!formData.categories.length) {
       toast("Please select at least one tag")
       return
-    }
-
-    const reagentData: CreateReagentRequest = {
-      name: formData.name,
-      description: formData.description,
-      condition: formData.condition,
-      tradingType: formData.tradingType,
-      categories: formData.categories,
-      expiryDate: formData.expiryDate,
-      images: formData.images,
-      location: formData.location,
-      visibility: formData.visibility,
-      //only include price if selling
-      price:
-        formData.tradingType === "sell" && formData.price
-          ? Number(formData.price)
-          : 0,
-      quantity: Number(formData.quantity),
-      unit: formData.unit,
     }
 
     try {
@@ -128,52 +116,122 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       const idToken = localStorage.getItem("authToken")
       if (!idToken) {
         toast("Please sign in to create a reagent.")
+        setDataSubmitting(false)
         return
       }
+
+      // because image uploading functionality depends on the reagent uid, create reagent w/o images first
+      const reagentData: CreateReagentRequest = {
+        name: formData.name,
+        description: formData.description,
+        condition: formData.condition,
+        tradingType: formData.tradingType,
+        categories: formData.categories,
+        expiryDate: formData.expiryDate,
+        images: [],
+        location: formData.location,
+        visibility: formData.visibility,
+        //only include price if selling
+        price:
+          formData.tradingType === "sell" && formData.price
+            ? Number(formData.price)
+            : 0,
+        quantity: Number(formData.quantity),
+        unit: formData.unit,
+      }
+
       console.log("Token:", idToken)
       console.log("Token starts with Bearer?:", idToken.startsWith("Bearer "))
 
-      const { error } = await client.POST("/users/reagents" as any, {
-        body: reagentData,
-        headers: {
-          Authorization: `Bearer ${idToken}`,
+      // STEP 1 -- create the reagent (without images)
+      const { data: createdReagent, error } = await client.POST(
+        "/users/reagents" as any,
+        {
+          body: reagentData,
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
         },
-      })
+      )
 
       if (error) {
         throw new Error("Failed to create reagent")
+      }
+
+      // STEP 2 -- once we have the actual reagent data from db, update reagent data w/ images
+      if (formData.images.length > 0) {
+        toast("Uploading images...")
+        const imageUrls: string[] = []
+
+        for (let i = 0; i < formData.images.length; i++) {
+          const file = formData.images[i]
+          const imgUrl = await uploadReagentImage(createdReagent.id, file)
+
+          imgUrl
+            ? imageUrls.push(imgUrl)
+            : toast(`Failed to upload image '${file.name}'`)
+        }
+
+        if (imageUrls.length > 0) {
+          const { error } = await client.PATCH(
+            `/users/reagents/${createdReagent.id}` as any,
+            {
+              body: { images: imageUrls },
+              headers: {
+                Authorization: `Bearer ${idToken}`,
+              },
+            },
+          )
+
+          if (error) {
+            console.error(`Failed to udpate reagent data with images: ${error}`)
+            toast("Failed to upload some reagent images")
+          }
+        }
       }
 
       toast("Reagent created successfully!")
       onSubmit(reagentData)
     } catch {
       toast("Failed to create reagent!")
+    } finally {
+      setDataSubmitting(false)
     }
   }
 
-  const addImage = () => {
-    const url = imageUrl.trim()
+  const addImage = (files: FileList | null) => {
+    if (!files || files.length === 0) return
 
-    //validation checks
-    if (!url) return
-    if (formData.images.length >= MAX_IMAGES) return
-    if (formData.images.includes(url)) {
-      toast("URL has already been added")
-      return
-    }
-    try {
-      new URL(url)
-    } catch {
-      toast("Invalid URL")
-      return
+    const newFiles: File[] = []
+
+    // file input doesnt store state from prev usage so we need to compare newly selected files w formData.images state
+    for (let i = 0; i < files.length; i++) {
+      const currFile = files[i]
+
+      if (formData.images.length + newFiles.length >= MAX_IMAGES) {
+        toast(`You can't select more than ${MAX_IMAGES} images`)
+        break
+      }
+
+      const isDupe = formData.images.some(
+        (existingFile) => existingFile.name === currFile.name,
+      )
+
+      if (isDupe) {
+        toast(`File "${currFile.name}" has already been added`)
+        continue
+      }
+
+      newFiles.push(currFile)
     }
 
-    handleFieldChange("images", [...formData.images, url])
-    setImageUrl("")
+    if (newFiles.length > 0) {
+      handleFieldChange("images", [...formData.images, ...newFiles])
+    }
   }
 
-  const removeImage = (url: string) => {
-    const filtered = formData.images.filter((img) => img !== url)
+  const removeImage = (imgToRemove: File) => {
+    const filtered = formData.images.filter((img) => img !== imgToRemove)
     handleFieldChange("images", filtered)
   }
 
@@ -186,7 +244,8 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
   }
 
   const formInput = (
-    field: keyof FormData,
+    // image input doesnt consume this func, so exclude "images" field
+    field: Exclude<keyof FormData, "images">,
     props: React.InputHTMLAttributes<HTMLInputElement> = {},
   ) => (
     <input
@@ -362,42 +421,32 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
           <>
             <div className="flex gap-2">
               <input
-                type="url"
-                value={imageUrl}
-                onChange={(e) => setImageUrl(e.target.value)}
-                placeholder="https://example.com/image.jpg"
+                type="file"
+                accept="image/*"
+                multiple
                 disabled={formData.images.length >= MAX_IMAGES}
+                onChange={(e) => addImage(e.target.files)}
                 className={inputStyles}
               />
-              <button
-                type="button"
-                onClick={addImage}
-                disabled={
-                  formData.images.length >= MAX_IMAGES || !imageUrl.trim()
-                }
-                className={`${buttonStyles} min-w-[80px] bg-gray-600 hover:bg-gray-500`}
-              >
-                Add
-              </button>
             </div>
 
             {/* image list */}
             {formData.images.length > 0 && (
               <div className="flex flex-wrap gap-2 mt-3">
-                {formData.images.map((url, i) => (
+                {formData.images.map((file, i) => (
                   <div
                     key={`img-${i}`}
                     className="flex items-center gap-2 px-3 py-1.5 border border-muted rounded-lg bg-primary/30 max-w-xs group hover:bg-primary/40 transition-colors"
                   >
                     <span
                       className="text-white text-sm truncate flex-1"
-                      title={url}
+                      title={file.name}
                     >
-                      {url}
+                      {file.name}
                     </span>
                     <button
                       type="button"
-                      onClick={() => removeImage(url)}
+                      onClick={() => removeImage(file)}
                       className="text-red-400 hover:text-red-300 text-sm"
                     >
                       ✕
@@ -420,9 +469,10 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
         </button>
         <button
           type="submit"
-          className={`${buttonStyles} min-w-[120px] bg-blue-primary hover:bg-blue-primary/80`}
+          disabled={dataSubmitting}
+          className={`${buttonStyles} min-w-[120px] bg-blue-primary hover:bg-blue-primary/80 disabled:opacity-50 disabled:cursor-not-allowed`}
         >
-          Create Reagent
+          {dataSubmitting ? "Submitting..." : "Create Reagent"}
         </button>
       </div>
     </form>
