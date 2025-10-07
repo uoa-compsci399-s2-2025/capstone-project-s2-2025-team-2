@@ -9,6 +9,7 @@ export const EmailDomainValidationSchema = (acceptedDomains: string[]) => {
       .refine(
         (email) => {
           const userEmailDomain = email.slice(email.indexOf("@"))
+          // .includes ensures we account for subdomains (e.g. @canterbury.ac.nz & @math.canterbury.ac.nz)
           return acceptedDomains.includes(userEmailDomain)
         },
         {

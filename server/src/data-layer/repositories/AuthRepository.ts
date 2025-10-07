@@ -97,5 +97,3 @@ export class AuthRepository {
     }
   }
 }
-
-new AuthRepository().getValidSignupEmailDomains()
