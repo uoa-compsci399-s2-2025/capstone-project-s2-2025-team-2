@@ -242,7 +242,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       if (isDupe) {
         toast(`File "${currFile.name}" has already been added`)
         continue
-      } 
+      }
 
       newFiles.push(currFile)
     }
