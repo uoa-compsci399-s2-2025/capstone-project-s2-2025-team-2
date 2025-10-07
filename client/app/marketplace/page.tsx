@@ -128,7 +128,6 @@ const Marketplace = () => {
       </div>
 
       <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
-        
         {currentData.length > 0 ? (
           currentData.map((r) => (
             <ReagentCard key={r.id} reagent={r as ReagentWithId} />
@@ -137,7 +136,7 @@ const Marketplace = () => {
           <LoadingState pageName="Marketplace" />
         ) : (
           <div className="flex justify-center w-full items-center h-[40vh] text-gray-400 italic">
-            No reagents found for "{search}"
+            No reagents found for &quot;{search}&quot;
           </div>
         )}
       </div>
