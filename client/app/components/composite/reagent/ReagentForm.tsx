@@ -23,7 +23,7 @@ const VISIBILITY_OPTIONS: ReagentVisibility[] = [
 const MAX_IMAGES = 5
 
 interface ReagentFormProps {
-  onSubmit: (data: CreateReagentRequest) => void
+  onSubmit: (data: any) => void // Changed to accept the full reagent data
   onCancel: () => void
 }
 
@@ -108,6 +108,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
     //at least one category selected
     if (!formData.categories.length) {
       toast("Please select at least one tag")
+      setDataSubmitting(false)
       return
     }
 
@@ -158,6 +159,9 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
         throw new Error("Failed to create reagent")
       }
 
+      // Variable to track the final reagent data
+      let finalReagentData = createdReagent
+
       // STEP 2 -- once we have the actual reagent data from db, update reagent data w/ images
       if (formData.images.length > 0) {
         toast("Uploading images...")
@@ -173,7 +177,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
         }
 
         if (imageUrls.length > 0) {
-          const { error } = await client.PATCH(
+          const { data: updatedReagent, error } = await client.PATCH(
             `/users/reagents/${createdReagent.id}` as any,
             {
               body: { images: imageUrls },
@@ -184,15 +188,33 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
           )
 
           if (error) {
-            console.error(`Failed to udpate reagent data with images: ${error}`)
+            console.error(`Failed to update reagent data with images: ${error}`)
             toast("Failed to upload some reagent images")
+          } else if (updatedReagent) {
+            // Use the updated reagent data if available
+            finalReagentData = updatedReagent
           }
         }
       }
 
+      // STEP 3 -- Fetch the complete reagent data to ensure we have all server-generated fields
+      const { data: completeReagent, error: fetchError } = await client.GET(
+        `/users/reagents/${createdReagent.id}` as any,
+        {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        },
+      )
+
+      if (!fetchError && completeReagent) {
+        finalReagentData = completeReagent
+      }
+
       toast("Reagent created successfully!")
-      onSubmit(reagentData)
-    } catch {
+      onSubmit(finalReagentData)
+    } catch (error) {
+      console.error("Error creating reagent:", error)
       toast("Failed to create reagent!")
     } finally {
       setDataSubmitting(false)
@@ -220,7 +242,7 @@ export const ReagentForm = ({ onSubmit, onCancel }: ReagentFormProps) => {
       if (isDupe) {
         toast(`File "${currFile.name}" has already been added`)
         continue
-      }
+      } 
 
       newFiles.push(currFile)
     }
