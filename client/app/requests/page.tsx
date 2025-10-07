@@ -8,7 +8,7 @@ import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import type { components } from "@/models/__generated__/schema"
 import { usePageSize } from "../hooks/usePageSize"
-import { usePagaination } from "../hooks/usePagination"
+import { usePagination } from "../hooks/usePagination"
 import Pagination from "../components/composite/pagination/Pagination"
 
 type Order = components["schemas"]["Order"]
@@ -64,7 +64,7 @@ export default function Orders() {
   }
   // pagination
   const pageSize = usePageSize()
-  const { currentPage, setCurrentPage, totalPages } = usePagaination(
+  const { currentPage, setCurrentPage, totalPages } = usePagination(
     orders,
     pageSize,
   )
