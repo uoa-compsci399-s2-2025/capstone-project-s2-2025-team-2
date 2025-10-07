@@ -10,6 +10,7 @@ import type { components } from "@/models/__generated__/schema"
 import { usePageSize } from "../hooks/usePageSize"
 import { usePagaination } from "../hooks/usePagination"
 import Pagination from "../components/composite/pagination/Pagination"
+import LoadingState from "../components/composite/LoadingState"
 
 type Order = components["schemas"]["Order"]
 type OrderWithId = Order & { id: string; owner_id: string }
@@ -92,9 +93,7 @@ export default function Orders() {
       <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
         {/*loading state*/}
         {loading ? (
-          <div className="text-white text-center w-full">
-            Loading requests...
-          </div>
+          <LoadingState pageName="Requests"/>
         ) : !orders.length ? (
           //no orders found
           <div className="bg-primary/50 rounded-lg p-8 border border-muted text-gray-400 text-center w-full">
