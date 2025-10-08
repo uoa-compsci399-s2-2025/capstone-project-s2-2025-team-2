@@ -205,11 +205,12 @@ export class UserController extends Controller {
       throw new Error("Forbidden")
     }
     const user_id = request.user.uid
+    const { createdAt, createdAtReadable, id, ...rest } = requestObject as any
     const data = {
-      ...requestObject,
+      ...rest,
       user_id,
     }
-    const newReagent = await new ReagentService().createReagent(data as Reagent)
+    const newReagent = await new ReagentService().createReagent(data)
     return newReagent
   }
 
