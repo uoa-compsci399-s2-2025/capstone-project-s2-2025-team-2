@@ -8,6 +8,7 @@ import { usePagaination } from "../hooks/usePagination"
 import Pagination from "../components/composite/pagination/Pagination"
 import { usePageSize } from "../hooks/usePageSize"
 import client from "../services/fetch-client"
+import LoadingState from "../components/composite/loadingstate/LoadingState"
 
 type FirestoreReagent = {
   id: string
@@ -183,46 +184,54 @@ const Marketplace = () => {
       </div>
 
       <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
-        {currentData.map((r) => {
-          const allowedTradingTypes = ["trade", "giveaway", "sell"] as const
-          const tradingType = allowedTradingTypes.includes(r.tradingType as any)
-            ? (r.tradingType as "trade" | "giveaway" | "sell")
-            : "trade"
+        {currentData.length > 0 ? (
+          currentData.map((r) => {
+            const allowedTradingTypes = ["trade", "giveaway", "sell"] as const
+            const tradingType = allowedTradingTypes.includes(r.tradingType as any)
+              ? (r.tradingType as "trade" | "giveaway" | "sell")
+              : "trade"
 
-          const allowedCategories = [
-            "chemical",
-            "hazardous",
-            "biological",
-          ] as const
-          const categories = Array.isArray(r.categories)
-            ? r.categories.filter(
-                (c): c is (typeof allowedCategories)[number] =>
-                  allowedCategories.includes(c as any),
-              )
-            : []
+            const allowedCategories = [
+              "chemical",
+              "hazardous",
+              "biological",
+            ] as const
+            const categories = Array.isArray(r.categories)
+              ? r.categories.filter(
+                  (c): c is (typeof allowedCategories)[number] =>
+                    allowedCategories.includes(c as any),
+                )
+              : []
 
-          const allowedVisibility = [
-            "everyone",
-            "region",
-            "institution",
-            "private",
-          ] as const
-          const visibility = allowedVisibility.includes(r.visibility as any)
-            ? (r.visibility as (typeof allowedVisibility)[number])
-            : undefined
+            const allowedVisibility = [
+              "everyone",
+              "region",
+              "institution",
+              "private",
+            ] as const
+            const visibility = allowedVisibility.includes(r.visibility as any)
+              ? (r.visibility as (typeof allowedVisibility)[number])
+              : undefined
 
-          return (
-            <ReagentCard
-              key={r.id}
-              reagent={{
-                ...r,
-                tradingType,
-                categories,
-                visibility,
-              }}
-            />
-          )
-        })}
+            return (
+              <ReagentCard
+                key={r.id}
+                reagent={{
+                  ...r,
+                  tradingType,
+                  categories,
+                  visibility,
+                }}
+              />
+            )
+          })
+        ) : search.trim() === "" ? (
+          <LoadingState pageName="Marketplace" />
+        ) : (
+          <div className="flex justify-center w-full items-center h-[40vh] text-gray-400 italic">
+            No reagents found for &quot;{search}&quot;
+          </div>
+        )}
       </div>
       <div className="pb-[4rem] md:pb-0">
         <Pagination
