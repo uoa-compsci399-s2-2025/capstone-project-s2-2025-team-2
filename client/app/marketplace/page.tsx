@@ -187,7 +187,9 @@ const Marketplace = () => {
         {currentData.length > 0 ? (
           currentData.map((r) => {
             const allowedTradingTypes = ["trade", "giveaway", "sell"] as const
-            const tradingType = allowedTradingTypes.includes(r.tradingType as any)
+            const tradingType = allowedTradingTypes.includes(
+              r.tradingType as any,
+            )
               ? (r.tradingType as "trade" | "giveaway" | "sell")
               : "trade"
 

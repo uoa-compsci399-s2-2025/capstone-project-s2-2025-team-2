@@ -205,15 +205,13 @@ export class UserController extends Controller {
       throw new Error("Forbidden")
     }
     const user_id = request.user.uid
-    const { createdAt, createdAtReadable, id, ...rest } = requestObject as any
     const data = {
-      ...rest,
+      ...requestObject,
       user_id,
     }
-    const newReagent = await new ReagentService().createReagent(data)
+    const newReagent = await new ReagentService().createReagent(data as Reagent)
     return newReagent
   }
-
   /**
    * Update a reagent by its ID.
    * User **must** be authenticated to access this endpoint

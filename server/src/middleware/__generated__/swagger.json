@@ -1249,7 +1249,7 @@
 						}
 					}
 				},
-				"description": "\r\nGet all reagents that are expiring in 30 days",
+				"description": "\nGet all reagents that are expiring in 30 days",
 				"security": [],
 				"parameters": []
 			}
