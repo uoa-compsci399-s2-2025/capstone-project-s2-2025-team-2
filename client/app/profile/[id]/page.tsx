@@ -241,7 +241,7 @@ const UserProfile = () => {
     <Overlay>
       <div className="px-5 pt-5">
         {/* profile header */}
-        <div className="flex gap-3">
+        <div className="flex gap-3 items-center">
           <img
             src="/placeholder.webp"
             alt="User Profile Photo"
@@ -255,20 +255,14 @@ const UserProfile = () => {
                 : `${userBeingViewed && userBeingViewed?.displayName}'s Profile`}
               */}
               {userBeingViewed?.preferredName || userBeingViewed?.displayName}
-
-
             </h1>
             <p className="flex items-center gap-2 text-xs md:text-sm text-orange-200 dark:text-blue-primary">
               <HomeIcon className="w-5 h-5 md:w-6 md:h-6" />
               {userBeingViewed.university || "Unknown"}
             </p>    
             <p className="flex items-center gap-2 text-xs md:text-sm text-blue-primary dark:text-orange-200">
-                            <EnvelopeIcon
-                className="w-5 h-5 md:w-6 md:h-6"
-              />
+              <EnvelopeIcon className="w-5 h-5 md:w-6 md:h-6" />
               {userBeingViewed.email || "Unknown"}
-              
-
             </p>
         
             
@@ -288,7 +282,7 @@ const UserProfile = () => {
           </div>
         </div>
         {/* reagent section */}
-        <div className="mt-20 flex flex-col gap-8 md:gap-2">
+        <div className="mt-10 flex flex-col gap-8 md:gap-2">
           {/* reagent filter btns */}
           <div className="flex flex-col gap-4 mb-5">
             <div className="flex gap-4 justify-center md:justify-end">
