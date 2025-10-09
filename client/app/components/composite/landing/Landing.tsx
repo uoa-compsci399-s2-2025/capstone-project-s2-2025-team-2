@@ -6,11 +6,18 @@ import SaveMoney from "./Icons/SaveMoney"
 
 const Landing = () => {
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-900">
-      {/* Hero Section */}
-      <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-20">
-        <div className="w-full lg:w-1/2">
-          <div className="lg:bg-white lg:p-10 lg:rounded-[20px] lg:shadow-xl lg:dark:bg-primary">
+    <div 
+      className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 relative"
+    >
+      {/* Semi-transparent overlay */}
+      <div className="mt-[40vh] absolute inset-0 bg-white/50 dark:bg-black/75"></div>
+      
+      {/* Content wrapper with relative positioning */}
+      <div className="mt-[40vh] relative z-10">
+        {/* Hero Section */}
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-20">
+        <div className="w-full">
+
             <h1 className="text-4xl md:text-5xl font-bold text-blue-primary dark:text-[#FFB276] mb-4">
               Access Lab-Grade Reagents
               <br />
@@ -45,7 +52,6 @@ const Landing = () => {
                 </button>
               </Link>
             </div>
-          </div>
         </div>
 
       </div>
@@ -62,7 +68,7 @@ const Landing = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
           {/* Card 1 */}
-          <div className="flex flex-col items-center bg-white dark:bg-primary rounded-2xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-gray-100 dark:border-gray-800 h-full">
+          <div className="flex flex-col items-center bg-white dark:bg-primary/95 rounded-2xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-gray-100 dark:border-gray-800 h-full">
             <ReduceWaste />
             <h3 className="mt-4 text-xl font-bold text-blue-primary dark:text-[#FFB276] text-center">
               Sustainable Research
@@ -75,7 +81,7 @@ const Landing = () => {
           </div>
 
           {/* Card 2 */}
-          <div className="flex flex-col items-center bg-white dark:bg-primary rounded-2xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-gray-100 dark:border-gray-800 h-full">
+          <div className="flex flex-col items-center bg-white/95 dark:bg-primary/95 rounded-2xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-gray-100 dark:border-gray-800 h-full">
             <SaveMoney />
             <h3 className="mt-4 text-xl font-bold text-blue-primary dark:text-[#FFB276] text-center">
               Budget Optimization
@@ -88,7 +94,7 @@ const Landing = () => {
           </div>
 
           {/* Card 3 */}
-          <div className="flex flex-col items-center bg-white dark:bg-primary rounded-2xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-gray-100 dark:border-gray-800 h-full">
+          <div className="flex flex-col items-center bg-white/95 dark:bg-primary/95 rounded-2xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-gray-100 dark:border-gray-800 h-full">
             <Collaborate />
             <h3 className="mt-4 text-xl font-bold text-blue-primary dark:text-[#FFB276] text-center">
               Scientific Community
@@ -103,7 +109,7 @@ const Landing = () => {
       </div>
 
       {/* Call to Action */}
-      <div className="max-w-7xl mx-auto mt-20 text-center">
+      <div className="max-w-7xl mx-auto mt-20 bg-white/90 dark:bg-primary/90 rounded-2xl text-center">
         <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-primary p-10 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800">
           <h2 className="text-2xl sm:text-3xl font-bold text-blue-primary dark:text-[#FFB276] mb-4">
             Ready to elevate your laboratory experience?
@@ -138,6 +144,7 @@ const Landing = () => {
           </div>
         </div>
       </div>
+      </div> {/* Close content wrapper */}
     </div>
   )
 }
