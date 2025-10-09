@@ -26,6 +26,7 @@ import {
   ShoppingCartIcon,
   ExclamationTriangleIcon,
   LockClosedIcon,
+  EnvelopeIcon
 } from "@heroicons/react/24/outline"
 import LoadingState from "@/app/components/composite/loadingstate/LoadingState"
 
@@ -248,15 +249,32 @@ const UserProfile = () => {
           />
           <div className="flex flex-col gap-2">
             <h1 className="font-light text-pearl text-xl md:text-4xl">
+              {/* Use this after viewing other's profile functionality added
               {idOfUserBeingViewed === userUid
                 ? `Welcome back, ${userBeingViewed && userBeingViewed?.preferredName}`
                 : `${userBeingViewed && userBeingViewed?.displayName}'s Profile`}
+              */}
+              {userBeingViewed?.preferredName || userBeingViewed?.displayName}
+
+
             </h1>
-            <p className="flex items-center gap-2 text-xs md:text-sm text-blue-primary dark:text-orange-200">
+            <p className="flex items-center gap-2 text-xs md:text-sm text-orange-200 dark:text-blue-primary">
               <HomeIcon className="w-5 h-5 md:w-6 md:h-6" />
-              {userBeingViewed.university}
+              {userBeingViewed.university || "Unknown"}
+            </p>    
+            <p className="flex items-center gap-2 text-xs md:text-sm text-blue-primary dark:text-orange-200">
+                            <EnvelopeIcon
+                className="w-5 h-5 md:w-6 md:h-6"
+              />
+              {userBeingViewed.email || "Unknown"}
+              
+
             </p>
+        
+            
+            
             {/* show 'edit profile' btn if user is viewing their own profile */}
+            {/* edit profile functionality
             {idOfUserBeingViewed === userUid && (
               <OutlinedButton
                 backgroundColor="#A1A1A1"
@@ -266,6 +284,7 @@ const UserProfile = () => {
                 className="mt-3 self-start"
               />
             )}
+            */}
           </div>
         </div>
         {/* reagent section */}
