@@ -14,20 +14,29 @@ const Landing = () => {
       
       {/* Content wrapper with relative positioning */}
       <div className="relative z-10">
-<div className="pt-20 mb-4 text-center lg:text-left">
+<div className="text-center lg:text-left">
   <p className="font-bold text-xl md:text-6xl text-black dark:text-white">
     Welcome to
   </p>
 </div>
 
-<div className="mb-4 text-center">
-  <h1 className="mt-[5rem] font-bold text-[10rem] dark:text-white text-black drop-shadow-lg leading-none">
-    CoLab
-  </h1>
-  <p className="ml-4 text-xl md:text-2xl text-black/80 dark:text-white/80">
-    Where Chemistry Researchers Connect
+<div className="mb-4 flex items-center justify-center">
+  <div className="mt-[10rem]">
+    <h1 className="font-bold text-[10rem] dark:text-white text-black drop-shadow-lg leading-none">
+      CoLab
+    </h1>
+  <p className="ml-4 text-xl md:text-2xl text-black/90 dark:text-white/90">
+    Where Chemistry Students Connect
   </p>
+  </div>
 
+      <Image
+      src="/Chemically_logo.png"
+      alt="CoLab Logo"
+      width={500} 
+      height={500} 
+      className="w-[30rem] h-auto"
+    />
 </div>
         {/* Hero Section */}
         <div className="mt-[50vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-20">
