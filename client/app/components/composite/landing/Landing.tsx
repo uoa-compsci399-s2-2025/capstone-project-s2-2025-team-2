@@ -10,12 +10,27 @@ const Landing = () => {
       className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 relative"
     >
       {/* Semi-transparent overlay */}
-      <div className="mt-[40vh] absolute inset-0 bg-white/50 dark:bg-black/75"></div>
+      <div className="mt-[100vh] absolute inset-0 bg-white/50 dark:bg-black/75"></div>
       
       {/* Content wrapper with relative positioning */}
-      <div className="mt-[40vh] relative z-10">
+      <div className="relative z-10">
+<div className="pt-20 mb-4 text-center lg:text-left">
+  <p className="font-bold text-xl md:text-6xl text-black dark:text-white">
+    Welcome to
+  </p>
+</div>
+
+<div className="mb-4 text-center">
+  <h1 className="mt-[5rem] font-bold text-[10rem] dark:text-white text-black drop-shadow-lg leading-none">
+    CoLab
+  </h1>
+  <p className="ml-4 text-xl md:text-2xl text-black/80 dark:text-white/80">
+    Where Chemistry Researchers Connect
+  </p>
+
+</div>
         {/* Hero Section */}
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-20">
+        <div className="mt-[50vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-20">
         <div className="w-full">
 
             <h1 className="text-4xl md:text-5xl font-bold text-blue-primary dark:text-[#FFB276] mb-4">
