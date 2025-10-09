@@ -3,7 +3,6 @@ import Link from "next/link"
 import Collaborate from "./Icons/Collaborate"
 import ReduceWaste from "./Icons/ReduceWaste"
 import SaveMoney from "./Icons/SaveMoney"
-import logo from "@/public/ChemicallyLogo.webp"
 
 const Landing = () => {
   return (
