@@ -243,12 +243,12 @@ const UserProfile = () => {
         {/* profile header */}
         <div className="flex gap-3 items-center">
           <img
-            src="/placeholder.webp"
+            src="/placeholder_pfp.jpg"
             alt="User Profile Photo"
             className="w-25 h-25 rounded-full border-3 border-[#6C6C6C] dark:border-white"
           />
           <div className="flex flex-col gap-2">
-            <h1 className="font-light text-pearl text-xl md:text-4xl">
+            <h1 className="font-light text-pearl text-2xl md:text-4xl">
               {/* Use this after viewing other's profile functionality added
               {idOfUserBeingViewed === userUid
                 ? `Welcome back, ${userBeingViewed && userBeingViewed?.preferredName}`
