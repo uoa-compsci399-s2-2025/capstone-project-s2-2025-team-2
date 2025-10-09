@@ -12,14 +12,7 @@ const Header = () => {
             "
       >
         <span>Chemical.ly</span>
-        <div className="relative w-[250px] h-[100px] mx-auto mt-[3rem]">
-          <Image
-            src={logo}
-            alt="Chemical.ly Logo"
-            fill
-            className="object-contain"
-          />
-        </div>
+
         <span className="block mt-[3rem] text-[32px]">Reduce, Reuse</span>
       </div>
       <div className="hidden lg:flex lg:justify-start lg:items-center lg:pb-[3rem]">

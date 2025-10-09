@@ -49,18 +49,6 @@ const Landing = () => {
           </div>
         </div>
 
-        {/* Hero Image */}
-        <div className="relative w-full max-w-md lg:max-w-lg">
-          <div className="absolute -z-10 w-full h-full bg-gradient-to-r from-[#FF947A]/30 to-transparent rounded-full blur-2xl"></div>
-          <Image
-            src={logo}
-            alt="Chemical.ly Logo"
-            width={500}
-            height={500}
-            className="w-full h-auto drop-shadow-xl"
-            priority
-          />
-        </div>
       </div>
 
       {/* Features Section */}
