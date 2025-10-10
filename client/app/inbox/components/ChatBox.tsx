@@ -151,9 +151,11 @@ export default function ChatBox({
             <button className="md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--dark-gray)] text-white text-light-gray hover:bg-primary rounded-2xl transition-colors">
               View Listing
             </button>
+            {!isResponser && (
             <button className="md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--dark-gray)] text-white text-light-gray hover:bg-primary rounded-2xl transition-colors">
               Edit Request
             </button>
+            )}
             {isResponser && (
             <button className="md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--succ-green-light)] hover:bg-green-700 text-white rounded-2xl transition-colors">
               Confirm Trade
