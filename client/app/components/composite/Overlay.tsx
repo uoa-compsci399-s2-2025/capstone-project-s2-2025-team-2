@@ -6,7 +6,7 @@ export default function Overlay({
   return (
     <div className="min-h-screen">
       <Sidebar />
-      <main className="lg:ml-60 pt-[4rem] lg:pt-[2rem] min-h-[calc(100vh)]">
+      <main className="lg:ml-60 min-h-[calc(100vh)]">
         {children}
       </main>
     </div>
