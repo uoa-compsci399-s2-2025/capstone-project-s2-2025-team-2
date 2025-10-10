@@ -5,8 +5,12 @@ import { generateVerificationCode } from "../../utils/generateVerificationCode"
 import EmailService from "./EmailService"
 import { SendVerificationCodeResponse } from "../dtos/response/SendVerificationCodeResponse"
 import { VerifyCodeResponse } from "../dtos/response/VerifyCodeResponse"
-
 import { VerifyTokenResponse } from "../dtos/response/VerifyTokenResponse"
+
+import {
+  EmailDomainValidationSchema,
+  type EmailDomainValidationType,
+} from "../../../../shared/zod-schemas/signup-email-validation"
 
 export default class AuthService {
   private authRepository: AuthRepository
@@ -123,6 +127,37 @@ export default class AuthService {
     } catch (error) {
       console.error("Error ensuring user exists:", error)
       // Don't throw error here as token verification was successful
+    }
+  }
+
+  async getValidEmailDomains() {
+    const emailDomainDocs =
+      await this.authRepository.getValidSignupEmailDomains()
+
+    const validEmailDomains: string[][] = []
+    emailDomainDocs.forEach((doc) => {
+      validEmailDomains.push(doc.emailDomains)
+    })
+
+    // as some email domain objects within the db's collection have more than 1 domain, we need to flatten the array before returning it
+    return validEmailDomains.flat(Infinity) as string[]
+  }
+
+  async validateEmailDomain(email: string): Promise<boolean> {
+    // get all current valid email domains and check users email against them
+    const validEmails = await new AuthService().getValidEmailDomains()
+
+    try {
+      // validate user email against zod input
+      EmailDomainValidationSchema(validEmails).parse({
+        email,
+      }) as EmailDomainValidationType
+      return true
+    } catch (err) {
+      console.error(
+        `User email is a not an accepted institutional email: ${err}`,
+      )
+      return false
     }
   }
 }

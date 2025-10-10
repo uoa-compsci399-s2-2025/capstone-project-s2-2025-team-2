@@ -66,8 +66,10 @@ export default function SignInBox({
 
   //            function: handleGoogleError           //
   const handleGoogleError = (error: any) => {
-    console.error("Google OAuth error:", error)
-    toast("Google authentication failed. Please try again.")
+    if (error.message !== "Please use an accepted institutional email") {
+      console.error("Google OAuth error:", error)
+    }
+    toast.error(error.message)
   }
 
   //            function: handleSubmit           //

@@ -80,6 +80,10 @@ export const useGoogleOAuth = ({ onSuccess, onError }: GoogleOAuthBtnProps) => {
               email: userCredential.user.email,
             })
           }
+        } else {
+          // need to add check for error -- handles the domain validation errors
+          const error = new Error(responseData.message || "Google OAuth error")
+          if (onError) onError(error)
         }
       } catch (error) {
         console.error("Google authentication error:", error)
