@@ -14,33 +14,9 @@ const Landing = () => {
       
       {/* Content wrapper with relative positioning */}
       <div className="relative z-10">
-<div className="text-center lg:text-left">
-  <p className="font-bold text-xl md:text-6xl text-black dark:text-white">
-    Welcome to
-  </p>
-</div>
-
-<div className="mb-4 flex items-center justify-center">
-  <div className="mt-[10rem]">
-    <h1 className="font-bold text-[10rem] dark:text-white text-black drop-shadow-lg leading-none">
-      CoLab
-    </h1>
-  <p className="ml-4 text-xl md:text-2xl text-black/90 dark:text-white/90">
-    Where Chemistry Students Connect
-  </p>
-  </div>
-
-      <Image
-      src="/Chemically_logo.png"
-      alt="CoLab Logo"
-      width={500} 
-      height={500} 
-      className="w-[30rem] h-auto"
-    />
-</div>
         {/* Hero Section */}
-        <div className="mt-[50vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-20">
-        <div className="w-full">
+        <div className="mt-[20vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-[20rem]">
+        <div className="w-full lg:w-1/2">
 
             <h1 className="text-4xl md:text-5xl font-bold text-blue-primary dark:text-[#FFB276] mb-4">
               Access Lab-Grade Reagents
