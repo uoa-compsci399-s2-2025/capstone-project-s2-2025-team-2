@@ -19,6 +19,7 @@ export default function ChatBox({
   const [messageInput, setMessageInput] = useState("")
   const [sending, setSending] = useState(false)
   const [user, setUser] = useState<User | null>(null)
+  const [isResponser, setIsResponser] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   //            effect: auth state change           //
@@ -38,6 +39,19 @@ export default function ChatBox({
   useEffect(() => {
     scrollToBottom()
   }, [selectedConversation?.messages])
+
+  //            effect: check if user is responder           //
+  useEffect(() => {
+    if (user?.uid && selectedConversation?.chat_room?.user2_id) {
+      if (user.uid === selectedConversation.chat_room.user2_id) {
+        setIsResponser(true)
+      } else {
+        setIsResponser(false)
+      }
+    } else {
+      setIsResponser(false)
+    }
+  }, [user?.uid, selectedConversation?.chat_room?.user2_id])
 
   //            function: transformMessage           //
   const transformMessage = (message: any, isUser: boolean) => ({
@@ -140,9 +154,11 @@ export default function ChatBox({
             <button className="md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--dark-gray)] text-white text-light-gray hover:bg-primary rounded-2xl transition-colors">
               Edit Request
             </button>
+            {isResponser && (
             <button className="md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--succ-green-light)] hover:bg-green-700 text-white rounded-2xl transition-colors">
               Confirm Trade
             </button>
+            )}
           </div>
         </div>
       </div>
