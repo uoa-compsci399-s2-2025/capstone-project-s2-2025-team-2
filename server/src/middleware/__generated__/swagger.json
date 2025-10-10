@@ -7,39 +7,6 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"User": {
-				"properties": {
-					"email": {
-						"type": "string"
-					},
-					"displayName": {
-						"type": "string"
-					},
-					"preferredName": {
-						"type": "string"
-					},
-					"university": {
-						"type": "string"
-					},
-					"role": {
-						"type": "string",
-						"enum": [
-							"user",
-							"lab_manager",
-							"admin"
-						]
-					}
-				},
-				"required": [
-					"email",
-					"displayName",
-					"preferredName",
-					"university",
-					"role"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"ReagentTradingType": {
 				"type": "string",
 				"enum": [
@@ -106,8 +73,10 @@
 						"type": "array"
 					},
 					"createdAt": {
-						"type": "string",
-						"format": "date-time"
+						"type": "string"
+					},
+					"createdAtReadable": {
+						"type": "string"
 					},
 					"location": {
 						"type": "string"
@@ -129,8 +98,42 @@
 					"tradingType",
 					"categories",
 					"createdAt",
+					"createdAtReadable",
 					"location",
 					"unit"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"User": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"displayName": {
+						"type": "string"
+					},
+					"preferredName": {
+						"type": "string"
+					},
+					"university": {
+						"type": "string"
+					},
+					"role": {
+						"type": "string",
+						"enum": [
+							"user",
+							"lab_manager",
+							"admin"
+						]
+					}
+				},
+				"required": [
+					"email",
+					"displayName",
+					"preferredName",
+					"university",
+					"role"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -236,8 +239,10 @@
 						"type": "array"
 					},
 					"createdAt": {
-						"type": "string",
-						"format": "date-time"
+						"type": "string"
+					},
+					"createdAtReadable": {
+						"type": "string"
 					},
 					"location": {
 						"type": "string"
@@ -251,6 +256,17 @@
 				},
 				"type": "object",
 				"description": "Make all properties in T optional"
+			},
+			"Record_string.Reagent-Array_": {
+				"properties": {},
+				"additionalProperties": {
+					"items": {
+						"$ref": "#/components/schemas/Reagent"
+					},
+					"type": "array"
+				},
+				"type": "object",
+				"description": "Construct a type with a set of properties K of type T"
 			},
 			"Order": {
 				"properties": {
@@ -809,6 +825,36 @@
 		"contact": {}
 	},
 	"paths": {
+		"/users/reagents/expiring": {
+			"get": {
+				"operationId": "GetReagentsExpiringSoon",
+				"responses": {
+					"200": {
+						"description": "All reagents returned successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Reagent"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get reagents those are expiring in 60 days or less under a user by their user id",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
 		"/users": {
 			"get": {
 				"operationId": "GetAllUsers",
@@ -1186,6 +1232,26 @@
 						}
 					}
 				]
+			}
+		},
+		"/reagents/expiring": {
+			"get": {
+				"operationId": "GetReagentsExpiringSoon",
+				"responses": {
+					"200": {
+						"description": "All reagents returned successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Record_string.Reagent-Array_"
+								}
+							}
+						}
+					}
+				},
+				"description": "\r\nGet all reagents that are expiring in 30 days",
+				"security": [],
+				"parameters": []
 			}
 		},
 		"/reagents": {
@@ -1819,6 +1885,22 @@
 						}
 					}
 				}
+			}
+		},
+		"/Expiry/send-expiry-emails": {
+			"get": {
+				"operationId": "SendExpiryNotifications",
+				"responses": {
+					"200": {
+						"description": "Email notifications sent successfully"
+					}
+				},
+				"description": "Send email notifications to all users who has reagents expiring in 30 days",
+				"tags": [
+					"Expiry"
+				],
+				"security": [],
+				"parameters": []
 			}
 		},
 		"/auth/send-verification-code": {

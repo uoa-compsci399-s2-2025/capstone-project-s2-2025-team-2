@@ -17,7 +17,8 @@ export interface Reagent {
   tradingType: ReagentTradingType
   images?: string[]
   categories: ReagentCategory[]
-  createdAt: Date
+  createdAt: string
+  createdAtReadable: string
   location: string
   unit: string
   visibility?: ReagentVisibility
