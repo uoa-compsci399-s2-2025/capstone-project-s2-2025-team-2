@@ -31,6 +31,7 @@ export const DefaultSellerContact: Story = {
       location: "University of Auckland",
       categories: ["chemical"],
       createdAt: "2025-01-01T00:00:00.000Z",
+      createdAtReadable: "1st Jan 2025",
     },
   },
 }
