@@ -15,6 +15,7 @@ const ReagentCard = ({ reagent }: ReagentCardProps) => (
   <BaseCard
     {...reagent}
     reagentId={reagent.id}
+    onViewClick={() => window.location.href = `/marketplace/${reagent.id}`}
     //location render
     footerLeft={
       <p className="underline-offset-2 text-white/50 flex text-xs gap-0.5">

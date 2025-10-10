@@ -21,6 +21,7 @@ interface BaseCardProps {
   tradingType: TradingType
   footerLeft: ReactNode
   reagentId: string
+  onViewClick?: () => void
 }
 
 //trading type display style mapping
@@ -49,6 +50,7 @@ const BaseCard = ({
   tradingType,
   footerLeft,
   reagentId,
+  onViewClick,
 }: BaseCardProps) => {
   const router = useRouter()
   const { color, icon: Icon } = TRADING_TYPE_STYLES[tradingType] || {}
@@ -72,7 +74,7 @@ const BaseCard = ({
 
   const ViewButton = () => (
     <button
-      onClick={() => router.push(`/marketplace/${reagentId}`)}
+      onClick={onViewClick || (() => router.push(`/marketplace/${reagentId}`))}
       className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-secondary rounded-lg"
     >
       View
