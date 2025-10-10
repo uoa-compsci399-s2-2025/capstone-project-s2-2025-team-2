@@ -13,7 +13,7 @@ app.use(express.json())
 
 const corsOptions = {
   origin: [
-    "https://colab.exchange/",
+    "https://colab.exchange",
 
     "http://localhost:3000",
     "https://localhost:3000",
