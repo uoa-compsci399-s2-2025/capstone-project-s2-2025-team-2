@@ -9,12 +9,11 @@ import * as swaggerJson from "./middleware/__generated__/swagger.json"
 import * as swaggerUI from "swagger-ui-express"
 
 const app: Express = express()
-app.use(express.json())
-
 const corsOptions = {
   origin: [
     "https://chemically-d-client.vercel.app",
     "https://colab.exchange",
+    "https://54-206-209-62.sslip.io",
     "http://localhost:3000",
     "https://localhost:3000",
     "http://127.0.0.1:3000",
@@ -33,6 +32,8 @@ const corsOptions = {
 }
 
 app.use(cors(corsOptions))
+app.use(express.json())
+
 // Use body parser to read sent json payloads
 app.use(
   urlencoded({
@@ -40,7 +41,12 @@ app.use(
   }),
 )
 app.use(json())
-app.use(helmet())
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+    contentSecurityPolicy: false,
+  }),
+)
 
 app.use("/swagger", swaggerUI.serve, swaggerUI.setup(swaggerJson))
 
