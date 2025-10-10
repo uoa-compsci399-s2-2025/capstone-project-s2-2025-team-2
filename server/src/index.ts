@@ -13,7 +13,7 @@ app.use(express.json())
 
 const corsOptions = {
   origin: [
-    "https://chemically-d-client.vercel.app",
+    "https://colab.exchange/",
 
     "http://localhost:3000",
     "https://localhost:3000",
