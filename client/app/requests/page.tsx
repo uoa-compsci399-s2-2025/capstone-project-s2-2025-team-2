@@ -119,13 +119,15 @@ export default function Orders() {
           })
         )}
       </div>
-      <div className="pb-[4rem] md:pb-0">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-      </div>
+      {!loading && (
+        <div className="pb-[4rem] md:pb-0">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+      )}
     </Overlay>
   )
 }
