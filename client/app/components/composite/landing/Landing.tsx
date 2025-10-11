@@ -1,10 +1,26 @@
-import Image from "next/image"
+"use client"
 import Link from "next/link"
 import Collaborate from "./Icons/Collaborate"
 import ReduceWaste from "./Icons/ReduceWaste"
 import SaveMoney from "./Icons/SaveMoney"
+import { useEffect, useRef } from "react"
 
 const Landing = () => {
+      const parallaxRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (parallaxRef.current) {
+        const scrolled = window.scrollY
+        // Adjust the multiplier (1.2) to control speed - higher = faster
+        parallaxRef.current.style.transform = `translateY(${scrolled * -0.4}px)`;
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <div 
       className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 relative"
@@ -17,8 +33,17 @@ const Landing = () => {
             <h2 className="text-2xl text-black dark:text-white">
               CoLab
             </h2>
-            {/* Optional: Add navigation or buttons here */}
             <div className="flex items-center gap-4">
+              <Link href="/marketplace">
+                <button className="px-4 py-2 text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:underline">
+                  Marketplace
+                </button>
+              </Link>
+              <Link href="/about">
+                <button className="px-4 py-2 text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:underline">
+                  About
+                </button>
+              </Link>
               <Link href="/auth">
                 <button className="px-4 py-2 text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:underline">
                   Sign In
@@ -29,12 +54,14 @@ const Landing = () => {
         </div>
       </div>
       {/* Semi-transparent overlay */}
-      <div className="mt-[100vh] absolute inset-0 bg-white/50 dark:bg-black/75"></div>
+      <div 
+      ref={parallaxRef}
+      className="mt-[140vh] absolute inset-0 bg-white/50 dark:bg-black/75 h-[160vh]"></div>
       
       {/* Content wrapper with relative positioning */}
-      <div className="relative z-10">
+      <div className="relative z-10 mb-20">
         {/* Hero Section */}
-        <div className="mt-[20vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-[20rem]">
+        <div className="mt-[15vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-[10rem]">
         <div className="w-full lg:w-1/2">
 
             <h1 className="text-4xl md:text-5xl font-bold text-blue-primary dark:text-[#FFB276] mb-4 animate-slide-up-1">
@@ -76,8 +103,8 @@ const Landing = () => {
       </div>
 
       {/* Features Section */}
-      <div className="max-w-7xl mx-auto mt-16 ">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
           {/* Card 1 */}
           <div className="flex flex-col items-center bg-white dark:bg-primary/95 rounded-2xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-gray-100 dark:border-gray-800 h-full">
             <ReduceWaste />
@@ -117,8 +144,8 @@ const Landing = () => {
             </p>
           </div>
         </div>
-        
-        <h2 className="text-2xl sm:text-3xl font-bold text-center text-blue-primary dark:text-[#FFB276] mb-6">
+
+        <h2 className="text-2xl sm:text-3xl font-bold text-center text-blue-primary dark:text-[#FFB276] mt-[5rem]">
           Transforming Academic Research Resources
         </h2>
         <p className="text-center text-gray-600 dark:text-[#D3DAFF] mb-12 max-w-3xl mx-auto px-4">
@@ -130,7 +157,7 @@ const Landing = () => {
       </div>
 
       {/* Call to Action */}
-      <div className="max-w-7xl mx-auto mt-20 bg-white/90 dark:bg-primary/90 rounded-2xl text-center">
+      <div className="max-w-7xl mx-auto mt-20 bg-white/90 dark:bg-primary/90 rounded-2xl text-center ">
         <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-primary p-10 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800">
           <h2 className="text-2xl sm:text-3xl font-bold text-blue-primary dark:text-[#FFB276] mb-4">
             Ready to elevate your laboratory experience?
