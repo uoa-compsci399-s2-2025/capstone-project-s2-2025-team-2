@@ -61,12 +61,12 @@ const Landing = () => {
       {/* Semi-transparent overlay */}
       <div 
       ref={parallaxRef}
-      className="mt-[140vh] absolute inset-0 bg-white/50 dark:bg-black/75 h-[250vh] z-0"></div>
+      className="mt-[130vh] absolute inset-0 bg-white/50 dark:bg-black/75 h-[290vh] z-0"></div>
       
       {/* Content wrapper with relative positioning */}
       <div className="relative z-10 mb-20">
         {/* Hero Section */}
-        <div className="mt-[15vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-[10rem]">
+        <div className="mt-[15vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-[13rem]">
         <div className="lg:ml-[3rem] w-full lg:w-1/2">
 
             <h1 className="text-4xl md:text-5xl font-bold text-blue-primary dark:text-[#FFB276] mb-4 animate-slide-up-1">
@@ -165,7 +165,7 @@ const Landing = () => {
       ></div>
 
       {/*image section */}
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-20 mt-20 mb-12 relative">
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-20 mt-30 mb-20 relative">
           <div className="relative">
                   <h2 className="text-2xl sm:text-3xl font-bold text-left text-blue-primary dark:text-[#FFB276]">
           Transforming Academic
@@ -191,7 +191,7 @@ const Landing = () => {
       </div>
 
       {/* Call to Action */}
-      <div className="max-w-7xl mx-auto mt-20 bg-white/90 dark:bg-primary/90 rounded-2xl text-center">
+      <div className="max-w-7xl mx-auto mt-30 bg-white/90 dark:bg-primary/90 rounded-2xl text-center">
 
         <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-primary p-10 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800">
           <h2 className="text-2xl sm:text-3xl font-bold text-blue-primary dark:text-[#FFB276] mb-4">
