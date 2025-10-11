@@ -7,12 +7,18 @@ import { useEffect, useRef } from "react"
 
 const Landing = () => {
       const parallaxRef = useRef<HTMLDivElement | null>(null);
+      const svgParallaxRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
+      const scrolled = window.scrollY;
+      
       if (parallaxRef.current) {
-        const scrolled = window.scrollY
         parallaxRef.current.style.transform = `translateY(${scrolled * -0.5}px)`;
+      }
+      
+      if (svgParallaxRef.current) {
+        svgParallaxRef.current.style.transform = `translateY(${100 + (scrolled * -0.3)}px)`;
       }
     };
 
@@ -55,7 +61,7 @@ const Landing = () => {
       {/* Semi-transparent overlay */}
       <div 
       ref={parallaxRef}
-      className="mt-[140vh] absolute inset-0 bg-white/50 dark:bg-black/75 h-[240vh]"></div>
+      className="mt-[140vh] absolute inset-0 bg-white/50 dark:bg-black/75 h-[250vh] z-0"></div>
       
       {/* Content wrapper with relative positioning */}
       <div className="relative z-10 mb-20">
@@ -144,9 +150,23 @@ const Landing = () => {
           </div>
         </div>
 
+      {/* SVG Background for image section */}
+      <div 
+        ref={svgParallaxRef}
+        className="absolute left-0 right-0 -z-10"
+        style={{
+          backgroundImage: "url('/Animated Shape.svg')",
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+          height: '100vh',
+          top: '150vh'  // Position it roughly where the image section is
+        }}
+      ></div>
 
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-20 mt-20 mb-12">
-          <div>
+      {/*image section */}
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-20 mt-20 mb-12 relative">
+          <div className="relative">
                   <h2 className="text-2xl sm:text-3xl font-bold text-left text-blue-primary dark:text-[#FFB276]">
           Transforming Academic
                         <br />
@@ -163,7 +183,7 @@ const Landing = () => {
           <img 
             src="/CoLabLanding.jpg" 
             alt="Research collaboration" 
-            className="w-100 h-120 object-cover shadow-md"
+            className="w-100 h-120 object-cover shadow-md  z-10"
           />
         </div>
 
@@ -171,7 +191,8 @@ const Landing = () => {
       </div>
 
       {/* Call to Action */}
-      <div className="max-w-7xl mx-auto mt-20 bg-white/90 dark:bg-primary/90 rounded-2xl text-center ">
+      <div className="max-w-7xl mx-auto mt-20 bg-white/90 dark:bg-primary/90 rounded-2xl text-center">
+
         <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-primary p-10 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800">
           <h2 className="text-2xl sm:text-3xl font-bold text-blue-primary dark:text-[#FFB276] mb-4">
             Ready to elevate your laboratory experience?
