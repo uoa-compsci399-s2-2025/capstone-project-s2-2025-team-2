@@ -12,7 +12,6 @@ const Landing = () => {
     const handleScroll = () => {
       if (parallaxRef.current) {
         const scrolled = window.scrollY
-        // Adjust the multiplier (1.2) to control speed - higher = faster
         parallaxRef.current.style.transform = `translateY(${scrolled * -0.5}px)`;
       }
     };
@@ -56,13 +55,13 @@ const Landing = () => {
       {/* Semi-transparent overlay */}
       <div 
       ref={parallaxRef}
-      className="mt-[140vh] absolute inset-0 bg-white/50 dark:bg-black/75 h-[160vh]"></div>
+      className="mt-[140vh] absolute inset-0 bg-white/50 dark:bg-black/75 h-[240vh]"></div>
       
       {/* Content wrapper with relative positioning */}
       <div className="relative z-10 mb-20">
         {/* Hero Section */}
         <div className="mt-[15vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-[10rem]">
-        <div className="w-full lg:w-1/2">
+        <div className="lg:ml-[3rem] w-full lg:w-1/2">
 
             <h1 className="text-4xl md:text-5xl font-bold text-blue-primary dark:text-[#FFB276] mb-4 animate-slide-up-1">
               Access Lab-Grade Reagents
@@ -145,13 +144,28 @@ const Landing = () => {
           </div>
         </div>
 
-        <h2 className="text-2xl sm:text-3xl font-bold text-center text-blue-primary dark:text-[#FFB276] mt-[5rem]">
-          Transforming Academic Research Resources
+
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-20 mt-20 mb-12">
+          <div>
+                  <h2 className="text-2xl sm:text-3xl font-bold text-left text-blue-primary dark:text-[#FFB276]">
+          Transforming Academic
+                        <br />
+              <span className="text-blue-secondary dark:text-[#FF7C5C]">
+                 Research Resources
+              </span>
         </h2>
-        <p className="text-center text-gray-600 dark:text-[#D3DAFF] mb-12 max-w-3xl mx-auto px-4">
-          Our platform helps chemistry students and researchers optimize their
-          lab resources through our innovative sharing ecosystem.
-        </p>
+          <p className="text-left text-gray-600 dark:text-[#D3DAFF] max-w-xl">
+            Our platform helps chemistry students and researchers optimize their
+            lab resources through our innovative sharing ecosystem.
+          </p>            
+          </div>
+
+          <img 
+            src="/CoLabLanding.jpg" 
+            alt="Research collaboration" 
+            className="w-100 h-120 object-cover shadow-md"
+          />
+        </div>
 
 
       </div>
