@@ -8,6 +8,10 @@ import { useEffect, useRef } from "react"
 const Landing = () => {
       const parallaxRef = useRef<HTMLDivElement | null>(null);
       const svgParallaxRef = useRef<HTMLDivElement | null>(null);
+      const imageSectionRef = useRef<HTMLDivElement | null>(null);
+      const heroRef = useRef<HTMLDivElement | null>(null);
+      const featuresRef = useRef<HTMLDivElement | null>(null);
+      const ctaRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,10 +25,58 @@ const Landing = () => {
         svgParallaxRef.current.style.transform = `translateY(${100 + (scrolled * -0.3)}px)`;
       }
     };
+  const updateSvgPosition = () => {
+    if (imageSectionRef.current && svgParallaxRef.current) {
+      const imageSectionHeight = imageSectionRef.current.offsetHeight;
+      const imageSectionTop = imageSectionRef.current.offsetTop;
+      
+      svgParallaxRef.current.style.height = `${imageSectionHeight * 1.4}px`;
+      svgParallaxRef.current.style.top = `${imageSectionTop*1.1}px`;
+    }
+  };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+const updateOverlayHeight = () => {
+  if (heroRef.current && featuresRef.current && ctaRef.current && parallaxRef.current) {
+    const heroHeight = heroRef.current.offsetHeight;
+    const featuresHeight = featuresRef.current.offsetHeight;
+    const ctaHeight = ctaRef.current.offsetHeight;
+    const combinedHeight = heroHeight + featuresHeight + ctaHeight;
+    const viewportWidth = window.innerWidth;
+
+    let heightMultiplier = 1;
+    if (viewportWidth >= 1920) {
+      heightMultiplier = 1.05;
+    } else if (viewportWidth >= 1200) {
+      heightMultiplier = 1.3;
+    } else if (viewportWidth >= 1024) {
+      heightMultiplier = 0.9;
+    } else if (viewportWidth >= 820) { 
+      heightMultiplier = 1.1;
+    } else if (viewportWidth >= 768) {
+      heightMultiplier = 1.3;
+    } else { 
+      heightMultiplier = 1.3;
+    }
+
+    parallaxRef.current.style.height = `${combinedHeight * heightMultiplier}px`;
+  }
+};
+  handleScroll();
+  updateSvgPosition();
+  updateOverlayHeight();
+
+  window.addEventListener('scroll', handleScroll);
+  window.addEventListener('resize', () => {
+    handleScroll();
+    updateSvgPosition();
+    updateOverlayHeight();
+  });
+  
+  return () => {
+    window.removeEventListener('scroll', handleScroll);
+    window.removeEventListener('resize', updateSvgPosition);
+  };
+}, []);
 
   return (
     <div 
@@ -61,12 +113,14 @@ const Landing = () => {
       {/* Semi-transparent overlay */}
       <div 
       ref={parallaxRef}
-      className="mt-[130vh] absolute inset-0 bg-white/50 dark:bg-black/75 h-[290vh] z-0"></div>
+      className="mt-[110vh] md:mt-[90vh] lg:mt-[120vh] absolute inset-0 bg-white/50 dark:bg-black/75 h-[290vh] z-0"></div>
       
       {/* Content wrapper with relative positioning */}
       <div className="relative z-10 mb-20">
         {/* Hero Section */}
-        <div className="mt-[15vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-[13rem]">
+        <div
+        ref={heroRef} 
+        className="mt-[15vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-[13rem]">
         <div className="lg:ml-[3rem] w-full lg:w-1/2">
 
             <h1 className="text-4xl md:text-5xl font-bold text-blue-primary dark:text-[#FFB276] mb-4 animate-slide-up-1">
@@ -108,7 +162,9 @@ const Landing = () => {
       </div>
 
       {/* Features Section */}
-      <div className="max-w-7xl mx-auto">
+      <div 
+      ref={featuresRef}
+      className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
           {/* Card 1 */}
           <div className="flex flex-col items-center bg-white dark:bg-primary/95 rounded-2xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-gray-100 dark:border-gray-800 h-full">
@@ -165,7 +221,9 @@ const Landing = () => {
       ></div>
 
       {/*image section */}
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-20 mt-30 mb-20 relative">
+        <div 
+        ref={imageSectionRef}
+        className="flex flex-col lg:flex-row items-center justify-center gap-20 mt-30 mb-20 relative">
           <div className="relative">
                   <h2 className="text-2xl sm:text-3xl font-bold text-left text-blue-primary dark:text-[#FFB276]">
           Transforming Academic
@@ -191,7 +249,9 @@ const Landing = () => {
       </div>
 
       {/* Call to Action */}
-      <div className="max-w-7xl mx-auto mt-30 bg-white/90 dark:bg-primary/90 rounded-2xl text-center">
+      <div 
+      ref={ctaRef}
+      className="max-w-7xl mx-auto mt-30 bg-white/90 dark:bg-primary/90 rounded-2xl text-center">
 
         <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-primary p-10 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800">
           <h2 className="text-2xl sm:text-3xl font-bold text-blue-primary dark:text-[#FFB276] mb-4">
