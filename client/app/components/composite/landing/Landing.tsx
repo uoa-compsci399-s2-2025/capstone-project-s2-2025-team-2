@@ -13,7 +13,7 @@ const Landing = () => {
       if (parallaxRef.current) {
         const scrolled = window.scrollY
         // Adjust the multiplier (1.2) to control speed - higher = faster
-        parallaxRef.current.style.transform = `translateY(${scrolled * -0.4}px)`;
+        parallaxRef.current.style.transform = `translateY(${scrolled * -0.5}px)`;
       }
     };
 
@@ -29,7 +29,7 @@ const Landing = () => {
       {/*Top bar*/}
       <div className="fixed top-0 left-0 right-0 z-50 bg-white/50 dark:bg-black/75 backdrop-blur-sm border-b border-gray-200/20 dark:border-gray-700/20">
         <div className="max-w-7xl mx-auto px-6 lg:px-4">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-[5rem]">
             <h2 className="text-2xl text-black dark:text-white">
               CoLab
             </h2>
