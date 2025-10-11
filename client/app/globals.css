@@ -207,3 +207,22 @@ body {
   border-color: #ef4b52 !important;
   color: #ff6b6b !important;
 }
+
+@keyframes slide-up {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity : 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-up-1 {
+  animation: slide-up 0.8s ease-out 0.2s both;
+}
+
+.animate-slide-up-2 {
+  animation: slide-up 0.8s ease-out 0.4s both;
+}

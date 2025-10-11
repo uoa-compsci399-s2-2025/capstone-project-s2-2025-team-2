@@ -9,6 +9,25 @@ const Landing = () => {
     <div 
       className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 relative"
     >
+
+      {/*Top bar*/}
+      <div className="fixed top-0 left-0 right-0 z-50 bg-white/50 dark:bg-black/75 backdrop-blur-sm border-b border-gray-200/20 dark:border-gray-700/20">
+        <div className="max-w-7xl mx-auto px-6 lg:px-4">
+          <div className="flex items-center justify-between h-16">
+            <h2 className="text-2xl text-black dark:text-white">
+              CoLab
+            </h2>
+            {/* Optional: Add navigation or buttons here */}
+            <div className="flex items-center gap-4">
+              <Link href="/auth">
+                <button className="px-4 py-2 text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:underline">
+                  Sign In
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
       {/* Semi-transparent overlay */}
       <div className="mt-[100vh] absolute inset-0 bg-white/50 dark:bg-black/75"></div>
       
@@ -18,19 +37,19 @@ const Landing = () => {
         <div className="mt-[20vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-[20rem]">
         <div className="w-full lg:w-1/2">
 
-            <h1 className="text-4xl md:text-5xl font-bold text-blue-primary dark:text-[#FFB276] mb-4">
+            <h1 className="text-4xl md:text-5xl font-bold text-blue-primary dark:text-[#FFB276] mb-4 animate-slide-up-1">
               Access Lab-Grade Reagents
               <br />
               <span className="text-blue-secondary dark:text-[#FF7C5C]">
                 For Student Success
               </span>
             </h1>
-            <p className="text-lg text-gray-600 dark:text-[#D3DAFF] mb-8 leading-relaxed">
+            <p className="text-lg text-gray-600 dark:text-[#D3DAFF] mb-8 leading-relaxed animate-slide-up-2">
               Chemical.ly connects chemistry students with affordable,
               high-quality reagents. Share resources, reduce waste, and advance
               your academic research with our comprehensive platform.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="flex flex-col sm:flex-row gap-4 animate-slide-up-2">
               <Link href="/auth" className="w-full sm:w-auto">
                 <button
                   className="
@@ -57,16 +76,8 @@ const Landing = () => {
       </div>
 
       {/* Features Section */}
-      <div className="max-w-7xl mx-auto mt-16">
-        <h2 className="text-2xl sm:text-3xl font-bold text-center text-blue-primary dark:text-[#FFB276] mb-6">
-          Transforming Academic Research Resources
-        </h2>
-        <p className="text-center text-gray-600 dark:text-[#D3DAFF] mb-12 max-w-3xl mx-auto px-4">
-          Our platform helps chemistry students and researchers optimize their
-          lab resources through our innovative sharing ecosystem.
-        </p>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
+      <div className="max-w-7xl mx-auto mt-16 ">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
           {/* Card 1 */}
           <div className="flex flex-col items-center bg-white dark:bg-primary/95 rounded-2xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-gray-100 dark:border-gray-800 h-full">
             <ReduceWaste />
@@ -106,6 +117,16 @@ const Landing = () => {
             </p>
           </div>
         </div>
+        
+        <h2 className="text-2xl sm:text-3xl font-bold text-center text-blue-primary dark:text-[#FFB276] mb-6">
+          Transforming Academic Research Resources
+        </h2>
+        <p className="text-center text-gray-600 dark:text-[#D3DAFF] mb-12 max-w-3xl mx-auto px-4">
+          Our platform helps chemistry students and researchers optimize their
+          lab resources through our innovative sharing ecosystem.
+        </p>
+
+
       </div>
 
       {/* Call to Action */}
