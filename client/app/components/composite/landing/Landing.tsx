@@ -78,6 +78,22 @@ const updateOverlayHeight = () => {
   };
 }, []);
 
+const scrollToFeatures = () => {
+  if (featuresRef.current) {
+    const elementRect = featuresRef.current.getBoundingClientRect();
+    const elementTop = elementRect.top + window.pageYOffset;
+    const headerOffset = 110;
+    
+    const scrollTo = elementTop - headerOffset;
+    
+    window.scrollTo({
+      top: scrollTo,
+      behavior: 'smooth'
+    });
+  }
+};
+
+
   return (
     <div 
       className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 relative"
@@ -96,11 +112,11 @@ const updateOverlayHeight = () => {
                   Marketplace
                 </button>
               </Link>
-              <Link href="/about">
-                <button className="px-4 py-2 text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:underline">
+                <button 
+                onClick={scrollToFeatures}
+                className="px-4 py-2 text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:underline">
                   About
                 </button>
-              </Link>
               <Link href="/auth">
                 <button className="px-4 py-2 text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:underline">
                   Sign In
