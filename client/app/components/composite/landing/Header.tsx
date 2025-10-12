@@ -1,5 +1,4 @@
 import Image from "next/image"
-import logo from "@/public/ChemicallyLogo.webp"
 import icon from "@/public/ChemicallyIcon.webp"
 
 const Header = () => {

@@ -7,12 +7,12 @@ export default function Home() {
     bg-tint pb-[2rem] dark:bg-black min-h-[100vh]
     md:p-[3rem]
   "
-        style={{
+      style={{
         backgroundImage: 'url("/ColabLanding2.jpg")',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
-        backgroundAttachment: 'fixed'
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        backgroundAttachment: "fixed",
       }}
     >
       <Landing />
