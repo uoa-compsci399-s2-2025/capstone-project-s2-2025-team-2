@@ -9,6 +9,7 @@ import Image from "next/image"
 import SellerContact from "@/app/components/composite/reagentview/SellerContact"
 import ImageCarousel from "@/app/components/generic/image_carousel/ImageCarousel"
 import Overlay from "@/app/components/composite/Overlay"
+import LoadingState from "@/app/components/composite/loadingstate/LoadingState"
 
 interface ReagentViewProps {
   params: Promise<{ reagentId: string }>
@@ -18,7 +19,6 @@ export default function ReagentView({ params }: ReagentViewProps) {
   const { reagentId } = use(params)
 
   const [reagent, setReagent] = useState<Reagent | null>(null)
-
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [reagentId])
@@ -36,28 +36,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
     return (
       <div className="bg-transparent h-[100vh] w-full">
         <div className="bg-transparent w-full items-center gap-4 text-white flex justify-center mt-[50vh]">
-          <svg
-            fill="white"
-            viewBox="0 0 24 24"
-            width={50}
-            height={50}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"
-              opacity=".25"
-            />
-            <path d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z">
-              <animateTransform
-                attributeName="transform"
-                type="rotate"
-                dur="0.75s"
-                values="0 12 12;360 12 12"
-                repeatCount="indefinite"
-              />
-            </path>
-          </svg>
-          <h3>Loading...</h3>
+          <LoadingState pageName="Reagent" />
         </div>
       </div>
     )
@@ -92,7 +71,10 @@ export default function ReagentView({ params }: ReagentViewProps) {
                 <div className="flex flex-col md:flex-row justify-center items-center w-full gap-3 md:gap-7">
                   <h5 className="flex text-[#43C05A] dark:text-[#78F58F] items-center text-[0.8rem]">
                     <FaRegClock className="text-[#43C05A] dark:text-[#78F58F] mr-[0.3rem] w-5 h-5" />{" "}
-                    Listed — {reagent.expiryDate}
+                    Listed —{" "}
+                    {reagent.createdAtReadable
+                      ? reagent.createdAtReadable
+                      : "N/A"}
                   </h5>
                   <h5 className="flex text-[#E5595B] dark:text-[#FF797B] items-center text-[0.8rem]">
                     <LuClockAlert className="text-[#E5595B] dark:text-[#FF797B] mr-[0.3rem] w-5 h-5" />
@@ -121,7 +103,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                           : reagent.tradingType === "sell"
                             ? "bg-[#9AE39C] dark:bg-[#3F6340] dark:text-[#AFFFB2] text-[#428B44]"
                             : reagent.tradingType === "trade"
-                              ? "bg-[#9D00FF] dark:bg-[#826387] dark:text-[#FFDBB6] text-[#9B7856]"
+                              ? "bg-blue-primary dark:bg-[#826387] dark:text-[#FFDBB6] text-[#9B7856]"
                               : "bg-blue-primary/75"
                       }`}
                     >
@@ -134,6 +116,9 @@ export default function ReagentView({ params }: ReagentViewProps) {
                       <div className="mb-[1rem]">
                         <h5 className="text-white/80">
                           Quantity: {reagent.quantity}
+                        </h5>
+                        <h5 className="text-white/80">
+                          Unit: {reagent.unit || "Not specified"}
                         </h5>
                       </div>
                       <div className="">
@@ -181,10 +166,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                       ? {
                           ...reagent,
                           id: reagentId,
-                          createdAt:
-                            reagent.createdAt instanceof Date
-                              ? reagent.createdAt.toISOString()
-                              : reagent.createdAt,
+                          createdAt: reagent.createdAt ?? "",
                         }
                       : undefined
                   }
@@ -208,10 +190,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                     ? {
                         ...reagent,
                         id: reagentId,
-                        createdAt:
-                          reagent.createdAt instanceof Date
-                            ? reagent.createdAt.toISOString()
-                            : reagent.createdAt,
+                        createdAt: reagent.createdAt ?? "",
                       }
                     : undefined
                 }

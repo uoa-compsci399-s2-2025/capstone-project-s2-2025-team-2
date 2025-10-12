@@ -27,6 +27,7 @@ import {
   ExclamationTriangleIcon,
   LockClosedIcon,
 } from "@heroicons/react/24/outline"
+import LoadingState from "@/app/components/composite/loadingstate/LoadingState"
 
 /*
 TO DO!!
@@ -229,28 +230,7 @@ const UserProfile = () => {
     return (
       <div className="bg-transparent h-[100vh] w-full">
         <div className="bg-transparent w-full items-center gap-4 text-white flex justify-center mt-[50vh]">
-          <svg
-            fill="white"
-            viewBox="0 0 24 24"
-            width={50}
-            height={50}
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M12,1A11,11,0,1,0,23,12,11,11,0,0,0,12,1Zm0,19a8,8,0,1,1,8-8A8,8,0,0,1,12,20Z"
-              opacity=".25"
-            />
-            <path d="M10.14,1.16a11,11,0,0,0-9,8.92A1.59,1.59,0,0,0,2.46,12,1.52,1.52,0,0,0,4.11,10.7a8,8,0,0,1,6.66-6.61A1.42,1.42,0,0,0,12,2.69h0A1.57,1.57,0,0,0,10.14,1.16Z">
-              <animateTransform
-                attributeName="transform"
-                type="rotate"
-                dur="0.75s"
-                values="0 12 12;360 12 12"
-                repeatCount="indefinite"
-              />
-            </path>
-          </svg>
-          <h3>Loading...</h3>
+          <LoadingState pageName="Profile" />
         </div>
       </div>
     )
@@ -269,12 +249,12 @@ const UserProfile = () => {
           <div className="flex flex-col gap-2">
             <h1 className="font-light text-pearl text-xl md:text-4xl">
               {idOfUserBeingViewed === userUid
-                ? `Welcome back, ${userBeingViewed && userBeingViewed?.displayName}`
+                ? `Welcome back, ${userBeingViewed && userBeingViewed?.preferredName}`
                 : `${userBeingViewed && userBeingViewed?.displayName}'s Profile`}
             </h1>
-            <p className="flex items-center gap-2 text-xs md:text-sm text-[#FF7309] dark:text-orange-200">
+            <p className="flex items-center gap-2 text-xs md:text-sm text-blue-primary dark:text-orange-200">
               <HomeIcon className="w-5 h-5 md:w-6 md:h-6" />
-              HOME_INSTITUTION
+              {userBeingViewed.university}
             </p>
             {/* show 'edit profile' btn if user is viewing their own profile */}
             {idOfUserBeingViewed === userUid && (

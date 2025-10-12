@@ -9,12 +9,29 @@ import { usePagination } from "../hooks/usePagination"
 import Pagination from "../components/composite/pagination/Pagination"
 import { usePageSize } from "../hooks/usePageSize"
 import client from "../services/fetch-client"
+import LoadingState from "../components/composite/loadingstate/LoadingState"
 
-type Reagent = components["schemas"]["Reagent"]
-type ReagentWithId = Reagent & { id: string }
+type FirestoreReagent = {
+  id: string
+  categories: string[]
+  condition: string
+  createdAt: any
+  createdAtReadable: string
+  description: string
+  expiryDate: string
+  images: string[]
+  location: string
+  name: string
+  price: number
+  quantity: number
+  tradingType: string
+  unit: string
+  user_id: string
+  visibility: string
+}
 
 const Marketplace = () => {
-  const [reagents, setReagents] = useState<ReagentWithId[]>([])
+  const [reagents, setReagents] = useState<FirestoreReagent[]>([])
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState("all")
   const [sort, setSort] = useState<
@@ -24,13 +41,18 @@ const Marketplace = () => {
   const [isSignedIn, setIsSignedIn] = useState(false)
 
   const fetchReagents = useCallback(async () => {
-    const { data } = await client.GET("/reagents" as any, {})
-    setReagents(data)
+    try {
+      const { data } = await client.GET("/reagents", {})
+      setReagents((data as FirestoreReagent[]) || [])
+    } catch (error) {
+      console.error("Failed to fetch reagents:", error)
+      setReagents([])
+    }
   }, [])
 
   useEffect(() => {
     fetchReagents()
-    //if auth token in local storage, user is signed in
+    // Check if user is signed in
     try {
       const token = localStorage.getItem("authToken")
       setIsSignedIn(!!token)
@@ -51,13 +73,14 @@ const Marketplace = () => {
   }
 
   const filtered = reagents.filter((r) => {
-    //private listings are hidden from public marketplace
+    // Private listings are hidden from public marketplace
     if (r.visibility === "private") return false
 
     const query = search.trim().toLowerCase()
     if (!query) return true
 
     switch (filter) {
+      case "tag":
       case "category":
         return (
           Array.isArray(r.categories) &&
@@ -73,17 +96,57 @@ const Marketplace = () => {
   const sorted = [...filtered].sort((a, b) => {
     switch (sort) {
       case "newest":
-        return a.expiryDate.localeCompare(b.expiryDate)
-      case "oldest":
-        return b.expiryDate.localeCompare(a.expiryDate)
+      case "oldest": {
+        const getTimestamp = (item: FirestoreReagent): number => {
+          const date = item.createdAt
+
+          if (!date) return 0
+
+          if (typeof date === "object" && "_seconds" in date) {
+            return date._seconds * 1000 + (date._nanoseconds || 0) / 1e6
+          }
+
+          if (
+            typeof date === "object" &&
+            "toMillis" in date &&
+            typeof date.toMillis === "function"
+          ) {
+            return date.toMillis()
+          }
+
+          if (typeof date === "string") {
+            const parsed = new Date(date).getTime()
+            return isNaN(parsed) ? 0 : parsed
+          }
+
+          if (date instanceof Date) return date.getTime()
+
+          if (typeof date === "number") return date
+
+          return 0
+        }
+
+        const aTime = getTimestamp(a)
+        const bTime = getTimestamp(b)
+
+        if (aTime === 0 && bTime === 0) return a.name.localeCompare(b.name)
+        if (aTime === 0) return 1
+        if (bTime === 0) return -1
+
+        return sort === "newest" ? bTime - aTime : aTime - bTime
+      }
+
       case "nameAZ":
-        return a.name.localeCompare(b.name)
+        return (a.name || "").localeCompare(b.name || "")
+
       case "nameZA":
-        return b.name.localeCompare(a.name)
+        return (b.name || "").localeCompare(a.name || "")
+
       default:
         return 0
     }
   })
+
   const pageSize = usePageSize()
   const { currentPage, setCurrentPage, currentData, totalPages } =
     usePagination(sorted, pageSize)
@@ -122,9 +185,56 @@ const Marketplace = () => {
       </div>
 
       <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
-        {currentData.map((r) => (
-          <ReagentCard key={r.id} reagent={r as ReagentWithId} />
-        ))}
+        {currentData.length > 0 ? (
+          currentData.map((r) => {
+            const allowedTradingTypes = ["trade", "giveaway", "sell"] as const
+            const tradingType = allowedTradingTypes.includes(
+              r.tradingType as any,
+            )
+              ? (r.tradingType as "trade" | "giveaway" | "sell")
+              : "trade"
+
+            const allowedCategories = [
+              "chemical",
+              "hazardous",
+              "biological",
+            ] as const
+            const categories = Array.isArray(r.categories)
+              ? r.categories.filter(
+                  (c): c is (typeof allowedCategories)[number] =>
+                    allowedCategories.includes(c as any),
+                )
+              : []
+
+            const allowedVisibility = [
+              "everyone",
+              "region",
+              "institution",
+              "private",
+            ] as const
+            const visibility = allowedVisibility.includes(r.visibility as any)
+              ? (r.visibility as (typeof allowedVisibility)[number])
+              : undefined
+
+            return (
+              <ReagentCard
+                key={r.id}
+                reagent={{
+                  ...r,
+                  tradingType,
+                  categories,
+                  visibility,
+                }}
+              />
+            )
+          })
+        ) : search.trim() === "" ? (
+          <LoadingState pageName="Marketplace" />
+        ) : (
+          <div className="flex justify-center w-full items-center h-[40vh] text-gray-400 italic">
+            No reagents found for &quot;{search}&quot;
+          </div>
+        )}
       </div>
       <div className="pb-[4rem] md:pb-0">
         <Pagination
