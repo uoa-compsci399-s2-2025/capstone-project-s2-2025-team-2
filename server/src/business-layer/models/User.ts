@@ -3,5 +3,7 @@ export interface User {
   displayName: string
   preferredName: string
   university: string
+  about?: string
   role: "user" | "lab_manager" | "admin"
+  image?: string
 }

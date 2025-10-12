@@ -2,6 +2,7 @@ import FirestoreCollections from "../adapters/FirestoreCollections"
 import { User } from "../../business-layer/models/User"
 
 export class UserService {
+  
   async updateUser(id: string, user: Partial<User>): Promise<User> {
     try {
       const userRef = FirestoreCollections.users.doc(id)
@@ -19,6 +20,7 @@ export class UserService {
       throw error
     }
   }
+
   async getAllUsers(): Promise<User[]> {
     try {
       const snapshot = await FirestoreCollections.users.get()
