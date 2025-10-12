@@ -3,7 +3,8 @@
 import { 
   GiftIcon, 
   CurrencyDollarIcon, 
-  ArrowsRightLeftIcon, 
+  ArrowsRightLeftIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline"
 import { useState, useEffect, useMemo } from "react"
 import type { components } from "@/models/__generated__/schema"
@@ -142,7 +143,14 @@ export default function OrderDetailsModal({
         onClick={onClose}
       />
       
-      <div className="bg-primary/20 backdrop-blur-sm rounded-2xl p-8">
+      <div className="bg-primary/20 backdrop-blur-sm rounded-2xl p-8 relative">
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 text-white hover:text-gray-300 z-20"
+        >
+          <XMarkIcon className="w-6 h-6" />
+        </button>
+        
         <div className={`grid grid-cols-1 gap-8 w-full pointer-events-auto relative z-10 ${gridCols}`}>
           
           <ReagentDetails title="Your Reagent:" reagent={reagent} />
