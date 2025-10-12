@@ -126,7 +126,7 @@ export const ProfileForm = ({ onSubmit, onCancel, userId }: ProfileFormProps) =>
         }
       />
       <FormField
-        label="Preferred Name"
+        label="First Name"
         required
         input={
           <input
@@ -161,14 +161,34 @@ export const ProfileForm = ({ onSubmit, onCancel, userId }: ProfileFormProps) =>
       <FormField
         label="Image URL"
         input={
-          <input
-            type="text"
-            value={formData.imageUrl}
-            onChange={e => handleFieldChange("imageUrl", e.target.value)}
-            className={inputStyles}
-          />
+          <div className="flex gap-2">
+            <input
+              type="text"
+              placeholder="Paste image URL here"
+              value={formData.imageUrl || ""}
+              onChange={e => handleFieldChange("imageUrl", e.target.value)}
+              className={inputStyles}
+            />
+          </div>
         }
+        className=""
       />
+      {formData.imageUrl && (
+        <div className="flex items-center mt-2">
+          <img
+            src={formData.imageUrl}
+            alt="Profile"
+            className="h-12 w-12 rounded-full object-cover"
+          />
+          <button
+            type="button"
+            onClick={() => handleFieldChange("imageUrl", "")}
+            className="text-red-400 hover:text-red-300 text-sm ml-2"
+          >
+            ✕
+          </button>
+        </div>
+      )}
       <div className="flex space-x-4">
         <button
           type="submit"

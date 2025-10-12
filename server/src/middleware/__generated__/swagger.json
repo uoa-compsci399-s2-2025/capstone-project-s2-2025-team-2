@@ -21,6 +21,9 @@
 					"university": {
 						"type": "string"
 					},
+					"about": {
+						"type": "string"
+					},
 					"role": {
 						"type": "string",
 						"enum": [
@@ -28,6 +31,9 @@
 							"lab_manager",
 							"admin"
 						]
+					},
+					"image": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -54,6 +60,9 @@
 					"university": {
 						"type": "string"
 					},
+					"about": {
+						"type": "string"
+					},
 					"role": {
 						"type": "string",
 						"enum": [
@@ -61,6 +70,9 @@
 							"lab_manager",
 							"admin"
 						]
+					},
+					"image": {
+						"type": "string"
 					}
 				},
 				"type": "object",
