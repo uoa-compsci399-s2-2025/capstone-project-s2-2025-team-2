@@ -90,7 +90,7 @@ const updateOverlayHeight = () => {
             <h2 className="text-2xl text-black dark:text-white">
               CoLab
             </h2>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center md:gap-4">
               <Link href="/marketplace">
                 <button className="px-4 py-2 text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:underline">
                   Marketplace
@@ -120,8 +120,8 @@ const updateOverlayHeight = () => {
         {/* Hero Section */}
         <div
         ref={heroRef} 
-        className="mt-[15vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-[13rem]">
-        <div className="lg:ml-[3rem] w-full lg:w-1/2">
+        className="mt-[20vh] md:mt-[15vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-[13rem]">
+        <div className="lg:ml-[3rem] w-full lg:w-1/2 bg-white/90 dark:bg-primary/90 lg:bg-transparent lg:dark:bg-transparent rounded-2xl p-6">
 
             <h1 className="text-4xl md:text-5xl font-bold text-blue-primary dark:text-[#FFB276] mb-4 animate-slide-up-1">
               Access Lab-Grade Reagents
