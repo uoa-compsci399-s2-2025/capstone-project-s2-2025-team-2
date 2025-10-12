@@ -108,17 +108,17 @@ const scrollToFeatures = () => {
             </h2>
             <div className="flex items-center md:gap-4">
               <Link href="/marketplace">
-                <button className="px-4 py-2 text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:underline">
+                <button className="px-4 py-2 text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:text-blue-secondary hover:dark:text-[#FF7C5C] transition">
                   Marketplace
                 </button>
               </Link>
                 <button 
                 onClick={scrollToFeatures}
-                className="px-4 py-2 text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:underline">
+                className="px-4 py-2 text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:text-blue-secondary hover:dark:text-[#FF7C5C] transition">
                   About
                 </button>
               <Link href="/auth">
-                <button className="px-4 py-2 text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:underline">
+                <button className="px-4 py-2 text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:text-blue-secondary hover:dark:text-[#FF7C5C] transition">
                   Sign In
                 </button>
               </Link>
