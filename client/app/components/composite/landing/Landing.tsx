@@ -162,8 +162,9 @@ const scrollToFeatures = () => {
                   Get Started
                 </button>
               </Link>
-              <Link href="/about" className="w-full sm:w-auto">
+              <div className="w-full sm:w-auto">
                 <button
+                onClick={scrollToFeatures}
                   className="
                     w-full sm:w-auto px-8 py-4 bg-transparent text-blue-primary border-2 border-blue-primary font-semibold rounded-lg hover:bg-blue-primary hover:text-white transition
                     dark:text-[#FFB276] dark:border-[#FFB276] dark:hover:bg-[#FFB276] dark:hover:text-primary
@@ -171,7 +172,7 @@ const scrollToFeatures = () => {
                 >
                   Learn More
                 </button>
-              </Link>
+              </div>
             </div>
         </div>
 
@@ -290,14 +291,14 @@ const scrollToFeatures = () => {
                 Join Now
               </button>
             </Link>
-            <Link href="/about">
+            <Link href="/marketplace">
               <button
                 className="
                   px-8 py-4 bg-transparent text-blue-primary border-2 border-blue-primary font-semibold rounded-lg hover:bg-blue-primary hover:text-white transition
                   dark:text-[#FFB276] dark:border-[#FFB276] dark:hover:bg-[#FFB276] dark:hover:text-primary
                 "
               >
-                Learn More
+                Marketplace
               </button>
             </Link>
           </div>
