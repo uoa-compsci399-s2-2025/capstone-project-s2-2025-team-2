@@ -1,12 +1,16 @@
 "use client"
 
-import { XMarkIcon } from "@heroicons/react/24/outline"
-import { useState, useEffect } from "react"
+import { 
+  GiftIcon, 
+  CurrencyDollarIcon, 
+  ArrowsRightLeftIcon, 
+} from "@heroicons/react/24/outline"
+import { useState, useEffect, useMemo } from "react"
 import type { components } from "@/models/__generated__/schema"
 import client from "@/app/services/fetch-client"
 
 type Order = components["schemas"]["Order"]
-type OrderWithId = Order & { id: string; owner_id: string }
+type OrderWithId = Order & { id: string; owner_id: string; offeredReagentId?: string }
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
 
@@ -17,79 +21,171 @@ interface OrderDetailsModalProps {
   reagent: ReagentWithId
 }
 
+const TRADING_CONFIG = {
+  giveaway: { icon: GiftIcon, color: 'text-blue-100' },
+  sell: { icon: CurrencyDollarIcon, color: 'text-green-100' },
+  trade: { icon: ArrowsRightLeftIcon, color: 'text-purple-100' },
+} as const
+
+//generic hook for fetching data w auth token
+const useFetch = <T,>(url: string | null, isOpen: boolean) => {
+  const [data, setData] = useState<T | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    if (!isOpen || !url) return
+
+    const fetchData = async () => {
+      setLoading(true)
+      try {
+        const token = localStorage.getItem("authToken")
+        const response = await client.GET(url as any, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        setData(response.data as T)
+      } catch (error) {
+        console.error(`Fetch failed: ${url}`, error)
+        setData(null)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [url, isOpen])
+
+  return { data, loading }
+}
+
+
+//reusable row for details rendering
+const DetailRow = ({ label, value, truncate = false }: { 
+  label: string
+  value?: string | number
+  truncate?: boolean 
+}) => (
+  <div className="flex justify-between">
+    <span className="text-gray-300">{label}:</span>
+    <span 
+      className={`text-white ${truncate ? 'truncate max-w-[150px]' : ''}`} 
+      title={truncate && value ? String(value) : undefined}
+    >
+      {value ?? "N/A"}
+    </span>
+  </div>
+)
+
+//reagent details card
+const ReagentDetails = ({ title, reagent }: { title: string; reagent: any }) => (
+  <div className="bg-primary/80 backdrop-blur-sm rounded-2xl p-6 border border-muted shadow-xl w-fit min-w-[300px]">
+    <h3 className="text-white text-lg font-medium mb-4">{title}</h3>
+    <div className="space-y-3">
+      <DetailRow label="Name" value={reagent?.name} truncate />
+      <DetailRow label="Condition" value={reagent?.condition} />
+      <DetailRow label="Expiry" value={reagent?.expiryDate} />
+      <DetailRow label="Location" value={reagent?.location} truncate />
+      {reagent?.categories?.length > 0 && (
+        <div className="flex flex-wrap gap-1">
+          {reagent.categories.map((cat: string) => (
+            <span key={cat} className="bg-secondary/20 text-white text-xs px-2 py-1 rounded">
+              {cat}
+            </span>
+          ))}
+        </div>
+      )}
+    </div>
+  </div>
+)
+
 export default function OrderDetailsModal({
   isOpen,
   onClose,
   order,
   reagent,
 }: OrderDetailsModalProps) {
-  const [requesterName, setRequesterName] = useState<string>("Loading...")
+  //fetch requester info
+  const { data: requesterData, loading: requesterLoading } = useFetch<any>(
+    order.requester_id ? `/users/${order.requester_id}` : null, 
+    isOpen
+  )
+  const requesterName = requesterLoading ? "Loading..." : 
+    !requesterData ? "Unknown User" :
+    requesterData.displayName ? 
+      requesterData.displayName.charAt(0).toUpperCase() + requesterData.displayName.slice(1).toLowerCase() :
+      "Unknown User"
+  
+  //fetch reagent offered in two way trade
+  const { data: offeredReagent } = useFetch<any>(
+    reagent.tradingType === 'trade' && order.offeredReagentId 
+      ? `/reagents/${order.offeredReagentId}` 
+      : null,
+    isOpen
+  )
 
-  //requester name
-  useEffect(() => {
-    if (!isOpen || !order.requester_id) return
-
-    const fetchRequesterName = async () => {
-      try {
-        const token = localStorage.getItem("authToken")
-        const { data } = await client.GET(`/users/${order.requester_id}` as any, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        if (data?.displayName) {
-          setRequesterName(data.displayName.charAt(0).toUpperCase() + data.displayName.slice(1).toLowerCase())
-        } else {
-          setRequesterName("Unknown User")
-        }
-      } catch (error) {
-        setRequesterName("Unknown User")
-      }
-    }
-
-    fetchRequesterName()
-  }, [isOpen, order.requester_id])
-
+  const tradingType = reagent.tradingType as keyof typeof TRADING_CONFIG
+  const { icon: Icon, color } = TRADING_CONFIG[tradingType]
+  const label = tradingType.charAt(0).toUpperCase() + tradingType.slice(1)
+  
+  //price + two or three cards based on trading type
+  const price = (reagent.tradingType === 'sell' && reagent.price) || (order as any).price
+  const gridCols = reagent.tradingType === 'trade' 
+    ? 'lg:grid-cols-3 max-w-7xl' 
+    : 'lg:grid-cols-2 max-w-5xl'
 
   if (!isOpen) return null
-
-  const handleClose = () => {
-    onClose()
-  }
 
   //render modal
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      {/*bg blur + click handler for modal close*/}
       <div 
         className="absolute inset-0 backdrop-blur-sm bg-black/20"
-        onClick={handleClose}
+        onClick={onClose}
       />
       
-      <div className="bg-primary/80 backdrop-blur-sm rounded-2xl p-6 border border-muted shadow-xl max-w-2xl w-full">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="text-white text-xl font-medium">Order Details</h2>
-          <button
-            onClick={handleClose}
-            className="text-gray-400 hover:text-white"
-          >
-            <XMarkIcon className="w-6 h-6" />
-          </button>
-        </div>
-        
-        <div className="space-y-4">
-          <div className="flex justify-between">
-            <span className="text-gray-300">Requester:</span>
-            <span className="text-white">{requesterName}</span>
-          </div>
-          <div className="flex justify-between">
-            <span className="text-gray-300">Status:</span>
-            <span className="text-white font-medium capitalize">{order.status}</span>
-          </div>
-          {order.message && (
-            <div className="flex flex-col">
-              <span className="text-gray-300 mb-1">Message:</span>
-              <span className="text-white text-sm">{order.message}</span>
-            </div>
+      <div className="bg-primary/20 backdrop-blur-sm rounded-2xl p-8">
+        <div className={`grid grid-cols-1 gap-8 w-full pointer-events-auto relative z-10 ${gridCols}`}>
+          
+          <ReagentDetails title="Your Reagent:" reagent={reagent} />
+          
+          {reagent.tradingType === 'trade' && offeredReagent && (
+            <ReagentDetails title="Their Reagent:" reagent={offeredReagent} />
           )}
+          
+          <div className="bg-primary/80 backdrop-blur-sm rounded-2xl p-6 border border-muted shadow-xl flex flex-col w-fit min-w-[300px]">
+            <div className="space-y-4">
+              <h3 className="text-white text-lg font-medium flex items-center gap-2">
+                <span className={`flex items-center gap-1 text-lg ${color}`}>
+                  <Icon className="w-4 h-4 flex-shrink-0" />
+                  {label}
+                </span>
+                Request
+              </h3>
+              
+              <div className="space-y-3">
+                <DetailRow label="Requester" value={requesterName} truncate />
+                <DetailRow label="Status" value={order.status?.charAt(0).toUpperCase() + order.status?.slice(1).toLowerCase()} />
+                
+                {price && <DetailRow label="Offered Price" value={`$${price}`} />}
+                
+                {order.message && (
+                  <div className="flex flex-col">
+                    <span className="text-gray-300 mb-1">Message:</span>
+                    <span className="text-white text-sm break-words max-h-20 overflow-y-auto">
+                      {order.message}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </div>
+            
+            {/*redirect to inbox chat*/}
+            <button
+              onClick={() => window.location.href = '/inbox'}
+              className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-secondary rounded-lg transition-colors"
+            >
+              Chat
+            </button>
+          </div>
         </div>
       </div>
     </div>
