@@ -20,6 +20,7 @@ interface OrderDetailsModalProps {
   onClose: () => void
   order: OrderWithId
   reagent: ReagentWithId
+  offeredReagent?: ReagentWithId //temp storybook prop 
 }
 
 const TRADING_CONFIG = {
@@ -86,7 +87,7 @@ const ReagentDetails = ({ title, reagent }: { title: string; reagent: any }) => 
       <DetailRow label="Expiry" value={reagent?.expiryDate} />
       <DetailRow label="Location" value={reagent?.location} truncate />
       {reagent?.categories?.length > 0 && (
-        <div className="flex flex-wrap gap-1">
+        <div className="flex flex-wrap gap-1 mt-4">
           {reagent.categories.map((cat: string) => (
             <span key={cat} className="bg-secondary/20 text-white text-xs px-2 py-1 rounded">
               {cat}
@@ -103,6 +104,7 @@ export default function OrderDetailsModal({
   onClose,
   order,
   reagent,
+  offeredReagent: testOfferedReagent,
 }: OrderDetailsModalProps) {
   //fetch requester info
   const { data: requesterData, loading: requesterLoading } = useFetch<any>(
@@ -116,12 +118,16 @@ export default function OrderDetailsModal({
       "Unknown User"
   
   //fetch reagent offered in two way trade
-  const { data: offeredReagent } = useFetch<any>(
-    reagent.tradingType === 'trade' && order.offeredReagentId 
+  //test data temporary
+  const { data: fetchedOfferedReagent } = useFetch<any>(
+    reagent.tradingType === 'trade' && order.offeredReagentId && !testOfferedReagent
       ? `/reagents/${order.offeredReagentId}` 
       : null,
     isOpen
   )
+  
+  //temp test reagent to mimic fetching offered reagent for storybook
+  const offeredReagent = testOfferedReagent || fetchedOfferedReagent
 
   const tradingType = reagent.tradingType as keyof typeof TRADING_CONFIG
   const { icon: Icon, color } = TRADING_CONFIG[tradingType]
