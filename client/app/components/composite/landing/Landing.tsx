@@ -30,8 +30,9 @@ const Landing = () => {
         const imageSectionHeight = imageSectionRef.current.offsetHeight
         const imageSectionTop = imageSectionRef.current.offsetTop
 
-        svgParallaxRef.current.style.height = `${imageSectionHeight * 1.4}px`
-        svgParallaxRef.current.style.top = `${imageSectionTop * 1.1}px`
+        // Make SVG larger and position it to show fully behind image section
+        svgParallaxRef.current.style.height = `${imageSectionHeight * 2}px`
+        svgParallaxRef.current.style.top = `${imageSectionTop - (imageSectionHeight * 0.25)}px`
       }
     }
 
@@ -99,7 +100,7 @@ const Landing = () => {
   }
 
   return (
-    <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 relative">
+    <div className="min-h-screen py-12 relative">
       {/*Top bar*/}
       <div className="fixed top-0 left-0 right-0 z-50 bg-white/50 dark:bg-black/75 backdrop-blur-sm border-b border-gray-200/20 dark:border-gray-700/20">
         <div className="max-w-7xl mx-auto px-6 lg:px-4">
@@ -132,11 +133,11 @@ const Landing = () => {
         className="mt-[110vh] md:mt-[90vh] lg:mt-[120vh] absolute inset-0 bg-white/60 dark:bg-black/75 h-[290vh] z-0 rounded-md"
       ></div> */}
       {/* Content wrapper with relative positioning */}
-      <div className="relative z-10 mb-20">
+      <div className="relative z-10 mb-20 pl-4 pr-4 sm:pl-6 sm:pr-6 lg:pl-8 lg:pr-8 ">
         {/* Hero Section */}
         <div
           ref={heroRef}
-          className="mt-[20vh] md:mt-[15vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-[13rem]"
+          className="mt-[20vh] md:mt-[15vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-[13rem] pl-4 pr-4 sm:pl-6 sm:pr-6 lg:pl-8 lg:pr-8"
         >
           <div className="lg:ml-[3rem] w-full lg:w-1/2 bg-white/90 dark:bg-primary/90 lg:bg-transparent lg:dark:bg-transparent rounded-2xl p-6">
             <h1 className="text-4xl md:text-5xl font-bold text-blue-primary dark:text-[#FFB276] mb-4 animate-slide-up-1">
@@ -178,7 +179,7 @@ const Landing = () => {
         </div>
 
         {/* Features Section */}
-        <div ref={featuresRef} className="max-w-7xl mx-auto">
+        <div ref={featuresRef} className="max-w-7xl mx-auto pl-4 pr-4 sm:pl-6 sm:pr-6 lg:pl-8 lg:pr-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
             {/* Card 1 */}
             <div className="flex flex-col items-center bg-white dark:bg-primary/95 rounded-2xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-gray-100 dark:border-gray-800 h-full">
@@ -230,14 +231,14 @@ const Landing = () => {
               backgroundRepeat: "no-repeat",
               backgroundPosition: "center",
               height: "100vh",
-              top: "150vh", // Position it roughly where the image section is
+              top: "110vh", // Position it roughly where the image section is
             }}
           ></div>
 
           {/*image section */}
           <div
             ref={imageSectionRef}
-            className="flex flex-col lg:flex-row items-center justify-center gap-20 mt-30 mb-20 relative"
+            className="flex flex-col lg:flex-row items-center justify-center gap-20 mt-30 mb-20 relative pl-4 pr-4 sm:pl-6 sm:pr-6 lg:pl-8 lg:pr-8"
           >
             <div className="relative">
               <h2 className="text-2xl sm:text-3xl font-bold text-left text-blue-primary dark:text-[#FFB276]">
@@ -264,9 +265,9 @@ const Landing = () => {
         {/* Call to Action */}
         <div
           ref={ctaRef}
-          className="max-w-7xl mx-auto mt-30 bg-white/90 dark:bg-primary/90 rounded-2xl text-center"
+          className="max-w-7xl mx-auto mt-30 bg-white/90 dark:bg-primary/90 rounded-2xl text-center "
         >
-          <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-primary p-10 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800">
+          <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-primary p-10 pl-4 pr-4 sm:pl-6 sm:pr-6 lg:pl-8 lg:pr-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800">
             <h2 className="text-2xl sm:text-3xl font-bold text-blue-primary dark:text-[#FFB276] mb-4">
               Ready to elevate your laboratory experience?
             </h2>
