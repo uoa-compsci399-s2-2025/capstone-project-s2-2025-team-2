@@ -107,11 +107,11 @@ const Landing = () => {
           <div className="flex items-center justify-between h-[5rem]">
             <div className="flex items-center gap-3">
               <img src="/logo.svg" alt="CoLab Logo" className="w-8 h-8" />
-              <h2 className="text-2xl font-medium text-black dark:text-white">
+              <h2 className="hidden md:block text-2xl font-medium text-black dark:text-white">
                 CoLab
               </h2>
             </div>
-            <div className="flex items-center gap-6">
+            <div className="flex items-center md:gap-6">
               <Link href="/marketplace">
                 <button className="px-4 cursor-pointer py-2 text-base font-medium text-white hover:text-[#6f72ff] transition">
                   Marketplace
