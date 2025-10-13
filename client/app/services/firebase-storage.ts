@@ -19,3 +19,17 @@ export const uploadReagentImage = async (
     return null
   }
 }
+
+export const uploadProfilePicture = async (
+  userId: string,
+  file: File,
+): Promise<string | null> => {
+  try {
+    const profileRef = ref(storage, `profilePic/${userId}`)
+    await uploadBytes(profileRef, file)
+    return await getDownloadURL(profileRef)
+  } catch (error) {
+    console.error("Error uploading profile picture:", error)
+    throw error
+  }
+}

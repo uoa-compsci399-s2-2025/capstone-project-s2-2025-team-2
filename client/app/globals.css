@@ -177,37 +177,12 @@
     width: 6px;
   }
 
-  .hero-text-light {
-    background-image: radial-gradient(
-      circle farthest-corner at 20% 0%,
-      #adaef4 25%,
-      #9799f7
-    );
-    -webkit-text-fill-color: transparent;
-    -webkit-background-clip: text;
-    background-clip: text;
+  .scrollbar-hide {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
   }
-
-  .hero-gradient-text {
-    background-image: radial-gradient(
-      circle farthest-corner at 20% 0%,
-      #9fa1ff 25%,
-      #6f72ff
-    );
-    -webkit-text-fill-color: transparent;
-    -webkit-background-clip: text;
-    background-clip: text;
-  }
-
-  .hero-gradient-text-dark {
-    background-image: radial-gradient(
-      circle farthest-corner at 20% 0%,
-      #6d70f5 25%,
-      #4e50e5
-    ) !important;
-    -webkit-text-fill-color: transparent !important;
-    -webkit-background-clip: text !important;
-    background-clip: text !important;
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
   }
 }
 

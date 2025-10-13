@@ -23,6 +23,28 @@ import { AuthRequest } from "../../service-layer/dtos/request/AuthRequest"
 @Route("users")
 export class UserController extends Controller {
   /**
+   * Update user information by their ID
+   * User **must** be authenticated to access this endpoint
+   * @param id - The ID of the user to update
+   * @param user - The user information to update
+   */
+  @Security("jwt")
+  @Patch("{id}")
+  public async updateUser(
+    @Path() id: string,
+    @Body() user: Partial<User>,
+  ): Promise<User> {
+    try {
+      console.log("UpdateUser called with:", { id, user })
+      const updatedUser = await new UserService().updateUser(id, user)
+      return updatedUser
+    } catch (error) {
+      console.error("Error updating user:", error)
+      throw error
+    }
+  }
+
+  /**
    * Get reagents those are expiring in 60 days or less under a user by their user id
    * @param user_id - user id to query with
    * @returns Promise<Reagent[]> - The list of all reagents filtered.

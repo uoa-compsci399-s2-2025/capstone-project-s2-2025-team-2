@@ -10,6 +10,7 @@ import Button from "@/app/components/generic/button/regular/Button"
 import OutlinedButton from "../../components/generic/button/outlined/OutlinedButton"
 import SearchBar from "../../components/composite/searchbar/SearchBar"
 import Pagination from "../../components/composite/pagination/Pagination"
+import { ProfileForm } from "../../components/composite/profileform/profileForm"
 // services
 import useAuthGuard from "@/app/hooks/useAuthGuard"
 // other
@@ -26,6 +27,8 @@ import {
   ShoppingCartIcon,
   ExclamationTriangleIcon,
   LockClosedIcon,
+  EnvelopeIcon,
+  PencilSquareIcon,
 } from "@heroicons/react/24/outline"
 import LoadingState from "@/app/components/composite/loadingstate/LoadingState"
 
@@ -60,7 +63,7 @@ const UserProfile = () => {
   const [reagents, setReagents] = useState<ReagentWithId[] | null>(null)
 
   const { fetchWithAuth } = useAuthGuard({ redirectToAuth: true })
-
+  const [showEditProfile, setShowEditProfile] = useState(false)
   // to be used when mapping reagent filter btns
   const reagentFilters: {
     label: string
@@ -236,35 +239,59 @@ const UserProfile = () => {
     )
   }
 
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      setShowEditProfile(false)
+    }
+  }
+  const handleProfileFormSubmit = async (updatedUserData: any) => {
+    setUserBeingViewed(updatedUserData)
+    setShowEditProfile(false)
+    console.log("Profile updated successfully!")
+  }
+
   return (
     <Overlay>
       <div className="px-5 pt-5">
         {/* profile header */}
         <div className="flex gap-3">
           <img
-            src="/placeholder.webp"
+            src={userBeingViewed?.image || "/default_pfp.jpg"}
             alt="User Profile Photo"
-            className="w-25 h-25 rounded-full border-3 border-[#6C6C6C] dark:border-white"
+            className="w-32 h-32 rounded-full border-2 object-cover border-[#6C6C6C] dark:border-white"
+            onError={(e) => {
+              e.currentTarget.src = "/default_pfp.jpg"
+            }}
           />
           <div className="flex flex-col gap-2">
-            <h1 className="font-light text-pearl text-xl md:text-4xl">
-              {idOfUserBeingViewed === userUid
-                ? `Welcome back, ${userBeingViewed && userBeingViewed?.preferredName}`
-                : `${userBeingViewed && userBeingViewed?.displayName}'s Profile`}
-            </h1>
-            <p className="flex items-center gap-2 text-xs md:text-sm text-blue-primary dark:text-orange-200">
+            <div className="flex items-center gap-6">
+              <h1 className="font-light text-pearl text-xl md:text-4xl">
+                {idOfUserBeingViewed === userUid
+                  ? `Welcome back, ${userBeingViewed && userBeingViewed?.preferredName}`
+                  : `${userBeingViewed && userBeingViewed?.displayName}'s Profile`}
+              </h1>
+              {/* show 'edit profile' btn if user is viewing their own profile */}
+              {idOfUserBeingViewed === userUid && (
+                <PencilSquareIcon
+                  className="w-5 h-5 md:w-6 md:h-6 cursor-pointer hover:opacity-70 transition-opacity"
+                  style={{ color: "#A1A1A1" }}
+                  onClick={() => setShowEditProfile(true)}
+                />
+              )}
+            </div>
+            <p className="flex items-center gap-2 text-xs md:text-sm text-orange-200 dark:text-blue-primary">
               <HomeIcon className="w-5 h-5 md:w-6 md:h-6" />
               {userBeingViewed.university}
             </p>
-            {/* show 'edit profile' btn if user is viewing their own profile */}
-            {idOfUserBeingViewed === userUid && (
-              <OutlinedButton
-                backgroundColor="#A1A1A1"
-                label="Edit Profile"
-                textSize="text-xs"
-                fontWeight="bold"
-                className="mt-3 self-start"
-              />
+            <p className="flex items-center gap-2 text-xs md:text-sm text-blue-primary dark:text-orange-200">
+              <EnvelopeIcon className="w-5 h-5 md:w-6 md:h-6" />
+              {userBeingViewed.email || "Unknown"}
+            </p>
+            {/* About Me section */}
+            {userBeingViewed.about && (
+              <p className="flex items-center gap-2 text-xs md:text-sm dark:text-gray-400 leading-relaxed">
+                {userBeingViewed.about}
+              </p>
             )}
           </div>
         </div>
@@ -272,7 +299,7 @@ const UserProfile = () => {
         <div className="mt-20 flex flex-col gap-8 md:gap-2">
           {/* reagent filter btns */}
           <div className="flex flex-col gap-4 mb-5">
-            <div className="flex gap-4 justify-center md:justify-end">
+            <div className="flex gap-4 justify-center md:justify-start">
               {reagentFilters.map((btnProps) =>
                 reagentCategoryFilter === btnProps.categoryFilterValue ? (
                   <div key={btnProps.categoryFilterValue}>
@@ -313,6 +340,7 @@ const UserProfile = () => {
                         key={btnProps.categoryFilterValue}
                         label={btnProps.label}
                         backgroundColor={btnProps.bgColour}
+                        className="bg-secondary/30 duration-300 hover:bg-secondary/10"
                         icon={btnProps.icon}
                         onClick={() =>
                           setReagentCategoryFilter(btnProps.categoryFilterValue)
@@ -322,7 +350,7 @@ const UserProfile = () => {
                     <span className="block md:hidden">
                       <button
                         type="button"
-                        className="bg-gray-50 dark:bg-primary p-2 rounded-lg outline-2"
+                        className="bg-gradient-to-r from-primary to-primary/10 cursor-pointer p-2 rounded-lg outline-2"
                         onClick={() =>
                           setReagentCategoryFilter(btnProps.categoryFilterValue)
                         }
@@ -387,6 +415,32 @@ const UserProfile = () => {
           onPageChange={setCurrentPage}
         />
       </div>
+      {showEditProfile && (
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 "
+          onClick={handleBackdropClick}
+        >
+          <div className="bg-primary rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl ">
+            <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
+              <h2 className="text-2xl font-medium text-white">Edit</h2>
+              <button
+                onClick={() => setShowEditProfile(false)}
+                className="text-gray-400 text-3xl hover:text-white "
+              >
+                ❌
+              </button>
+            </div>
+
+            <div className="p-6 overflow-y-auto flex-1 scrollbar-hide">
+              <ProfileForm
+                onSubmit={handleProfileFormSubmit}
+                onCancel={() => setShowEditProfile(false)}
+                userId={idOfUserBeingViewed}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </Overlay>
   )
 }

@@ -7,6 +7,83 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"User": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"displayName": {
+						"type": "string"
+					},
+					"preferredName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"university": {
+						"type": "string"
+					},
+					"about": {
+						"type": "string"
+					},
+					"role": {
+						"type": "string",
+						"enum": [
+							"user",
+							"lab_manager",
+							"admin"
+						]
+					},
+					"image": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"displayName",
+					"preferredName",
+					"university",
+					"role"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Partial_User_": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"displayName": {
+						"type": "string"
+					},
+					"preferredName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"university": {
+						"type": "string"
+					},
+					"about": {
+						"type": "string"
+					},
+					"role": {
+						"type": "string",
+						"enum": [
+							"user",
+							"lab_manager",
+							"admin"
+						]
+					},
+					"image": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "Make all properties in T optional"
+			},
 			"ReagentTradingType": {
 				"type": "string",
 				"enum": [
@@ -101,39 +178,6 @@
 					"createdAtReadable",
 					"location",
 					"unit"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"User": {
-				"properties": {
-					"email": {
-						"type": "string"
-					},
-					"displayName": {
-						"type": "string"
-					},
-					"preferredName": {
-						"type": "string"
-					},
-					"university": {
-						"type": "string"
-					},
-					"role": {
-						"type": "string",
-						"enum": [
-							"user",
-							"lab_manager",
-							"admin"
-						]
-					}
-				},
-				"required": [
-					"email",
-					"displayName",
-					"preferredName",
-					"university",
-					"role"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -881,6 +925,55 @@
 		"contact": {}
 	},
 	"paths": {
+		"/users/{id}": {
+			"patch": {
+				"operationId": "UpdateUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/User"
+								}
+							}
+						}
+					}
+				},
+				"description": "Update user information by their ID\r\nUser **must** be authenticated to access this endpoint",
+				"tags": [
+					"User"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "- The ID of the user to update",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],
+				"requestBody": {
+					"description": "- The user information to update",
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/Partial_User_",
+								"description": "- The user information to update"
+							}
+						}
+					}
+				}
+			}
+		},
 		"/users/reagents/expiring": {
 			"get": {
 				"operationId": "GetReagentsExpiringSoon",
