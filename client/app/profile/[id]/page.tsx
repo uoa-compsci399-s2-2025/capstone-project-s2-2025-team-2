@@ -27,6 +27,7 @@ import {
   ShoppingCartIcon,
   ExclamationTriangleIcon,
   LockClosedIcon,
+  EnvelopeIcon,
 } from "@heroicons/react/24/outline"
 import LoadingState from "@/app/components/composite/loadingstate/LoadingState"
 
@@ -253,35 +254,45 @@ const UserProfile = () => {
       <div className="px-5 pt-5">
         {/* profile header */}
         <div className="flex gap-3">
-          <img
-            src={userBeingViewed?.image || "/default_pfp.jpg"}
-            alt="User Profile Photo"
-            className="w-24 h-24 rounded-full border-2 object-cover border-[#6C6C6C] dark:border-white"
-            style={{ imageRendering: 'auto' }}
-            onError={(e) => {
-              e.currentTarget.src = "/default_pfp.jpg"
-            }}
-          />
+<img
+  src={userBeingViewed?.image || "/default_pfp.jpg"}
+  alt="User Profile Photo"
+  className="w-32 h-32 rounded-full border-2 object-cover border-[#6C6C6C] dark:border-white"
+  onError={(e) => {
+    e.currentTarget.src = "/default_pfp.jpg"
+  }}
+/>
           <div className="flex flex-col gap-2">
-            <h1 className="font-light text-pearl text-xl md:text-4xl">
-              {idOfUserBeingViewed === userUid
-                ? `Welcome back, ${userBeingViewed && userBeingViewed?.preferredName}`
-                : `${userBeingViewed && userBeingViewed?.displayName}'s Profile`}
-            </h1>
-            <p className="flex items-center gap-2 text-xs md:text-sm text-blue-primary dark:text-orange-200">
+            <div className="flex items-center gap-4">
+              <h1 className="font-light text-pearl text-xl md:text-4xl">
+                {idOfUserBeingViewed === userUid
+                  ? `Welcome back, ${userBeingViewed && userBeingViewed?.preferredName}`
+                  : `${userBeingViewed && userBeingViewed?.displayName}'s Profile`}
+              </h1>
+              {/* show 'edit profile' btn if user is viewing their own profile */}
+              {idOfUserBeingViewed === userUid && (
+                <OutlinedButton
+                  backgroundColor="#A1A1A1"
+                  label="Edit Profile"
+                  textSize="text-xs"
+                  fontWeight="bold"
+                  onClick={() => setShowEditProfile(true)}
+                />
+              )}
+            </div>
+            <p className="flex items-center gap-2 text-xs md:text-sm text-orange-200 dark:text-blue-primary">
               <HomeIcon className="w-5 h-5 md:w-6 md:h-6" />
               {userBeingViewed.university}
             </p>
-            {/* show 'edit profile' btn if user is viewing their own profile */}
-            {idOfUserBeingViewed === userUid && (
-              <OutlinedButton
-                backgroundColor="#A1A1A1"
-                label="Edit Profile"
-                textSize="text-xs"
-                fontWeight="bold"
-                className="mt-3 self-start"
-                onClick={() => setShowEditProfile(true)}
-              />
+              <p className="flex items-center gap-2 text-xs md:text-sm text-blue-primary dark:text-orange-200">
+              <EnvelopeIcon className="w-5 h-5 md:w-6 md:h-6" />
+              {userBeingViewed.email || "Unknown"}
+            </p>
+            {/* About Me section */}
+            {userBeingViewed.about && (
+                <p className="flex items-center gap-2 text-xs md:text-sm dark:text-gray-400 leading-relaxed">
+                  {userBeingViewed.about}
+                </p>
             )}
           </div>
         </div>
@@ -411,7 +422,7 @@ const UserProfile = () => {
         >
           <div className="bg-primary rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl ">
             <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
-              <h2 className="text-2xl font-medium text-white">Edit Profile</h2>
+              <h2 className="text-2xl font-medium text-white">Edit</h2>
               <button
                 onClick={() => setShowEditProfile(false)}
                 className="text-gray-400 text-3xl hover:text-white "

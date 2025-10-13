@@ -62,6 +62,7 @@ export const ProfileForm = ({
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [imageUploading, setImageUploading] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [originalImageUrl, setOriginalImageUrl] = useState<string>("")
 useEffect(() => {
   const fetchUserData = async () => {
     try {
@@ -80,12 +81,14 @@ useEffect(() => {
         throw new Error("Failed to fetch user data")
       }
       if (userData) {
+        const userImage = userData.image || ""
+        setOriginalImageUrl(userImage)
         setFormData({
           lastName: userData.lastName || "",
           preferredName: userData.preferredName || "",
           about: userData.about || "",
           university: userData.university || "",
-          imageUrl: userData.image || "",
+          imageUrl: userImage,
         })
       }
     } catch (error) {
@@ -162,7 +165,7 @@ useEffect(() => {
       lastName: formData.lastName.trim(),
       preferredName: formData.preferredName.trim(),
       about: formData.about.trim(),
-      image: finalImageUrl?.trim() || undefined,
+      image: finalImageUrl?.trim() || "",
       university: formData.university.trim(),
     }
 
@@ -266,6 +269,12 @@ useEffect(() => {
         {selectedFile && !imageUploading && (
           <div className="text-green-400 text-sm">
             ✓ File selected: {selectedFile.name} (will upload on save)
+          </div>
+        )}
+        
+        {!formData.imageUrl && !selectedFile && originalImageUrl && (
+          <div className="text-orange-400 text-sm">
+            ✓ Profile picture will be removed on save
           </div>
         )}
       </div>
