@@ -221,7 +221,6 @@ useEffect(() => {
         </div>
 
       <div className="space-y-3">
-        {/* Upload and Remove buttons side by side */}
         <div className="flex gap-3 justify-center">
           <div className="relative">
             <input

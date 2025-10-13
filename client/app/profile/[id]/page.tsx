@@ -254,9 +254,13 @@ const UserProfile = () => {
         {/* profile header */}
         <div className="flex gap-3">
           <img
-            src="/placeholder.webp"
+            src={userBeingViewed?.image || "/default_pfp.jpg"}
             alt="User Profile Photo"
-            className="w-25 h-25 rounded-full border-3 border-[#6C6C6C] dark:border-white"
+            className="w-24 h-24 rounded-full border-2 object-cover border-[#6C6C6C] dark:border-white"
+            style={{ imageRendering: 'auto' }}
+            onError={(e) => {
+              e.currentTarget.src = "/default_pfp.jpg"
+            }}
           />
           <div className="flex flex-col gap-2">
             <h1 className="font-light text-pearl text-xl md:text-4xl">

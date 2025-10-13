@@ -57,12 +57,15 @@ const SellerContact = ({ rating, reagent }: SellerContactProps) => {
   return (
     <div className="flex flex-row items-center md:mb-[2rem] gap-[4.5rem] md:gap-[8.5rem]">
       <div className="flex flex-row">
-        <div className="hidden md:block relative bg-yellow-600 rounded-full border-2 border-white h-[4rem] w-[4rem] overflow-hidden">
-          <Image
-            src="/placeholder.webp"
-            alt="Reagent"
-            fill
-            className="object-cover"
+        <div className="hidden md:block relative rounded-full border-2 border-white h-[4rem] w-[4rem] overflow-hidden">
+          <img
+            src={sellerInfo?.image || "/default_pfp.jpg"}
+            alt="User Profile Photo"
+            className="w-full h-full object-cover"
+            style={{ imageRendering: 'auto' }}
+            onError={(e) => {
+              e.currentTarget.src = "/default_pfp.jpg"
+            }}
           />
         </div>
 
