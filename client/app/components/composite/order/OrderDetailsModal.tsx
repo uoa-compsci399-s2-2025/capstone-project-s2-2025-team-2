@@ -249,14 +249,15 @@ export default function OrderDetailsModal({
                   <DetailRow label="Offered Price" value={`$${price}`} />
                 )}
 
-                {typeof order.message === "string" && order.message.trim().length > 0 && (
-                  <div className="flex flex-col max-w-[280px]">
-                    <span className="text-gray-300 mb-1">Message:</span>
-                    <span className="text-white text-sm break-words max-h-20 overflow-y-auto">
-                      {order.message}
-                    </span>
-                  </div>
-                )}
+                {typeof order.message === "string" &&
+                  order.message.trim().length > 0 && (
+                    <div className="flex flex-col max-w-[280px]">
+                      <span className="text-gray-300 mb-1">Message:</span>
+                      <span className="text-white text-sm break-words max-h-20 overflow-y-auto">
+                        {order.message}
+                      </span>
+                    </div>
+                  )}
               </div>
             </div>
 
