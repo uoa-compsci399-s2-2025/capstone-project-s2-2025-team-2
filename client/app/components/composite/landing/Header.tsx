@@ -12,7 +12,7 @@ const Header = () => {
                     text-[1.5rem]
                 "
         >
-          Chemical.ly
+          CoLab
         </span>
       </div>
     </div>

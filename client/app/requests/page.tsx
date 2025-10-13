@@ -3,12 +3,12 @@
 import { useState, useEffect, useCallback } from "react"
 import Overlay from "../components/composite/Overlay"
 import OrderCard from "../components/composite/order/OrderCard"
+import OrderDetailsModal from "../components/composite/order/OrderDetailsModal"
 import client from "../services/fetch-client"
-import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import type { components } from "@/models/__generated__/schema"
 import { usePageSize } from "../hooks/usePageSize"
-import { usePagaination } from "../hooks/usePagination"
+import { usePagination } from "../hooks/usePagination"
 import Pagination from "../components/composite/pagination/Pagination"
 import LoadingState from "../components/composite/loadingstate/LoadingState"
 
@@ -17,12 +17,23 @@ type OrderWithId = Order & { id: string; owner_id: string }
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
 
+interface ModalState {
+  isOpen: boolean
+  order: OrderWithId | null
+  reagent: ReagentWithId | null
+}
+
 export default function Orders() {
   const [orders, setOrders] = useState<OrderWithId[]>([])
   const [reagents, setReagents] = useState<Map<string, ReagentWithId>>(
     new Map(),
   )
   const [loading, setLoading] = useState(true)
+  const [modalState, setModalState] = useState<ModalState>({
+    isOpen: false,
+    order: null,
+    reagent: null,
+  })
   const router = useRouter()
 
   //fetch all orders where user is owner/requester
@@ -55,17 +66,22 @@ export default function Orders() {
     fetchOrders()
   }, [fetchOrders])
 
-  //handle approve/cancel order, send alert
-  const handleAction = async (orderId: string, action: string) => {
-    await client.PATCH(`/orders/${orderId}/${action}` as any, {
-      headers: { Authorization: `Bearer ${localStorage.getItem("authToken")}` },
-    })
-    await fetchOrders()
-    toast(action === "approve" ? "Request approved!" : "Request canceled!")
+  //open order details modal
+  const handleOrderDetails = (orderId: string) => {
+    const order = orders.find((o) => o.id === orderId)
+    const reagent = order ? reagents.get(order.reagent_id) : null
+
+    if (order && reagent) {
+      setModalState({ isOpen: true, order, reagent })
+    }
+  }
+
+  const handleCloseModal = () => {
+    setModalState({ isOpen: false, order: null, reagent: null })
   }
   // pagination
   const pageSize = usePageSize()
-  const { currentPage, setCurrentPage, totalPages } = usePagaination(
+  const { currentPage, setCurrentPage, totalPages } = usePagination(
     orders,
     pageSize,
   )
@@ -112,20 +128,31 @@ export default function Orders() {
                 key={order.id}
                 reagent={reagent}
                 order={order}
-                onApprove={(id) => handleAction(id, "approve")}
-                onDecline={(id) => handleAction(id, "cancel")}
+                onViewDetails={handleOrderDetails}
               />
             )
           })
         )}
       </div>
-      <div className="pb-[4rem] md:pb-0">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
+      {!loading && (
+        <div className="pb-[4rem] md:pb-0">
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        </div>
+      )}
+
+      {/*request details modal*/}
+      {modalState.order && modalState.reagent && (
+        <OrderDetailsModal
+          isOpen={modalState.isOpen}
+          onClose={handleCloseModal}
+          order={modalState.order}
+          reagent={modalState.reagent}
         />
-      </div>
+      )}
     </Overlay>
   )
 }

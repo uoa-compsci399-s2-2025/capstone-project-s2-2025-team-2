@@ -4,7 +4,7 @@ import { Providers } from "./providers"
 import { Toaster } from "@/app/components/generic/sonner/Toaster"
 
 export const metadata: Metadata = {
-  title: "Chemical.ly",
+  title: "CoLab",
   description: "#OpenToWork",
 }
 
