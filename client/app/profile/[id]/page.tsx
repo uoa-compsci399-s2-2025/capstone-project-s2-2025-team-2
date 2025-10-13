@@ -349,7 +349,7 @@ const UserProfile = () => {
                     <span className="block md:hidden">
                       <button
                         type="button"
-                        className="bg-gray-50 dark:bg-primary p-2 rounded-lg outline-2"
+                        className="bg-gradient-to-r from-primary to-primary/10 cursor-pointer p-2 rounded-lg outline-2"
                         onClick={() =>
                           setReagentCategoryFilter(btnProps.categoryFilterValue)
                         }
