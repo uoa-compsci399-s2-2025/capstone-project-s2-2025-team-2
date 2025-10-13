@@ -134,7 +134,7 @@ const SellerContact = ({ rating, reagent }: SellerContactProps) => {
           disabled={isCheckingInventory}
           className="
             px-[1.5rem] py-[1.5rem] rounded-[18px] md:rounded-[8px] md:text-sm md:px-6 md:w-auto md:py-1.5 md:justify-center
-            font-semibold 
+            font-semibold hover:bg-blue-primary/70 transition-colors cursor-pointer
             "
         />
       )}

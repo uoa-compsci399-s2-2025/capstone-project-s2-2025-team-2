@@ -99,7 +99,7 @@ const Sidebar = () => {
                     <div className="flex justify-center px-4">
                       <Link href={href}>
                         <Button
-                          className="gap-2 duration-300 flex justify-center"
+                          className="gap-2 duration-300 flex justify-center hover:bg-blue-primary/70 transition-colors"
                           icon={Icon}
                           iconPosition="left"
                           label={label}
