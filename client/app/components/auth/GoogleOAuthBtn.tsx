@@ -29,8 +29,13 @@ export default function GoogleOAuthBtn({
     /* 9. ref.current is assigned to the buttonRef */
   }
   return (
-    <div className="w-full flex justify-center items-center">
-      <div ref={buttonRef} id="google-signin-button" className="w-full" />
+    <div className="w-full max-w-[400px] mx-auto flex">
+      <div
+        ref={buttonRef}
+        id="google-signin-button"
+        className="w-full"
+        style={{ display: "block" }}
+      />
     </div>
   )
 }
