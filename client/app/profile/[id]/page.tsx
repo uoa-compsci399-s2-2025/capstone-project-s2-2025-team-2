@@ -431,7 +431,7 @@ const UserProfile = () => {
               </button>
             </div>
 
-            <div className="p-6 overflow-y-auto flex-1">
+            <div className="p-6 overflow-y-auto flex-1 scrollbar-hide">
               <ProfileForm
                 onSubmit={handleProfileFormSubmit}
                 onCancel={() => setShowEditProfile(false)}
