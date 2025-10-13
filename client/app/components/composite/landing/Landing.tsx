@@ -127,10 +127,10 @@ const Landing = () => {
         </div>
       </div>
       {/* Semi-transparent overlay */}
-      <div
+      {/* <div
         ref={parallaxRef}
-        className="mt-[110vh] md:mt-[90vh] lg:mt-[120vh] absolute inset-0 bg-white/50 dark:bg-black/75 h-[290vh] z-0"
-      ></div>
+        className="mt-[110vh] md:mt-[90vh] lg:mt-[120vh] absolute inset-0 bg-white/60 dark:bg-black/75 h-[290vh] z-0 rounded-md"
+      ></div> */}
       {/* Content wrapper with relative positioning */}
       <div className="relative z-10 mb-20">
         {/* Hero Section */}
