@@ -2,7 +2,6 @@ import FirestoreCollections from "../adapters/FirestoreCollections"
 import { User } from "../../business-layer/models/User"
 
 export class UserService {
-  
   async updateUser(id: string, user: Partial<User>): Promise<User> {
     try {
       const userRef = FirestoreCollections.users.doc(id)
@@ -14,7 +13,6 @@ export class UserService {
       await userRef.update(user)
       const updatedDoc = await userRef.get()
       return updatedDoc.data() as User
-
     } catch (error) {
       console.error("Error updating user:", error)
       throw error

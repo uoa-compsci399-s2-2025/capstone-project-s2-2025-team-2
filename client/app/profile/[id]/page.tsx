@@ -10,7 +10,7 @@ import Button from "@/app/components/generic/button/regular/Button"
 import OutlinedButton from "../../components/generic/button/outlined/OutlinedButton"
 import SearchBar from "../../components/composite/searchbar/SearchBar"
 import Pagination from "../../components/composite/pagination/Pagination"
-import {ProfileForm} from "../../components/composite/profileform/ProfileForm"
+import { ProfileForm } from "../../components/composite/profileform/profileForm"
 // services
 import useAuthGuard from "@/app/hooks/useAuthGuard"
 // other
@@ -61,7 +61,7 @@ const UserProfile = () => {
   const [reagents, setReagents] = useState<ReagentWithId[] | null>(null)
 
   const { fetchWithAuth } = useAuthGuard({ redirectToAuth: true })
-const [showEditProfile, setShowEditProfile] = useState(false)
+  const [showEditProfile, setShowEditProfile] = useState(false)
   // to be used when mapping reagent filter btns
   const reagentFilters: {
     label: string
@@ -242,11 +242,11 @@ const [showEditProfile, setShowEditProfile] = useState(false)
       setShowEditProfile(false)
     }
   }
-const handleProfileFormSubmit = async (updatedUserData: any) => {
-  setUserBeingViewed(updatedUserData)
-  setShowEditProfile(false)
-  console.log("Profile updated successfully!")
-}
+  const handleProfileFormSubmit = async (updatedUserData: any) => {
+    setUserBeingViewed(updatedUserData)
+    setShowEditProfile(false)
+    console.log("Profile updated successfully!")
+  }
 
   return (
     <Overlay>
@@ -401,33 +401,31 @@ const handleProfileFormSubmit = async (updatedUserData: any) => {
         />
       </div>
       {showEditProfile && (
-              <div
-                className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 "
-                onClick={handleBackdropClick}
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 "
+          onClick={handleBackdropClick}
+        >
+          <div className="bg-primary rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl ">
+            <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
+              <h2 className="text-2xl font-medium text-white">Edit Profile</h2>
+              <button
+                onClick={() => setShowEditProfile(false)}
+                className="text-gray-400 text-3xl hover:text-white "
               >
-                <div className="bg-primary rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl ">
-                  <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
-                    <h2 className="text-2xl font-medium text-white">
-                      Edit Profile
-                    </h2>
-                    <button
-                      onClick={() => setShowEditProfile(false)}
-                      className="text-gray-400 text-3xl hover:text-white "
-                    >
-                      ❌
-                    </button>
-                  </div>
+                ❌
+              </button>
+            </div>
 
-                  <div className="p-6 overflow-y-auto flex-1">
-                    <ProfileForm
-                      onSubmit={handleProfileFormSubmit}
-                      onCancel={() => setShowEditProfile(false)}
-                      userId={idOfUserBeingViewed}
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
+            <div className="p-6 overflow-y-auto flex-1">
+              <ProfileForm
+                onSubmit={handleProfileFormSubmit}
+                onCancel={() => setShowEditProfile(false)}
+                userId={idOfUserBeingViewed}
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </Overlay>
   )
 }

@@ -2,8 +2,6 @@ import { useCallback, useState } from "react"
 import { toast } from "sonner"
 import client from "../../../services/fetch-client"
 
-
-
 interface ProfileFormProps {
   onSubmit: (data: any) => void
   onCancel: () => void
@@ -44,8 +42,12 @@ const FormField = ({
   </div>
 )
 
-export const ProfileForm = ({ onSubmit, onCancel, userId }: ProfileFormProps) => {
-     const [formData, setFormData] = useState<formData>({
+export const ProfileForm = ({
+  onSubmit,
+  onCancel,
+  userId,
+}: ProfileFormProps) => {
+  const [formData, setFormData] = useState<formData>({
     lastName: "",
     preferredName: "",
     about: "",
@@ -55,61 +57,60 @@ export const ProfileForm = ({ onSubmit, onCancel, userId }: ProfileFormProps) =>
   const [dataSubmitting, setDataSubmitting] = useState(false)
 
   const handleFieldChange = useCallback(
-     <K extends keyof formData>(field: K, value: formData[K]) => {
+    <K extends keyof formData>(field: K, value: formData[K]) => {
       setFormData((current) => ({ ...current, [field]: value }))
     },
     [],
   )
   const handleFormSubmit = async (e: React.FormEvent) => {
-     e.preventDefault()
-     if (dataSubmitting) return
-     setDataSubmitting(true)
+    e.preventDefault()
+    if (dataSubmitting) return
+    setDataSubmitting(true)
 
-     // First name cant be empty
-     if (formData.preferredName.trim() === "") {
-       alert("First name cannot be empty")
-       setDataSubmitting(false)
-       return
-     }
-     try {
+    // First name cant be empty
+    if (formData.preferredName.trim() === "") {
+      alert("First name cannot be empty")
+      setDataSubmitting(false)
+      return
+    }
+    try {
+      //fetch token from localStorage
+      const idToken = localStorage.getItem("authToken")
+      if (!idToken) {
+        toast("Please sign in to create a reagent.")
+        setDataSubmitting(false)
+        return
+      }
 
-                //fetch token from localStorage
-                const idToken = localStorage.getItem("authToken")
-                if (!idToken) {
-                  toast("Please sign in to create a reagent.")
-                  setDataSubmitting(false)
-                  return
-                }
+      const userData = {
+        lastName: formData.lastName.trim(),
+        preferredName: formData.preferredName.trim(),
+        about: formData.about.trim(),
+        university: formData.university.trim(),
+        image: formData.imageUrl?.trim() || undefined,
+      }
 
-          const userData = {
-            lastName: formData.lastName.trim(),
-               preferredName: formData.preferredName.trim(),
-               about: formData.about.trim(),
-               university: formData.university.trim(),
-               image: formData.imageUrl?.trim() || undefined,
-          }
-
-          const {data: updateUser, error } = await client.PATCH(
-               `/users/${userId}` as any, 
-               {
+      const { data: updateUser, error } = await client.PATCH(
+        `/users/${userId}` as any,
+        {
           body: userData,
           headers: {
             Authorization: `Bearer ${idToken}`,
           },
-               })
+        },
+      )
 
-                     if (error) {
-        throw new Error("Failed to create reagent")
-      }   
+      if (error) {
+        throw new Error("Failed to update profile")
+      }
 
       let updatedUser = updateUser as any
-          onSubmit(updatedUser)
-
-   } catch (error) {
-     toast.error("Failed to update profile")
-   } finally {
-     setDataSubmitting(false)
-   }
+      onSubmit(updatedUser)
+    } catch (error) {
+      toast.error("Failed to update profile")
+    } finally {
+      setDataSubmitting(false)
+    }
   }
 
   return (
@@ -120,7 +121,7 @@ export const ProfileForm = ({ onSubmit, onCancel, userId }: ProfileFormProps) =>
           <input
             type="text"
             value={formData.lastName}
-            onChange={e => handleFieldChange("lastName", e.target.value)}
+            onChange={(e) => handleFieldChange("lastName", e.target.value)}
             className={inputStyles}
           />
         }
@@ -132,7 +133,7 @@ export const ProfileForm = ({ onSubmit, onCancel, userId }: ProfileFormProps) =>
           <input
             type="text"
             value={formData.preferredName}
-            onChange={e => handleFieldChange("preferredName", e.target.value)}
+            onChange={(e) => handleFieldChange("preferredName", e.target.value)}
             className={inputStyles}
           />
         }
@@ -142,7 +143,7 @@ export const ProfileForm = ({ onSubmit, onCancel, userId }: ProfileFormProps) =>
         input={
           <textarea
             value={formData.about}
-            onChange={e => handleFieldChange("about", e.target.value)}
+            onChange={(e) => handleFieldChange("about", e.target.value)}
             className={inputStyles}
           />
         }
@@ -153,7 +154,7 @@ export const ProfileForm = ({ onSubmit, onCancel, userId }: ProfileFormProps) =>
           <input
             type="text"
             value={formData.university}
-            onChange={e => handleFieldChange("university", e.target.value)}
+            onChange={(e) => handleFieldChange("university", e.target.value)}
             className={inputStyles}
           />
         }
@@ -166,7 +167,7 @@ export const ProfileForm = ({ onSubmit, onCancel, userId }: ProfileFormProps) =>
               type="text"
               placeholder="Paste image URL here"
               value={formData.imageUrl || ""}
-              onChange={e => handleFieldChange("imageUrl", e.target.value)}
+              onChange={(e) => handleFieldChange("imageUrl", e.target.value)}
               className={inputStyles}
             />
           </div>

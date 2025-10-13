@@ -35,6 +35,7 @@ export class UserController extends Controller {
     @Body() user: Partial<User>,
   ): Promise<User> {
     try {
+      console.log("UpdateUser called with:", { id, user })
       const updatedUser = await new UserService().updateUser(id, user)
       return updatedUser
     } catch (error) {
