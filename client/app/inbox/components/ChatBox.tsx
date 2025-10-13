@@ -148,11 +148,11 @@ export default function ChatBox({
           </div>
 
           <div className="flex space-x-2 md:m-0 mt-4">
-            <button className="md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--dark-gray)] text-white text-light-gray hover:bg-primary rounded-2xl transition-colors">
+            <button className="md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--dark-gray)] text-white hover:bg-[var(--dark-gray)]/70 cursor-pointer rounded-2xl transition-colors">
               View Listing
             </button>
             {!isResponser && (
-              <button className="md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--dark-gray)] text-white text-light-gray hover:bg-primary rounded-2xl transition-colors">
+              <button className="md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--dark-gray)] text-white hover:bg-[var(--dark-gray)]/70 cursor-pointer rounded-2xl transition-colors">
                 Edit Request
               </button>
             )}
