@@ -4,7 +4,7 @@ import Overlay from "../components/composite/Overlay"
 import SearchBar from "../components/composite/searchbar/SearchBar"
 import ReagentCard from "../components/composite/reagent/ReagentCard"
 import ReagentForm from "../components/composite/reagent/ReagentForm"
-import { usePagaination } from "../hooks/usePagination"
+import { usePagination } from "../hooks/usePagination"
 import Pagination from "../components/composite/pagination/Pagination"
 import { usePageSize } from "../hooks/usePageSize"
 import client from "../services/fetch-client"
@@ -148,7 +148,7 @@ const Marketplace = () => {
 
   const pageSize = usePageSize()
   const { currentPage, setCurrentPage, currentData, totalPages } =
-    usePagaination(sorted, pageSize)
+    usePagination(sorted, pageSize)
 
   useEffect(() => {
     if (currentPage > totalPages && totalPages > 0) {

@@ -16,7 +16,7 @@ import useAuthGuard from "@/app/hooks/useAuthGuard"
 // other
 import { User } from "../../../../server/src/business-layer/models/User"
 import { components } from "@/models/__generated__/schema"
-import { usePagaination } from "../../hooks/usePagination"
+import { usePagination } from "../../hooks/usePagination"
 import { usePageSize } from "../../hooks/usePageSize"
 
 type Reagent = components["schemas"]["Reagent"]
@@ -220,7 +220,7 @@ const UserProfile = () => {
   // pagination
   const pageSize = usePageSize()
   const { currentPage, setCurrentPage, currentData, totalPages } =
-    usePagaination(sorted, pageSize)
+    usePagination(sorted, pageSize)
   useEffect(() => {
     if (currentPage > totalPages && totalPages > 0) {
       setCurrentPage(totalPages)

@@ -5,6 +5,9 @@ import { useState, useEffect } from "react"
 import ReagentRequest from "../reagent/ReagentRequest"
 import client from "../../../services/fetch-client"
 import type { components } from "@/models/__generated__/schema"
+import { toast } from "sonner"
+import { onAuthStateChanged } from "firebase/auth"
+import { auth } from "../../../config/firebase"
 
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
@@ -17,6 +20,16 @@ interface SellerContactProps {
 const SellerContact = ({ rating, reagent }: SellerContactProps) => {
   const [isRequestOpen, setIsRequestOpen] = useState(false)
   const [sellerInfo, setSellerInfo] = useState<any>(null)
+  const [isCheckingInventory, setIsCheckingInventory] = useState(false)
+  const [isSignedIn, setIsSignedIn] = useState(false)
+
+  //check auth state
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsSignedIn(!!user)
+    })
+    return () => unsubscribe()
+  }, [])
 
   //fetch seller info using user id
   useEffect(() => {
@@ -39,10 +52,41 @@ const SellerContact = ({ rating, reagent }: SellerContactProps) => {
     fetchSellerInfo()
   }, [reagent?.user_id])
 
-  const handleRequestClick = () => {
-    if (reagent) {
-      setIsRequestOpen(true)
+  const handleRequestClick = async () => {
+    if (!reagent) return
+
+    //check if user has reagents to offer for exchange
+    if (reagent.tradingType === "trade") {
+      setIsCheckingInventory(true)
+      try {
+        const token = localStorage.getItem("authToken")
+        const { data: userReagents, error } = await client.GET(
+          "/users/reagents" as any,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        )
+
+        if (error) {
+          toast.error("Failed to check your inventory. Please try again.")
+          return
+        }
+
+        if (!userReagents?.length) {
+          toast.error(
+            "You need to have reagents to offer before making a trade request. Please list some reagents first.",
+          )
+          return
+        }
+      } catch {
+        toast.error("Failed to check your inventory. Please try again.")
+        return
+      } finally {
+        setIsCheckingInventory(false)
+      }
     }
+
+    setIsRequestOpen(true)
   }
 
   const handleRequestClose = () => {
@@ -85,14 +129,17 @@ const SellerContact = ({ rating, reagent }: SellerContactProps) => {
         </div>
       </div>
 
-      <Button
-        label="Request Reagent"
-        onClick={handleRequestClick}
-        className="
-          px-[1.5rem] py-[1.5rem] rounded-[18px] md:rounded-[8px] md:text-sm md:px-6 md:w-auto md:py-1.5 md:justify-center
-          font-semibold 
-          "
-      />
+      {isSignedIn && (
+        <Button
+          label={isCheckingInventory ? "Checking..." : "Request Reagent"}
+          onClick={handleRequestClick}
+          disabled={isCheckingInventory}
+          className="
+            px-[1.5rem] py-[1.5rem] rounded-[18px] md:rounded-[8px] md:text-sm md:px-6 md:w-auto md:py-1.5 md:justify-center
+            font-semibold hover:bg-blue-primary/70 transition-colors cursor-pointer
+            "
+        />
+      )}
 
       {reagent && (
         <ReagentRequest

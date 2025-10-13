@@ -250,19 +250,35 @@ export class UserController extends Controller {
     @Body() update: Partial<Reagent>,
     @Request() request: AuthRequest,
   ): Promise<Reagent> {
+    const uid = request.user?.uid
+    if (!uid) {
+      this.setStatus(401)
+      throw new Error("User ID not authenticated")
+    }
     try {
       const reagent = await new ReagentService().getReagentById(id)
-      const uid = request.user?.uid
-      if (reagent.user_id == uid) {
-        const updatedReagent = await new ReagentService().updateReagent(
-          id,
-          update,
-        )
-        return updatedReagent
+      console.log(`User requesting update: ${uid}`)
+      if (!reagent) {
+        this.setStatus(404)
+        throw new Error(`Reagent ID ${id} not found`)
       }
-      return null
+
+      if (reagent.user_id !== uid) {
+        this.setStatus(403)
+        throw new Error("Forbidden: You cannot update a reagent you do not own")
+      }
+
+      console.log(`User ${uid} is updating reagent ${id}`)
+      const updatedReagent = await new ReagentService().updateReagent(
+        id,
+        update,
+      )
+      this.setStatus(200)
+      return updatedReagent
     } catch (error) {
-      this.setStatus(400)
+      if (!this.getStatus()) {
+        this.setStatus(400)
+      }
       throw new Error(`[ERROR] while updating reagent ${id}: ${error}`)
     }
   }
