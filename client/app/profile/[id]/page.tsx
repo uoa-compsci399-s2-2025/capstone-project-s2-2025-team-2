@@ -254,14 +254,14 @@ const UserProfile = () => {
       <div className="px-5 pt-5">
         {/* profile header */}
         <div className="flex gap-3">
-<img
-  src={userBeingViewed?.image || "/default_pfp.jpg"}
-  alt="User Profile Photo"
-  className="w-32 h-32 rounded-full border-2 object-cover border-[#6C6C6C] dark:border-white"
-  onError={(e) => {
-    e.currentTarget.src = "/default_pfp.jpg"
-  }}
-/>
+          <img
+            src={userBeingViewed?.image || "/default_pfp.jpg"}
+            alt="User Profile Photo"
+            className="w-32 h-32 rounded-full border-2 object-cover border-[#6C6C6C] dark:border-white"
+            onError={(e) => {
+              e.currentTarget.src = "/default_pfp.jpg"
+            }}
+          />
           <div className="flex flex-col gap-2">
             <div className="flex items-center gap-4">
               <h1 className="font-light text-pearl text-xl md:text-4xl">
@@ -284,15 +284,15 @@ const UserProfile = () => {
               <HomeIcon className="w-5 h-5 md:w-6 md:h-6" />
               {userBeingViewed.university}
             </p>
-              <p className="flex items-center gap-2 text-xs md:text-sm text-blue-primary dark:text-orange-200">
+            <p className="flex items-center gap-2 text-xs md:text-sm text-blue-primary dark:text-orange-200">
               <EnvelopeIcon className="w-5 h-5 md:w-6 md:h-6" />
               {userBeingViewed.email || "Unknown"}
             </p>
             {/* About Me section */}
             {userBeingViewed.about && (
-                <p className="flex items-center gap-2 text-xs md:text-sm dark:text-gray-400 leading-relaxed">
-                  {userBeingViewed.about}
-                </p>
+              <p className="flex items-center gap-2 text-xs md:text-sm dark:text-gray-400 leading-relaxed">
+                {userBeingViewed.about}
+              </p>
             )}
           </div>
         </div>

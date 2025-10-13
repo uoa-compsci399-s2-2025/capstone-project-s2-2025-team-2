@@ -1,6 +1,5 @@
 import { LuHouse } from "react-icons/lu"
 import { FaRegStar } from "react-icons/fa"
-import Image from "next/image"
 import Button from "../../generic/button/regular/Button"
 import { useState, useEffect } from "react"
 import ReagentRequest from "../reagent/ReagentRequest"
@@ -62,7 +61,7 @@ const SellerContact = ({ rating, reagent }: SellerContactProps) => {
             src={sellerInfo?.image || "/default_pfp.jpg"}
             alt="User Profile Photo"
             className="w-full h-full object-cover"
-            style={{ imageRendering: 'auto' }}
+            style={{ imageRendering: "auto" }}
             onError={(e) => {
               e.currentTarget.src = "/default_pfp.jpg"
             }}

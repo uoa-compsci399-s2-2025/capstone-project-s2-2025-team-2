@@ -1,7 +1,6 @@
 import { useCallback, useState, useEffect } from "react"
 import { toast } from "sonner"
 import client from "../../../services/fetch-client"
-import { on } from "events"
 import { uploadProfilePicture } from "../../../services/firebase-storage"
 
 interface ProfileFormProps {
@@ -44,7 +43,6 @@ const FormField = ({
   </div>
 )
 
-
 export const ProfileForm = ({
   onSubmit,
   onCancel,
@@ -63,42 +61,45 @@ export const ProfileForm = ({
   const [imageUploading, setImageUploading] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [originalImageUrl, setOriginalImageUrl] = useState<string>("")
-useEffect(() => {
-  const fetchUserData = async () => {
-    try {
-      const idToken = localStorage.getItem("authToken")
-      if (!idToken) {
-        toast("Please sign in to edit profile.")
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const idToken = localStorage.getItem("authToken")
+        if (!idToken) {
+          toast("Please sign in to edit profile.")
+          onCancel()
+          return
+        }
+        const { data: userData, error } = await client.GET(
+          `/users/${userId}` as any,
+          {
+            headers: {
+              Authorization: `Bearer ${idToken}`,
+            },
+          },
+        )
+        if (error) {
+          throw new Error("Failed to fetch user data")
+        }
+        if (userData) {
+          const userImage = userData.image || ""
+          setOriginalImageUrl(userImage)
+          setFormData({
+            lastName: userData.lastName || "",
+            preferredName: userData.preferredName || "",
+            about: userData.about || "",
+            university: userData.university || "",
+            imageUrl: userImage,
+          })
+        }
+      } catch {
+        toast.error("Failed to load profile data")
         onCancel()
-        return
       }
-      const { data: userData, error } = await client.GET(`/users/${userId}` as any, {
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-        },
-      })
-      if (error) {
-        throw new Error("Failed to fetch user data")
-      }
-      if (userData) {
-        const userImage = userData.image || ""
-        setOriginalImageUrl(userImage)
-        setFormData({
-          lastName: userData.lastName || "",
-          preferredName: userData.preferredName || "",
-          about: userData.about || "",
-          university: userData.university || "",
-          imageUrl: userImage,
-        })
-      }
-    } catch (error) {
-      toast.error("Failed to load profile data")
-      onCancel()
+      setIsLoading(false)
     }
-    setIsLoading(false)
-  }
-  fetchUserData()
-}, [userId, onCancel])
+    fetchUserData()
+  }, [userId, onCancel])
 
   const handleFieldChange = useCallback(
     <K extends keyof formData>(field: K, value: formData[K]) => {
@@ -110,12 +111,12 @@ useEffect(() => {
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      if (!file.type.startsWith('image/')) {
+      if (!file.type.startsWith("image/")) {
         toast.error("Please select an image file")
         return
       }
       setSelectedFile(file)
-      
+
       // Show preview
       const previewUrl = URL.createObjectURL(file)
       handleFieldChange("imageUrl", previewUrl)
@@ -161,37 +162,37 @@ useEffect(() => {
         }
       }
 
-    const userData = {
-      lastName: formData.lastName.trim(),
-      preferredName: formData.preferredName.trim(),
-      about: formData.about.trim(),
-      image: finalImageUrl?.trim() || "",
-      university: formData.university.trim(),
-    }
+      const userData = {
+        lastName: formData.lastName.trim(),
+        preferredName: formData.preferredName.trim(),
+        about: formData.about.trim(),
+        image: finalImageUrl?.trim() || "",
+        university: formData.university.trim(),
+      }
 
-    const { data: updateUser, error } = await client.PATCH(
-      `/users/${userId}` as any,
-      {
-        body: userData,
-        headers: {
-          Authorization: `Bearer ${idToken}`,
+      const { data: updateUser, error } = await client.PATCH(
+        `/users/${userId}` as any,
+        {
+          body: userData,
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
         },
-      },
-    )
+      )
 
-    if (error) {
-      throw new Error("Failed to update profile")
+      if (error) {
+        throw new Error("Failed to update profile")
+      }
+
+      const updatedUser = updateUser as any
+      toast.success("Profile updated successfully!")
+      onSubmit(updatedUser)
+    } catch {
+      toast.error("Failed to update profile")
+    } finally {
+      setDataSubmitting(false)
     }
-
-    let updatedUser = updateUser as any
-    toast.success("Profile updated successfully!")
-    onSubmit(updatedUser)
-  } catch (error) {
-    toast.error("Failed to update profile")
-  } finally {
-    setDataSubmitting(false)
   }
-}
 
   // Show loading state while fetching user data
   if (isLoading) {
@@ -207,21 +208,19 @@ useEffect(() => {
 
   return (
     <form onSubmit={handleFormSubmit} className="space-y-6">
-
-        <div className="flex items-center justify-center gap-3 p-3 bg-primary/30 rounded-lg">
-          <img
-            src={formData.imageUrl || "/default_pfp.jpg"}
-            alt="Profile Preview"
-            className="h-[10rem] w-[10rem] rounded-full object-cover border-2 border-blue-primary"
-            onError={(e) => {
-              e.currentTarget.src = "/default_pfp.jpg"
-              if (formData.imageUrl) {
-                toast.error("Invalid image URL")
-              }
-            }}
-          />
-
-        </div>
+      <div className="flex items-center justify-center gap-3 p-3 bg-primary/30 rounded-lg">
+        <img
+          src={formData.imageUrl || "/default_pfp.jpg"}
+          alt="Profile Preview"
+          className="h-[10rem] w-[10rem] rounded-full object-cover border-2 border-blue-primary"
+          onError={(e) => {
+            e.currentTarget.src = "/default_pfp.jpg"
+            if (formData.imageUrl) {
+              toast.error("Invalid image URL")
+            }
+          }}
+        />
+      </div>
 
       <div className="space-y-3">
         <div className="flex gap-3 justify-center">
@@ -238,10 +237,10 @@ useEffect(() => {
               htmlFor="file-upload"
               className="flex items-center justify-center px-6 py-2 bg-blue-primary text-white rounded-lg border-2 border-blue-primary hover:bg-blue-primary/80 disabled:opacity-50 cursor-pointer transition-colors"
             >
-             {selectedFile ? "Selected" : "Upload"}
+              {selectedFile ? "Selected" : "Upload"}
             </label>
           </div>
-          
+
           {formData.imageUrl && (
             <button
               type="button"
@@ -256,8 +255,7 @@ useEffect(() => {
             </button>
           )}
         </div>
-      
-        
+
         {/* Upload status */}
         {imageUploading && (
           <div className="flex items-center gap-2 text-blue-primary">
@@ -265,21 +263,19 @@ useEffect(() => {
             <span className="text-sm">Uploading image...</span>
           </div>
         )}
-        
+
         {selectedFile && !imageUploading && (
           <div className="text-green-400 text-sm">
             ✓ File selected: {selectedFile.name} (will upload on save)
           </div>
         )}
-        
+
         {!formData.imageUrl && !selectedFile && originalImageUrl && (
           <div className="text-orange-400 text-sm">
             ✓ Profile picture will be removed on save
           </div>
         )}
       </div>
-
-
 
       <FormField
         label="First Name"
@@ -293,7 +289,7 @@ useEffect(() => {
           />
         }
       />
-            <FormField
+      <FormField
         label="Last Name"
         input={
           <input
@@ -332,7 +328,11 @@ useEffect(() => {
           className={`${buttonStyles} bg-blue-primary`}
           disabled={dataSubmitting || imageUploading}
         >
-          {imageUploading ? "Uploading..." : dataSubmitting ? "Saving..." : "Save"}
+          {imageUploading
+            ? "Uploading..."
+            : dataSubmitting
+              ? "Saving..."
+              : "Save"}
         </button>
         <button
           type="button"
