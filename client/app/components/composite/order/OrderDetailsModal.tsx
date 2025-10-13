@@ -6,9 +6,10 @@ import {
   ArrowsRightLeftIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline"
-import { useState, useEffect, useMemo } from "react"
+import { useState, useEffect } from "react"
 import type { components } from "@/models/__generated__/schema"
 import client from "@/app/services/fetch-client"
+import LoadingState from "../loadingstate/LoadingState"
 
 type Order = components["schemas"]["Order"]
 type OrderWithId = Order & { id: string; owner_id: string; offeredReagentId?: string }
@@ -112,15 +113,10 @@ export default function OrderDetailsModal({
     order.requester_id ? `/users/${order.requester_id}` : null, 
     isOpen
   )
-  const requesterName = requesterLoading ? "Loading..." : 
-    !requesterData ? "Unknown User" :
-    requesterData.displayName ? 
-      requesterData.displayName.charAt(0).toUpperCase() + requesterData.displayName.slice(1).toLowerCase() :
-      "Unknown User"
   
   //fetch reagent offered in two way trade
   //test data temporary
-  const { data: fetchedOfferedReagent } = useFetch<any>(
+  const { data: fetchedOfferedReagent, loading: offeredReagentLoading } = useFetch<any>(
     reagent.tradingType === 'trade' && order.offeredReagentId && !testOfferedReagent
       ? `/reagents/${order.offeredReagentId}` 
       : null,
@@ -129,6 +125,38 @@ export default function OrderDetailsModal({
   
   //temp test reagent to mimic fetching offered reagent for storybook
   const offeredReagent = testOfferedReagent || fetchedOfferedReagent
+  const isTradeLoading = reagent.tradingType === 'trade' && 
+    !testOfferedReagent && 
+    (offeredReagentLoading || (!fetchedOfferedReagent && !!order.offeredReagentId))
+
+  if (!isOpen) return null
+
+  //loading state while fetching offered reagent for two way trade
+  if (isTradeLoading) {
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div 
+          className="absolute inset-0 backdrop-blur-sm bg-black/20"
+          onClick={onClose}
+        />
+        <div className="bg-primary/20 backdrop-blur-sm rounded-2xl p-8 relative">
+          <button
+            onClick={onClose}
+            className="absolute top-3 right-3 text-white hover:text-gray-300 z-20"
+          >
+            <XMarkIcon className="w-6 h-6" />
+          </button>
+          <div className="flex items-center justify-center min-h-[400px] min-w-[400px]">
+            <LoadingState pageName="Order Details" />
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const requesterName = !requesterData ? "Unknown User" :
+    requesterData.displayName?.charAt(0).toUpperCase() + 
+    requesterData.displayName?.slice(1).toLowerCase() || "Unknown User"
 
   const tradingType = reagent.tradingType as keyof typeof TRADING_CONFIG
   const { icon: Icon, color } = TRADING_CONFIG[tradingType]
@@ -136,11 +164,7 @@ export default function OrderDetailsModal({
   
   //price + two or three cards based on trading type
   const price = (reagent.tradingType === 'sell' && reagent.price) || (order as any).price
-  const gridCols = reagent.tradingType === 'trade' 
-    ? 'lg:grid-cols-3 max-w-7xl' 
-    : 'lg:grid-cols-2 max-w-5xl'
-
-  if (!isOpen) return null
+  const gridCols = reagent.tradingType === 'trade' ? 'lg:grid-cols-3 max-w-7xl' : 'lg:grid-cols-2 max-w-5xl'
 
   //render modal
   return (
@@ -178,7 +202,10 @@ export default function OrderDetailsModal({
               
               <div className="space-y-3">
                 <DetailRow label="Requester" value={requesterName} truncate />
-                <DetailRow label="Status" value={order.status?.charAt(0).toUpperCase() + order.status?.slice(1).toLowerCase()} />
+                <DetailRow 
+                  label="Status" 
+                  value={order.status?.charAt(0).toUpperCase() + order.status?.slice(1).toLowerCase()} 
+                />
                 
                 {price && <DetailRow label="Offered Price" value={`$${price}`} />}
                 
