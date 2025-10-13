@@ -107,18 +107,18 @@ const Landing = () => {
             <h2 className="text-2xl text-black dark:text-white">CoLab</h2>
             <div className="flex items-center md:gap-4">
               <Link href="/marketplace">
-                <button className="px-4 py-2 text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:text-blue-secondary hover:dark:text-[#FF7C5C] transition">
+                <button className="px-4 cursor-pointer py-2 text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:text-blue-primary/70 hover:dark:text-[#FF7C5C] transition">
                   Marketplace
                 </button>
               </Link>
               <button
                 onClick={scrollToFeatures}
-                className="px-4 py-2 text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:text-blue-secondary hover:dark:text-[#FF7C5C] transition"
+                className="px-4 py-2 text-sm cursor-pointer font-medium text-blue-primary dark:text-[#FFB276] hover:text-blue-primary/70 hover:dark:text-[#FF7C5C] transition"
               >
                 About
               </button>
               <Link href="/auth">
-                <button className="px-4 py-2 text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:text-blue-secondary hover:dark:text-[#FF7C5C] transition">
+                <button className="px-4 py-2 cursor-pointer text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:text-blue-primary/70 hover:dark:text-[#FF7C5C] transition">
                   Sign In
                 </button>
               </Link>
@@ -147,9 +147,9 @@ const Landing = () => {
               </span>
             </h1>
             <p className="text-lg text-gray-600 dark:text-[#D3DAFF] mb-8 leading-relaxed animate-slide-up-2">
-              Chemical.ly connects chemistry students with affordable,
-              high-quality reagents. Share resources, reduce waste, and advance
-              your academic research with our comprehensive platform.
+              CoLab connects chemistry students with affordable, high-quality
+              reagents. Share resources, reduce waste, and advance your academic
+              research with our comprehensive platform.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 animate-slide-up-2">
               <Link href="/auth" className="w-full sm:w-auto">
@@ -271,17 +271,16 @@ const Landing = () => {
               Ready to elevate your laboratory experience?
             </h2>
             <p className="text-lg text-gray-600 dark:text-[#D3DAFF] mb-8 max-w-2xl mx-auto">
-              Join Chemical.ly today and become part of a growing network of
-              chemistry students dedicated to sustainable, efficient research
-              practices.
+              Join CoLab today and become part of a growing network of chemistry
+              students dedicated to sustainable, efficient research practices.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/auth">
                 <button
                   className="
-                  px-8 py-4 bg-blue-primary text-white font-semibold rounded-lg shadow-md hover:bg-blue-secondary transition
-                  dark:bg-[#FF7C5C] dark:hover:bg-[#FF947A]
+                  px-8 py-4 bg-blue-primary text-white font-semibold rounded-lg shadow-md hover:bg-blue-primary/70 transition
+                  dark:bg-[#FF7C5C] dark:hover:bg-[#FF947A] cursor-pointer
                 "
                 >
                   Join Now
@@ -291,7 +290,7 @@ const Landing = () => {
                 <button
                   className="
                   px-8 py-4 bg-transparent text-blue-primary border-2 border-blue-primary font-semibold rounded-lg hover:bg-blue-primary hover:text-white transition
-                  dark:text-[#FFB276] dark:border-[#FFB276] dark:hover:bg-[#FFB276] dark:hover:text-primary
+                  dark:text-[#FFB276] dark:border-[#FFB276] dark:hover:bg-[#FFB276] dark:hover:text-primary cursor-pointer
                 "
                 >
                   Marketplace
