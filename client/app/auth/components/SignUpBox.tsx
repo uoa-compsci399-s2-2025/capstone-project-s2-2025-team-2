@@ -175,7 +175,7 @@ export default function SignUpBox({
         return
       }
 
-      //save user to firestore 
+      //save user to firestore
       await saveUserToFirestore()
 
       //welcome toast, marketplace redirect

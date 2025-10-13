@@ -61,9 +61,12 @@ const SellerContact = ({ rating, reagent }: SellerContactProps) => {
       setIsCheckingInventory(true)
       try {
         const token = localStorage.getItem("authToken")
-        const { data: userReagents, error } = await client.GET("/users/reagents" as any, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+        const { data: userReagents, error } = await client.GET(
+          "/users/reagents" as any,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        )
 
         if (error) {
           toast.error("Failed to check your inventory. Please try again.")
@@ -71,7 +74,9 @@ const SellerContact = ({ rating, reagent }: SellerContactProps) => {
         }
 
         if (!userReagents?.length) {
-          toast.error("You need to have reagents to offer before making a trade request. Please list some reagents first.")
+          toast.error(
+            "You need to have reagents to offer before making a trade request. Please list some reagents first.",
+          )
           return
         }
       } catch {

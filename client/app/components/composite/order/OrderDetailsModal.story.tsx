@@ -12,7 +12,7 @@ const testOrder = {
   message: "",
   quantity: 2,
   unit: "ml",
-  offeredReagentId: "reagentabcd2", 
+  offeredReagentId: "reagentabcd2",
 }
 
 const testReagent = {
@@ -26,7 +26,7 @@ const testReagent = {
   categories: ["chemical"] as ("chemical" | "hazardous" | "biological")[],
   tradingType: "trade" as const,
   user_id: "user2025123",
-  price: 15.00,
+  price: 15.0,
   description: "High purity sodium chloride for lab use",
   createdAt: "2025-01-01T00:00:00.000Z",
   createdAtReadable: "January 1, 2025",
@@ -44,7 +44,7 @@ const testOfferedReagent = {
   categories: ["chemical"] as ("chemical" | "hazardous" | "biological")[],
   tradingType: "trade" as const,
   user_id: "userabcd123",
-  price: 20.00,
+  price: 20.0,
   description: "Lab grade potassium chloride",
   createdAt: "2025-01-01T00:00:00.000Z",
   createdAtReadable: "January 1, 2025",
@@ -69,7 +69,6 @@ export default meta
 
 type Story = StoryObj<typeof meta>
 
-
 //story for each request type
 export const TradeRequest: Story = {
   args: {
@@ -77,7 +76,8 @@ export const TradeRequest: Story = {
       ...testOrder,
       status: "pending" as const,
       offeredReagentId: "reagentabcd2",
-      message: "I could really use this reagent for my research project. Please let me know if you're available to trade.",
+      message:
+        "I could really use this reagent for my research project. Please let me know if you're available to trade.",
     },
     reagent: {
       ...testReagent,
@@ -92,12 +92,13 @@ export const SellRequest: Story = {
     order: {
       ...testOrder,
       status: "approved" as const,
-      message: "I could really use this reagent for my research project. Please let me know if you're available to sell.",
+      message:
+        "I could really use this reagent for my research project. Please let me know if you're available to sell.",
     },
     reagent: {
       ...testReagent,
       tradingType: "sell" as const,
-      price: 25.50,
+      price: 25.5,
     },
   },
 }
@@ -107,7 +108,8 @@ export const GiveawayRequest: Story = {
     order: {
       ...testOrder,
       status: "pending" as const,
-      message: "I could really use this reagent for my research project. Please let me know if it is still available.",
+      message:
+        "I could really use this reagent for my research project. Please let me know if it is still available.",
     },
     reagent: {
       ...testReagent,

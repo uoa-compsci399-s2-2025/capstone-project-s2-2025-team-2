@@ -13,12 +13,7 @@ const Header = () => {
       >
         <span>CoLab</span>
         <div className="relative w-[250px] h-[100px] mx-auto mt-[3rem]">
-          <Image
-            src={logo}
-            alt="CoLab Logo"
-            fill
-            className="object-contain"
-          />
+          <Image src={logo} alt="CoLab Logo" fill className="object-contain" />
         </div>
         <span className="block mt-[3rem] text-[32px]">Reduce, Reuse</span>
       </div>

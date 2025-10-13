@@ -162,57 +162,57 @@ export default function SignInBox({
 
         {/* Form Section */}
         <form className="mt-4 space-y-6" onSubmit={handleSubmit}>
-        {/* 1. Input Fields */}
-        <div className="space-y-4">
-          <AuthInputBox
-            id="email"
-            name="email"
-            type="email"
-            label="Email"
-            placeholder="Enter your email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <AuthInputBox
-            id="password"
-            name="password"
-            type="password"
-            label="Password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
+          {/* 1. Input Fields */}
+          <div className="space-y-4">
+            <AuthInputBox
+              id="email"
+              name="email"
+              type="email"
+              label="Email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <AuthInputBox
+              id="password"
+              name="password"
+              type="password"
+              label="Password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
 
-        {/* 2. Remember Me & Forgot Password */}
-        <div className="flex items-center justify-between">
-          <AuthCheckbox
-            id="remember-me"
-            name="remember-me"
-            label="Remember me"
-          />
-          <AuthLink onClick={handleForgotPasswordClick}>
-            Forgot your password?
-          </AuthLink>
-        </div>
+          {/* 2. Remember Me & Forgot Password */}
+          <div className="flex items-center justify-between">
+            <AuthCheckbox
+              id="remember-me"
+              name="remember-me"
+              label="Remember me"
+            />
+            <AuthLink onClick={handleForgotPasswordClick}>
+              Forgot your password?
+            </AuthLink>
+          </div>
 
-        {/* 3. Submit Button */}
-        <div className="flex justify-center w-full">
-          <Button
-            type="submit"
-            label="Sign In"
-            textSize="text-sm"
-            className="justify-center w-full"
-          />
-        </div>
+          {/* 3. Submit Button */}
+          <div className="flex justify-center w-full">
+            <Button
+              type="submit"
+              label="Sign In"
+              textSize="text-sm"
+              className="justify-center w-full"
+            />
+          </div>
 
-        {/* 4. Sign Up Link */}
-        <AuthText className="text-center">
-          Don&apos;t have an account?{" "}
-          <AuthLink onClick={handleSignUpClick}>Sign up</AuthLink>
-        </AuthText>
+          {/* 4. Sign Up Link */}
+          <AuthText className="text-center">
+            Don&apos;t have an account?{" "}
+            <AuthLink onClick={handleSignUpClick}>Sign up</AuthLink>
+          </AuthText>
         </form>
       </div>
     </div>

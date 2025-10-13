@@ -1,8 +1,8 @@
 "use client"
 
-import { 
-  GiftIcon, 
-  CurrencyDollarIcon, 
+import {
+  GiftIcon,
+  CurrencyDollarIcon,
   ArrowsRightLeftIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline"
@@ -12,7 +12,11 @@ import client from "@/app/services/fetch-client"
 import LoadingState from "../loadingstate/LoadingState"
 
 type Order = components["schemas"]["Order"]
-type OrderWithId = Order & { id: string; owner_id: string; offeredReagentId?: string }
+type OrderWithId = Order & {
+  id: string
+  owner_id: string
+  offeredReagentId?: string
+}
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
 
@@ -21,13 +25,13 @@ interface OrderDetailsModalProps {
   onClose: () => void
   order: OrderWithId
   reagent: ReagentWithId
-  offeredReagent?: ReagentWithId //temp storybook prop 
+  offeredReagent?: ReagentWithId //temp storybook prop
 }
 
 const TRADING_CONFIG = {
-  giveaway: { icon: GiftIcon, color: 'text-blue-100' },
-  sell: { icon: CurrencyDollarIcon, color: 'text-green-100' },
-  trade: { icon: ArrowsRightLeftIcon, color: 'text-purple-100' },
+  giveaway: { icon: GiftIcon, color: "text-blue-100" },
+  sell: { icon: CurrencyDollarIcon, color: "text-green-100" },
+  trade: { icon: ArrowsRightLeftIcon, color: "text-purple-100" },
 } as const
 
 //generic hook for fetching data w auth token
@@ -60,17 +64,20 @@ const useFetch = <T,>(url: string | null, isOpen: boolean) => {
   return { data, loading }
 }
 
-
 //reusable row for details rendering
-const DetailRow = ({ label, value, truncate = false }: { 
+const DetailRow = ({
+  label,
+  value,
+  truncate = false,
+}: {
   label: string
   value?: string | number
-  truncate?: boolean 
+  truncate?: boolean
 }) => (
   <div className="flex justify-between">
     <span className="text-gray-300">{label}:</span>
-    <span 
-      className={`text-white ${truncate ? 'truncate max-w-[150px]' : ''}`} 
+    <span
+      className={`text-white ${truncate ? "truncate max-w-[150px]" : ""}`}
       title={truncate && value ? String(value) : undefined}
     >
       {value ?? "N/A"}
@@ -79,19 +86,31 @@ const DetailRow = ({ label, value, truncate = false }: {
 )
 
 //reagent details card
-const ReagentDetails = ({ title, reagent }: { title: string; reagent: any }) => (
+const ReagentDetails = ({
+  title,
+  reagent,
+}: {
+  title: string
+  reagent: any
+}) => (
   <div className="bg-primary/80 backdrop-blur-sm rounded-2xl p-6 border border-muted shadow-xl w-fit min-w-[300px] h-fit">
     <h3 className="text-white text-lg font-medium mb-4">{title}</h3>
     <div className="space-y-3">
       <DetailRow label="Name" value={reagent?.name} truncate />
       <DetailRow label="Condition" value={reagent?.condition} />
-      <DetailRow label="Quantity" value={`${reagent?.quantity} ${reagent?.unit}`} />
+      <DetailRow
+        label="Quantity"
+        value={`${reagent?.quantity} ${reagent?.unit}`}
+      />
       <DetailRow label="Expiry" value={reagent?.expiryDate} />
       <DetailRow label="Location" value={reagent?.location} truncate />
       {reagent?.categories?.length > 0 && (
         <div className="flex flex-wrap gap-1 mt-4">
           {reagent.categories.map((cat: string) => (
-            <span key={cat} className="bg-secondary/20 text-white text-xs px-2 py-1 rounded">
+            <span
+              key={cat}
+              className="bg-secondary/20 text-white text-xs px-2 py-1 rounded"
+            >
               {cat}
             </span>
           ))}
@@ -109,25 +128,30 @@ export default function OrderDetailsModal({
   offeredReagent: testOfferedReagent,
 }: OrderDetailsModalProps) {
   //fetch requester info
-  const { data: requesterData, loading: requesterLoading } = useFetch<any>(
-    order.requester_id ? `/users/${order.requester_id}` : null, 
-    isOpen
+  const { data: requesterData } = useFetch<any>(
+    order.requester_id ? `/users/${order.requester_id}` : null,
+    isOpen,
   )
-  
+
   //fetch reagent offered in two way trade
   //test data temporary
-  const { data: fetchedOfferedReagent, loading: offeredReagentLoading } = useFetch<any>(
-    reagent.tradingType === 'trade' && order.offeredReagentId && !testOfferedReagent
-      ? `/reagents/${order.offeredReagentId}` 
-      : null,
-    isOpen
-  )
-  
+  const { data: fetchedOfferedReagent, loading: offeredReagentLoading } =
+    useFetch<any>(
+      reagent.tradingType === "trade" &&
+        order.offeredReagentId &&
+        !testOfferedReagent
+        ? `/reagents/${order.offeredReagentId}`
+        : null,
+      isOpen,
+    )
+
   //temp test reagent to mimic fetching offered reagent for storybook
   const offeredReagent = testOfferedReagent || fetchedOfferedReagent
-  const isTradeLoading = reagent.tradingType === 'trade' && 
-    !testOfferedReagent && 
-    (offeredReagentLoading || (!fetchedOfferedReagent && !!order.offeredReagentId))
+  const isTradeLoading =
+    reagent.tradingType === "trade" &&
+    !testOfferedReagent &&
+    (offeredReagentLoading ||
+      (!fetchedOfferedReagent && !!order.offeredReagentId))
 
   if (!isOpen) return null
 
@@ -135,7 +159,7 @@ export default function OrderDetailsModal({
   if (isTradeLoading) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div 
+        <div
           className="absolute inset-0 backdrop-blur-sm bg-black/20"
           onClick={onClose}
         />
@@ -154,26 +178,35 @@ export default function OrderDetailsModal({
     )
   }
 
-  const requesterName = !requesterData ? "Unknown User" :
-    (requesterData.preferredName || requesterData.displayName)?.charAt(0).toUpperCase() + 
-    (requesterData.preferredName || requesterData.displayName)?.slice(1).toLowerCase() || "Unknown User"
+  const requesterName = !requesterData
+    ? "Unknown User"
+    : (requesterData.preferredName || requesterData.displayName)
+        ?.charAt(0)
+        .toUpperCase() +
+        (requesterData.preferredName || requesterData.displayName)
+          ?.slice(1)
+          .toLowerCase() || "Unknown User"
 
   const tradingType = reagent.tradingType as keyof typeof TRADING_CONFIG
   const { icon: Icon, color } = TRADING_CONFIG[tradingType]
   const label = tradingType.charAt(0).toUpperCase() + tradingType.slice(1)
-  
+
   //price + two or three cards based on trading type
-  const price = (reagent.tradingType === 'sell' && reagent.price) || (order as any).price
-  const gridCols = reagent.tradingType === 'trade' ? 'lg:grid-cols-3 max-w-7xl' : 'lg:grid-cols-2 max-w-5xl'
+  const price =
+    (reagent.tradingType === "sell" && reagent.price) || (order as any).price
+  const gridCols =
+    reagent.tradingType === "trade"
+      ? "lg:grid-cols-3 max-w-7xl"
+      : "lg:grid-cols-2 max-w-5xl"
 
   //render modal
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div 
+      <div
         className="absolute inset-0 backdrop-blur-sm bg-black/20"
         onClick={onClose}
       />
-      
+
       <div className="bg-primary/20 backdrop-blur-sm rounded-2xl p-8 relative">
         <button
           onClick={onClose}
@@ -181,15 +214,16 @@ export default function OrderDetailsModal({
         >
           <XMarkIcon className="w-6 h-6" />
         </button>
-        
-        <div className={`grid grid-cols-1 gap-8 w-full pointer-events-auto relative z-10 items-start ${gridCols}`}>
-          
+
+        <div
+          className={`grid grid-cols-1 gap-8 w-full pointer-events-auto relative z-10 items-start ${gridCols}`}
+        >
           <ReagentDetails title="Your Reagent:" reagent={reagent} />
-          
-          {reagent.tradingType === 'trade' && offeredReagent && (
+
+          {reagent.tradingType === "trade" && offeredReagent && (
             <ReagentDetails title="Their Reagent:" reagent={offeredReagent} />
           )}
-          
+
           <div className="bg-primary/80 backdrop-blur-sm rounded-2xl p-6 border border-muted shadow-xl flex flex-col w-fit min-w-[300px] h-fit">
             <div className="space-y-4">
               <h3 className="text-white text-lg font-medium flex items-center gap-1.5">
@@ -199,16 +233,21 @@ export default function OrderDetailsModal({
                 </span>
                 <span className="text-lg">Request</span>
               </h3>
-              
+
               <div className="space-y-3">
                 <DetailRow label="Requester" value={requesterName} truncate />
-                <DetailRow 
-                  label="Status" 
-                  value={order.status?.charAt(0).toUpperCase() + order.status?.slice(1).toLowerCase()} 
+                <DetailRow
+                  label="Status"
+                  value={
+                    order.status?.charAt(0).toUpperCase() +
+                    order.status?.slice(1).toLowerCase()
+                  }
                 />
-                
-                {price && <DetailRow label="Offered Price" value={`$${price}`} />}
-                
+
+                {price && (
+                  <DetailRow label="Offered Price" value={`$${price}`} />
+                )}
+
                 {order.message && (
                   <div className="flex flex-col max-w-[280px]">
                     <span className="text-gray-300 mb-1">Message:</span>
@@ -219,10 +258,10 @@ export default function OrderDetailsModal({
                 )}
               </div>
             </div>
-            
+
             {/*redirect to inbox chat*/}
             <button
-              onClick={() => window.location.href = '/inbox'}
+              onClick={() => (window.location.href = "/inbox")}
               className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-secondary rounded-lg transition-colors"
             >
               Chat

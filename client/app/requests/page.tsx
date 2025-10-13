@@ -5,7 +5,6 @@ import Overlay from "../components/composite/Overlay"
 import OrderCard from "../components/composite/order/OrderCard"
 import OrderDetailsModal from "../components/composite/order/OrderDetailsModal"
 import client from "../services/fetch-client"
-import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import type { components } from "@/models/__generated__/schema"
 import { usePageSize } from "../hooks/usePageSize"
@@ -67,13 +66,11 @@ export default function Orders() {
     fetchOrders()
   }, [fetchOrders])
 
-  
-
   //open order details modal
   const handleOrderDetails = (orderId: string) => {
-    const order = orders.find(o => o.id === orderId)
+    const order = orders.find((o) => o.id === orderId)
     const reagent = order ? reagents.get(order.reagent_id) : null
-    
+
     if (order && reagent) {
       setModalState({ isOpen: true, order, reagent })
     }

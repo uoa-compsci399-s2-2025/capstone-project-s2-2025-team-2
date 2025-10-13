@@ -14,11 +14,7 @@ interface OrderCardProps {
   onViewDetails?: (orderId: string) => void
 }
 
-const OrderCard = ({
-  reagent,
-  order,
-  onViewDetails,
-}: OrderCardProps) => {
+const OrderCard = ({ reagent, order, onViewDetails }: OrderCardProps) => {
   return (
     <BaseCard
       {...reagent}
@@ -28,9 +24,11 @@ const OrderCard = ({
       //request status
       footerLeft={
         <p className="text-white/80 text-sm">
-          {order.status === "approved" ? "Accepted" : 
-           order.status === "canceled" ? "Declined" : 
-           "Pending"}
+          {order.status === "approved"
+            ? "Accepted"
+            : order.status === "canceled"
+              ? "Declined"
+              : "Pending"}
         </p>
       }
     />

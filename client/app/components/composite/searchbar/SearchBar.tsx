@@ -15,15 +15,24 @@ interface CustomDropdownProps {
   className?: string
 }
 
-//custom dropdown component to replace select 
-function CustomDropdown({ value, onChange, options, placeholder = "Select...", className = "" }: CustomDropdownProps) {
+//custom dropdown component to replace select
+function CustomDropdown({
+  value,
+  onChange,
+  options,
+  placeholder = "Select...",
+  className = "",
+}: CustomDropdownProps) {
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   //click outside dropdown to close
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
         setIsOpen(false)
       }
     }
@@ -42,7 +51,8 @@ function CustomDropdown({ value, onChange, options, placeholder = "Select...", c
   }
 
   //dropdown labels
-  const selectedLabel = options.find(opt => opt.value === value)?.label || placeholder
+  const selectedLabel =
+    options.find((opt) => opt.value === value)?.label || placeholder
 
   return (
     <div ref={dropdownRef} className={`relative ${className}`}>
@@ -54,10 +64,10 @@ function CustomDropdown({ value, onChange, options, placeholder = "Select...", c
       >
         <span className="truncate">{selectedLabel}</span>
         {/*open dropdown rotates chevron*/}
-        <ChevronDownIcon 
+        <ChevronDownIcon
           className={`absolute right-2 h-5 w-5 text-secondary transition-transform duration-200 ${
-            isOpen ? 'rotate-180' : ''
-          }`} 
+            isOpen ? "rotate-180" : ""
+          }`}
         />
       </button>
 
@@ -70,7 +80,7 @@ function CustomDropdown({ value, onChange, options, placeholder = "Select...", c
               type="button"
               onClick={() => handleSelect(option.value)}
               className={`w-full text-left px-3 py-1 text-white hover:bg-secondary/20 transition-colors ${
-                value === option.value ? 'font-medium bg-secondary/10' : ''
+                value === option.value ? "font-medium bg-secondary/10" : ""
               }`}
             >
               {option.label}
@@ -105,7 +115,6 @@ const SORT_OPTIONS: DropdownOption[] = [
   { value: "nameAZ", label: "Name [A - Z]" },
   { value: "nameZA", label: "Name [Z - A]" },
 ]
-
 
 export default function SearchBar({
   search,
