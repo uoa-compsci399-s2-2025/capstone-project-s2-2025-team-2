@@ -80,7 +80,7 @@ const Sidebar = () => {
       ${isOpen ? "translate-x-0 right-0" : "translate-x-full right-0"}
        lg:left-0 lg:right-auto lg:translate-x-0 lg:block`}
       >
-        <h2 className="hidden lg:block ml-7 mt-7 mb-4">CoLab</h2>
+        <h2 className="hidden lg:block text-center mt-7 mb-4">CoLab</h2>
 
         <div className="flex flex-col justify-between h-full">
           <div>
