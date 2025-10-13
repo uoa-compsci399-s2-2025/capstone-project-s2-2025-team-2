@@ -32,7 +32,7 @@ const Landing = () => {
 
         // Make SVG larger and position it to show fully behind image section
         svgParallaxRef.current.style.height = `${imageSectionHeight * 2}px`
-        svgParallaxRef.current.style.top = `${imageSectionTop - (imageSectionHeight * 0.25)}px`
+        svgParallaxRef.current.style.top = `${imageSectionTop - imageSectionHeight * 0.25}px`
       }
     }
 
@@ -179,7 +179,10 @@ const Landing = () => {
         </div>
 
         {/* Features Section */}
-        <div ref={featuresRef} className="max-w-7xl mx-auto pl-4 pr-4 sm:pl-6 sm:pr-6 lg:pl-8 lg:pr-8">
+        <div
+          ref={featuresRef}
+          className="max-w-7xl mx-auto pl-4 pr-4 sm:pl-6 sm:pr-6 lg:pl-8 lg:pr-8"
+        >
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
             {/* Card 1 */}
             <div className="flex flex-col items-center bg-white dark:bg-primary/95 rounded-2xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-gray-100 dark:border-gray-800 h-full">
