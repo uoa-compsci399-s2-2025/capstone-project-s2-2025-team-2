@@ -75,7 +75,7 @@ const BaseCard = ({
   const ViewButton = () => (
     <button
       onClick={onViewClick || (() => router.push(`/marketplace/${reagentId}`))}
-      className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-secondary rounded-lg"
+      className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer"
     >
       View
       <ArrowRightIcon className="w-5 h-5" />
