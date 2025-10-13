@@ -168,12 +168,12 @@ export default function OrderDetailsModal({
           
           <div className="bg-primary/80 backdrop-blur-sm rounded-2xl p-6 border border-muted shadow-xl flex flex-col w-fit min-w-[300px] h-fit">
             <div className="space-y-4">
-              <h3 className="text-white text-lg font-medium flex items-center gap-2">
+              <h3 className="text-white text-lg font-medium flex items-center gap-1.5">
                 <span className={`flex items-center gap-1 text-lg ${color}`}>
                   <Icon className="w-4 h-4 flex-shrink-0" />
                   {label}
                 </span>
-                Request
+                <span className="text-lg">Request</span>
               </h3>
               
               <div className="space-y-3">
