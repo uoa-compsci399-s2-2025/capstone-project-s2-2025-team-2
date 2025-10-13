@@ -80,7 +80,11 @@ const Sidebar = () => {
       ${isOpen ? "translate-x-0 right-0" : "translate-x-full right-0"}
        lg:left-0 lg:right-auto lg:translate-x-0 lg:block`}
       >
-        <h2 className="hidden lg:block text-center mt-7 mb-4">CoLab</h2>
+        <Link href="/marketplace">
+          <h2 className="hidden lg:block text-center mt-7 mb-4 cursor-pointer">
+            CoLab
+          </h2>
+        </Link>
 
         <div className="flex flex-col justify-between h-full">
           <div>
