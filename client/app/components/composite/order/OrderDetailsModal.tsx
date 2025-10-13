@@ -194,6 +194,7 @@ export default function OrderDetailsModal({
   //price + two or three cards based on trading type
   const price =
     (reagent.tradingType === "sell" && reagent.price) || (order as any).price
+  const hasPrice = price !== null && price !== undefined && `${price}` !== ""
   const gridCols =
     reagent.tradingType === "trade"
       ? "lg:grid-cols-3 max-w-7xl"
@@ -244,11 +245,11 @@ export default function OrderDetailsModal({
                   }
                 />
 
-                {price && (
+                {hasPrice && (
                   <DetailRow label="Offered Price" value={`$${price}`} />
                 )}
 
-                {order.message && (
+                {typeof order.message === "string" && order.message.trim().length > 0 && (
                   <div className="flex flex-col max-w-[280px]">
                     <span className="text-gray-300 mb-1">Message:</span>
                     <span className="text-white text-sm break-words max-h-20 overflow-y-auto">
@@ -262,7 +263,7 @@ export default function OrderDetailsModal({
             {/*redirect to inbox chat*/}
             <button
               onClick={() => (window.location.href = "/inbox")}
-              className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-secondary rounded-lg transition-colors"
+              className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer"
             >
               Chat
             </button>
