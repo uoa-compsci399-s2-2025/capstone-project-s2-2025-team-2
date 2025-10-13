@@ -1,6 +1,8 @@
-import { useCallback, useState } from "react"
+import { useCallback, useState, useEffect } from "react"
 import { toast } from "sonner"
 import client from "../../../services/fetch-client"
+import { on } from "events"
+import { uploadProfilePicture } from "../../../services/firebase-storage"
 
 interface ProfileFormProps {
   onSubmit: (data: any) => void
@@ -42,6 +44,7 @@ const FormField = ({
   </div>
 )
 
+
 export const ProfileForm = ({
   onSubmit,
   onCancel,
@@ -56,12 +59,65 @@ export const ProfileForm = ({
   })
   const [dataSubmitting, setDataSubmitting] = useState(false)
 
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [imageUploading, setImageUploading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+useEffect(() => {
+  const fetchUserData = async () => {
+    try {
+      const idToken = localStorage.getItem("authToken")
+      if (!idToken) {
+        toast("Please sign in to edit profile.")
+        onCancel()
+        return
+      }
+      const { data: userData, error } = await client.GET(`/users/${userId}` as any, {
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      })
+      if (error) {
+        throw new Error("Failed to fetch user data")
+      }
+      if (userData) {
+        setFormData({
+          lastName: userData.lastName || "",
+          preferredName: userData.preferredName || "",
+          about: userData.about || "",
+          university: userData.university || "",
+          imageUrl: userData.image || "",
+        })
+      }
+    } catch (error) {
+      toast.error("Failed to load profile data")
+      onCancel()
+    }
+    setIsLoading(false)
+  }
+  fetchUserData()
+}, [userId, onCancel])
+
   const handleFieldChange = useCallback(
     <K extends keyof formData>(field: K, value: formData[K]) => {
       setFormData((current) => ({ ...current, [field]: value }))
     },
     [],
   )
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      if (!file.type.startsWith('image/')) {
+        toast.error("Please select an image file")
+        return
+      }
+      setSelectedFile(file)
+      
+      // Show preview
+      const previewUrl = URL.createObjectURL(file)
+      handleFieldChange("imageUrl", previewUrl)
+    }
+  }
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (dataSubmitting) return
@@ -69,7 +125,7 @@ export const ProfileForm = ({
 
     // First name cant be empty
     if (formData.preferredName.trim() === "") {
-      alert("First name cannot be empty")
+      toast("First name cannot be empty")
       setDataSubmitting(false)
       return
     }
@@ -77,55 +133,146 @@ export const ProfileForm = ({
       //fetch token from localStorage
       const idToken = localStorage.getItem("authToken")
       if (!idToken) {
-        toast("Please sign in to create a reagent.")
+        toast("Please sign in to edit profile.")
         setDataSubmitting(false)
         return
       }
-
-      const userData = {
-        lastName: formData.lastName.trim(),
-        preferredName: formData.preferredName.trim(),
-        about: formData.about.trim(),
-        university: formData.university.trim(),
-        image: formData.imageUrl?.trim() || undefined,
+      let finalImageUrl = formData.imageUrl
+      if (selectedFile) {
+        setImageUploading(true)
+        toast("Uploading image...")
+        try {
+          const uploadedUrl = await uploadProfilePicture(userId, selectedFile)
+          finalImageUrl = uploadedUrl === null ? undefined : uploadedUrl
+          if (!finalImageUrl) {
+            throw new Error("Image upload failed")
+          }
+        } catch (error) {
+          console.error("Image upload failed:", error)
+          toast.error("Failed to upload profile picture")
+          setDataSubmitting(false)
+          setImageUploading(false)
+          return
+        } finally {
+          setImageUploading(false)
+        }
       }
 
-      const { data: updateUser, error } = await client.PATCH(
-        `/users/${userId}` as any,
-        {
-          body: userData,
-          headers: {
-            Authorization: `Bearer ${idToken}`,
-          },
-        },
-      )
-
-      if (error) {
-        throw new Error("Failed to update profile")
-      }
-
-      let updatedUser = updateUser as any
-      onSubmit(updatedUser)
-    } catch (error) {
-      toast.error("Failed to update profile")
-    } finally {
-      setDataSubmitting(false)
+    const userData = {
+      lastName: formData.lastName.trim(),
+      preferredName: formData.preferredName.trim(),
+      about: formData.about.trim(),
+      image: finalImageUrl?.trim() || undefined,
+      university: formData.university.trim(),
     }
+
+    const { data: updateUser, error } = await client.PATCH(
+      `/users/${userId}` as any,
+      {
+        body: userData,
+        headers: {
+          Authorization: `Bearer ${idToken}`,
+        },
+      },
+    )
+
+    if (error) {
+      throw new Error("Failed to update profile")
+    }
+
+    let updatedUser = updateUser as any
+    toast.success("Profile updated successfully!")
+    onSubmit(updatedUser)
+  } catch (error) {
+    toast.error("Failed to update profile")
+  } finally {
+    setDataSubmitting(false)
+  }
+}
+
+  // Show loading state while fetching user data
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center py-8">
+        <div className="text-white text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-primary mx-auto mb-2"></div>
+          <p>Loading profile...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
     <form onSubmit={handleFormSubmit} className="space-y-6">
-      <FormField
-        label="Last Name"
-        input={
-          <input
-            type="text"
-            value={formData.lastName}
-            onChange={(e) => handleFieldChange("lastName", e.target.value)}
-            className={inputStyles}
+
+        <div className="flex items-center justify-center gap-3 p-3 bg-primary/30 rounded-lg">
+          <img
+            src={formData.imageUrl || "/default_pfp.jpg"}
+            alt="Profile Preview"
+            className="h-[10rem] w-[10rem] rounded-full object-cover border-2 border-blue-primary"
+            onError={(e) => {
+              e.currentTarget.src = "/default_pfp.jpg"
+              if (formData.imageUrl) {
+                toast.error("Invalid image URL")
+              }
+            }}
           />
-        }
-      />
+
+        </div>
+
+      <div className="space-y-3">
+        {/* Upload and Remove buttons side by side */}
+        <div className="flex gap-3 justify-center">
+          <div className="relative">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFileSelect}
+              disabled={dataSubmitting || imageUploading}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer disabled:cursor-not-allowed"
+              id="file-upload"
+            />
+            <label
+              htmlFor="file-upload"
+              className="flex items-center justify-center px-6 py-2 bg-blue-primary text-white rounded-lg border-2 border-blue-primary hover:bg-blue-primary/80 disabled:opacity-50 cursor-pointer transition-colors"
+            >
+             {selectedFile ? "Selected" : "Upload"}
+            </label>
+          </div>
+          
+          {formData.imageUrl && (
+            <button
+              type="button"
+              onClick={() => {
+                handleFieldChange("imageUrl", "")
+                setSelectedFile(null)
+              }}
+              disabled={dataSubmitting || imageUploading}
+              className="px-6 py-2 text-red-400 hover:text-red-300 border border-red-400 hover:border-red-300 rounded-lg disabled:opacity-50 transition-colors"
+            >
+              Remove
+            </button>
+          )}
+        </div>
+      
+        
+        {/* Upload status */}
+        {imageUploading && (
+          <div className="flex items-center gap-2 text-blue-primary">
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-blue-primary"></div>
+            <span className="text-sm">Uploading image...</span>
+          </div>
+        )}
+        
+        {selectedFile && !imageUploading && (
+          <div className="text-green-400 text-sm">
+            ✓ File selected: {selectedFile.name} (will upload on save)
+          </div>
+        )}
+      </div>
+
+
+
       <FormField
         label="First Name"
         required
@@ -134,6 +281,17 @@ export const ProfileForm = ({
             type="text"
             value={formData.preferredName}
             onChange={(e) => handleFieldChange("preferredName", e.target.value)}
+            className={inputStyles}
+          />
+        }
+      />
+            <FormField
+        label="Last Name"
+        input={
+          <input
+            type="text"
+            value={formData.lastName}
+            onChange={(e) => handleFieldChange("lastName", e.target.value)}
             className={inputStyles}
           />
         }
@@ -159,50 +317,20 @@ export const ProfileForm = ({
           />
         }
       />
-      <FormField
-        label="Image URL"
-        input={
-          <div className="flex gap-2">
-            <input
-              type="text"
-              placeholder="Paste image URL here"
-              value={formData.imageUrl || ""}
-              onChange={(e) => handleFieldChange("imageUrl", e.target.value)}
-              className={inputStyles}
-            />
-          </div>
-        }
-        className=""
-      />
-      {formData.imageUrl && (
-        <div className="flex items-center mt-2">
-          <img
-            src={formData.imageUrl}
-            alt="Profile"
-            className="h-12 w-12 rounded-full object-cover"
-          />
-          <button
-            type="button"
-            onClick={() => handleFieldChange("imageUrl", "")}
-            className="text-red-400 hover:text-red-300 text-sm ml-2"
-          >
-            ✕
-          </button>
-        </div>
-      )}
+
       <div className="flex space-x-4">
         <button
           type="submit"
           className={`${buttonStyles} bg-blue-primary`}
-          disabled={dataSubmitting}
+          disabled={dataSubmitting || imageUploading}
         >
-          {dataSubmitting ? "Saving..." : "Save"}
+          {imageUploading ? "Uploading..." : dataSubmitting ? "Saving..." : "Save"}
         </button>
         <button
           type="button"
           className={`${buttonStyles} bg-muted`}
           onClick={onCancel}
-          disabled={dataSubmitting}
+          disabled={dataSubmitting || imageUploading}
         >
           Cancel
         </button>
