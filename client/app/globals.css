@@ -176,6 +176,18 @@
   .scrollbar-thin::-webkit-scrollbar {
     width: 6px;
   }
+
+  .hero-text-light {
+    background-image: radial-gradient(
+      circle farthest-corner at 20% 0%,
+      #adaef4 25%,
+      #9799f7
+    );
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
   .hero-gradient-text {
     background-image: radial-gradient(
       circle farthest-corner at 20% 0%,
@@ -190,8 +202,8 @@
   .hero-gradient-text-dark {
     background-image: radial-gradient(
       circle farthest-corner at 20% 0%,
-      #7d80ff 25%,
-      #5e60ff
+      #6d70f5 25%,
+      #4e50e5
     ) !important;
     -webkit-text-fill-color: transparent !important;
     -webkit-background-clip: text !important;
