@@ -28,6 +28,7 @@ import {
   ExclamationTriangleIcon,
   LockClosedIcon,
   EnvelopeIcon,
+  PencilSquareIcon,
 } from "@heroicons/react/24/outline"
 import LoadingState from "@/app/components/composite/loadingstate/LoadingState"
 
@@ -263,7 +264,7 @@ const UserProfile = () => {
             }}
           />
           <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-6">
               <h1 className="font-light text-pearl text-xl md:text-4xl">
                 {idOfUserBeingViewed === userUid
                   ? `Welcome back, ${userBeingViewed && userBeingViewed?.preferredName}`
@@ -271,11 +272,9 @@ const UserProfile = () => {
               </h1>
               {/* show 'edit profile' btn if user is viewing their own profile */}
               {idOfUserBeingViewed === userUid && (
-                <OutlinedButton
-                  backgroundColor="#A1A1A1"
-                  label="Edit Profile"
-                  textSize="text-xs"
-                  fontWeight="bold"
+                <PencilSquareIcon
+                  className="w-5 h-5 md:w-6 md:h-6 cursor-pointer hover:opacity-70 transition-opacity"
+                  style={{ color: "#A1A1A1" }}
                   onClick={() => setShowEditProfile(true)}
                 />
               )}
@@ -300,7 +299,7 @@ const UserProfile = () => {
         <div className="mt-20 flex flex-col gap-8 md:gap-2">
           {/* reagent filter btns */}
           <div className="flex flex-col gap-4 mb-5">
-            <div className="flex gap-4 justify-center md:justify-end">
+            <div className="flex gap-4 justify-center md:justify-start">
               {reagentFilters.map((btnProps) =>
                 reagentCategoryFilter === btnProps.categoryFilterValue ? (
                   <div key={btnProps.categoryFilterValue}>
