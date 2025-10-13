@@ -8,7 +8,7 @@ export default function Home() {
 
   "
       style={{
-        backgroundImage: 'url("/ColabLanding2.jpg")',
+        backgroundImage: 'url("/CoLabLanding2.jpg")',
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",

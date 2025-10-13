@@ -105,21 +105,24 @@ const Landing = () => {
       <div className="fixed top-0 left-0 right-0 z-50 bg-white/50 dark:bg-black/75 backdrop-blur-sm border-b border-gray-200/20 dark:border-gray-700/20">
         <div className="max-w-7xl mx-auto px-6 lg:px-4">
           <div className="flex items-center justify-between h-[5rem]">
-            <h2 className="text-2xl text-black dark:text-white">CoLab</h2>
-            <div className="flex items-center md:gap-4">
+            <div className="flex items-center gap-3">
+              <img src="/logo.svg" alt="CoLab Logo" className="w-8 h-8" />
+              <h2 className="text-2xl font-medium text-black dark:text-white">CoLab</h2>
+            </div>
+            <div className="flex items-center gap-6">
               <Link href="/marketplace">
-                <button className="px-4 cursor-pointer py-2 text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:text-blue-primary/70 hover:dark:text-[#FF7C5C] transition">
+                <button className="px-4 cursor-pointer py-2 text-base font-medium text-white hover:text-[#6f72ff] transition">
                   Marketplace
                 </button>
               </Link>
               <button
                 onClick={scrollToFeatures}
-                className="px-4 py-2 text-sm cursor-pointer font-medium text-blue-primary dark:text-[#FFB276] hover:text-blue-primary/70 hover:dark:text-[#FF7C5C] transition"
+                className="px-4 py-2 text-base cursor-pointer font-medium text-white hover:text-[#6f72ff] transition"
               >
                 About
               </button>
               <Link href="/auth">
-                <button className="px-4 py-2 cursor-pointer text-sm font-medium text-blue-primary dark:text-[#FFB276] hover:text-blue-primary/70 hover:dark:text-[#FF7C5C] transition">
+                <button className="px-4 py-2 cursor-pointer text-base font-medium text-white hover:text-[#6f72ff] transition">
                   Sign In
                 </button>
               </Link>
@@ -133,31 +136,28 @@ const Landing = () => {
         className="mt-[110vh] md:mt-[90vh] lg:mt-[120vh] absolute inset-0 bg-white/60 dark:bg-black/75 h-[290vh] z-0 rounded-md"
       ></div> */}
       {/* Content wrapper with relative positioning */}
-      <div className="relative z-10 mb-20 pl-4 pr-4 sm:pl-6 sm:pr-6 lg:pl-8 lg:pr-8 ">
+      <div className="relative z-10 mb-20 px-4 sm:px-6 lg:px-8">
         {/* Hero Section */}
         <div
           ref={heroRef}
-          className="mt-[20vh] md:mt-[15vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-[13rem] pl-4 pr-4 sm:pl-6 sm:pr-6 lg:pl-8 lg:pr-8"
+          className="mt-[20vh] md:mt-[15vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-40"
         >
           <div className="lg:ml-[3rem] w-full lg:w-1/2 bg-white/90 dark:bg-primary/90 lg:bg-transparent lg:dark:bg-transparent rounded-2xl p-6">
-            <h1 className="text-4xl md:text-5xl font-bold text-blue-primary dark:text-[#FFB276] mb-4 animate-slide-up-1">
-              Access Lab-Grade Reagents
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-slide-up-1 hero-gradient-text">
+              No More Waste.
               <br />
-              <span className="text-blue-secondary dark:text-[#FF7C5C]">
-                For Student Success
-              </span>
+              Collaborate to Innovate.
             </h1>
-            <p className="text-lg text-gray-600 dark:text-[#D3DAFF] mb-8 leading-relaxed animate-slide-up-2">
-              CoLab connects chemistry students with affordable, high-quality
-              reagents. Share resources, reduce waste, and advance your academic
-              research with our comprehensive platform.
+            <p className="text-lg text-white mb-8 leading-relaxed animate-slide-up-2">
+              CoLab helps researchers connect across labs and institutions in order to
+              share and repurpose reagents. Share resources and make discoveries together.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 animate-slide-up-2">
               <Link href="/auth" className="w-full sm:w-auto">
                 <button
                   className="
-                    w-full sm:w-auto px-8 py-4 bg-blue-primary text-white font-semibold rounded-lg shadow-md hover:bg-blue-secondary transition
-                    dark:bg-[#FF7C5C] dark:hover:bg-[#FF947A]
+                    w-full sm:w-auto min-w-[150px] h-11 px-4 bg-[#5e60ff] text-white font-semibold rounded-lg shadow-md transition flex items-center justify-center cursor-pointer
+                    hover:bg-[#5e60ff]/70
                   "
                 >
                   Get Started
@@ -167,8 +167,8 @@ const Landing = () => {
                 <button
                   onClick={scrollToFeatures}
                   className="
-                    w-full sm:w-auto px-8 py-4 bg-transparent text-blue-primary border-2 border-blue-primary font-semibold rounded-lg hover:bg-blue-primary hover:text-white transition
-                    dark:text-[#FFB276] dark:border-[#FFB276] dark:hover:bg-[#FFB276] dark:hover:text-primary
+                    w-full sm:w-auto min-w-[150px] h-11 px-4 bg-primary/60 text-white border border-white/20 font-semibold rounded-lg shadow-md transition-colors duration-200 flex items-center justify-center cursor-pointer
+                    hover:bg-white/20
                   "
                 >
                   Learn More
@@ -181,16 +181,13 @@ const Landing = () => {
         {/* Features Section */}
         <div
           ref={featuresRef}
-          className="max-w-7xl mx-auto pl-4 pr-4 sm:pl-6 sm:pr-6 lg:pl-8 lg:pr-8"
+          className="max-w-7xl mx-auto"
         >
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Card 1 */}
-            <div className="flex flex-col items-center bg-white dark:bg-primary/95 rounded-2xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-gray-100 dark:border-gray-800 h-full">
+            <div className="flex flex-col items-center bg-primary/80 backdrop-blur-sm rounded-2xl shadow-lg px-6 py-8 hover:shadow-xl transition duration-300 border border-muted h-full">
               <ReduceWaste />
-              <h3 className="mt-4 text-xl font-bold text-blue-primary dark:text-[#FFB276] text-center">
-                Sustainable Research
-              </h3>
-              <p className="mt-3 text-gray-600 dark:text-[#D3DAFF] text-center">
+              <p className="mt-3 text-white text-center">
                 Minimize environmental impact by exchanging unused chemicals.
                 Our platform facilitates responsible reagent sharing between
                 departments and labs.
@@ -198,12 +195,9 @@ const Landing = () => {
             </div>
 
             {/* Card 2 */}
-            <div className="flex flex-col items-center bg-white/95 dark:bg-primary/95 rounded-2xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-gray-100 dark:border-gray-800 h-full">
+            <div className="flex flex-col items-center bg-primary/80 backdrop-blur-sm rounded-2xl shadow-lg px-6 py-8 hover:shadow-xl transition duration-300 border border-muted h-full">
               <SaveMoney />
-              <h3 className="mt-4 text-xl font-bold text-blue-primary dark:text-[#FFB276] text-center">
-                Budget Optimization
-              </h3>
-              <p className="mt-3 text-gray-600 dark:text-[#D3DAFF] text-center">
+              <p className="mt-3 text-white text-center">
                 Access high-quality reagents at student-friendly prices. Extend
                 your research budget with cost-effective alternatives to
                 commercial suppliers.
@@ -211,15 +205,12 @@ const Landing = () => {
             </div>
 
             {/* Card 3 */}
-            <div className="flex flex-col items-center bg-white/95 dark:bg-primary/95 rounded-2xl shadow-lg p-6 hover:shadow-xl transition duration-300 border border-gray-100 dark:border-gray-800 h-full">
+            <div className="flex flex-col items-center bg-primary/80 backdrop-blur-sm rounded-2xl shadow-lg px-6 py-8 hover:shadow-xl transition duration-300 border border-muted h-full">
               <Collaborate />
-              <h3 className="mt-4 text-xl font-bold text-blue-primary dark:text-[#FFB276] text-center">
-                Scientific Community
-              </h3>
-              <p className="mt-3 text-gray-600 dark:text-[#D3DAFF] text-center">
+              <p className="mt-3 text-white text-center">
                 Connect with fellow chemistry students and researchers across
                 institutions. Exchange knowledge, build networks, and foster
-                interdisciplinary collaborations.
+                collaborations.
               </p>
             </div>
           </div>
@@ -241,17 +232,15 @@ const Landing = () => {
           {/*image section */}
           <div
             ref={imageSectionRef}
-            className="flex flex-col lg:flex-row items-center justify-center gap-20 mt-30 mb-20 relative pl-4 pr-4 sm:pl-6 sm:pr-6 lg:pl-8 lg:pr-8"
+            className="flex flex-col lg:flex-row items-center justify-center gap-20 mt-40 mb-40 relative"
           >
             <div className="relative">
-              <h2 className="text-2xl sm:text-3xl font-bold text-left text-blue-primary dark:text-[#FFB276]">
-                Transforming Academic
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-left hero-gradient-text-dark">
+                Reduce, Reuse,
                 <br />
-                <span className="text-blue-secondary dark:text-[#FF7C5C]">
-                  Research Resources
-                </span>
+                Reagent.
               </h2>
-              <p className="text-left text-gray-600 dark:text-[#D3DAFF] max-w-xl">
+              <p className="text-left text-white max-w-lg">
                 Our platform helps chemistry students and researchers optimize
                 their lab resources through our innovative sharing ecosystem.
               </p>
@@ -260,7 +249,7 @@ const Landing = () => {
             <img
               src="/CoLabLanding.jpg"
               alt="Research collaboration"
-              className="w-100 h-120 object-cover shadow-md  z-10"
+              className="w-100 h-120 object-cover shadow-md rounded-2xl z-10"
             />
           </div>
         </div>
@@ -268,13 +257,13 @@ const Landing = () => {
         {/* Call to Action */}
         <div
           ref={ctaRef}
-          className="max-w-7xl mx-auto mt-30 bg-white/90 dark:bg-primary/90 rounded-2xl text-center "
+          className="max-w-7xl mx-auto mt-40 bg-primary/80 backdrop-blur-sm rounded-2xl text-center border border-muted"
         >
-          <div className="bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-primary p-10 pl-4 pr-4 sm:pl-6 sm:pr-6 lg:pl-8 lg:pr-8 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-800">
-            <h2 className="text-2xl sm:text-3xl font-bold text-blue-primary dark:text-[#FFB276] mb-4">
+          <div className="p-10 rounded-2xl shadow-lg">
+            <h2 className="text-2xl sm:text-3xl font-bold hero-gradient-text mb-4">
               Ready to elevate your laboratory experience?
             </h2>
-            <p className="text-lg text-gray-600 dark:text-[#D3DAFF] mb-8 max-w-2xl mx-auto">
+            <p className="text-lg text-white mb-8 max-w-2xl mx-auto">
               Join CoLab today and become part of a growing network of chemistry
               students dedicated to sustainable, efficient research practices.
             </p>
@@ -283,8 +272,8 @@ const Landing = () => {
               <Link href="/auth">
                 <button
                   className="
-                  px-8 py-4 bg-blue-primary text-white font-semibold rounded-lg shadow-md hover:bg-blue-primary/70 transition
-                  dark:bg-[#FF7C5C] dark:hover:bg-[#FF947A] cursor-pointer
+                  min-w-[150px] h-11 px-4 bg-[#5e60ff] text-white font-semibold rounded-lg shadow-md transition flex items-center justify-center cursor-pointer
+                  hover:bg-[#5e60ff]/70
                 "
                 >
                   Join Now
@@ -293,8 +282,8 @@ const Landing = () => {
               <Link href="/marketplace">
                 <button
                   className="
-                  px-8 py-4 bg-transparent text-blue-primary border-2 border-blue-primary font-semibold rounded-lg hover:bg-blue-primary hover:text-white transition
-                  dark:text-[#FFB276] dark:border-[#FFB276] dark:hover:bg-[#FFB276] dark:hover:text-primary cursor-pointer
+                  min-w-[150px] h-11 px-4 bg-primary/60 text-white border border-white/20 font-semibold rounded-lg shadow-md transition-colors duration-200 flex items-center justify-center cursor-pointer
+                  hover:bg-white/20 hover:shadow-lg
                 "
                 >
                   Marketplace

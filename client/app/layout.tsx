@@ -6,6 +6,14 @@ import { Toaster } from "@/app/components/generic/sonner/Toaster"
 export const metadata: Metadata = {
   title: "CoLab",
   description: "#OpenToWork",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/favicon.svg",
+    apple: "/icon.svg",
+  },
 }
 
 export default function RootLayout({

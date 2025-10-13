@@ -176,6 +176,27 @@
   .scrollbar-thin::-webkit-scrollbar {
     width: 6px;
   }
+  .hero-gradient-text {
+    background-image: radial-gradient(
+      circle farthest-corner at 20% 0%,
+      #9fa1ff 25%,
+      #6f72ff
+    );
+    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+
+  .hero-gradient-text-dark {
+    background-image: radial-gradient(
+      circle farthest-corner at 20% 0%,
+      #7d80ff 25%,
+      #5e60ff
+    ) !important;
+    -webkit-text-fill-color: transparent !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+  }
 }
 
 body {
