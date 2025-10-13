@@ -340,6 +340,7 @@ const UserProfile = () => {
                         key={btnProps.categoryFilterValue}
                         label={btnProps.label}
                         backgroundColor={btnProps.bgColour}
+                        className="bg-secondary/30 duration-300 hover:bg-secondary/10"
                         icon={btnProps.icon}
                         onClick={() =>
                           setReagentCategoryFilter(btnProps.categoryFilterValue)
