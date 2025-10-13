@@ -4,7 +4,7 @@ const SaveMoney = () => {
     <div
       className="
             text-[#3CD856] font-bold flex items-center mt-[1.5rem]
-            lg:m-0 lg:flex-col
+            md:m-0 md:flex-col
         "
     >
       <div
@@ -13,14 +13,14 @@ const SaveMoney = () => {
                 lg:p-5
             "
       >
-        <FaMoneyBills size={40} className="text-[#3CD856] lg:hidden" />
-        <FaMoneyBills size={40} className="text-[#3CD856] hidden lg:block" />
+        <FaMoneyBills size={40} className="text-[#3CD856] md:hidden" />
+        <FaMoneyBills size={40} className="text-[#3CD856] hidden md:block" />
       </div>
 
       <span
         className="
                 tracking-wider text-[1.5rem] min-w-[15rem] pl-[1rem]
-                lg:m-0 lg:p-0 lg:mt-[1rem] lg:text-[20px] lg:text-center
+                md:m-0 md:p-0 md:mt-[1rem] md:text-[20px] md:text-center
             "
       >
         Save Money

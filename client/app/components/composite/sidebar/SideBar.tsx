@@ -76,7 +76,7 @@ const Sidebar = () => {
 
       {/* Side bar */}
       <div
-        className={`fixed pt-8 shadow-lg lg:pt-0 w-60 h-full bg-primary z-40 mt-14 lg:mt-0 transform transition-transform duration-300 
+        className={`fixed pt-8 shadow-lg lg:pt-0 w-60 h-screen bg-primary z-40 top-14 lg:top-0 transform transition-transform duration-300 
       ${isOpen ? "translate-x-0 right-0" : "translate-x-full right-0"}
        lg:left-0 lg:right-auto lg:translate-x-0 lg:block`}
       >
@@ -86,7 +86,7 @@ const Sidebar = () => {
           </h2>
         </Link>
 
-        <div className="flex flex-col justify-between h-full">
+        <div className="flex flex-col justify-between h-full min-h-screen">
           <div>
             {!isSignedIn && (
               <div className="mb-5 h-[2px] w-full bg-gradient-to-r from-transparent from-15% via-blue-primary via-50% to-transparent to-85%" />
