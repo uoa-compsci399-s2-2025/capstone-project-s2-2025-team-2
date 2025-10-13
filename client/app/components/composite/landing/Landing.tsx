@@ -107,7 +107,9 @@ const Landing = () => {
           <div className="flex items-center justify-between h-[5rem]">
             <div className="flex items-center gap-3">
               <img src="/logo.svg" alt="CoLab Logo" className="w-8 h-8" />
-              <h2 className="text-2xl font-medium text-black dark:text-white">CoLab</h2>
+              <h2 className="text-2xl font-medium text-black dark:text-white">
+                CoLab
+              </h2>
             </div>
             <div className="flex items-center gap-6">
               <Link href="/marketplace">
@@ -143,14 +145,15 @@ const Landing = () => {
           className="mt-[20vh] md:mt-[15vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-40"
         >
           <div className="lg:ml-[3rem] w-full lg:w-1/2 bg-white/90 dark:bg-primary/90 lg:bg-transparent lg:dark:bg-transparent rounded-2xl p-6">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-slide-up-1 hero-gradient-text">
-              No More Waste.
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-slide-up-1">
+              <span className=" hero-gradient-text-dark">No More Waste.</span>
               <br />
-              Collaborate to Innovate.
+              <span className="hero-text-light">Collaborate to Innovate.</span>
             </h1>
             <p className="text-lg text-white mb-8 leading-relaxed animate-slide-up-2">
-              CoLab helps researchers connect across labs and institutions in order to
-              share and repurpose reagents. Share resources and make discoveries together.
+              CoLab helps researchers connect across labs and institutions in
+              order to share and repurpose reagents. Share resources and make
+              discoveries together.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 animate-slide-up-2">
               <Link href="/auth" className="w-full sm:w-auto">
@@ -179,10 +182,7 @@ const Landing = () => {
         </div>
 
         {/* Features Section */}
-        <div
-          ref={featuresRef}
-          className="max-w-7xl mx-auto"
-        >
+        <div ref={featuresRef} className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {/* Card 1 */}
             <div className="flex flex-col items-center bg-primary/80 backdrop-blur-sm rounded-2xl shadow-lg px-6 py-8 hover:shadow-xl transition duration-300 border border-muted h-full">
