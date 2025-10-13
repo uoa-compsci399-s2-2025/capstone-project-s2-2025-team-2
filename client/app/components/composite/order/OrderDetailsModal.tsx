@@ -79,11 +79,12 @@ const DetailRow = ({ label, value, truncate = false }: {
 
 //reagent details card
 const ReagentDetails = ({ title, reagent }: { title: string; reagent: any }) => (
-  <div className="bg-primary/80 backdrop-blur-sm rounded-2xl p-6 border border-muted shadow-xl w-fit min-w-[300px]">
+  <div className="bg-primary/80 backdrop-blur-sm rounded-2xl p-6 border border-muted shadow-xl w-fit min-w-[300px] h-fit">
     <h3 className="text-white text-lg font-medium mb-4">{title}</h3>
     <div className="space-y-3">
       <DetailRow label="Name" value={reagent?.name} truncate />
       <DetailRow label="Condition" value={reagent?.condition} />
+      <DetailRow label="Quantity" value={`${reagent?.quantity} ${reagent?.unit}`} />
       <DetailRow label="Expiry" value={reagent?.expiryDate} />
       <DetailRow label="Location" value={reagent?.location} truncate />
       {reagent?.categories?.length > 0 && (
@@ -157,7 +158,7 @@ export default function OrderDetailsModal({
           <XMarkIcon className="w-6 h-6" />
         </button>
         
-        <div className={`grid grid-cols-1 gap-8 w-full pointer-events-auto relative z-10 ${gridCols}`}>
+        <div className={`grid grid-cols-1 gap-8 w-full pointer-events-auto relative z-10 items-start ${gridCols}`}>
           
           <ReagentDetails title="Your Reagent:" reagent={reagent} />
           
@@ -165,7 +166,7 @@ export default function OrderDetailsModal({
             <ReagentDetails title="Their Reagent:" reagent={offeredReagent} />
           )}
           
-          <div className="bg-primary/80 backdrop-blur-sm rounded-2xl p-6 border border-muted shadow-xl flex flex-col w-fit min-w-[300px]">
+          <div className="bg-primary/80 backdrop-blur-sm rounded-2xl p-6 border border-muted shadow-xl flex flex-col w-fit min-w-[300px] h-fit">
             <div className="space-y-4">
               <h3 className="text-white text-lg font-medium flex items-center gap-2">
                 <span className={`flex items-center gap-1 text-lg ${color}`}>
