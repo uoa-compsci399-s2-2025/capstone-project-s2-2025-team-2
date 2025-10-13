@@ -11,26 +11,21 @@ const Header = () => {
                 dark:text-[#D3DAFF] lg:hidden
             "
       >
-        <span>Chemical.ly</span>
+        <span>CoLab</span>
         <div className="relative w-[250px] h-[100px] mx-auto mt-[3rem]">
-          <Image
-            src={logo}
-            alt="Chemical.ly Logo"
-            fill
-            className="object-contain"
-          />
+          <Image src={logo} alt="CoLab Logo" fill className="object-contain" />
         </div>
         <span className="block mt-[3rem] text-[32px]">Reduce, Reuse</span>
       </div>
       <div className="hidden lg:flex lg:justify-start lg:items-center lg:pb-[3rem]">
-        <Image src={icon} alt="Chemical.ly Icon" width={50} height={50} />
+        <Image src={icon} alt="CoLab Icon" width={50} height={50} />
         <span
           className="
                     lg:ml-[1rem] lg:font-bold lg:dark:text-[#D3DAFF]
                     lg:text-[1.5rem]
                 "
         >
-          Chemical.ly
+          CoLab
         </span>
       </div>
     </div>

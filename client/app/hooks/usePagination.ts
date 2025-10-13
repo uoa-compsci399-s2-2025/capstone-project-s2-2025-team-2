@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react"
 
-export function usePagaination<T>(data: T[], pageSize: number) {
+export function usePagination<T>(data: T[], pageSize: number) {
   const [currentPage, setCurrentPage] = useState(1)
 
   const currentData = useMemo(() => {

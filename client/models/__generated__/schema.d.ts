@@ -4,6 +4,23 @@
  */
 
 export interface paths {
+  "/users/reagents/expiring": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description Get reagents those are expiring in 60 days or less under a user by their user id */
+    get: operations["GetReagentsExpiringSoon"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   "/users": {
     parameters: {
       query?: never
@@ -124,6 +141,24 @@ export interface paths {
      *     Get all reagents under another user by their user id
      *     Can only be done by admin* */
     get: operations["GetReagentsByUserId"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/reagents/expiring": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description
+     *     Get all reagents that are expiring in 30 days */
+    get: operations["GetReagentsExpiringSoon"]
     put?: never
     post?: never
     delete?: never
@@ -349,6 +384,23 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  "/Expiry/send-expiry-emails": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description Send email notifications to all users who has reagents expiring in 30 days */
+    get: operations["SendExpiryNotifications"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   "/auth/send-verification-code": {
     parameters: {
       query?: never
@@ -401,14 +453,6 @@ export interface paths {
 export type webhooks = Record<string, never>
 export interface components {
   schemas: {
-    User: {
-      email: string
-      displayName: string
-      preferredName: string
-      university: string
-      /** @enum {string} */
-      role: "user" | "lab_manager" | "admin"
-    }
     /** @enum {string} */
     ReagentTradingType: "trade" | "giveaway" | "sell"
     /** @enum {string} */
@@ -428,15 +472,23 @@ export interface components {
       tradingType: components["schemas"]["ReagentTradingType"]
       images?: string[]
       categories: components["schemas"]["ReagentCategory"][]
-      /** Format: date-time */
       createdAt: string
+      createdAtReadable: string
       location: string
       unit: string
       visibility?: components["schemas"]["ReagentVisibility"]
     }
+    User: {
+      email: string
+      displayName: string
+      preferredName: string
+      university: string
+      /** @enum {string} */
+      role: "user" | "lab_manager" | "admin"
+    }
     CreateReagentRequest: {
       name: string
-      description: string
+      description?: string
       condition: string
       categories: components["schemas"]["ReagentCategory"][]
       /** Format: double */
@@ -464,11 +516,15 @@ export interface components {
       tradingType?: components["schemas"]["ReagentTradingType"]
       images?: string[]
       categories?: components["schemas"]["ReagentCategory"][]
-      /** Format: date-time */
       createdAt?: string
+      createdAtReadable?: string
       location?: string
       unit?: string
       visibility?: components["schemas"]["ReagentVisibility"]
+    }
+    /** @description Construct a type with a set of properties K of type T */
+    "Record_string.Reagent-Array_": {
+      [key: string]: components["schemas"]["Reagent"][]
     }
     Order: {
       requester_id: string
@@ -629,6 +685,26 @@ export interface components {
 }
 export type $defs = Record<string, never>
 export interface operations {
+  GetReagentsExpiringSoon: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description All reagents returned successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Reagent"][]
+        }
+      }
+    }
+  }
   GetAllUsers: {
     parameters: {
       query?: never
@@ -856,6 +932,26 @@ export interface operations {
         }
         content: {
           "application/json": components["schemas"]["Reagent"][]
+        }
+      }
+    }
+  }
+  GetReagentsExpiringSoon: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description All reagents returned successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Record_string.Reagent-Array_"]
         }
       }
     }
@@ -1266,6 +1362,24 @@ export interface operations {
         content: {
           "application/json": components["schemas"]["GoogleOAuthResponse"]
         }
+      }
+    }
+  }
+  SendExpiryNotifications: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Email notifications sent successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
       }
     }
   }

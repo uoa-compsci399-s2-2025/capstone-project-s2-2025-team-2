@@ -46,6 +46,7 @@ export const DefaultReagentCard: Story = {
       createdAt: "2025-01-01T00:00:00.000Z",
       location: "UoA, Auckland",
       price: 0,
+      createdAtReadable: "1st Jan 2025",
     },
   },
 }

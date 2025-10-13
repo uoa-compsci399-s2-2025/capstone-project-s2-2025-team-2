@@ -808,6 +808,62 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"AuthDomainAllowedRoles": {
+				"items": {
+					"type": "string",
+					"enum": [
+						"staff",
+						"student"
+					]
+				},
+				"type": "array"
+			},
+			"AuthDomain": {
+				"properties": {
+					"emailDomains": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"institutionName": {
+						"type": "string"
+					},
+					"allowedRoles": {
+						"$ref": "#/components/schemas/AuthDomainAllowedRoles"
+					}
+				},
+				"required": [
+					"emailDomains",
+					"institutionName",
+					"allowedRoles"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"AddSignupEmailDomainRequest": {
+				"properties": {
+					"institutionName": {
+						"type": "string"
+					},
+					"emailDomains": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"allowedRoles": {
+						"$ref": "#/components/schemas/AuthDomainAllowedRoles"
+					}
+				},
+				"required": [
+					"institutionName",
+					"emailDomains",
+					"allowedRoles"
+				],
+				"type": "object",
+				"additionalProperties": false
 			}
 		},
 		"securitySchemes": {
@@ -1993,6 +2049,106 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/VerifyTokenRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/valid-email-domains": {
+			"get": {
+				"operationId": "GetValidEmailDomains",
+				"responses": {
+					"200": {
+						"description": "Valid email domains retrieved successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"type": "string"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Gets all valid valid email domains for signup",
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": []
+			}
+		},
+		"/auth/{domain_id}": {
+			"delete": {
+				"operationId": "RemoveValidSignupEmailDomain",
+				"responses": {
+					"200": {
+						"description": "Valid signup domain removed successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AuthDomain"
+								}
+							}
+						}
+					}
+				},
+				"description": "Allows admins to remove a valid signup email domain",
+				"tags": [
+					"Authentication"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"description": "- the ID of the domain to delete",
+						"in": "path",
+						"name": "domain_id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/auth": {
+			"post": {
+				"operationId": "AddValidSignupEmailDomain",
+				"responses": {
+					"201": {
+						"description": "Valid signup email domain added successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/AuthDomain"
+								}
+							}
+						}
+					}
+				},
+				"description": "Allows admins to add a new valid signup email domain",
+				"tags": [
+					"Authentication"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/AddSignupEmailDomainRequest"
 							}
 						}
 					}

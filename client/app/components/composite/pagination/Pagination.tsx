@@ -42,7 +42,7 @@ export default function Pagination({
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
-        className={`px-4 ${currentPage === 1 ? "invisible" : ""}`}
+        className={`px-4 ${currentPage === 1 ? "invisible" : "cursor-pointer"}`}
       >
         <ChevronLeftIcon className="h-5 w-5 text-white" />
       </button>
@@ -52,7 +52,7 @@ export default function Pagination({
             <button
               key={page}
               onClick={() => onPageChange(page as number)}
-              className={`min-w-[2.5rem] px-2 py-2 rounded-md border ${
+              className={`min-w-[2.5rem] px-2 py-2 rounded-md border cursor-pointer ${
                 currentPage === page
                   ? "bg-white text-primary border-primary"
                   : "bg-primary text-white border-secondary hover:bg-secondary transition-colors duration-200"
@@ -66,7 +66,7 @@ export default function Pagination({
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage === totalPages}
-        className={`px-4 ${currentPage === totalPages ? "invisible" : ""}`}
+        className={`px-4 ${currentPage === totalPages ? "invisible" : "cursor-pointer"}`}
       >
         <ChevronRightIcon className="h-5 w-5 text-white" />
       </button>
