@@ -62,10 +62,10 @@ const Sidebar = () => {
       <header className="fixed z-50 shadow-lg lg:hidden top-0 w-full h-[4rem] bg-primary text-white flex items-center justify-between px-4 z-10">
         <Link href="/marketplace">
           <h3 className="m-0 lg:m-5 hover:text-light-gray duration-100 lg:hidden">
-            Chemical.ly
+            CoLab
           </h3>
         </Link>
-        <h2 className="m-0 lg:m-5 hidden lg:block">Chemical.ly</h2>
+        <h2 className="m-0 lg:m-5 hidden lg:block">CoLab</h2>
         <button
           className="lg:hidden p-2 rounded-md text-white hover:text-light-gray duration-100"
           onClick={() => setIsOpen(!isOpen)}
@@ -80,7 +80,7 @@ const Sidebar = () => {
       ${isOpen ? "translate-x-0 right-0" : "translate-x-full right-0"}
        lg:left-0 lg:right-auto lg:translate-x-0 lg:block`}
       >
-        <h2 className="hidden lg:block ml-7 mt-7 mb-4">Chemical.ly</h2>
+        <h2 className="hidden lg:block ml-7 mt-7 mb-4">CoLab</h2>
 
         <div className="flex flex-col justify-between h-full">
           <div>

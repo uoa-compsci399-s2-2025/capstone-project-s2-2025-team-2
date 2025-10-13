@@ -20,7 +20,7 @@ const Landing = () => {
               </span>
             </h1>
             <p className="text-lg text-gray-600 dark:text-[#D3DAFF] mb-8 leading-relaxed">
-              Chemical.ly connects chemistry students with affordable,
+              CoLab connects chemistry students with affordable,
               high-quality reagents. Share resources, reduce waste, and advance
               your academic research with our comprehensive platform.
             </p>
@@ -54,7 +54,7 @@ const Landing = () => {
           <div className="absolute -z-10 w-full h-full bg-gradient-to-r from-[#FF947A]/30 to-transparent rounded-full blur-2xl"></div>
           <Image
             src={logo}
-            alt="Chemical.ly Logo"
+            alt="CoLab Logo"
             width={500}
             height={500}
             className="w-full h-auto drop-shadow-xl"
@@ -122,7 +122,7 @@ const Landing = () => {
             Ready to elevate your laboratory experience?
           </h2>
           <p className="text-lg text-gray-600 dark:text-[#D3DAFF] mb-8 max-w-2xl mx-auto">
-            Join Chemical.ly today and become part of a growing network of
+            Join CoLab today and become part of a growing network of
             chemistry students dedicated to sustainable, efficient research
             practices.
           </p>

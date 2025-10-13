@@ -6,9 +6,9 @@ export default function AuthWelcomeBox() {
       {/* Welcome Content */}
       <div className="text-center">
         <h2 className="mb-2">Welcome to</h2>
-        <h1 className="text-orange-400 mb-6">Chemical.ly</h1>
+        <h1 className="text-orange-400 mb-6">CoLab</h1>
         <p className="mb-8">
-          Join Chemical.ly today and be part of a growing community that shares,
+          Join CoLab today and be part of a growing community that shares,
           reuses, and collaborates on research reagents.
         </p>
         {/* Call to Action Button */}
