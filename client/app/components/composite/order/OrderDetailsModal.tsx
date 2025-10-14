@@ -128,6 +128,7 @@ export default function OrderDetailsModal({
   onApprove,
 }: OrderDetailsModalProps) {
   const [approving, setApproving] = useState(false)
+  const [approved, setApproved] = useState(false)
 
   const { data: requesterData } = useFetch<any>(
     order.requester_id ? `/users/${order.requester_id}` : null,
@@ -159,12 +160,11 @@ export default function OrderDetailsModal({
         headers: { Authorization: `Bearer ${token}` },
       })
       toast("Request approved!")
+      setApproved(true)
       onApprove?.(order.id)
-      onClose()
     } catch (error) {
       console.error("Failed to approve order:", error)
       toast("Failed to approve request. Please try again.")
-    } finally {
       setApproving(false)
     }
   }
@@ -282,10 +282,10 @@ export default function OrderDetailsModal({
             </button>
             <button
               onClick={handleApprove}
-              disabled={approving}
+              disabled={approving || approved}
               className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 disabled:bg-blue-primary/50 disabled:cursor-not-allowed rounded-lg transition-colors"
             >
-              {approving ? "Approving..." : "Approve"}
+              {approved ? "Approved" : approving ? "Approving..." : "Approve"}
             </button>
           </div>
         </div>
