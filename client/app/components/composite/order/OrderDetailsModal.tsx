@@ -9,6 +9,7 @@ import {
 import { useState, useEffect } from "react"
 import type { components } from "@/models/__generated__/schema"
 import client from "@/app/services/fetch-client"
+import { toast } from "sonner"
 import LoadingState from "../loadingstate/LoadingState"
 
 type Order = components["schemas"]["Order"]
@@ -25,7 +26,8 @@ interface OrderDetailsModalProps {
   onClose: () => void
   order: OrderWithId
   reagent: ReagentWithId
-  offeredReagent?: ReagentWithId //temp storybook prop
+  offeredReagent?: ReagentWithId
+  onApprove?: (orderId: string) => void
 }
 
 const TRADING_CONFIG = {
@@ -34,7 +36,6 @@ const TRADING_CONFIG = {
   trade: { icon: ArrowsRightLeftIcon, color: "text-purple-100" },
 } as const
 
-//generic hook for fetching data w auth token
 const useFetch = <T,>(url: string | null, isOpen: boolean) => {
   const [data, setData] = useState<T | null>(null)
   const [loading, setLoading] = useState(false)
@@ -64,7 +65,6 @@ const useFetch = <T,>(url: string | null, isOpen: boolean) => {
   return { data, loading }
 }
 
-//reusable row for details rendering
 const DetailRow = ({
   label,
   value,
@@ -85,7 +85,6 @@ const DetailRow = ({
   </div>
 )
 
-//reagent details card
 const ReagentDetails = ({
   title,
   reagent,
@@ -126,15 +125,15 @@ export default function OrderDetailsModal({
   order,
   reagent,
   offeredReagent: testOfferedReagent,
+  onApprove,
 }: OrderDetailsModalProps) {
-  //fetch requester info
+  const [approving, setApproving] = useState(false)
+
   const { data: requesterData } = useFetch<any>(
     order.requester_id ? `/users/${order.requester_id}` : null,
     isOpen,
   )
 
-  //fetch reagent offered in two way trade
-  //test data temporary
   const { data: fetchedOfferedReagent, loading: offeredReagentLoading } =
     useFetch<any>(
       reagent.tradingType === "trade" &&
@@ -145,7 +144,6 @@ export default function OrderDetailsModal({
       isOpen,
     )
 
-  //temp test reagent to mimic fetching offered reagent for storybook
   const offeredReagent = testOfferedReagent || fetchedOfferedReagent
   const isTradeLoading =
     reagent.tradingType === "trade" &&
@@ -153,9 +151,26 @@ export default function OrderDetailsModal({
     (offeredReagentLoading ||
       (!fetchedOfferedReagent && !!order.offeredReagentId))
 
+  const handleApprove = async () => {
+    setApproving(true)
+    try {
+      const token = localStorage.getItem("authToken")
+      await client.PATCH(`/orders/${order.id}/approve` as any, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      toast("Request approved!")
+      onApprove?.(order.id)
+      onClose()
+    } catch (error) {
+      console.error("Failed to approve order:", error)
+      toast("Failed to approve request. Please try again.")
+    } finally {
+      setApproving(false)
+    }
+  }
+
   if (!isOpen) return null
 
-  //loading state while fetching offered reagent for two way trade
   if (isTradeLoading) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -191,7 +206,6 @@ export default function OrderDetailsModal({
   const { icon: Icon, color } = TRADING_CONFIG[tradingType]
   const label = tradingType.charAt(0).toUpperCase() + tradingType.slice(1)
 
-  //price + two or three cards based on trading type
   const price =
     (reagent.tradingType === "sell" && reagent.price) || (order as any).price
   const hasPrice = price !== null && price !== undefined && `${price}` !== ""
@@ -200,7 +214,6 @@ export default function OrderDetailsModal({
       ? "lg:grid-cols-3 max-w-7xl"
       : "lg:grid-cols-2 max-w-5xl"
 
-  //render modal
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       <div
@@ -261,12 +274,18 @@ export default function OrderDetailsModal({
               </div>
             </div>
 
-            {/*redirect to inbox chat*/}
             <button
               onClick={() => (window.location.href = "/inbox")}
               className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer"
             >
               Chat
+            </button>
+            <button
+              onClick={handleApprove}
+              disabled={approving}
+              className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 disabled:bg-blue-primary/50 disabled:cursor-not-allowed rounded-lg transition-colors"
+            >
+              {approving ? "Approving..." : "Approve"}
             </button>
           </div>
         </div>
