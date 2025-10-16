@@ -8,6 +8,7 @@ import {
   Bars3Icon,
   EnvelopeIcon,
   ClipboardDocumentListIcon,
+  UserGroupIcon,
 } from "@heroicons/react/24/outline"
 import Button from "../../generic/button/regular/Button"
 import { firebaseSignOut } from "../../../services/firebase-auth"
@@ -52,6 +53,12 @@ const Sidebar = () => {
       href: "/requests",
       label: "Requests",
       icon: ClipboardDocumentListIcon,
+      requireSignIn: true,
+    },
+        {
+      href: "/bountyboard",
+      label: "Bounty Board",
+      icon: UserGroupIcon,
       requireSignIn: true,
     },
   ]
