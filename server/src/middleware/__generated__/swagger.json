@@ -7,6 +7,14 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"ReagentTradingType": {
+				"type": "string",
+				"enum": [
+					"trade",
+					"giveaway",
+					"sell"
+				]
+			},
 			"ReagentCategory": {
 				"type": "string",
 				"enum": [
@@ -15,13 +23,70 @@
 					"biological"
 				]
 			},
-			"ReagentTradingType": {
+			"ReagentVisibility": {
 				"type": "string",
 				"enum": [
-					"trade",
-					"giveaway",
-					"sell"
+					"everyone",
+					"region",
+					"institution",
+					"private"
 				]
+			},
+			"Pick_Reagent.Exclude_keyofReagent.condition-or-quantity-or-unit-or-expiryDate__": {
+				"properties": {
+					"user_id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"tradingType": {
+						"$ref": "#/components/schemas/ReagentTradingType"
+					},
+					"images": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"categories": {
+						"items": {
+							"$ref": "#/components/schemas/ReagentCategory"
+						},
+						"type": "array"
+					},
+					"createdAt": {
+						"type": "string"
+					},
+					"createdAtReadable": {
+						"type": "string"
+					},
+					"location": {
+						"type": "string"
+					},
+					"visibility": {
+						"$ref": "#/components/schemas/ReagentVisibility"
+					}
+				},
+				"required": [
+					"user_id",
+					"name",
+					"description",
+					"tradingType",
+					"categories",
+					"createdAt",
+					"createdAtReadable",
+					"location"
+				],
+				"type": "object",
+				"description": "From T, pick a set of properties whose keys are in the union K"
 			},
 			"Wanted": {
 				"properties": {
@@ -34,8 +99,18 @@
 					"description": {
 						"type": "string"
 					},
-					"location": {
-						"type": "string"
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"tradingType": {
+						"$ref": "#/components/schemas/ReagentTradingType"
+					},
+					"images": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
 					},
 					"categories": {
 						"items": {
@@ -43,25 +118,28 @@
 						},
 						"type": "array"
 					},
-					"tradingType": {
-						"$ref": "#/components/schemas/ReagentTradingType"
-					},
 					"createdAt": {
 						"type": "string"
 					},
 					"createdAtReadable": {
 						"type": "string"
+					},
+					"location": {
+						"type": "string"
+					},
+					"visibility": {
+						"$ref": "#/components/schemas/ReagentVisibility"
 					}
 				},
 				"required": [
 					"user_id",
 					"name",
 					"description",
-					"location",
-					"categories",
 					"tradingType",
+					"categories",
 					"createdAt",
-					"createdAtReadable"
+					"createdAtReadable",
+					"location"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -173,15 +251,6 @@
 				},
 				"type": "object",
 				"description": "Make all properties in T optional"
-			},
-			"ReagentVisibility": {
-				"type": "string",
-				"enum": [
-					"everyone",
-					"region",
-					"institution",
-					"private"
-				]
 			},
 			"Reagent": {
 				"properties": {

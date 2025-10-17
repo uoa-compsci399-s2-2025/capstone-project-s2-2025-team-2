@@ -1,13 +1,4 @@
-import { ReagentCategory, ReagentTradingType } from "./Reagent"
+import { Reagent } from "./Reagent"
 
-
-export interface Wanted {
-  user_id: string
-  name: string
-  description: string
-  location: string
-  categories: ReagentCategory[]
-tradingType: ReagentTradingType
-createdAt: string
-createdAtReadable: string
+export interface Wanted extends Omit<Reagent, 'condition' | 'quantity' | 'unit' | 'expiryDate'> {
 }
