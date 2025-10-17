@@ -35,7 +35,7 @@ export const DefaultWantedCard: Story = {
       name: "Ethanol",
       categories: ["chemical"],
       tradingType: "trade",
-      description: "High purity ethanol",
+      description: "Does anyone have ethanol available for trade?",
       createdAt: "2025-01-01T00:00:00.000Z",
       location: "UoA, Auckland",
       createdAtReadable: "2025-01-01",
