@@ -1,6 +1,7 @@
 "use client"
-
+import { useEffect, useState } from "react"
 import { UserIcon, CalendarIcon, CurrencyDollarIcon } from "@heroicons/react/24/outline"
+import client from "@/app/services/fetch-client"
 
 type ReagentCategory = "chemical" | "hazardous" | "biological"
 type ReagentTradingType = "trade" | "giveaway" | "sell"
@@ -25,7 +26,28 @@ interface WantedCardProps {
 }
 
 const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
+  const [requesterInfo, setRequesterInfo] = useState<any>(null)
 
+  //fetch requester info using user id
+  useEffect(() => {
+    if (!wanted?.user_id) return
+
+    const fetchRequesterInfo = async () => {
+      try {
+        const { data } = await client.GET(
+          `/users/${wanted.user_id}` as any,
+          {},
+        )
+        if (data) {
+          setRequesterInfo(data)
+        }
+      } catch (error) {
+        console.error("Failed to fetch requester information:", error)
+      }
+    }
+
+    fetchRequesterInfo()
+  }, [wanted?.user_id])
   return (
     <div
       className="w-full bg-primary border border-white/10 rounded-xl cursor-pointer hover:border-blue-primary/50 hover:bg-primary/80 transition-all"
@@ -51,7 +73,7 @@ const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
             <div className="flex items-center gap-2 text-white/60">
               <UserIcon className="w-5 h-5" />
               <span className="truncate max-w-[120px]">
-                {wanted.userName || wanted.user_id}
+                {requesterInfo?.displayName || requesterInfo?.preferredName}
               </span>
             </div>
 
