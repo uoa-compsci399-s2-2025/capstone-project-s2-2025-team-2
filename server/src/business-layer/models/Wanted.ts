@@ -1,5 +1,5 @@
-export type ReagentTradingType = "trade" | "giveaway" | "sell"
-export type ReagentCategory = "chemical" | "hazardous" | "biological"
+import { ReagentCategory, ReagentTradingType } from "./Reagent"
+
 
 export interface Wanted {
   user_id: string

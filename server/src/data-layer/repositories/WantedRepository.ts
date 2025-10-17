@@ -3,7 +3,7 @@ import { Wanted } from "../../business-layer/models/Wanted"
 import { ReagentCategory } from "business-layer/models/Reagent"
 import { Timestamp } from "firebase-admin/firestore"
 
-export class WantedRepository {
+export class WantedService {
   /**
    * Get all wanted reagents from the database.
    *
@@ -81,6 +81,53 @@ export class WantedRepository {
                createdAt,
           }
           return result
+     }
+
+     /**
+      * Deletes a wanted reagent from the Firestore database.
+      * 
+      * @param id - The ID of the wanted reagent to delete.
+      * @returns Wanted - Returns the deleted reagent as a ref.
+      */
+     async deletedReagent(id: string): Promise<Wanted> {
+          try {
+               const docRef = await FirestoreCollections.wanted.doc(id)
+               if (docRef == null) {
+                    throw new Error(`Reagent - ${id} not found`)
+               }
+               const wanted = (await docRef.get()).data() as Wanted
+               await docRef.delete()
+               return wanted
+          } catch (err) {
+               console.log(err)
+               throw new Error(`Failed to delete wanted reagent - ${id}:${err}`)
+          }
+     }
+
+     /**
+      * Updates wanted reagent info in the Firestore database.
+      * 
+      * @params id - The ID of the reagent to update.
+      * @params update - The update to apply to the reagent.
+      * @returns Wanted - Returns the wanted reagent.
+      */
+
+     async updateReagent(id: string, update: Partial<Wanted>): Promise<Wanted> {
+          try {
+               const docRef = await FirestoreCollections.wanted.doc(id)
+               const snapShot = await docRef.get()
+               if (!snapShot.exists) {
+                    throw new Error(`Reagent - ${id} not found`)
+               }
+               const { user_id, ...SafeUpdate } = update
+               console.log(`User updating wanted reagent - ${id}`, user_id)
+               await docRef.update(SafeUpdate)
+               const updatedDoc = await docRef.get()
+               return updatedDoc.data() as Wanted
+          } catch (err) {
+               console.log(err)
+               throw new Error(`Failed to update wanted reagent - ${id}: ${err}`)
+          }
      }
 
 }

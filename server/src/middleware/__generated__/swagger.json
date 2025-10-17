@@ -7,6 +7,96 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"ReagentCategory": {
+				"type": "string",
+				"enum": [
+					"chemical",
+					"hazardous",
+					"biological"
+				]
+			},
+			"ReagentTradingType": {
+				"type": "string",
+				"enum": [
+					"trade",
+					"giveaway",
+					"sell"
+				]
+			},
+			"Wanted": {
+				"properties": {
+					"user_id": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"location": {
+						"type": "string"
+					},
+					"categories": {
+						"items": {
+							"$ref": "#/components/schemas/ReagentCategory"
+						},
+						"type": "array"
+					},
+					"tradingType": {
+						"$ref": "#/components/schemas/ReagentTradingType"
+					},
+					"createdAt": {
+						"type": "string"
+					},
+					"createdAtReadable": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"user_id",
+					"name",
+					"description",
+					"location",
+					"categories",
+					"tradingType",
+					"createdAt",
+					"createdAtReadable"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateWantedRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"location": {
+						"type": "string"
+					},
+					"categories": {
+						"items": {
+							"$ref": "#/components/schemas/ReagentCategory"
+						},
+						"type": "array"
+					},
+					"tradingType": {
+						"$ref": "#/components/schemas/ReagentTradingType"
+					}
+				},
+				"required": [
+					"name",
+					"description",
+					"location",
+					"categories",
+					"tradingType"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"User": {
 				"properties": {
 					"email": {
@@ -83,22 +173,6 @@
 				},
 				"type": "object",
 				"description": "Make all properties in T optional"
-			},
-			"ReagentTradingType": {
-				"type": "string",
-				"enum": [
-					"trade",
-					"giveaway",
-					"sell"
-				]
-			},
-			"ReagentCategory": {
-				"type": "string",
-				"enum": [
-					"chemical",
-					"hazardous",
-					"biological"
-				]
 			},
 			"ReagentVisibility": {
 				"type": "string",
@@ -925,6 +999,113 @@
 		"contact": {}
 	},
 	"paths": {
+		"/wanted": {
+			"get": {
+				"operationId": "GetAllWantedReagents",
+				"responses": {
+					"200": {
+						"description": "All wanted reagents returned successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Wanted"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get all wanted reagents with an option to filter them by category.",
+				"tags": [
+					"Wanted"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "- The list of all categories to fetch wanted reagents from.",
+						"in": "query",
+						"name": "category",
+						"required": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/components/schemas/ReagentCategory"
+							}
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "CreateWantedReagent",
+				"responses": {
+					"201": {
+						"description": "Wanted reagent created successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Wanted"
+								}
+							}
+						}
+					}
+				},
+				"description": "Create a reagent by passing in all the required props.\r\nUser must be authenticated to access this endpoint (lab manager / admin)",
+				"tags": [
+					"Wanted"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateWantedRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/wanted/{id}": {
+			"get": {
+				"operationId": "GetWantedReagentById",
+				"responses": {
+					"200": {
+						"description": "Wanted reagents retrieved successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Wanted"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a wanted reagent by its ID.",
+				"tags": [
+					"Wanted"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "- The ID of the wanted reagent to retrieve.",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/users/{id}": {
 			"patch": {
 				"operationId": "UpdateUser",
