@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from "react"
 import Overlay from "../components/composite/Overlay"
 import client from "../services/fetch-client"
 import WantedCard from "../components/composite/reagent/WantedCard"
+import SearchBar from "../components/composite/searchbar/SearchBar"
 
 type ReagentCategory = "chemical" | "hazardous" | "biological"
 type ReagentTradingType = "trade" | "giveaway" | "sell"
@@ -51,7 +52,78 @@ const BountyBoard = () => {
     }
   }, [fetchWantedReagents])
 
-  
+  const filtered = wanted.filter((r) => {
+    const query = search.trim().toLowerCase()
+    if (!query) return true
+
+        switch (filter) {
+      case "tag":
+      case "category":
+        return (
+          Array.isArray(r.categories) &&
+          r.categories.some((c) => c.toLowerCase().includes(query))
+        )
+      case "date":
+        return (r.createdAt ?? "").toLowerCase().includes(query)
+      default:
+        return (r.name ?? "").toLowerCase().includes(query)
+    }
+  }  )
+
+  const sorted = [...filtered].sort((a,b) => {
+    switch (sort) {
+      case "newest":
+      case "oldest": {
+        const getTimestamp = (item:FirestoreWantedReagent): number => {
+          const date = item.createdAt
+
+          if (!date) return 0
+
+          if (typeof date === "object" && "_seconds" in date) {
+            return date._seconds * 1000 + (date._nanoseconds || 0) / 1e6
+          }
+
+          if (
+            typeof date === "object" &&
+            "toMillis" in date &&
+            typeof date.toMillis === "function"
+          ) {
+            return date.toMillis()
+          }
+
+          if (typeof date === "string") {
+            const parsed = new Date(date).getTime()
+            return isNaN(parsed) ? 0 : parsed
+          }
+
+          if (date instanceof Date) return date.getTime()
+
+          if (typeof date === "number") return date
+
+          return 0
+        }
+        const aTime = getTimestamp(a)
+        const bTime = getTimestamp(b)
+
+        if (aTime === 0 && bTime === 0) return a.name.localeCompare(b.name)
+        if (aTime === 0) return 1
+        if (bTime === 0) return -1
+
+        return sort === "newest" ? bTime - aTime : aTime - bTime
+      }
+            case "nameAZ":
+        return (a.name || "").localeCompare(b.name || "")
+
+      case "nameZA":
+        return (b.name || "").localeCompare(a.name || "")
+
+      default:
+        return 0
+    }
+  })
+
+
+
   return (
     <Overlay>
       <p className="text-4xl font-medium text-white mt-4 ml-4 md:ml-8 tracking-[0.05em]">
@@ -65,7 +137,6 @@ const BountyBoard = () => {
       </div>
       <div className="mt-5"></div>
 
-      {/* search bar
       <div className="bg-transparent pt-[2rem] mx-4 md:gap-[2rem] md:mx-[2rem]">
         <SearchBar
           search={search}
@@ -75,16 +146,16 @@ const BountyBoard = () => {
           sort={sort}
           setSort={setSort}
         />
-      </div> */}
+      </div>
 
       <div className="mx-4 md:mx-8 mt-8 space-y-4">
-        {wanted.length === 0 ? (
+        {sorted.length === 0 ? (
           <div className="text-center text-white/60 py-12">
             <p className="text-lg">No wanted reagents found</p>
             <p className="text-sm mt-2">Be the first to post what you're looking for!</p>
           </div>
         ) : (
-          wanted.map((reagent) => (
+          sorted.map((reagent) => (
             <WantedCard
               key={reagent.id}
               wanted={reagent}
