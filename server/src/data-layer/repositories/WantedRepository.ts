@@ -68,17 +68,20 @@ export class WantedService {
       */
 
      async createWanted(
-          newWanted: Omit<Wanted, "createdAt"|"id">
+          newWanted: Omit<Wanted, "createdAt"| "createdAtReadable" | "id">
      ): Promise<Wanted & {id:string}> {
           const createdAt = Timestamp.now().toDate().toISOString()
+          const createdAtReadable = new Date().toISOString().split("T")[0]
           const docRef = await FirestoreCollections.wanted.add({
                ...newWanted,
                createdAt,
+               createdAtReadable,
           })
           const result = {
                ...newWanted,
                id:docRef.id,
                createdAt,
+               createdAtReadable,
           }
           return result
      }

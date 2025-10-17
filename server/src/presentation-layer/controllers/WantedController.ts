@@ -83,7 +83,7 @@ export class WantedController extends Controller {
                ...requestObject,
                user_id,
           }
-          const newWanted = await new WantedService().createWanted(data as Wanted)
+          const newWanted = await new WantedService().createWanted(data)
           return newWanted
      }
 }
