@@ -3,8 +3,9 @@
 import { useCallback, useEffect, useState } from "react"
 import Overlay from "../components/composite/Overlay"
 import client from "../services/fetch-client"
-import WantedCard from "../components/composite/reagent/WantedCard"
+import WantedCard from "../components/composite/wantedreagent/WantedCard"
 import SearchBar from "../components/composite/searchbar/SearchBar"
+import { WantedForm } from "../components/composite/wantedreagent/WantedForm"
 
 type ReagentCategory = "chemical" | "hazardous" | "biological"
 type ReagentTradingType = "trade" | "giveaway" | "sell"
@@ -42,6 +43,11 @@ const BountyBoard = () => {
     }
   }, [])
 
+    const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      setIsFormOpen(false)
+    }
+  }
   useEffect(() => {
     fetchWantedReagents()
     try {
@@ -51,6 +57,11 @@ const BountyBoard = () => {
       setIsSignedIn(false)
     }
   }, [fetchWantedReagents])
+  
+  const handleFormSubmit = async () => {
+    await fetchWantedReagents()
+    setIsFormOpen(false)
+  }
 
   const filtered = wanted.filter((r) => {
     const query = search.trim().toLowerCase()
@@ -152,7 +163,6 @@ const BountyBoard = () => {
         {sorted.length === 0 ? (
           <div className="text-center text-white/60 py-12">
             <p className="text-lg">No wanted reagents found</p>
-            <p className="text-sm mt-2">Be the first to post what you're looking for!</p>
           </div>
         ) : (
           sorted.map((reagent) => (
@@ -163,7 +173,41 @@ const BountyBoard = () => {
           ))
         )}
       </div>
+              {isSignedIn && (
+                <button
+                  onClick={() => setIsFormOpen(true)}
+                  className="fixed bottom-8 right-8 w-14 h-14 bg-blue-primary hover:bg-blue-primary/90 text-white rounded-full transition-all duration-200 flex items-center text-3xl justify-center hover:scale-110 active:scale-95 group z-50"
+                >
+                  +
+                </button>
+              )}
+              {isFormOpen && (
+                <div
+                  className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 "
+                  onClick={handleBackdropClick}
+                >
+                  <div className="bg-primary rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl ">
+                    <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
+                      <h2 className="text-2xl font-medium text-white">
+                        Request A New Reagent
+                      </h2>
+                      <button
+                        onClick={() => setIsFormOpen(false)}
+                        className="text-gray-400 text-3xl hover:text-white "
+                      >
+                        ❌
+                      </button>
+                    </div>
         
+                    <div className="p-6 overflow-y-auto flex-1 scrollbar-hide">
+                      <WantedForm
+                        onSubmit={handleFormSubmit}
+                        onCancel={() => setIsFormOpen(false)}
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
     </Overlay>
   )
 }
