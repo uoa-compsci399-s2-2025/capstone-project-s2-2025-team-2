@@ -12,6 +12,7 @@ import client from "@/app/services/fetch-client"
 import Button from "../../generic/button/regular/Button"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../../../config/firebase"
+import ContactButton from "./ContactButton"
 
 type ReagentCategory = "chemical" | "hazardous" | "biological"
 type ReagentTradingType = "trade" | "giveaway" | "sell"
@@ -125,16 +126,10 @@ const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
           
           {/* Contact Button */}
           {isSignedIn && (
-            <button
-              onClick={(e) => {
-                e.stopPropagation()
-                // TODO: Open contact/messaging modal
-                console.log("Contact user:", wanted.user_id)
-              }}
-              className="px-3 py-1.5 text-xs font-medium bg-blue-primary/20 text-blue-primary border border-blue-primary/40 rounded-md hover:bg-blue-primary/30 hover:border-blue-primary/60 transition-all md:self-end"
-            >
-              Contact
-            </button>
+            <ContactButton 
+              wanted={wanted}
+              className="md:ml-auto"
+            />
           )}
           <div className="flex flex-col md:flex-row md:flex-wrap items-start md:items-center gap-2 md:gap-4">
             {/* User */}

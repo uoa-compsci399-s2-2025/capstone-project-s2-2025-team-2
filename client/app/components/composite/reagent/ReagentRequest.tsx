@@ -17,6 +17,8 @@ interface ReagentRequestProps {
   onClose: () => void
   onSubmit: () => void
   reagent: ReagentWithId
+  title?: string
+  isBountyBoard?: boolean
 }
 
 interface UserDisplayProps {
@@ -112,6 +114,8 @@ export const ReagentRequest = ({
   onClose,
   onSubmit,
   reagent,
+  title = "Reagent Request",
+  isBountyBoard = false,
 }: ReagentRequestProps) => {
   const [currentUser, setCurrentUser] = useState<any>(null)
   const [ownerInfo, setOwnerInfo] = useState<any>(null)
@@ -225,6 +229,12 @@ export const ReagentRequest = ({
 
     //initialise data and set loading to false
     const initialise = async () => {
+      // Wait for auth state to be determined
+      if (currentUser === null) {
+        // Still waiting for Firebase auth check
+        return
+      }
+      
       if (validateUser()) {
         const promises = [fetchOwner()]
         if (reagent.tradingType === "trade") {
@@ -232,13 +242,9 @@ export const ReagentRequest = ({
         }
         await Promise.all(promises)
         guardUpdate(isClosed, () => setIsInitialising(false))
-      } else if (currentUser === null) {
-        return
       } else {
-        guardUpdate(isClosed, () => {
-          setError("Please sign in to make a request")
-          setIsInitialising(false)
-        })
+        // currentUser exists but validation failed (trying to request own reagent)
+        guardUpdate(isClosed, () => setIsInitialising(false))
       }
     }
 
@@ -255,11 +261,11 @@ export const ReagentRequest = ({
     if (!token) return
 
     //submit order request
-    //no need to pass req id, backend will us auth user id
+    //no need to pass req id, backend will use auth user id
     setIsSubmitting(true)
     try {
       const requestBody = {
-        reagent_id: reagent.id,
+        [isBountyBoard ? "wanted_id" : "reagent_id"]: reagent.id,
         ...(message.trim() && { message: message.trim() }),
         ...(reagent.tradingType === "sell" && {
           type: "trade",
@@ -272,15 +278,18 @@ export const ReagentRequest = ({
         ...(reagent.tradingType === "giveaway" && { type: "order" }),
       }
 
-      //call endpoint based on trading type
+      //call endpoint based on trading type and context
+      const baseEndpoint = isBountyBoard ? "/wanted" : "/orders"
       const endpoint =
         reagent.tradingType === "giveaway"
-          ? "/orders"
+          ? baseEndpoint
           : reagent.tradingType === "sell"
-            ? "/orders/trades"
-            : "/orders/exchanges"
+            ? `${baseEndpoint}/trades`
+            : `${baseEndpoint}/exchanges`
 
-      console.log("Making " + reagent.tradingType + " request!")
+      console.log(
+        `Making ${reagent.tradingType} ${isBountyBoard ? "offer" : "request"}!`
+      )
 
       const { error } = await client.POST(endpoint as any, {
         body: requestBody,
@@ -289,10 +298,11 @@ export const ReagentRequest = ({
 
       if (error) throw new Error("Failed to create request. Please try again.")
 
+      const actionWord = isBountyBoard ? "offer" : "request"
       toast(
         reagent.tradingType.charAt(0).toUpperCase() +
           reagent.tradingType.slice(1) +
-          " request sent successfully!",
+          ` ${actionWord} sent successfully!`,
       )
       onSubmit()
       onClose()
@@ -309,6 +319,7 @@ export const ReagentRequest = ({
     offeredReagentId,
     onSubmit,
     onClose,
+    isBountyBoard,
   ])
 
   const handleClose = useCallback(() => {
@@ -355,7 +366,7 @@ export const ReagentRequest = ({
           //request window
           <div>
             <h2 className="text-white text-center text-2xl font-medium mb-8">
-              Reagent Request
+              {title}
             </h2>
 
             <div className="flex items-center justify-center mb-8">
@@ -371,7 +382,9 @@ export const ReagentRequest = ({
                 onReagentChange={setOfferedReagentId}
                 isSubmitting={isSubmitting}
               />
-              <span className="px-4 text-4xl text-gray-400">←</span>
+              <span className="px-4 text-4xl text-gray-400">
+                {title === "Offer a Reagent" ? "→" : "←"}
+              </span>
               <UserDisplay
                 name={ownerName}
                 reagentName={reagent.name}
@@ -404,7 +417,7 @@ export const ReagentRequest = ({
                 disabled={isSubmitting}
                 className="px-4 py-2 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed bg-blue-primary hover:bg-blue-primary/80 min-w-[120px] text-base font-medium flex items-center justify-center gap-2"
               >
-                Request →
+                {title === "Offer a Reagent" ? "Offer →" : "Request →"}
               </button>
             </div>
           </div>
