@@ -6,6 +6,7 @@ import {
   CurrencyDollarIcon,
   GiftIcon,
   ArrowsRightLeftIcon,
+  HomeIcon,
 } from "@heroicons/react/24/outline"
 import client from "@/app/services/fetch-client"
 import Button from "../../generic/button/regular/Button"
@@ -130,7 +131,7 @@ const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
                 // TODO: Open contact/messaging modal
                 console.log("Contact user:", wanted.user_id)
               }}
-              className="py-1.5 text-xs font-medium bg-blue-primary/20 text-blue-primary border border-blue-primary/40 rounded-md hover:bg-blue-primary/30 hover:border-blue-primary/60 transition-all"
+              className="px-3 py-1.5 text-xs font-medium bg-blue-primary/20 text-blue-primary border border-blue-primary/40 rounded-md hover:bg-blue-primary/30 hover:border-blue-primary/60 transition-all md:self-end"
             >
               Contact
             </button>
@@ -143,7 +144,13 @@ const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
                 {requesterInfo?.displayName || requesterInfo?.preferredName}
               </span>
             </div>
-
+            {/* University */}
+            <div className="flex items-center gap-2 text-white/60">
+              <HomeIcon className="w-5 h-5" />
+              <span className="whitespace-nowrap">
+                {requesterInfo?.university || "Unknown University"}
+              </span>
+            </div>
             {/*Listed Date */}
             <div className="flex items-center gap-2 text-white/60">
               <CalendarIcon className="w-5 h-5" />
