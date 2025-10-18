@@ -148,7 +148,7 @@ const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
             <div className="flex items-center gap-2 text-white/60">
               <HomeIcon className="w-5 h-5" />
               <span className="whitespace-nowrap">
-                {requesterInfo?.university || "Unknown University"}
+                {wanted?.location || "Unknown University"}
               </span>
             </div>
             {/*Listed Date */}
