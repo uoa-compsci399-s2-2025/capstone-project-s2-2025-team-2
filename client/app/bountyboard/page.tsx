@@ -35,7 +35,7 @@ const BountyBoard = () => {
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [isSignedIn, setIsSignedIn] = useState(false)
 
-  const fetchWantedReagents = useCallback(async() => {
+  const fetchWantedReagents = useCallback(async () => {
     try {
       const { data } = await client.GET("/wanted" as any, {})
       setWanted((data as FirestoreWantedReagent[]) || [])
@@ -45,7 +45,7 @@ const BountyBoard = () => {
     }
   }, [])
 
-    const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       setIsFormOpen(false)
     }
@@ -59,7 +59,7 @@ const BountyBoard = () => {
       setIsSignedIn(false)
     }
   }, [fetchWantedReagents])
-  
+
   const handleFormSubmit = async () => {
     await fetchWantedReagents()
     setIsFormOpen(false)
@@ -69,7 +69,7 @@ const BountyBoard = () => {
     const query = search.trim().toLowerCase()
     if (!query) return true
 
-        switch (filter) {
+    switch (filter) {
       case "tag":
       case "category":
         return (
@@ -81,13 +81,13 @@ const BountyBoard = () => {
       default:
         return (r.name ?? "").toLowerCase().includes(query)
     }
-  }  )
+  })
 
-  const sorted = [...filtered].sort((a,b) => {
+  const sorted = [...filtered].sort((a, b) => {
     switch (sort) {
       case "newest":
       case "oldest": {
-        const getTimestamp = (item:FirestoreWantedReagent): number => {
+        const getTimestamp = (item: FirestoreWantedReagent): number => {
           const date = item.createdAt
 
           if (!date) return 0
@@ -124,7 +124,7 @@ const BountyBoard = () => {
 
         return sort === "newest" ? bTime - aTime : aTime - bTime
       }
-            case "nameAZ":
+      case "nameAZ":
         return (a.name || "").localeCompare(b.name || "")
 
       case "nameZA":
@@ -178,56 +178,53 @@ const BountyBoard = () => {
           </div>
         ) : (
           currentData.map((reagent) => (
-            <WantedCard
-              key={reagent.id}
-              wanted={reagent}
-            />
+            <WantedCard key={reagent.id} wanted={reagent} />
           ))
         )}
       </div>
 
-            <div className="pb-[4rem] md:pb-0">
-              <Pagination
-                currentPage={currentPage}
-                totalPages={totalPages}
-                onPageChange={setCurrentPage}
+      <div className="pb-[4rem] md:pb-0">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
+      </div>
+      {isSignedIn && (
+        <button
+          onClick={() => setIsFormOpen(true)}
+          className="fixed bottom-8 right-8 w-14 h-14 bg-blue-primary hover:bg-blue-primary/90 text-white rounded-full transition-all duration-200 flex items-center text-3xl justify-center hover:scale-110 active:scale-95 group z-50"
+        >
+          +
+        </button>
+      )}
+      {isFormOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 "
+          onClick={handleBackdropClick}
+        >
+          <div className="bg-primary rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl ">
+            <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
+              <h2 className="text-2xl font-medium text-white">
+                Request A New Reagent
+              </h2>
+              <button
+                onClick={() => setIsFormOpen(false)}
+                className="text-gray-400 text-3xl hover:text-white "
+              >
+                ❌
+              </button>
+            </div>
+
+            <div className="p-6 overflow-y-auto flex-1 scrollbar-hide">
+              <WantedForm
+                onSubmit={handleFormSubmit}
+                onCancel={() => setIsFormOpen(false)}
               />
             </div>
-              {isSignedIn && (
-                <button
-                  onClick={() => setIsFormOpen(true)}
-                  className="fixed bottom-8 right-8 w-14 h-14 bg-blue-primary hover:bg-blue-primary/90 text-white rounded-full transition-all duration-200 flex items-center text-3xl justify-center hover:scale-110 active:scale-95 group z-50"
-                >
-                  +
-                </button>
-              )}
-              {isFormOpen && (
-                <div
-                  className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 "
-                  onClick={handleBackdropClick}
-                >
-                  <div className="bg-primary rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl ">
-                    <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
-                      <h2 className="text-2xl font-medium text-white">
-                        Request A New Reagent
-                      </h2>
-                      <button
-                        onClick={() => setIsFormOpen(false)}
-                        className="text-gray-400 text-3xl hover:text-white "
-                      >
-                        ❌
-                      </button>
-                    </div>
-        
-                    <div className="p-6 overflow-y-auto flex-1 scrollbar-hide">
-                      <WantedForm
-                        onSubmit={handleFormSubmit}
-                        onCancel={() => setIsFormOpen(false)}
-                      />
-                    </div>
-                  </div>
-                </div>
-              )}
+          </div>
+        </div>
+      )}
     </Overlay>
   )
 }

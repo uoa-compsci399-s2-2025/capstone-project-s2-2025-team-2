@@ -5,7 +5,6 @@ import { toast } from "sonner"
 import type { components } from "@/models/__generated__/schema"
 import client from "../../../services/fetch-client"
 
-
 type ReagentTradingType = components["schemas"]["ReagentTradingType"]
 type ReagentCategory = components["schemas"]["ReagentCategory"]
 type CreateWantedRequest = components["schemas"]["CreateWantedRequest"]
@@ -14,19 +13,18 @@ const TRADING_TYPES: ReagentTradingType[] = ["trade", "giveaway", "sell"]
 const CATEGORIES: ReagentCategory[] = ["chemical", "hazardous", "biological"]
 
 interface WantedFormProps {
-     onSubmit: (data: any) => void
-     onCancel: () => void
+  onSubmit: (data: any) => void
+  onCancel: () => void
 }
 
 interface FormData {
-     name: string
-     description: string
-     categories: ReagentCategory[]
-     tradingType: ReagentTradingType
-     location: string
-     price?:string
+  name: string
+  description: string
+  categories: ReagentCategory[]
+  tradingType: ReagentTradingType
+  location: string
+  price?: string
 }
-
 
 //reusable styling classes
 const inputStyles =
@@ -54,25 +52,24 @@ const FormField = ({
   </div>
 )
 
-
-export const WantedForm = ({ onSubmit, onCancel}: WantedFormProps) => {
-     const [formData, setFormData] = useState<FormData>({
+export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     tradingType: "trade",
     categories: ["chemical"],
     description: "",
     price: "",
     location: "",
-})
+  })
 
-const [dataSubmitting, setDataSubmitting] = useState(false)
+  const [dataSubmitting, setDataSubmitting] = useState(false)
 
-const handleFieldChange = useCallback(
-     <K extends keyof FormData>(field:K, value:FormData[K]) => {
-          setFormData((current) => ({...current, [field]:value}))
-     },
-     [],
-)
+  const handleFieldChange = useCallback(
+    <K extends keyof FormData>(field: K, value: FormData[K]) => {
+      setFormData((current) => ({ ...current, [field]: value }))
+    },
+    [],
+  )
   const selectCategory = (category: ReagentCategory) => {
     const selected = formData.categories.includes(category)
     const updated = selected
@@ -81,9 +78,9 @@ const handleFieldChange = useCallback(
     handleFieldChange("categories", updated)
   }
 
-const handleFormSubmit = async (e: React.FormEvent) => {
-     e.preventDefault()
-        // stop people from spamming the fk out of the submit btn
+  const handleFormSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    // stop people from spamming the fk out of the submit btn
     if (dataSubmitting) return
 
     setDataSubmitting(true)
@@ -94,9 +91,9 @@ const handleFormSubmit = async (e: React.FormEvent) => {
       setDataSubmitting(false)
       return
     }
-    
+
     try {
-           //fetch token from localStorage
+      //fetch token from localStorage
       const idToken = localStorage.getItem("authToken")
       if (!idToken) {
         toast("Please sign in to create a reagent.")
@@ -104,38 +101,36 @@ const handleFormSubmit = async (e: React.FormEvent) => {
         return
       }
       const wantedData: CreateWantedRequest = {
-          name: formData.name,
-          description: formData.description,
-          location: formData.location,
-          categories: formData.categories,
-          tradingType: formData.tradingType,
+        name: formData.name,
+        description: formData.description,
+        location: formData.location,
+        categories: formData.categories,
+        tradingType: formData.tradingType,
       }
-            console.log("Token:", idToken)
+      console.log("Token:", idToken)
       console.log("Token starts with Bearer?:", idToken.startsWith("Bearer "))
-      const { data: createdWantedReagent, error} = await client.POST(
-          "/wanted" as any,
-          {
-               body: wantedData,
-               headers: {
-                    Authorization: `Bearer ${idToken}`,
-               }
-          }
+      const { data: createdWantedReagent, error } = await client.POST(
+        "/wanted" as any,
+        {
+          body: wantedData,
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        },
       )
       if (error) {
-            throw new Error("Failed to create wanted listing")
+        throw new Error("Failed to create wanted listing")
+      }
+      const createdReagent = createdWantedReagent as any
+      toast.success("Wanted listing created successfully!")
+      onSubmit(createdReagent)
+    } catch (error) {
+      console.error("Error submitting wanted listing:", error)
+      toast.error(`Error creating wanted listing`)
+    } finally {
+      setDataSubmitting(false)
     }
-    const createdReagent = createdWantedReagent as any
-    toast.success("Wanted listing created successfully!")
-     onSubmit(createdReagent)
-} catch (error) {
-     console.error("Error submitting wanted listing:", error)
-     toast.error(`Error creating wanted listing`)
-
-} finally {
-     setDataSubmitting(false)
-}
-
-}
+  }
 
   const formInput = (
     // image input doesnt consume this func, so exclude "images" field
@@ -151,24 +146,24 @@ const handleFormSubmit = async (e: React.FormEvent) => {
   )
 
   return (
-     <form onSubmit = {handleFormSubmit} className="space-y-6">
-     <FormField
-           label="Name"
-               required
-               input={formInput("name",{
-                    placeholder:"Enter reagent name",
-                    required:true,
-               })}
-     />
-     <FormField
-               label="Message"
-               required
-               input={formInput("description",{
-                    placeholder:"Enter a message to describe what you need",
-                    required:true,
-               })}
-     />
-           <FormField
+    <form onSubmit={handleFormSubmit} className="space-y-6">
+      <FormField
+        label="Name"
+        required
+        input={formInput("name", {
+          placeholder: "Enter reagent name",
+          required: true,
+        })}
+      />
+      <FormField
+        label="Message"
+        required
+        input={formInput("description", {
+          placeholder: "Enter a message to describe what you need",
+          required: true,
+        })}
+      />
+      <FormField
         label="Listing Type"
         input={
           <select
@@ -188,7 +183,8 @@ const handleFormSubmit = async (e: React.FormEvent) => {
             ))}
           </select>
         }
-      />      {formData.tradingType === "sell" && (
+      />{" "}
+      {formData.tradingType === "sell" && (
         <FormField
           label="Unit Price"
           input={formInput("price", {
@@ -198,15 +194,15 @@ const handleFormSubmit = async (e: React.FormEvent) => {
           })}
         />
       )}
-              <FormField
-          label="Location"
-          required
-          input={formInput("location", {
-            placeholder: "Current location",
-            required: true,
-          })}
-        />
-              <FormField
+      <FormField
+        label="Location"
+        required
+        input={formInput("location", {
+          placeholder: "Current location",
+          required: true,
+        })}
+      />
+      <FormField
         label="Categories"
         input={
           <div className="flex flex-wrap gap-2">
@@ -234,7 +230,7 @@ const handleFormSubmit = async (e: React.FormEvent) => {
           </div>
         }
       />
-            <div className="flex justify-between pt-4 border-t border-muted">
+      <div className="flex justify-between pt-4 border-t border-muted">
         <button
           type="button"
           onClick={onCancel}
@@ -250,7 +246,6 @@ const handleFormSubmit = async (e: React.FormEvent) => {
           {dataSubmitting ? "Submitting..." : "Create Request"}
         </button>
       </div>
-   </form>
-
+    </form>
   )
 }

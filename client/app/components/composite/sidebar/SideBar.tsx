@@ -55,7 +55,7 @@ const Sidebar = () => {
       icon: ClipboardDocumentListIcon,
       requireSignIn: true,
     },
-        {
+    {
       href: "/bountyboard",
       label: "Bounty Board",
       icon: UserGroupIcon,

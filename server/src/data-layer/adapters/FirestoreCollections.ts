@@ -22,7 +22,7 @@ const FirestoreCollections = {
   chatRooms: firestore.collection<ChatRoom>(CHAT_ROOMS_COLLECTION),
   messages: firestore.collection<Message>(MESSAGES_COLLECTION),
   authDomains: firestore.collection<AuthDomain>(AUTH_DOMAINS_COLLECTION),
-  wanted: firestore.collection<Wanted>(WANTED_COLLECTION)
+  wanted: firestore.collection<Wanted>(WANTED_COLLECTION),
 } as const
 
 export default FirestoreCollections
