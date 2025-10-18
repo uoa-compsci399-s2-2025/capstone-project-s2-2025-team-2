@@ -8,6 +8,9 @@ import {
   ArrowsRightLeftIcon,
 } from "@heroicons/react/24/outline"
 import client from "@/app/services/fetch-client"
+import Button from "../../generic/button/regular/Button"
+import { onAuthStateChanged } from "firebase/auth"
+import { auth } from "../../../config/firebase"
 
 type ReagentCategory = "chemical" | "hazardous" | "biological"
 type ReagentTradingType = "trade" | "giveaway" | "sell"
@@ -40,9 +43,20 @@ const TRADING_TYPE_STYLES = {
 
 const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
   const [requesterInfo, setRequesterInfo] = useState<any>(null)
+  const [isSignedIn, setIsSignedIn] = useState(false)
+  
   //reusable components for both mobile and desktop view
   const tradingTypeLabel =
     wanted.tradingType[0].toUpperCase() + wanted.tradingType.slice(1)
+  
+  //check auth state
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setIsSignedIn(!!user)
+    })
+    return () => unsubscribe()
+  }, [])
+  
   //fetch requester info using user id
   useEffect(() => {
     if (!wanted?.user_id) return
@@ -106,8 +120,22 @@ const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
           </p>
         </div>
 
-        <div className="flex flex-col md:flex-row gap-4 md:gap-6 text-sm">
-          <div className="flex flex-wrap items-center gap-4">
+        <div className="flex flex-col gap-4 md:gap-2 text-sm">
+          
+          {/* Contact Button */}
+          {isSignedIn && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation()
+                // TODO: Open contact/messaging modal
+                console.log("Contact user:", wanted.user_id)
+              }}
+              className="py-1.5 text-xs font-medium bg-blue-primary/20 text-blue-primary border border-blue-primary/40 rounded-md hover:bg-blue-primary/30 hover:border-blue-primary/60 transition-all"
+            >
+              Contact
+            </button>
+          )}
+          <div className="flex flex-col md:flex-row md:flex-wrap items-start md:items-center gap-2 md:gap-4">
             {/* User */}
             <div className="flex items-center gap-2 text-white/60">
               <UserIcon className="w-5 h-5" />
@@ -116,7 +144,7 @@ const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
               </span>
             </div>
 
-            {/* Date */}
+            {/*Listed Date */}
             <div className="flex items-center gap-2 text-white/60">
               <CalendarIcon className="w-5 h-5" />
               <span className="whitespace-nowrap">
@@ -124,6 +152,7 @@ const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
               </span>
             </div>
           </div>
+
         </div>
       </div>
     </div>
