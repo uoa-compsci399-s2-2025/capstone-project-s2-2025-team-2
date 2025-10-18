@@ -6,6 +6,8 @@ import client from "../services/fetch-client"
 import WantedCard from "../components/composite/wantedreagent/WantedCard"
 import SearchBar from "../components/composite/searchbar/SearchBar"
 import { WantedForm } from "../components/composite/wantedreagent/WantedForm"
+import { usePagination } from "../hooks/usePagination"
+import Pagination from "../components/composite/pagination/Pagination"
 
 type ReagentCategory = "chemical" | "hazardous" | "biological"
 type ReagentTradingType = "trade" | "giveaway" | "sell"
@@ -133,7 +135,17 @@ const BountyBoard = () => {
     }
   })
 
+  const pageSize = 6
+  const { currentPage, setCurrentPage, currentData, totalPages } =
+    usePagination(sorted, pageSize)
 
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages)
+    } else if (currentPage < 1) {
+      setCurrentPage(1)
+    }
+  }, [currentPage, totalPages])
 
   return (
     <Overlay>
@@ -159,13 +171,13 @@ const BountyBoard = () => {
         />
       </div>
 
-      <div className="mx-4 md:mx-8 mt-8 space-y-4">
-        {sorted.length === 0 ? (
+      <div className="bg-transparent flex flex-wrap pt-[2rem] gap-2 mx-4 md:mx-[2rem] pb-[4rem]">
+        {currentData.length === 0 ? (
           <div className="text-center text-white/60 py-12">
             <p className="text-lg">No wanted reagents found</p>
           </div>
         ) : (
-          sorted.map((reagent) => (
+          currentData.map((reagent) => (
             <WantedCard
               key={reagent.id}
               wanted={reagent}
@@ -173,6 +185,14 @@ const BountyBoard = () => {
           ))
         )}
       </div>
+
+            <div className="pb-[4rem] md:pb-0">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                onPageChange={setCurrentPage}
+              />
+            </div>
               {isSignedIn && (
                 <button
                   onClick={() => setIsFormOpen(true)}

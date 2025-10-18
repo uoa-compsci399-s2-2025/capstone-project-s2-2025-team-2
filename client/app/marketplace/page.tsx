@@ -236,12 +236,12 @@ const Marketplace = () => {
         )}
       </div>
       <div className="pb-[4rem] md:pb-0">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
-      </div>
+                <Pagination
+                          currentPage={currentPage}
+                                    totalPages={totalPages}
+                                              onPageChange={setCurrentPage}
+                                                      />
+                                                            </div>
 
       {isSignedIn && (
         <button
