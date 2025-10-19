@@ -25,8 +25,9 @@ const meta = {
     filter: "all",
     setFilter: (val: string) => console.log("setFilter", val),
     sort: "earliestExpiry",
-    setSort: (val: "earliestExpiry" | "latestExpiry" | "nameAZ" | "nameZA" | "") =>
-      console.log("setSort", val),
+    setSort: (
+      val: "earliestExpiry" | "latestExpiry" | "nameAZ" | "nameZA" | "",
+    ) => console.log("setSort", val),
   },
 } satisfies Meta<typeof SearchBar>
 
