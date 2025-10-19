@@ -16,7 +16,7 @@ const meta = {
     },
     sort: {
       control: "select",
-      options: ["", "newest", "oldest", "nameAZ", "nameZA"],
+      options: ["", "earliestExpiry", "latestExpiry", "nameAZ", "nameZA"],
     },
   },
   args: {
@@ -24,8 +24,8 @@ const meta = {
     setSearch: (val: string) => console.log("setSearch", val),
     filter: "all",
     setFilter: (val: string) => console.log("setFilter", val),
-    sort: "newest",
-    setSort: (val: "newest" | "oldest" | "nameAZ" | "nameZA" | "") =>
+    sort: "earliestExpiry",
+    setSort: (val: "earliestExpiry" | "latestExpiry" | "nameAZ" | "nameZA" | "") =>
       console.log("setSort", val),
   },
 } satisfies Meta<typeof SearchBar>

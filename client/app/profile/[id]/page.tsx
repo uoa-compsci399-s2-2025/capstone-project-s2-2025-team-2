@@ -58,8 +58,8 @@ const UserProfile = () => {
     useState<number>(0)
   const [reagentSearchFilter, setReagentSearchFilter] = useState("all")
   const [reagentSearchSort, setReagentSearchSort] = useState<
-    "newest" | "oldest" | "nameAZ" | "nameZA" | ""
-  >("newest")
+    "earliestExpiry" | "latestExpiry" | "nameAZ" | "nameZA" | ""
+  >("earliestExpiry")
   const [reagents, setReagents] = useState<ReagentWithId[] | null>(null)
 
   const { fetchWithAuth } = useAuthGuard({ redirectToAuth: true })
@@ -205,9 +205,9 @@ const UserProfile = () => {
   // same w this
   const sorted = [...(filtered || [])].sort((a, b) => {
     switch (reagentSearchSort) {
-      case "newest":
+      case "earliestExpiry":
         return b.expiryDate.localeCompare(a.expiryDate)
-      case "oldest":
+      case "latestExpiry":
         return a.expiryDate.localeCompare(b.expiryDate)
       case "nameAZ":
         return a.name.localeCompare(b.name)
