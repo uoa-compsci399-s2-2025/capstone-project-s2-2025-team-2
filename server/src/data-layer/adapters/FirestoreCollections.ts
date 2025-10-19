@@ -3,7 +3,6 @@ import type { Reagent } from "../../business-layer/models/Reagent"
 import { Order } from "../../business-layer/models/Order"
 import { ChatRoom, Message } from "../../business-layer/models/ChatRoom"
 import { AuthDomain } from "../../business-layer/models/AuthDomain"
-import { Wanted } from "../../business-layer/models/Wanted"
 import {
   REAGENTS_COLLECTION,
   USERS_COLLECTION,
@@ -22,7 +21,7 @@ const FirestoreCollections = {
   chatRooms: firestore.collection<ChatRoom>(CHAT_ROOMS_COLLECTION),
   messages: firestore.collection<Message>(MESSAGES_COLLECTION),
   authDomains: firestore.collection<AuthDomain>(AUTH_DOMAINS_COLLECTION),
-  wanted: firestore.collection<Wanted>(WANTED_COLLECTION),
+  wanted: firestore.collection<Reagent>(WANTED_COLLECTION),
 } as const
 
 export default FirestoreCollections
