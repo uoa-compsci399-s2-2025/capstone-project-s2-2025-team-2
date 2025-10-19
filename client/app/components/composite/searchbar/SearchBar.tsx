@@ -106,6 +106,9 @@ const FILTER_OPTIONS: DropdownOption[] = [
   { value: "all", label: "Filter by..." },
   { value: "category", label: "Category" },
   { value: "date", label: "Date" },
+  { value: "condition", label: "Condition" },
+  { value: "location", label: "Location" },
+  { value: "tradingType", label: "Trading Type" },
 ]
 
 const SORT_OPTIONS: DropdownOption[] = [

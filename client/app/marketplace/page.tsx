@@ -87,6 +87,12 @@ const Marketplace = () => {
         )
       case "date":
         return (r.expiryDate ?? "").toLowerCase().includes(query)
+      case "condition":
+        return (r.condition ?? "").toLowerCase().includes(query)
+      case "location":
+        return (r.location ?? "").toLowerCase().includes(query)
+      case "tradingType":
+        return (r.tradingType ?? "").toLowerCase().includes(query)
       default:
         return (r.name ?? "").toLowerCase().includes(query)
     }
