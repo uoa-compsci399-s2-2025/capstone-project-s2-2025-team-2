@@ -11,6 +11,7 @@ import type { components } from "@/models/__generated__/schema"
 import client from "@/app/services/fetch-client"
 import { toast } from "sonner"
 import LoadingState from "../loadingstate/LoadingState"
+import { auth } from "@/app/config/firebase"
 
 type Order = components["schemas"]["Order"]
 type OrderWithId = Order & {
@@ -127,7 +128,7 @@ export default function OrderDetailsModal({
   offeredReagent: testOfferedReagent,
   onApprove,
 }: OrderDetailsModalProps) {
-  const currentUserId = localStorage.getItem("userId")
+  const currentUserId = auth?.currentUser?.uid
   const isOwner = currentUserId === order?.owner_id
   const [approving, setApproving] = useState(false)
   const [approved, setApproved] = useState(false)
