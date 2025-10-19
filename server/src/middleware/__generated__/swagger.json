@@ -32,7 +32,7 @@
 					"private"
 				]
 			},
-			"Pick_Reagent.Exclude_keyofReagent.condition-or-quantity-or-unit-or-expiryDate__": {
+			"Reagent": {
 				"properties": {
 					"user_id": {
 						"type": "string"
@@ -43,9 +43,19 @@
 					"description": {
 						"type": "string"
 					},
+					"condition": {
+						"type": "string"
+					},
 					"price": {
 						"type": "number",
 						"format": "double"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"expiryDate": {
+						"type": "string"
 					},
 					"tradingType": {
 						"$ref": "#/components/schemas/ReagentTradingType"
@@ -71,60 +81,7 @@
 					"location": {
 						"type": "string"
 					},
-					"visibility": {
-						"$ref": "#/components/schemas/ReagentVisibility"
-					}
-				},
-				"required": [
-					"user_id",
-					"name",
-					"description",
-					"tradingType",
-					"categories",
-					"createdAt",
-					"createdAtReadable",
-					"location"
-				],
-				"type": "object",
-				"description": "From T, pick a set of properties whose keys are in the union K"
-			},
-			"Wanted": {
-				"properties": {
-					"user_id": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"price": {
-						"type": "number",
-						"format": "double"
-					},
-					"tradingType": {
-						"$ref": "#/components/schemas/ReagentTradingType"
-					},
-					"images": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					},
-					"categories": {
-						"items": {
-							"$ref": "#/components/schemas/ReagentCategory"
-						},
-						"type": "array"
-					},
-					"createdAt": {
-						"type": "string"
-					},
-					"createdAtReadable": {
-						"type": "string"
-					},
-					"location": {
+					"unit": {
 						"type": "string"
 					},
 					"visibility": {
@@ -135,11 +92,15 @@
 					"user_id",
 					"name",
 					"description",
+					"condition",
+					"quantity",
+					"expiryDate",
 					"tradingType",
 					"categories",
 					"createdAt",
 					"createdAtReadable",
-					"location"
+					"location",
+					"unit"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -251,79 +212,6 @@
 				},
 				"type": "object",
 				"description": "Make all properties in T optional"
-			},
-			"Reagent": {
-				"properties": {
-					"user_id": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"condition": {
-						"type": "string"
-					},
-					"price": {
-						"type": "number",
-						"format": "double"
-					},
-					"quantity": {
-						"type": "number",
-						"format": "double"
-					},
-					"expiryDate": {
-						"type": "string"
-					},
-					"tradingType": {
-						"$ref": "#/components/schemas/ReagentTradingType"
-					},
-					"images": {
-						"items": {
-							"type": "string"
-						},
-						"type": "array"
-					},
-					"categories": {
-						"items": {
-							"$ref": "#/components/schemas/ReagentCategory"
-						},
-						"type": "array"
-					},
-					"createdAt": {
-						"type": "string"
-					},
-					"createdAtReadable": {
-						"type": "string"
-					},
-					"location": {
-						"type": "string"
-					},
-					"unit": {
-						"type": "string"
-					},
-					"visibility": {
-						"$ref": "#/components/schemas/ReagentVisibility"
-					}
-				},
-				"required": [
-					"user_id",
-					"name",
-					"description",
-					"condition",
-					"quantity",
-					"expiryDate",
-					"tradingType",
-					"categories",
-					"createdAt",
-					"createdAtReadable",
-					"location",
-					"unit"
-				],
-				"type": "object",
-				"additionalProperties": false
 			},
 			"CreateReagentRequest": {
 				"properties": {
@@ -680,6 +568,88 @@
 						"type": "string",
 						"enum": [
 							"exchange"
+						],
+						"nullable": false
+					},
+					"unit": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"reagent_id",
+					"offeredReagentId",
+					"type"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Offer": {
+				"properties": {
+					"requester_id": {
+						"type": "string"
+					},
+					"reagent_id": {
+						"type": "string"
+					},
+					"owner_id": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string",
+						"enum": [
+							"pending",
+							"approved",
+							"canceled"
+						]
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"message": {
+						"type": "string"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"unit": {
+						"type": "string"
+					},
+					"offeredReagentId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"requester_id",
+					"reagent_id",
+					"owner_id",
+					"status",
+					"createdAt",
+					"offeredReagentId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateOfferRequest": {
+				"properties": {
+					"reagent_id": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"offeredReagentId": {
+						"type": "string"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"order"
 						],
 						"nullable": false
 					},
@@ -1078,7 +1048,7 @@
 							"application/json": {
 								"schema": {
 									"items": {
-										"$ref": "#/components/schemas/Wanted"
+										"$ref": "#/components/schemas/Reagent"
 									},
 									"type": "array"
 								}
@@ -1114,13 +1084,13 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/Wanted"
+									"$ref": "#/components/schemas/Reagent"
 								}
 							}
 						}
 					}
 				},
-				"description": "Create a reagent by passing in all the required props.\nUser must be authenticated to access this endpoint (lab manager / admin)",
+				"description": "\r\nCreate a reagent by passing in all the required props.\r\nUser must be authenticated to access this endpoint (lab manager / admin)",
 				"tags": [
 					"Wanted"
 				],
@@ -1151,7 +1121,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/Wanted"
+									"$ref": "#/components/schemas/Reagent"
 								}
 							}
 						}
@@ -2085,6 +2055,87 @@
 				},
 				"tags": [
 					"Order"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/offers": {
+			"post": {
+				"operationId": "CreateOffer",
+				"responses": {
+					"201": {
+						"description": "Offer created successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Offer"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Offers"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateOfferRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/offers/{id}": {
+			"get": {
+				"operationId": "GetOfferById",
+				"responses": {
+					"200": {
+						"description": "All offers returned successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/Order"
+										},
+										{
+											"$ref": "#/components/schemas/Trade"
+										},
+										{
+											"$ref": "#/components/schemas/Exchange"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Offers"
 				],
 				"security": [
 					{

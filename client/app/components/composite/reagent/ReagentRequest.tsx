@@ -197,8 +197,8 @@ export const ReagentRequest = ({
 
     //exchange: fetch user's reagents to offer
     const fetchUserReagents = async () => {
-      if (reagent.tradingType !== "trade" || !currentUser) return
-
+if (!isBountyBoard && reagent.tradingType !== "trade") return
+  if (!currentUser) return
       try {
         const token = localStorage.getItem("authToken")
         if (!token) return
@@ -237,7 +237,7 @@ export const ReagentRequest = ({
       
       if (validateUser()) {
         const promises = [fetchOwner()]
-        if (reagent.tradingType === "trade") {
+        if (isBountyBoard || reagent.tradingType === "trade") {
           promises.push(fetchUserReagents())
         }
         await Promise.all(promises)
@@ -264,22 +264,38 @@ export const ReagentRequest = ({
     //no need to pass req id, backend will use auth user id
     setIsSubmitting(true)
     try {
-      const requestBody = {
-        [isBountyBoard ? "wanted_id" : "reagent_id"]: reagent.id,
-        ...(message.trim() && { message: message.trim() }),
-        ...(reagent.tradingType === "sell" && {
-          type: "trade",
-          price: Number(price),
-        }),
-        ...(reagent.tradingType === "trade" && {
-          type: "exchange",
-          offeredReagentId,
-        }),
-        ...(reagent.tradingType === "giveaway" && { type: "order" }),
-      }
+const requestBody = isBountyBoard
+  ? {
+      // Bounty board: creating an offer for a wanted reagent
+      reagent_id: reagent.id,
+      ...(message.trim() && { message: message.trim() }),
+      offeredReagentId, 
+      ...(reagent.tradingType === "sell" && {
+        type: "trade",
+        price: Number(price),
+      }),
+      ...(reagent.tradingType === "trade" && {
+        type: "exchange",
+      }),
+      ...(reagent.tradingType === "giveaway" && { type: "order" }),
+    }
+  : {
+      // marketplace: creating an order for a reagent
+      reagent_id: reagent.id,
+      ...(message.trim() && { message: message.trim() }),
+      ...(reagent.tradingType === "sell" && {
+        type: "trade",
+        price: Number(price),
+      }),
+      ...(reagent.tradingType === "trade" && {
+        type: "exchange",
+        offeredReagentId,
+      }),
+      ...(reagent.tradingType === "giveaway" && { type: "order" }),
+    }
 
       //call endpoint based on trading type and context
-      const baseEndpoint = isBountyBoard ? "/wanted" : "/orders"
+      const baseEndpoint = isBountyBoard ? "/offers" : "/orders"
       const endpoint =
         reagent.tradingType === "giveaway"
           ? baseEndpoint
@@ -372,7 +388,7 @@ export const ReagentRequest = ({
             <div className="flex items-center justify-center mb-8">
               <UserDisplay
                 name={requesterName}
-                showDropdown={reagent.tradingType === "trade"}
+                showDropdown={isBountyBoard || reagent.tradingType === "trade"}
                 showIcon={reagent.tradingType === "trade"}
                 showPriceInput={reagent.tradingType === "sell"}
                 price={price}
@@ -383,7 +399,7 @@ export const ReagentRequest = ({
                 isSubmitting={isSubmitting}
               />
               <span className="px-4 text-4xl text-gray-400">
-                {title === "Offer a Reagent" ? "→" : "←"}
+                {isBountyBoard  ? "→" : "←"}
               </span>
               <UserDisplay
                 name={ownerName}
@@ -417,7 +433,7 @@ export const ReagentRequest = ({
                 disabled={isSubmitting}
                 className="px-4 py-2 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed bg-blue-primary hover:bg-blue-primary/80 min-w-[120px] text-base font-medium flex items-center justify-center gap-2"
               >
-                {title === "Offer a Reagent" ? "Offer →" : "Request →"}
+                {isBountyBoard ? "Offer →" : "Request →"}
               </button>
             </div>
           </div>

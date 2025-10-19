@@ -100,6 +100,7 @@ const [isCheckingInventory, setIsCheckingInventory] = useState(false)
           onSubmit={handleRequestSubmit}
           reagent={reagentForRequest as any}
           title="Offer a Reagent"
+          isBountyBoard={true}
         />
       )}
     </div>
