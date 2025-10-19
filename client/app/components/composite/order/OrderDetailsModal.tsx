@@ -127,6 +127,8 @@ export default function OrderDetailsModal({
   offeredReagent: testOfferedReagent,
   onApprove,
 }: OrderDetailsModalProps) {
+  const currentUserId = localStorage.getItem("userId")
+  const isOwner = currentUserId === order?.owner_id
   const [approving, setApproving] = useState(false)
   const [approved, setApproved] = useState(false)
 
@@ -280,13 +282,15 @@ export default function OrderDetailsModal({
             >
               Chat
             </button>
-            <button
-              onClick={handleApprove}
-              disabled={approving || approved}
-              className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 disabled:bg-blue-primary/50 disabled:cursor-not-allowed rounded-lg transition-colors"
-            >
-              {approved ? "Approved" : approving ? "Approving..." : "Approve"}
-            </button>
+            {isOwner && (
+              <button
+                onClick={handleApprove}
+                disabled={approving || approved}
+                className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 disabled:bg-blue-primary/50 disabled:cursor-not-allowed rounded-lg transition-colors"
+              >
+                {approved ? "Approved" : approving ? "Approving..." : "Approve"}
+              </button>
+            )}
           </div>
         </div>
       </div>
