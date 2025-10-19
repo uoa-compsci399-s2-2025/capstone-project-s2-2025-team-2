@@ -98,7 +98,9 @@ interface SearchBarProps {
   filter: string
   setFilter: (val: string) => void
   sort: "latestExpiry" | "earliestExpiry" | "nameAZ" | "nameZA" | ""
-  setSort: (val: "earliestExpiry" | "latestExpiry" | "nameAZ" | "nameZA" | "") => void
+  setSort: (
+    val: "earliestExpiry" | "latestExpiry" | "nameAZ" | "nameZA" | "",
+  ) => void
 }
 
 //dropdown options for filter and sort
