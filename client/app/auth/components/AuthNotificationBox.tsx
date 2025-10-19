@@ -16,6 +16,9 @@ export type AuthNotificationState =
   | "signing-in"
   | "login-success"
   | "login-fail"
+  | "forget-password-success"
+  | "forget-password-fail"
+  | "setting-forget-password"
 
 // type: NotificationType
 type NotificationType = "info" | "success" | "error"
@@ -130,6 +133,21 @@ const getNotificationConfig = (
       return {
         type: "error",
         message: "Login failed. Please check your credentials and try again.",
+      }
+    case "forget-password-success":
+      return {
+        type: "success",
+        message: "Password reset successfully! You can now sign in with your new password.",
+      }
+    case "forget-password-fail":
+      return {
+        type: "error",
+        message: "Password reset failed. Please try again.",
+      }
+    case "setting-forget-password":
+      return {
+        type: "info",
+        message: "Setting your new password...",
       }
     default:
       return {

@@ -6,6 +6,7 @@ import EmailService from "./EmailService"
 import { SendVerificationCodeResponse } from "../dtos/response/SendVerificationCodeResponse"
 import { VerifyCodeResponse } from "../dtos/response/VerifyCodeResponse"
 import { VerifyTokenResponse } from "../dtos/response/VerifyTokenResponse"
+import { ResetPasswordResponse } from "../dtos/response/ResetPasswordResponse"
 
 import {
   EmailDomainValidationSchema,
@@ -158,6 +159,39 @@ export default class AuthService {
         `User email is a not an accepted institutional email: ${err}`,
       )
       return false
+    }
+  }
+
+  public async resetPassword(
+    email: string,
+    newPassword: string,
+  ): Promise<ResetPasswordResponse> {
+    try {
+      // Get user by email to find their UID
+      const user = await this.authRepository.getUserByEmail(email)
+      console.log("User found:", user)
+      if (!user) {
+        return {
+          success: false,
+          message: "User not found"
+        }
+      }
+
+      // Update password in Firebase Auth
+      await auth.updateUser(user.uid, {
+        password: newPassword
+      })
+
+      return {
+        success: true,
+        message: "Password reset successfully"
+      }
+    } catch (err) {
+      console.error("Error resetting password:", err)
+      return {
+        success: false,
+        message: "Failed to reset password"
+      }
     }
   }
 }

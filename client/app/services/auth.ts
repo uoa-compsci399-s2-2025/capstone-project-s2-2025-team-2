@@ -4,6 +4,8 @@ import SendVerificationCodeResponseDto from "../models/response-models/SendVerif
 import VerifyCodeRequestDto from "../models/request-models/VerifyCodeRequestDto"
 import VerifyCodeResponseDto from "../models/response-models/VerifyCodeResponseDto"
 import VerifyTokenRequestDto from "../models/request-models/VerifyTokenRequestDto"
+import ResetPasswordRequestDto from "../models/request-models/ResetPasswordRequestDto"
+import ResetPasswordResponseDto from "../models/response-models/ResetPasswordResponseDto"
 import client from "./fetch-client"
 import GoogleOAuthResponseDto from "../models/response-models/GoogleOAuthResponseDto"
 import { getIdToken } from "./firebase-auth"
@@ -14,6 +16,7 @@ const VERIFY_GOOGLE_OAUTH_URL = `${AUTH_BASE}/google/verify`
 const SEND_VERIFICATION_CODE_URL = `${AUTH_BASE}/send-verification-code`
 const VERIFY_CODE_URL = `${AUTH_BASE}/verify-code`
 const VERIFY_TOKEN_URL = `${AUTH_BASE}/verify-token`
+const RESET_PASSWORD_URL = `${AUTH_BASE}/reset-password`
 
 export const oauthVerify = async (
   requestBody: GoogleOAuthRequestDto,
@@ -94,4 +97,18 @@ export const verifyToken = async (
     console.error("Error verifying token:", error)
     throw error
   }
+}
+
+export const resetPassword = async (
+  requestBody: ResetPasswordRequestDto,
+): Promise<ResetPasswordResponseDto> => {
+  const response = await client.POST(RESET_PASSWORD_URL, {
+    body: requestBody,
+  })
+
+  if (response.error) {
+    throw new Error("Password reset failed")
+  }
+
+  return response.data
 }
