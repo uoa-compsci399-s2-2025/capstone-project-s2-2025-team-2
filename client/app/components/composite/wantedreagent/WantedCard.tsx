@@ -46,11 +46,11 @@ const TRADING_TYPE_STYLES = {
 const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
   const [requesterInfo, setRequesterInfo] = useState<any>(null)
   const [isSignedIn, setIsSignedIn] = useState(false)
-  
+
   //reusable components for both mobile and desktop view
   const tradingTypeLabel =
     wanted.tradingType[0].toUpperCase() + wanted.tradingType.slice(1)
-  
+
   //check auth state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -58,7 +58,7 @@ const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
     })
     return () => unsubscribe()
   }, [])
-  
+
   //fetch requester info using user id
   useEffect(() => {
     if (!wanted?.user_id) return
@@ -123,13 +123,9 @@ const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
         </div>
 
         <div className="flex flex-col gap-4 md:gap-2 text-sm">
-          
           {/* Contact Button */}
           {isSignedIn && (
-            <ContactButton 
-              wanted={wanted}
-              className="md:ml-auto"
-            />
+            <ContactButton wanted={wanted} className="md:ml-auto" />
           )}
           <div className="flex flex-col md:flex-row md:flex-wrap items-start md:items-center gap-2 md:gap-4">
             {/* User */}
@@ -154,7 +150,6 @@ const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
               </span>
             </div>
           </div>
-
         </div>
       </div>
     </div>

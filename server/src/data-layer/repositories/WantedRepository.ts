@@ -59,7 +59,7 @@ export class WantedService {
     return wantedSnapshot.docs.map((doc) => doc.data())
   }
 
-/**
+  /**
    
 Creates a new wanted reagent in the Firestore database.*
 @params newWanted - the wanted reagent to create.

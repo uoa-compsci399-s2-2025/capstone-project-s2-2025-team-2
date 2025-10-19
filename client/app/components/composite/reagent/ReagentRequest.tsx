@@ -197,8 +197,8 @@ export const ReagentRequest = ({
 
     //exchange: fetch user's reagents to offer
     const fetchUserReagents = async () => {
-if (!isBountyBoard && reagent.tradingType !== "trade") return
-  if (!currentUser) return
+      if (!isBountyBoard && reagent.tradingType !== "trade") return
+      if (!currentUser) return
       try {
         const token = localStorage.getItem("authToken")
         if (!token) return
@@ -234,7 +234,7 @@ if (!isBountyBoard && reagent.tradingType !== "trade") return
         // Still waiting for Firebase auth check
         return
       }
-      
+
       if (validateUser()) {
         const promises = [fetchOwner()]
         if (isBountyBoard || reagent.tradingType === "trade") {
@@ -264,35 +264,35 @@ if (!isBountyBoard && reagent.tradingType !== "trade") return
     //no need to pass req id, backend will use auth user id
     setIsSubmitting(true)
     try {
-const requestBody = isBountyBoard
-  ? {
-      // Bounty board: creating an offer for a wanted reagent
-      reagent_id: reagent.id,
-      ...(message.trim() && { message: message.trim() }),
-      offeredReagentId, 
-      ...(reagent.tradingType === "sell" && {
-        type: "trade",
-        price: Number(price),
-      }),
-      ...(reagent.tradingType === "trade" && {
-        type: "exchange",
-      }),
-      ...(reagent.tradingType === "giveaway" && { type: "order" }),
-    }
-  : {
-      // marketplace: creating an order for a reagent
-      reagent_id: reagent.id,
-      ...(message.trim() && { message: message.trim() }),
-      ...(reagent.tradingType === "sell" && {
-        type: "trade",
-        price: Number(price),
-      }),
-      ...(reagent.tradingType === "trade" && {
-        type: "exchange",
-        offeredReagentId,
-      }),
-      ...(reagent.tradingType === "giveaway" && { type: "order" }),
-    }
+      const requestBody = isBountyBoard
+        ? {
+            // Bounty board: creating an offer for a wanted reagent
+            reagent_id: reagent.id,
+            ...(message.trim() && { message: message.trim() }),
+            offeredReagentId,
+            ...(reagent.tradingType === "sell" && {
+              type: "trade",
+              price: Number(price),
+            }),
+            ...(reagent.tradingType === "trade" && {
+              type: "exchange",
+            }),
+            ...(reagent.tradingType === "giveaway" && { type: "order" }),
+          }
+        : {
+            // marketplace: creating an order for a reagent
+            reagent_id: reagent.id,
+            ...(message.trim() && { message: message.trim() }),
+            ...(reagent.tradingType === "sell" && {
+              type: "trade",
+              price: Number(price),
+            }),
+            ...(reagent.tradingType === "trade" && {
+              type: "exchange",
+              offeredReagentId,
+            }),
+            ...(reagent.tradingType === "giveaway" && { type: "order" }),
+          }
 
       //call endpoint based on trading type and context
       const baseEndpoint = isBountyBoard ? "/offers" : "/orders"
@@ -304,7 +304,7 @@ const requestBody = isBountyBoard
             : `${baseEndpoint}/exchanges`
 
       console.log(
-        `Making ${reagent.tradingType} ${isBountyBoard ? "offer" : "request"}!`
+        `Making ${reagent.tradingType} ${isBountyBoard ? "offer" : "request"}!`,
       )
 
       const { error } = await client.POST(endpoint as any, {
@@ -399,7 +399,7 @@ const requestBody = isBountyBoard
                 isSubmitting={isSubmitting}
               />
               <span className="px-4 text-4xl text-gray-400">
-                {isBountyBoard  ? "→" : "←"}
+                {isBountyBoard ? "→" : "←"}
               </span>
               <UserDisplay
                 name={ownerName}

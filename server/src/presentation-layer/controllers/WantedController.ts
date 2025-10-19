@@ -64,7 +64,7 @@ export class WantedController extends Controller {
     return wanted
   }
 
-/**
+  /**
    
 Create a reagent by passing in all the required props.
 User must be authenticated to access this endpoint (lab manager / admin)

@@ -18,11 +18,10 @@ import { OfferService } from "../../data-layer/repositories/OfferRepository"
 import { CreateOfferRequest } from "service-layer/dtos/request/CreateOfferRequest"
 import { Offer } from "business-layer/models/Offer"
 
-
 @Tags("Offers")
 @Route("offers")
 export class OfferController extends Controller {
-     @SuccessResponse("201", "Offer created successfully")
+  @SuccessResponse("201", "Offer created successfully")
   @Security("jwt")
   @Post()
   public async createOffer(
@@ -35,8 +34,6 @@ export class OfferController extends Controller {
     const offer = await new OfferService().createOffer(user.uid, req)
     return offer
   }
-
-
 
   @SuccessResponse("200", "All offers returned successfully")
   @Security("jwt")
@@ -61,7 +58,4 @@ export class OfferController extends Controller {
       throw new Error("Failed to fetch offer: " + (err as Error).message)
     }
   }
-
-
-
 }

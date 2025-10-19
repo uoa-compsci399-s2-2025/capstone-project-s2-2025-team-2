@@ -11,29 +11,32 @@ import admin from "firebase-admin"
 import { Offer } from "business-layer/models/Offer"
 
 export class OfferService {
-     userService = new UserService()
-     wantedService = new WantedService()
-     inboxService = new InboxService()
-     db = admin.firestore()
-     async createOffer(
-          user_id: string,
-          requestBody: CreateOfferRequest,): Promise<Exchange> {
-               const user = await this.userService.getUserById(user_id)
-               const wanted = await this.wantedService.getWantedReagentById(requestBody.reagent_id)
-               if (!user || !wanted) throw new Error("No user or reagent found")
+  userService = new UserService()
+  wantedService = new WantedService()
+  inboxService = new InboxService()
+  db = admin.firestore()
+  async createOffer(
+    user_id: string,
+    requestBody: CreateOfferRequest,
+  ): Promise<Exchange> {
+    const user = await this.userService.getUserById(user_id)
+    const wanted = await this.wantedService.getWantedReagentById(
+      requestBody.reagent_id,
+    )
+    if (!user || !wanted) throw new Error("No user or reagent found")
 
-               const offer: Offer = {
-                         requester_id: user_id,
+    const offer: Offer = {
+      requester_id: user_id,
       reagent_id: requestBody.reagent_id,
       owner_id: wanted.user_id,
       status: "pending",
       createdAt: new Date(),
       ...(requestBody.message && { message: requestBody.message }),
       ...(requestBody.quantity && { quantity: requestBody.quantity }),
-      ...(requestBody.unit && { unit: requestBody.unit }), 
+      ...(requestBody.unit && { unit: requestBody.unit }),
       offeredReagentId: requestBody.offeredReagentId,
-          }
-              console.log("Order: ", offer)
+    }
+    console.log("Order: ", offer)
     const docRef = await FirestoreCollections.offers.add(offer)
     const createdOffer = {
       ...offer,
@@ -55,14 +58,17 @@ export class OfferService {
   }
 
   async createTrade(
-          user_id: string,
-          requestBody: CreateTradeRequest,): Promise<Order> {
-               const user = await this.userService.getUserById(user_id)
-               const wanted = await this.wantedService.getWantedReagentById(requestBody.reagent_id)
-               if (!user || !wanted) throw new Error("No user or reagent found")
+    user_id: string,
+    requestBody: CreateTradeRequest,
+  ): Promise<Order> {
+    const user = await this.userService.getUserById(user_id)
+    const wanted = await this.wantedService.getWantedReagentById(
+      requestBody.reagent_id,
+    )
+    if (!user || !wanted) throw new Error("No user or reagent found")
 
-               const offer: Trade = {
-                         requester_id: user_id,
+    const offer: Trade = {
+      requester_id: user_id,
       reagent_id: requestBody.reagent_id,
       owner_id: wanted.user_id,
       status: "pending",
@@ -70,9 +76,9 @@ export class OfferService {
       ...(requestBody.message && { message: requestBody.message }),
       price: requestBody.price,
       ...(requestBody.quantity && { quantity: requestBody.quantity }),
-      ...(requestBody.unit && { unit: requestBody.unit }), 
-          }
-              console.log("Order: ", offer)
+      ...(requestBody.unit && { unit: requestBody.unit }),
+    }
+    console.log("Order: ", offer)
     const docRef = await FirestoreCollections.offers.add(offer)
     const createdOffer = {
       ...offer,
@@ -91,9 +97,7 @@ export class OfferService {
     }
 
     return createdOffer
-    
   }
-
 
   async getAllOffers(user_id: string): Promise<Order[] | Trade[] | Exchange[]> {
     const [snap1, snap2] = await Promise.all([
@@ -127,17 +131,4 @@ export class OfferService {
       throw new Error(`Failed to get offer: ${(err as Error).message}`)
     }
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

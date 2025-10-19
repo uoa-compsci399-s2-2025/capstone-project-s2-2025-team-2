@@ -27,7 +27,7 @@ interface ContactButtonProps {
 }
 
 const ContactButton = ({ wanted, className = "" }: ContactButtonProps) => {
-const [isCheckingInventory, setIsCheckingInventory] = useState(false)
+  const [isCheckingInventory, setIsCheckingInventory] = useState(false)
   const [isRequestOpen, setIsRequestOpen] = useState(false)
 
   const handleRequestClick = async () => {

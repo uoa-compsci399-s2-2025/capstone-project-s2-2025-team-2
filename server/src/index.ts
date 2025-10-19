@@ -67,7 +67,9 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   }
 
   // Generic error response
-  return res.status(err?.status || 500).json({ message: err?.message || "Internal Server Error" })
+  return res
+    .status(err?.status || 500)
+    .json({ message: err?.message || "Internal Server Error" })
 })
 
 const scheduler = new ScheduleService()
