@@ -1,14 +1,11 @@
 import FirestoreCollections from "../adapters/FirestoreCollections"
-import { Order } from "../../business-layer/models/Order"
-import { Trade } from "../../business-layer/models/Order"
-import { Exchange } from "../../business-layer/models/Order"
 import { CreateOfferRequest } from "../../service-layer/dtos/request/CreateOfferRequest"
-import { CreateTradeRequest } from "../../service-layer/dtos/request/CreateTradeRequest"
+import { CreateOfferTradeRequest } from "../../service-layer/dtos/request/CreateOfferTradeRequest"
 import { UserService } from "./UserRepository"
 import { WantedService } from "./WantedRepository"
 import { InboxService } from "../../service-layer/services/InboxService"
 import admin from "firebase-admin"
-import { Offer } from "business-layer/models/Offer"
+import { ExchangeOffer, Offer, TradeOffer } from "business-layer/models/Offer"
 
 export class OfferService {
   userService = new UserService()
@@ -18,7 +15,7 @@ export class OfferService {
   async createOffer(
     user_id: string,
     requestBody: CreateOfferRequest,
-  ): Promise<Exchange> {
+  ): Promise<Offer> {
     const user = await this.userService.getUserById(user_id)
     const wanted = await this.wantedService.getWantedReagentById(
       requestBody.reagent_id,
@@ -59,20 +56,21 @@ export class OfferService {
 
   async createTrade(
     user_id: string,
-    requestBody: CreateTradeRequest,
-  ): Promise<Order> {
+    requestBody: CreateOfferTradeRequest,
+  ): Promise<TradeOffer> {
     const user = await this.userService.getUserById(user_id)
     const wanted = await this.wantedService.getWantedReagentById(
       requestBody.reagent_id,
     )
     if (!user || !wanted) throw new Error("No user or reagent found")
 
-    const offer: Trade = {
+    const offer: TradeOffer = {
       requester_id: user_id,
       reagent_id: requestBody.reagent_id,
       owner_id: wanted.user_id,
       status: "pending",
       createdAt: new Date(),
+      offeredReagentId: requestBody.offeredReagentId,
       ...(requestBody.message && { message: requestBody.message }),
       price: requestBody.price,
       ...(requestBody.quantity && { quantity: requestBody.quantity }),
@@ -99,7 +97,7 @@ export class OfferService {
     return createdOffer
   }
 
-  async getAllOffers(user_id: string): Promise<Order[] | Trade[] | Exchange[]> {
+  async getAllOffers(user_id: string): Promise<Offer[] | TradeOffer[] | ExchangeOffer[]> {
     const [snap1, snap2] = await Promise.all([
       this.db.collection("offers").where("requester_id", "==", user_id).get(),
       this.db.collection("offers").where("owner_id", "==", user_id).get(),
@@ -107,17 +105,17 @@ export class OfferService {
 
     return [
       ...snap1.docs.map((d) => {
-        const data = d.data() as Omit<Order, "id">
+        const data = d.data() as Omit<Offer, "id">
         return { id: d.id, ...data }
       }),
       ...snap2.docs.map((d) => {
-        const data = d.data() as Omit<Order, "id">
+        const data = d.data() as Omit<Offer, "id">
         return { id: d.id, ...data }
       }),
     ]
   }
 
-  async getOfferById(id: string): Promise<Order | Trade | Exchange> {
+  async getOfferById(id: string): Promise<Offer | TradeOffer | ExchangeOffer> {
     try {
       const offerDoc = await FirestoreCollections.offers.doc(id).get()
 
@@ -126,7 +124,7 @@ export class OfferService {
       }
       return {
         ...offerDoc.data(),
-      } as Order
+      } as Offer
     } catch (err) {
       throw new Error(`Failed to get offer: ${(err as Error).message}`)
     }

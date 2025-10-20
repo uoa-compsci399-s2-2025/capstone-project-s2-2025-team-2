@@ -665,6 +665,98 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"TradeOffer": {
+				"properties": {
+					"requester_id": {
+						"type": "string"
+					},
+					"reagent_id": {
+						"type": "string"
+					},
+					"owner_id": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string",
+						"enum": [
+							"pending",
+							"approved",
+							"canceled"
+						]
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"message": {
+						"type": "string"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"unit": {
+						"type": "string"
+					},
+					"offeredReagentId": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"requester_id",
+					"reagent_id",
+					"owner_id",
+					"status",
+					"createdAt",
+					"offeredReagentId",
+					"price"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateOfferTradeRequest": {
+				"properties": {
+					"reagent_id": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"offeredReagentId": {
+						"type": "string"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"trade"
+						],
+						"nullable": false
+					},
+					"unit": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"reagent_id",
+					"price",
+					"offeredReagentId",
+					"type"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"ChatRoom": {
 				"properties": {
 					"id": {
@@ -1090,7 +1182,7 @@
 						}
 					}
 				},
-				"description": "\r\nCreate a reagent by passing in all the required props.\r\nUser must be authenticated to access this endpoint (lab manager / admin)",
+				"description": "\nCreate a reagent by passing in all the required props.\nUser must be authenticated to access this endpoint (lab manager / admin)",
 				"tags": [
 					"Wanted"
 				],
@@ -2103,6 +2195,69 @@
 						"application/json": {
 							"schema": {
 								"$ref": "#/components/schemas/CreateOfferRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetOffers",
+				"responses": {
+					"200": {
+						"description": "All offers returned successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Offer"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Offers"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/offers/trades": {
+			"post": {
+				"operationId": "CreateTrade",
+				"responses": {
+					"201": {
+						"description": "Trade created successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TradeOffer"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Offers"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateOfferTradeRequest"
 							}
 						}
 					}

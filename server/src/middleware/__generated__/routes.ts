@@ -243,6 +243,37 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "TradeOffer": {
+        "dataType": "refObject",
+        "properties": {
+            "requester_id": {"dataType":"string","required":true},
+            "reagent_id": {"dataType":"string","required":true},
+            "owner_id": {"dataType":"string","required":true},
+            "status": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["pending"]},{"dataType":"enum","enums":["approved"]},{"dataType":"enum","enums":["canceled"]}],"required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "message": {"dataType":"string"},
+            "quantity": {"dataType":"double"},
+            "unit": {"dataType":"string"},
+            "offeredReagentId": {"dataType":"string","required":true},
+            "price": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "CreateOfferTradeRequest": {
+        "dataType": "refObject",
+        "properties": {
+            "reagent_id": {"dataType":"string","required":true},
+            "message": {"dataType":"string"},
+            "price": {"dataType":"double","required":true},
+            "offeredReagentId": {"dataType":"string","required":true},
+            "quantity": {"dataType":"double"},
+            "type": {"dataType":"enum","enums":["trade"],"required":true},
+            "unit": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ChatRoom": {
         "dataType": "refObject",
         "properties": {
@@ -1330,6 +1361,69 @@ export function RegisterRoutes(app: Router) {
                 next,
                 validatedArgs,
                 successStatus: 201,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsOfferController_createTrade: Record<string, TsoaRoute.ParameterSchema> = {
+                req: {"in":"body","name":"req","required":true,"ref":"CreateOfferTradeRequest"},
+                request: {"in":"request","name":"request","required":true,"dataType":"object"},
+        };
+        app.post('/offers/trades',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(OfferController)),
+            ...(fetchMiddlewares<RequestHandler>(OfferController.prototype.createTrade)),
+
+            async function OfferController_createTrade(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsOfferController_createTrade, request, response });
+
+                const controller = new OfferController();
+
+              await templateService.apiHandler({
+                methodName: 'createTrade',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 201,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsOfferController_getOffers: Record<string, TsoaRoute.ParameterSchema> = {
+                request: {"in":"request","name":"request","required":true,"dataType":"object"},
+        };
+        app.get('/offers',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(OfferController)),
+            ...(fetchMiddlewares<RequestHandler>(OfferController.prototype.getOffers)),
+
+            async function OfferController_getOffers(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsOfferController_getOffers, request, response });
+
+                const controller = new OfferController();
+
+              await templateService.apiHandler({
+                methodName: 'getOffers',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
               });
             } catch (err) {
                 return next(err);
