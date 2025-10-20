@@ -207,7 +207,7 @@ export default function OrderDetailsModal({
   const label = tradingType.charAt(0).toUpperCase() + tradingType.slice(1)
 
   const price =
-    (reagent.tradingType === "sell" && reagent.price) || (order as any).price
+    (order as any).price ?? reagent.price
   const hasPrice = price !== null && price !== undefined && `${price}` !== ""
   const gridCols =
     reagent.tradingType === "trade"
