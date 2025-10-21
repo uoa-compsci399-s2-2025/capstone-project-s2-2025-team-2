@@ -7,7 +7,7 @@ import { UserService } from "./UserRepository"
 import { WantedService } from "./WantedRepository"
 import { InboxService } from "../../service-layer/services/InboxService"
 import admin from "firebase-admin"
-import { ExchangeOffer, Offer, TradeOffer } from "business-layer/models/Offer"
+import { Offer, TradeOffer } from "business-layer/models/Offer"
 
 export class OfferService {
   userService = new UserService()
@@ -101,21 +101,20 @@ export class OfferService {
   async createExchange(
     user_id: string,
     requestBody: CreateOfferExchangeRequest,
-  ): Promise<ExchangeOffer> {
+  ): Promise<Offer> {
     const user = await this.userService.getUserById(user_id)
     const wanted = await this.wantedService.getWantedReagentById(
       requestBody.reagent_id,
     )
     if (!user || !wanted) throw new Error("No user or reagent found")
 
-    const offer: ExchangeOffer = {
+    const offer: Offer = {
       requester_id: user_id,
       reagent_id: requestBody.reagent_id,
       owner_id: wanted.user_id,
       status: "pending",
       createdAt: new Date(),
       offeredReagentId: requestBody.offeredReagentId,
-      requesterOfferedReagentId: requestBody.requesterOfferedReagentId,
       ...(requestBody.message && { message: requestBody.message }),
       ...(requestBody.quantity && { quantity: requestBody.quantity }),
       ...(requestBody.unit && { unit: requestBody.unit }),
@@ -143,7 +142,7 @@ export class OfferService {
 
   async getAllOffers(
     user_id: string,
-  ): Promise<Offer[] | TradeOffer[] | ExchangeOffer[]> {
+  ): Promise<Offer[] | TradeOffer[]> {
     const [snap1, snap2] = await Promise.all([
       this.db.collection("offers").where("requester_id", "==", user_id).get(),
       this.db.collection("offers").where("owner_id", "==", user_id).get(),
@@ -161,7 +160,7 @@ export class OfferService {
     ]
   }
 
-  async getOfferById(id: string): Promise<Offer | TradeOffer | ExchangeOffer> {
+  async getOfferById(id: string): Promise<Offer | TradeOffer> {
     try {
       const offerDoc = await FirestoreCollections.offers.doc(id).get()
 

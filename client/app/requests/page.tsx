@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from "react"
 import Overlay from "../components/composite/Overlay"
 import OrderCard from "../components/composite/order/OrderCard"
+import WantedCard from "../components/composite/wantedreagent/WantedCard"
 import OrderDetailsModal from "../components/composite/order/OrderDetailsModal"
 import client from "../services/fetch-client"
 import { useRouter } from "next/navigation"
@@ -29,24 +30,61 @@ export default function Orders() {
     new Map(),
   )
   const [loading, setLoading] = useState(true)
+  const [offers, setOffers] = useState<any[]>([])
+const [wantedReagents, setWantedReagents] = useState<Map<string, any>>(
+  new Map(),
+)
+const [offerModalState, setOfferModalState] = useState<{
+  isOpen: boolean
+  offer: any | null
+  wanted: any | null
+}>({
+  isOpen: false,
+  offer: null,
+  wanted: null,
+})
   const [modalState, setModalState] = useState<ModalState>({
     isOpen: false,
     order: null,
     reagent: null,
   })
   const router = useRouter()
+  //open offer details modal
+const handleOfferDetails = (offerId: string) => {
+  const offer = offers.find((o) => o.id === offerId)
+  const wanted = offer ? wantedReagents.get(offer.reagent_id) : null
+
+  if (offer && wanted) {
+    setOfferModalState({ isOpen: true, offer, wanted })
+  }
+}
+
+const handleCloseOfferModal = () => {
+  setOfferModalState({ isOpen: false, offer: null, wanted: null })
+}
 
   //fetch all orders where user is owner/requester
   const fetchOrders = useCallback(async () => {
     const token = localStorage.getItem("authToken")
     if (!token) return router.push("/auth")
-
+      //fetch orders
     const { data: ordersData = [] } = await client.GET("/orders" as any, {
       headers: { Authorization: `Bearer ${token}` },
     })
 
     setOrders(ordersData as OrderWithId[])
-
+    //fetch offers
+    const { data: offersData = [] } = await client.GET("/offers" as any, {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+    // debug: log offers payload so we can verify field names/shape in the browser console
+    try {
+      // eslint-disable-next-line no-console
+      console.debug("[Requests] fetched offers:", offersData)
+    } catch (e) {
+      // ignore
+    }
+    setOffers(offersData as any[])
     //fetch all reagents involved in orders, map ids
     const uniqueIds = [...new Set(ordersData.map((o: Order) => o.reagent_id))]
     const reagentData = await Promise.all(
@@ -57,7 +95,17 @@ export default function Orders() {
         return data && ({ ...data, id } as ReagentWithId)
       }),
     )
-
+    //fetch all wanted reagents involved in offers
+    const uniqueWantedIds = [...new Set(offersData.map((o: any) => o.reagent_id))]
+    const wantedReagentData = await Promise.all(
+      uniqueWantedIds.map(async (id) => {
+        const { data } = await client.GET(`/wanted/${id}` as any, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        return data && ({ ...data, id } as ReagentWithId)
+      }),
+    )
+    setWantedReagents(new Map(wantedReagentData.filter(Boolean).map((r) => [r!.id, r!])))
     setReagents(new Map(reagentData.filter(Boolean).map((r) => [r!.id, r!])))
     setLoading(false)
   }, [router])
@@ -133,7 +181,27 @@ export default function Orders() {
             )
           })
         )}
+              {offers.length > 0 && (
+        <div>
+          <h2 className="text-2xl font-medium text-white mb-4">From Bounty Board</h2>
+          <div className="flex flex-wrap gap-2">
+            {offers.map((offer) => {
+              const wanted = wantedReagents.get(offer.reagent_id)
+              if (!wanted) return null
+              return (
+                <WantedCard
+                  key={offer.id}
+                  wanted={wanted}
+                  offer={offer}
+                  onViewDetails={handleOfferDetails}
+                />
+              )
+            })}
+          </div>
+        </div>
+      )}
       </div>
+
       {!loading && (
         <div className="pb-[4rem] md:pb-0">
           <Pagination
@@ -153,6 +221,16 @@ export default function Orders() {
           reagent={modalState.reagent}
         />
       )}
+      {/* Offer details modal */}
+{offerModalState.offer && offerModalState.wanted && (
+  <OrderDetailsModal
+    isOpen={offerModalState.isOpen}
+    onClose={handleCloseOfferModal}
+    order={offerModalState.offer} 
+    reagent={offerModalState.wanted} 
+    isOfferDetails={true}
+  />
+)}
     </Overlay>
   )
 }

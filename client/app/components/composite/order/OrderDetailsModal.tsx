@@ -11,6 +11,7 @@ import type { components } from "@/models/__generated__/schema"
 import client from "@/app/services/fetch-client"
 import { toast } from "sonner"
 import LoadingState from "../loadingstate/LoadingState"
+import { is } from "zod/v4/locales"
 
 type Order = components["schemas"]["Order"]
 type OrderWithId = Order & {
@@ -19,7 +20,7 @@ type OrderWithId = Order & {
   offeredReagentId?: string
 }
 type Reagent = components["schemas"]["Reagent"]
-type ReagentWithId = Reagent & { id: string }
+type ReagentWithId = Reagent & { id: string; requesterOfferedReagentId?: string }
 
 interface OrderDetailsModalProps {
   isOpen: boolean
@@ -28,6 +29,7 @@ interface OrderDetailsModalProps {
   reagent: ReagentWithId
   offeredReagent?: ReagentWithId
   onApprove?: (orderId: string) => void
+  isOfferDetails?: boolean
 }
 
 const TRADING_CONFIG = {
@@ -88,20 +90,38 @@ const DetailRow = ({
 const ReagentDetails = ({
   title,
   reagent,
+  offerDetails = false,
+  requesterOfferedReagentName,
 }: {
   title: string
   reagent: any
+  offerDetails?: boolean
+  requesterOfferedReagentName?: string | null
 }) => (
   <div className="bg-primary/80 backdrop-blur-sm rounded-2xl p-6 border border-muted shadow-xl w-fit min-w-[300px] h-fit">
     <h3 className="text-white text-lg font-medium mb-4">{title}</h3>
     <div className="space-y-3">
       <DetailRow label="Name" value={reagent?.name} truncate />
-      <DetailRow label="Condition" value={reagent?.condition} />
-      <DetailRow
-        label="Quantity"
-        value={`${reagent?.quantity} ${reagent?.unit}`}
-      />
-      <DetailRow label="Expiry" value={reagent?.expiryDate} />
+      {!offerDetails && (
+        <>
+          <DetailRow label="Condition" value={reagent?.condition} />
+          <DetailRow
+            label="Quantity"
+            value={`${reagent?.quantity} ${reagent?.unit}`}
+          />
+          <DetailRow label="Expiry" value={reagent?.expiryDate} />
+        </>
+      )}
+      {reagent.requesterOfferedReagentId && (
+        <>
+          <DetailRow
+            label="Your Offered Reagent"
+            value={requesterOfferedReagentName ?? reagent.requesterOfferedReagentId}
+            truncate
+          />
+        </>
+      )}
+
       <DetailRow label="Location" value={reagent?.location} truncate />
       {reagent?.categories?.length > 0 && (
         <div className="flex flex-wrap gap-1 mt-4">
@@ -126,6 +146,7 @@ export default function OrderDetailsModal({
   reagent,
   offeredReagent: testOfferedReagent,
   onApprove,
+  isOfferDetails = false,
 }: OrderDetailsModalProps) {
   const [approving, setApproving] = useState(false)
   const [approved, setApproved] = useState(false)
@@ -135,9 +156,15 @@ export default function OrderDetailsModal({
     isOpen,
   )
 
+  const { data: fetchedRequesterOfferedReagent } = useFetch<any>(
+    reagent.tradingType === "trade" && reagent.requesterOfferedReagentId
+      ? `/reagents/${reagent.requesterOfferedReagentId}`
+      : null,
+    isOpen,
+  )
+
   const { data: fetchedOfferedReagent, loading: offeredReagentLoading } =
     useFetch<any>(
-      reagent.tradingType === "trade" &&
         order.offeredReagentId &&
         !testOfferedReagent
         ? `/reagents/${order.offeredReagentId}`
@@ -209,7 +236,7 @@ export default function OrderDetailsModal({
   const price = (order as any).price ?? reagent.price
   const hasPrice = price !== null && price !== undefined && `${price}` !== ""
   const gridCols =
-    reagent.tradingType === "trade"
+    reagent.tradingType === "trade" || isOfferDetails
       ? "lg:grid-cols-3 max-w-7xl"
       : "lg:grid-cols-2 max-w-5xl"
 
@@ -231,9 +258,18 @@ export default function OrderDetailsModal({
         <div
           className={`grid grid-cols-1 gap-8 w-full pointer-events-auto relative z-10 items-start ${gridCols}`}
         >
-          <ReagentDetails title="Your Reagent:" reagent={reagent} />
+          <ReagentDetails
+            title={isOfferDetails ? "Your Request:" : "Your Reagent:"}
+            reagent={reagent}
+            offerDetails={isOfferDetails}
+            requesterOfferedReagentName={fetchedRequesterOfferedReagent?.name ?? undefined}
+          />
 
-          {reagent.tradingType === "trade" && offeredReagent && (
+          {!isOfferDetails && reagent.tradingType === "trade" && offeredReagent && (
+            <ReagentDetails title="Their Reagent:" reagent={offeredReagent} />
+          )}
+
+          {isOfferDetails && offeredReagent && (
             <ReagentDetails title="Their Reagent:" reagent={offeredReagent} />
           )}
 
@@ -244,11 +280,11 @@ export default function OrderDetailsModal({
                   <Icon className="w-4 h-4 flex-shrink-0" />
                   {label}
                 </span>
-                <span className="text-lg">Request</span>
+                <span className="text-lg">{isOfferDetails ? "Offer" : "Request"}</span>
               </h3>
 
               <div className="space-y-3">
-                <DetailRow label="Requester" value={requesterName} truncate />
+                <DetailRow label={isOfferDetails ? "Offerer" : "Requester"} value={requesterName} truncate />
                 <DetailRow
                   label="Status"
                   value={

@@ -289,7 +289,7 @@ export const ReagentRequest = ({
               price: Number(price),
             }),
             ...(reagent.tradingType === "trade" && {
-              type: "exchange",
+              type: "order",
             }),
             ...(reagent.tradingType === "giveaway" && { type: "order" }),
           }
@@ -315,7 +315,7 @@ export const ReagentRequest = ({
           ? baseEndpoint
           : reagent.tradingType === "sell"
             ? `${baseEndpoint}/trades`
-            : `${baseEndpoint}/exchanges`
+            : baseEndpoint
 
       console.log(
         `Making ${reagent.tradingType} ${isBountyBoard ? "offer" : "request"}!`,

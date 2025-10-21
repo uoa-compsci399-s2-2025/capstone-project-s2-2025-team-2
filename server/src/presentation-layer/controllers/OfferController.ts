@@ -18,6 +18,7 @@ import { OfferService } from "../../data-layer/repositories/OfferRepository"
 import { CreateOfferRequest } from "service-layer/dtos/request/CreateOfferRequest"
 import { Offer, TradeOffer } from "business-layer/models/Offer"
 import { CreateOfferTradeRequest } from "service-layer/dtos/request/CreateOfferTradeRequest"
+import { CreateOfferExchangeRequest } from "service-layer/dtos/request/CreateOfferExchangeRequest"
 
 @Tags("Offers")
 @Route("offers")
@@ -38,7 +39,7 @@ export class OfferController extends Controller {
 
   @SuccessResponse("201", "Trade created successfully")
   @Security("jwt")
-  @Post("trades")
+  @Post("trade")
   public async createTrade(
     @Body()
     req: CreateOfferTradeRequest,
@@ -49,6 +50,20 @@ export class OfferController extends Controller {
     const trade = await new OfferService().createTrade(user.uid, req)
     return trade
   }
+
+    @SuccessResponse("201", "Order created successfully")
+    @Security("jwt")
+    @Post()
+    public async createExchange(
+      @Body()
+      req: CreateOfferExchangeRequest,
+      @Request() request: AuthRequest,
+    ): Promise<Offer> {
+      const user = request.user
+      console.log("User: ", user)
+      const exchange = await new OfferService().createExchange(user.uid, req)
+      return exchange
+    }
 
   @SuccessResponse("200", "All offers returned successfully")
   @Security("jwt")

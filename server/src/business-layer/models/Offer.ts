@@ -10,10 +10,6 @@ export interface Offer {
   offeredReagentId: string
 }
 
-export interface ExchangeOffer extends Offer {
-  requesterOfferedReagentId: string
-}
-
 export interface TradeOffer extends Offer {
   price: number
 }

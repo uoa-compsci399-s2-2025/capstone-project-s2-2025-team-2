@@ -9,7 +9,6 @@ import {
   HomeIcon,
 } from "@heroicons/react/24/outline"
 import client from "@/app/services/fetch-client"
-import Button from "../../generic/button/regular/Button"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../../../config/firebase"
 import ContactButton from "./ContactButton"
@@ -34,7 +33,9 @@ interface WantedReagent {
 
 interface WantedCardProps {
   wanted: WantedReagent
-  onViewClick?: () => void
+  onViewDetails?: (offerId: string) => void 
+  offer?: any  
+  showContactButton?: boolean 
 }
 
 //trading type display style mapping
@@ -44,7 +45,7 @@ const TRADING_TYPE_STYLES = {
   trade: { color: "text-purple-100", icon: ArrowsRightLeftIcon },
 } as const
 
-const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
+const WantedCard = ({ wanted, onViewDetails, offer, showContactButton }: WantedCardProps) => {
   const [requesterInfo, setRequesterInfo] = useState<any>(null)
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [offeredReagentName, setOfferedReagentName] = useState<string | null>(
@@ -81,8 +82,7 @@ const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
     fetchRequesterInfo()
   }, [wanted?.user_id])
 
-  // If this is a trade wanted listing and the requester specified an offered reagent id,
-  // fetch that reagent's name so we can display it on the card.
+
   useEffect(() => {
     if (wanted.tradingType !== "trade") return
     const id = (wanted as any).requesterOfferedReagentId
@@ -123,7 +123,6 @@ const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
   return (
     <div
       className="w-full bg-primary border border-white/10 rounded-xl cursor-pointer hover:border-blue-primary/50 hover:bg-primary/80 transition-all"
-      onClick={onViewClick}
     >
       <div className="p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="flex-1 space-y-2">
@@ -170,10 +169,21 @@ const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
         </div>
 
         <div className="flex flex-col gap-4 md:gap-2 text-sm">
-          {/* Contact Button */}
-          {isSignedIn && (
-            <ContactButton wanted={wanted} className="md:ml-auto" />
-          )}
+      {/* ContactButton on Marketplace page */}
+      {showContactButton && isSignedIn && (
+        <ContactButton wanted={wanted} className="md:ml-auto" />
+      )}
+      
+      {/* View Details button on Orders page */}
+      {onViewDetails && offer && (
+        <button
+          onClick={() => onViewDetails(offer.id)}
+          className="px-3 py-1.5 text-xs font-medium bg-blue-primary/20 text-blue-primary border border-blue-primary/40 rounded-md hover:bg-blue-primary/30 hover:border-blue-primary/60 transition-all md:ml-auto"
+        >
+          View Details
+        </button>
+      )}
+          
           <div className="flex flex-col md:flex-row md:flex-wrap items-start md:items-center gap-2 md:gap-4">
             {/* User */}
             <div className="flex items-center gap-2 text-white/60">
