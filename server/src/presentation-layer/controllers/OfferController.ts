@@ -50,12 +50,10 @@ export class OfferController extends Controller {
     return trade
   }
 
-@SuccessResponse("200", "All offers returned successfully")
+  @SuccessResponse("200", "All offers returned successfully")
   @Security("jwt")
   @Get()
-  public async getOffers(
-    @Request() request: AuthRequest,
-  ): Promise<Offer[]> {
+  public async getOffers(@Request() request: AuthRequest): Promise<Offer[]> {
     try {
       const user = request.user
       const user_id = user.uid

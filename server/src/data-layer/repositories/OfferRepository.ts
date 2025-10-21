@@ -1,6 +1,8 @@
 import FirestoreCollections from "../adapters/FirestoreCollections"
 import { CreateOfferRequest } from "../../service-layer/dtos/request/CreateOfferRequest"
 import { CreateOfferTradeRequest } from "../../service-layer/dtos/request/CreateOfferTradeRequest"
+import { CreateOfferExchangeRequest } from "../../service-layer/dtos/request/CreateOfferExchangeRequest"
+
 import { UserService } from "./UserRepository"
 import { WantedService } from "./WantedRepository"
 import { InboxService } from "../../service-layer/services/InboxService"
@@ -96,8 +98,52 @@ export class OfferService {
 
     return createdOffer
   }
+  async createExchange(
+    user_id: string,
+    requestBody: CreateOfferExchangeRequest,
+  ): Promise<ExchangeOffer> {
+    const user = await this.userService.getUserById(user_id)
+    const wanted = await this.wantedService.getWantedReagentById(
+      requestBody.reagent_id,
+    )
+    if (!user || !wanted) throw new Error("No user or reagent found")
 
-  async getAllOffers(user_id: string): Promise<Offer[] | TradeOffer[] | ExchangeOffer[]> {
+    const offer: ExchangeOffer = {
+      requester_id: user_id,
+      reagent_id: requestBody.reagent_id,
+      owner_id: wanted.user_id,
+      status: "pending",
+      createdAt: new Date(),
+      offeredReagentId: requestBody.offeredReagentId,
+      requesterOfferedReagentId: requestBody.requesterOfferedReagentId,
+      ...(requestBody.message && { message: requestBody.message }),
+      ...(requestBody.quantity && { quantity: requestBody.quantity }),
+      ...(requestBody.unit && { unit: requestBody.unit }),
+    }
+    console.log("Order: ", offer)
+    const docRef = await FirestoreCollections.offers.add(offer)
+    const createdOffer = {
+      ...offer,
+      id: docRef.id,
+    }
+    // Create chat room between requester and reagent owner
+    try {
+      await this.inboxService.createChatRoom({
+        user1_id: user_id,
+        user2_id: wanted.user_id,
+        initial_message: requestBody.message,
+      })
+    } catch (error) {
+      console.error("Error creating chat room for order:", error)
+      // Don't fail the order creation if chat room creation fails
+    }
+
+    return createdOffer
+  }
+
+  async getAllOffers(
+    user_id: string,
+  ): Promise<Offer[] | TradeOffer[] | ExchangeOffer[]> {
     const [snap1, snap2] = await Promise.all([
       this.db.collection("offers").where("requester_id", "==", user_id).get(),
       this.db.collection("offers").where("owner_id", "==", user_id).get(),

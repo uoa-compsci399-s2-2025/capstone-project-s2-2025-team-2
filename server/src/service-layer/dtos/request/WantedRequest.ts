@@ -9,4 +9,6 @@ export interface CreateWantedRequest {
   location: string
   categories: ReagentCategory[]
   tradingType: ReagentTradingType
+  requesterOfferedReagentId?: string
+  price?: number
 }

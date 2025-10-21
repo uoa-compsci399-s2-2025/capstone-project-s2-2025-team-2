@@ -86,6 +86,9 @@
 					},
 					"visibility": {
 						"$ref": "#/components/schemas/ReagentVisibility"
+					},
+					"requesterOfferedReagentId": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -124,6 +127,13 @@
 					},
 					"tradingType": {
 						"$ref": "#/components/schemas/ReagentTradingType"
+					},
+					"requesterOfferedReagentId": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
 					}
 				},
 				"required": [
@@ -327,6 +337,9 @@
 					},
 					"visibility": {
 						"$ref": "#/components/schemas/ReagentVisibility"
+					},
+					"requesterOfferedReagentId": {
+						"type": "string"
 					}
 				},
 				"type": "object",

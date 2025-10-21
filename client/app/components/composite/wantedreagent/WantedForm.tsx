@@ -4,10 +4,10 @@ import { useState, useCallback, useMemo } from "react"
 import { toast } from "sonner"
 import type { components } from "@/models/__generated__/schema"
 import client from "../../../services/fetch-client"
+import { useEffect } from "react"
 
 type ReagentTradingType = components["schemas"]["ReagentTradingType"]
 type ReagentCategory = components["schemas"]["ReagentCategory"]
-type CreateWantedRequest = components["schemas"]["CreateWantedRequest"]
 
 const TRADING_TYPES: ReagentTradingType[] = ["trade", "giveaway", "sell"]
 const CATEGORIES: ReagentCategory[] = ["chemical", "hazardous", "biological"]
@@ -24,6 +24,20 @@ interface FormData {
   tradingType: ReagentTradingType
   location: string
   price?: string
+  requesterOfferedReagentId?: string
+}
+
+type Reagent = components["schemas"]["Reagent"]
+type ReagentWithId = Reagent & { id: string }
+
+interface CreateWantedRequest {
+  name: string
+  description: string
+  location: string
+  categories: ReagentCategory[]
+  tradingType: ReagentTradingType
+  price?: number
+  requesterOfferedReagentId?: string
 }
 
 //reusable styling classes
@@ -60,9 +74,45 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
     description: "",
     price: "",
     location: "",
+    requesterOfferedReagentId: "",
   })
 
   const [dataSubmitting, setDataSubmitting] = useState(false)
+  const [userReagents, setUserReagents] = useState<ReagentWithId[]>([])
+  const [selectedReagentId, setSelectedReagentId] = useState<string>("")
+
+  useEffect(() => {
+    // Only fetch when user chooses 'trade' as listing type
+    if (formData.tradingType !== "trade") return
+
+    const fetchUserReagents = async () => {
+      try {
+        const token = localStorage.getItem("authToken")
+        if (!token) return
+
+        const { data: reagents, error } = await client.GET(
+          "/users/reagents" as any,
+          { headers: { Authorization: `Bearer ${token}` } },
+        )
+
+        if (error) {
+          console.error("Failed to fetch user reagents:", error)
+          setUserReagents([])
+          return
+        }
+
+        setUserReagents(reagents || [])
+        if (reagents && reagents.length > 0) {
+          setSelectedReagentId(reagents[0].id)
+        }
+      } catch (err) {
+        console.error("Error fetching user reagents:", err)
+        setUserReagents([])
+      }
+    }
+
+    fetchUserReagents()
+  }, [formData.tradingType])
 
   const handleFieldChange = useCallback(
     <K extends keyof FormData>(field: K, value: FormData[K]) => {
@@ -106,6 +156,14 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
         location: formData.location,
         categories: formData.categories,
         tradingType: formData.tradingType,
+        price:
+          formData.tradingType === "sell" && formData.price
+            ? Number(formData.price)
+            : 0,
+        requesterOfferedReagentId:
+          formData.tradingType === "trade" && formData.requesterOfferedReagentId
+            ? formData.requesterOfferedReagentId
+            : undefined,
       }
       console.log("Token:", idToken)
       console.log("Token starts with Bearer?:", idToken.startsWith("Bearer "))
@@ -192,6 +250,31 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
             placeholder: "0.00",
             min: "0",
           })}
+        />
+      )}
+      {formData.tradingType === "trade" && (
+        <FormField
+          label="Offer one of your reagents"
+          input={
+            <select
+              value={selectedReagentId}
+              onChange={(e) =>
+                handleFieldChange("requesterOfferedReagentId", e.target.value)
+              }
+              className={inputStyles}
+              disabled={dataSubmitting || userReagents.length === 0}
+            >
+              {userReagents.length === 0 ? (
+                <option value="">Select a Reagent</option>
+              ) : (
+                userReagents.map((r) => (
+                  <option key={r.id} value={r.id} className="bg-primary">
+                    {r.name}
+                  </option>
+                ))
+              )}
+            </select>
+          }
         />
       )}
       <FormField

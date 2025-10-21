@@ -13,6 +13,7 @@ import Button from "../../generic/button/regular/Button"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../../../config/firebase"
 import ContactButton from "./ContactButton"
+import Link from "next/link"
 
 type ReagentCategory = "chemical" | "hazardous" | "biological"
 type ReagentTradingType = "trade" | "giveaway" | "sell"
@@ -46,6 +47,9 @@ const TRADING_TYPE_STYLES = {
 const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
   const [requesterInfo, setRequesterInfo] = useState<any>(null)
   const [isSignedIn, setIsSignedIn] = useState(false)
+  const [offeredReagentName, setOfferedReagentName] = useState<string | null>(
+    null,
+  )
 
   //reusable components for both mobile and desktop view
   const tradingTypeLabel =
@@ -77,6 +81,34 @@ const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
     fetchRequesterInfo()
   }, [wanted?.user_id])
 
+  // If this is a trade wanted listing and the requester specified an offered reagent id,
+  // fetch that reagent's name so we can display it on the card.
+  useEffect(() => {
+    if (wanted.tradingType !== "trade") return
+    const id = (wanted as any).requesterOfferedReagentId
+    if (!id) {
+      setOfferedReagentName(null)
+      return
+    }
+
+    let cancelled = false
+    ;(async () => {
+      try {
+        const resp = await client.GET(`/reagents/${id}` as any, {})
+        if (!cancelled && !resp.error && resp.data?.name) {
+          setOfferedReagentName(resp.data.name)
+        }
+      } catch (err) {
+        if (!cancelled)
+          console.error("Failed to fetch offered reagent name:", err)
+      }
+    })()
+
+    return () => {
+      cancelled = true
+    }
+  }, [wanted.tradingType, (wanted as any).requesterOfferedReagentId])
+
   const tradingType = wanted.tradingType as keyof typeof TRADING_TYPE_STYLES
   const tradingStyle =
     TRADING_TYPE_STYLES[tradingType] ?? TRADING_TYPE_STYLES.giveaway
@@ -101,9 +133,24 @@ const WantedCard = ({ wanted, onViewClick }: WantedCardProps) => {
             <TradingTypeDisplay />
             {/* Title */}
 
-            <h3 className="text-xl font-semibold text-white">{wanted.name}</h3>
+            <h3 className="text-xl font-semibold text-white">
+              {wanted.name}
+              {wanted.tradingType === "sell" &&
+                typeof wanted.price === "number" && (
+                  <span className="text-white/70 text-sm font-normal ml-2">
+                    • ${wanted.price.toFixed(2)}
+                  </span>
+                )}
+              {wanted.tradingType === "trade" && offeredReagentName && (
+                <Link
+                  href={`/marketplace/${(wanted as any).requesterOfferedReagentId}`}
+                  className="text-white/70 text-sm font-normal ml-2 hover:underline"
+                >
+                  • offering: {offeredReagentName}
+                </Link>
+              )}
+            </h3>
             {/* Categories */}
-
             <div className="flex flex-wrap gap-1">
               {wanted.categories.map((cat, i) => (
                 <span

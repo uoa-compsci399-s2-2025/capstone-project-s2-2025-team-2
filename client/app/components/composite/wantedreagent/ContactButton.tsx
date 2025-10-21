@@ -19,6 +19,7 @@ interface WantedReagent {
   categories: ReagentCategory[]
   tradingType: ReagentTradingType
   location: string
+  requesterOfferedReagentId?: string
 }
 
 interface ContactButtonProps {
@@ -101,6 +102,8 @@ const ContactButton = ({ wanted, className = "" }: ContactButtonProps) => {
           reagent={reagentForRequest as any}
           title="Offer a Reagent"
           isBountyBoard={true}
+          requesterOfferedReagentId={wanted.requesterOfferedReagentId}
+          requesterOfferedReagentName={wanted.name}
         />
       )}
     </div>

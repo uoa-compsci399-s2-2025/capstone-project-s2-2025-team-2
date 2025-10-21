@@ -8,7 +8,7 @@ import { toast } from "sonner"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../../../config/firebase"
 import LoadingState from "../loadingstate/LoadingState"
-
+import Link from "next/link"
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
 
@@ -19,6 +19,8 @@ interface ReagentRequestProps {
   reagent: ReagentWithId
   title?: string
   isBountyBoard?: boolean
+  requesterOfferedReagentId?: string
+  requesterOfferedReagentName?: string
 }
 
 interface UserDisplayProps {
@@ -33,6 +35,7 @@ interface UserDisplayProps {
   selectedReagentId?: string
   onReagentChange?: (reagentId: string) => void
   isSubmitting?: boolean
+  reagentLink?: string
 }
 
 const UserDisplay = ({
@@ -47,6 +50,7 @@ const UserDisplay = ({
   selectedReagentId = "",
   onReagentChange,
   isSubmitting = false,
+  reagentLink,
 }: UserDisplayProps) => (
   <div className="flex flex-col items-center flex-1 min-w-0">
     <div className="flex items-center gap-3">
@@ -97,14 +101,23 @@ const UserDisplay = ({
         </select>
       </div>
     ) : (
-      reagentName && (
+      reagentName &&
+      (reagentLink ? (
+        <Link
+          href={reagentLink}
+          className="text-gray-400 text-base font-light mt-2 truncate max-w-[140px] hover:text-blue-primary hover:underline transition-colors block"
+          title={reagentName}
+        >
+          {reagentName}
+        </Link>
+      ) : (
         <div
           className="text-gray-400 text-base font-light mt-2 truncate max-w-[140px]"
           title={reagentName}
         >
           {reagentName}
         </div>
-      )
+      ))
     )}
   </div>
 )
@@ -116,6 +129,8 @@ export const ReagentRequest = ({
   reagent,
   title = "Reagent Request",
   isBountyBoard = false,
+  requesterOfferedReagentId,
+  requesterOfferedReagentName,
 }: ReagentRequestProps) => {
   const [currentUser, setCurrentUser] = useState<any>(null)
   const [ownerInfo, setOwnerInfo] = useState<any>(null)
@@ -128,7 +143,6 @@ export const ReagentRequest = ({
   )
   const [offeredReagentId, setOfferedReagentId] = useState("")
   const [userReagents, setUserReagents] = useState<ReagentWithId[]>([])
-
   //prevent state updates if window isclosed
   const guardUpdate = (isClosed: boolean, updateState: () => void) => {
     if (!isClosed) updateState()
@@ -403,7 +417,16 @@ export const ReagentRequest = ({
               </span>
               <UserDisplay
                 name={ownerName}
-                reagentName={reagent.name}
+                reagentName={
+                  isBountyBoard
+                    ? requesterOfferedReagentName || undefined
+                    : reagent.name
+                }
+                reagentLink={
+                  isBountyBoard && requesterOfferedReagentId
+                    ? `/marketplace/${requesterOfferedReagentId}`
+                    : `/marketplace/${reagent.id}`
+                }
                 showIcon
               />
             </div>

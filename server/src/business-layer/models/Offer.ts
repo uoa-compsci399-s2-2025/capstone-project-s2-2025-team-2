@@ -11,7 +11,7 @@ export interface Offer {
 }
 
 export interface ExchangeOffer extends Offer {
-  offeredReagentId: string
+  requesterOfferedReagentId: string
 }
 
 export interface TradeOffer extends Offer {
