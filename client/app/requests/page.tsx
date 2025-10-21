@@ -31,18 +31,18 @@ export default function Orders() {
   )
   const [loading, setLoading] = useState(true)
   const [offers, setOffers] = useState<any[]>([])
-const [wantedReagents, setWantedReagents] = useState<Map<string, any>>(
-  new Map(),
-)
-const [offerModalState, setOfferModalState] = useState<{
-  isOpen: boolean
-  offer: any | null
-  wanted: any | null
-}>({
-  isOpen: false,
-  offer: null,
-  wanted: null,
-})
+  const [wantedReagents, setWantedReagents] = useState<Map<string, any>>(
+    new Map(),
+  )
+  const [offerModalState, setOfferModalState] = useState<{
+    isOpen: boolean
+    offer: any | null
+    wanted: any | null
+  }>({
+    isOpen: false,
+    offer: null,
+    wanted: null,
+  })
   const [modalState, setModalState] = useState<ModalState>({
     isOpen: false,
     order: null,
@@ -50,24 +50,24 @@ const [offerModalState, setOfferModalState] = useState<{
   })
   const router = useRouter()
   //open offer details modal
-const handleOfferDetails = (offerId: string) => {
-  const offer = offers.find((o) => o.id === offerId)
-  const wanted = offer ? wantedReagents.get(offer.reagent_id) : null
+  const handleOfferDetails = (offerId: string) => {
+    const offer = offers.find((o) => o.id === offerId)
+    const wanted = offer ? wantedReagents.get(offer.reagent_id) : null
 
-  if (offer && wanted) {
-    setOfferModalState({ isOpen: true, offer, wanted })
+    if (offer && wanted) {
+      setOfferModalState({ isOpen: true, offer, wanted })
+    }
   }
-}
 
-const handleCloseOfferModal = () => {
-  setOfferModalState({ isOpen: false, offer: null, wanted: null })
-}
+  const handleCloseOfferModal = () => {
+    setOfferModalState({ isOpen: false, offer: null, wanted: null })
+  }
 
   //fetch all orders where user is owner/requester
   const fetchOrders = useCallback(async () => {
     const token = localStorage.getItem("authToken")
     if (!token) return router.push("/auth")
-      //fetch orders
+    //fetch orders
     const { data: ordersData = [] } = await client.GET("/orders" as any, {
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -96,7 +96,9 @@ const handleCloseOfferModal = () => {
       }),
     )
     //fetch all wanted reagents involved in offers
-    const uniqueWantedIds = [...new Set(offersData.map((o: any) => o.reagent_id))]
+    const uniqueWantedIds = [
+      ...new Set(offersData.map((o: any) => o.reagent_id)),
+    ]
     const wantedReagentData = await Promise.all(
       uniqueWantedIds.map(async (id) => {
         const { data } = await client.GET(`/wanted/${id}` as any, {
@@ -105,7 +107,9 @@ const handleCloseOfferModal = () => {
         return data && ({ ...data, id } as ReagentWithId)
       }),
     )
-    setWantedReagents(new Map(wantedReagentData.filter(Boolean).map((r) => [r!.id, r!])))
+    setWantedReagents(
+      new Map(wantedReagentData.filter(Boolean).map((r) => [r!.id, r!])),
+    )
     setReagents(new Map(reagentData.filter(Boolean).map((r) => [r!.id, r!])))
     setLoading(false)
   }, [router])
@@ -181,25 +185,27 @@ const handleCloseOfferModal = () => {
             )
           })
         )}
-              {offers.length > 0 && (
-        <div>
-          <h2 className="text-2xl font-medium text-white mb-4">From Bounty Board</h2>
-          <div className="flex flex-wrap gap-2">
-            {offers.map((offer) => {
-              const wanted = wantedReagents.get(offer.reagent_id)
-              if (!wanted) return null
-              return (
-                <WantedCard
-                  key={offer.id}
-                  wanted={wanted}
-                  offer={offer}
-                  onViewDetails={handleOfferDetails}
-                />
-              )
-            })}
+        {offers.length > 0 && (
+          <div>
+            <h2 className="text-2xl font-medium text-white mb-4">
+              From Bounty Board
+            </h2>
+            <div className="flex flex-wrap gap-2">
+              {offers.map((offer) => {
+                const wanted = wantedReagents.get(offer.reagent_id)
+                if (!wanted) return null
+                return (
+                  <WantedCard
+                    key={offer.id}
+                    wanted={wanted}
+                    offer={offer}
+                    onViewDetails={handleOfferDetails}
+                  />
+                )
+              })}
+            </div>
           </div>
-        </div>
-      )}
+        )}
       </div>
 
       {!loading && (
@@ -222,15 +228,15 @@ const handleCloseOfferModal = () => {
         />
       )}
       {/* Offer details modal */}
-{offerModalState.offer && offerModalState.wanted && (
-  <OrderDetailsModal
-    isOpen={offerModalState.isOpen}
-    onClose={handleCloseOfferModal}
-    order={offerModalState.offer} 
-    reagent={offerModalState.wanted} 
-    isOfferDetails={true}
-  />
-)}
+      {offerModalState.offer && offerModalState.wanted && (
+        <OrderDetailsModal
+          isOpen={offerModalState.isOpen}
+          onClose={handleCloseOfferModal}
+          order={offerModalState.offer}
+          reagent={offerModalState.wanted}
+          isOfferDetails={true}
+        />
+      )}
     </Overlay>
   )
 }

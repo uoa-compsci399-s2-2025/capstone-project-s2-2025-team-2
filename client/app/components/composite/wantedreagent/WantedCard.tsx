@@ -33,9 +33,9 @@ interface WantedReagent {
 
 interface WantedCardProps {
   wanted: WantedReagent
-  onViewDetails?: (offerId: string) => void 
-  offer?: any  
-  showContactButton?: boolean 
+  onViewDetails?: (offerId: string) => void
+  offer?: any
+  showContactButton?: boolean
 }
 
 //trading type display style mapping
@@ -45,7 +45,12 @@ const TRADING_TYPE_STYLES = {
   trade: { color: "text-purple-100", icon: ArrowsRightLeftIcon },
 } as const
 
-const WantedCard = ({ wanted, onViewDetails, offer, showContactButton }: WantedCardProps) => {
+const WantedCard = ({
+  wanted,
+  onViewDetails,
+  offer,
+  showContactButton,
+}: WantedCardProps) => {
   const [requesterInfo, setRequesterInfo] = useState<any>(null)
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [offeredReagentName, setOfferedReagentName] = useState<string | null>(
@@ -81,7 +86,6 @@ const WantedCard = ({ wanted, onViewDetails, offer, showContactButton }: WantedC
 
     fetchRequesterInfo()
   }, [wanted?.user_id])
-
 
   useEffect(() => {
     if (wanted.tradingType !== "trade") return
@@ -121,9 +125,7 @@ const WantedCard = ({ wanted, onViewDetails, offer, showContactButton }: WantedC
     </p>
   )
   return (
-    <div
-      className="w-full bg-primary border border-white/10 rounded-xl cursor-pointer hover:border-blue-primary/50 hover:bg-primary/80 transition-all"
-    >
+    <div className="w-full bg-primary border border-white/10 rounded-xl cursor-pointer hover:border-blue-primary/50 hover:bg-primary/80 transition-all">
       <div className="p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div className="flex-1 space-y-2">
           <div className="flex items-center gap-3 flex-wrap">
@@ -169,21 +171,21 @@ const WantedCard = ({ wanted, onViewDetails, offer, showContactButton }: WantedC
         </div>
 
         <div className="flex flex-col gap-4 md:gap-2 text-sm">
-      {/* ContactButton on Marketplace page */}
-      {showContactButton && isSignedIn && (
-        <ContactButton wanted={wanted} className="md:ml-auto" />
-      )}
-      
-      {/* View Details button on Orders page */}
-      {onViewDetails && offer && (
-        <button
-          onClick={() => onViewDetails(offer.id)}
-          className="px-3 py-1.5 text-xs font-medium bg-blue-primary/20 text-blue-primary border border-blue-primary/40 rounded-md hover:bg-blue-primary/30 hover:border-blue-primary/60 transition-all md:ml-auto"
-        >
-          View Details
-        </button>
-      )}
-          
+          {/* ContactButton on Marketplace page */}
+          {showContactButton && isSignedIn && (
+            <ContactButton wanted={wanted} className="md:ml-auto" />
+          )}
+
+          {/* View Details button on Orders page */}
+          {onViewDetails && offer && (
+            <button
+              onClick={() => onViewDetails(offer.id)}
+              className="px-3 py-1.5 text-xs font-medium bg-blue-primary/20 text-blue-primary border border-blue-primary/40 rounded-md hover:bg-blue-primary/30 hover:border-blue-primary/60 transition-all md:ml-auto"
+            >
+              View Details
+            </button>
+          )}
+
           <div className="flex flex-col md:flex-row md:flex-wrap items-start md:items-center gap-2 md:gap-4">
             {/* User */}
             <div className="flex items-center gap-2 text-white/60">

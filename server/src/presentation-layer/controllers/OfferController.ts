@@ -51,19 +51,19 @@ export class OfferController extends Controller {
     return trade
   }
 
-    @SuccessResponse("201", "Order created successfully")
-    @Security("jwt")
-    @Post()
-    public async createExchange(
-      @Body()
-      req: CreateOfferExchangeRequest,
-      @Request() request: AuthRequest,
-    ): Promise<Offer> {
-      const user = request.user
-      console.log("User: ", user)
-      const exchange = await new OfferService().createExchange(user.uid, req)
-      return exchange
-    }
+  @SuccessResponse("201", "Order created successfully")
+  @Security("jwt")
+  @Post()
+  public async createExchange(
+    @Body()
+    req: CreateOfferExchangeRequest,
+    @Request() request: AuthRequest,
+  ): Promise<Offer> {
+    const user = request.user
+    console.log("User: ", user)
+    const exchange = await new OfferService().createExchange(user.uid, req)
+    return exchange
+  }
 
   @SuccessResponse("200", "All offers returned successfully")
   @Security("jwt")

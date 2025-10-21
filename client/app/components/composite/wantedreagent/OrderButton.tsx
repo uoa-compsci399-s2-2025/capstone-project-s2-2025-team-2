@@ -21,16 +21,16 @@ interface WantedReagent {
 
 interface ContactButtonProps {
   wanted: WantedReagent
-  offer?: any 
-  onViewDetails: (offerId: string) => void 
+  offer?: any
+  onViewDetails: (offerId: string) => void
   className?: string
 }
 
-const OrderButton = ({ 
-  wanted, 
+const OrderButton = ({
+  wanted,
   offer,
   onViewDetails,
-  className = "" 
+  className = "",
 }: ContactButtonProps) => {
   const handleViewDetails = () => {
     if (offer?.id) {

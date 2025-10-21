@@ -178,8 +178,11 @@ const BountyBoard = () => {
           </div>
         ) : (
           currentData.map((reagent) => (
-            <WantedCard key={reagent.id} wanted={reagent} 
-            showContactButton={true}/>
+            <WantedCard
+              key={reagent.id}
+              wanted={reagent}
+              showContactButton={true}
+            />
           ))
         )}
       </div>

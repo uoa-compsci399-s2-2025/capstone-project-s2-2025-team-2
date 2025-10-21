@@ -140,9 +140,7 @@ export class OfferService {
     return createdOffer
   }
 
-  async getAllOffers(
-    user_id: string,
-  ): Promise<Offer[] | TradeOffer[]> {
+  async getAllOffers(user_id: string): Promise<Offer[] | TradeOffer[]> {
     const [snap1, snap2] = await Promise.all([
       this.db.collection("offers").where("requester_id", "==", user_id).get(),
       this.db.collection("offers").where("owner_id", "==", user_id).get(),

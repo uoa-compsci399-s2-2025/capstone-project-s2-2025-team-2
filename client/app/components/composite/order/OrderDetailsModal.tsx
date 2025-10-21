@@ -20,7 +20,10 @@ type OrderWithId = Order & {
   offeredReagentId?: string
 }
 type Reagent = components["schemas"]["Reagent"]
-type ReagentWithId = Reagent & { id: string; requesterOfferedReagentId?: string }
+type ReagentWithId = Reagent & {
+  id: string
+  requesterOfferedReagentId?: string
+}
 
 interface OrderDetailsModalProps {
   isOpen: boolean
@@ -116,13 +119,18 @@ const ReagentDetails = ({
         <>
           <DetailRow
             label="Your Offered Reagent"
-            value={requesterOfferedReagentName ?? reagent.requesterOfferedReagentId}
+            value={
+              requesterOfferedReagentName ?? reagent.requesterOfferedReagentId
+            }
             truncate
           />
         </>
       )}
 
       <DetailRow label="Location" value={reagent?.location} truncate />
+      {offerDetails && reagent.price && (
+        <DetailRow label="Offered Price" value={`$${reagent.price}`} />
+      )}
       {reagent?.categories?.length > 0 && (
         <div className="flex flex-wrap gap-1 mt-4">
           {reagent.categories.map((cat: string) => (
@@ -165,8 +173,7 @@ export default function OrderDetailsModal({
 
   const { data: fetchedOfferedReagent, loading: offeredReagentLoading } =
     useFetch<any>(
-        order.offeredReagentId &&
-        !testOfferedReagent
+      order.offeredReagentId && !testOfferedReagent
         ? `/reagents/${order.offeredReagentId}`
         : null,
       isOpen,
@@ -262,12 +269,16 @@ export default function OrderDetailsModal({
             title={isOfferDetails ? "Your Request:" : "Your Reagent:"}
             reagent={reagent}
             offerDetails={isOfferDetails}
-            requesterOfferedReagentName={fetchedRequesterOfferedReagent?.name ?? undefined}
+            requesterOfferedReagentName={
+              fetchedRequesterOfferedReagent?.name ?? undefined
+            }
           />
 
-          {!isOfferDetails && reagent.tradingType === "trade" && offeredReagent && (
-            <ReagentDetails title="Their Reagent:" reagent={offeredReagent} />
-          )}
+          {!isOfferDetails &&
+            reagent.tradingType === "trade" &&
+            offeredReagent && (
+              <ReagentDetails title="Their Reagent:" reagent={offeredReagent} />
+            )}
 
           {isOfferDetails && offeredReagent && (
             <ReagentDetails title="Their Reagent:" reagent={offeredReagent} />
@@ -280,11 +291,17 @@ export default function OrderDetailsModal({
                   <Icon className="w-4 h-4 flex-shrink-0" />
                   {label}
                 </span>
-                <span className="text-lg">{isOfferDetails ? "Offer" : "Request"}</span>
+                <span className="text-lg">
+                  {isOfferDetails ? "Offer" : "Request"}
+                </span>
               </h3>
 
               <div className="space-y-3">
-                <DetailRow label={isOfferDetails ? "Offerer" : "Requester"} value={requesterName} truncate />
+                <DetailRow
+                  label={isOfferDetails ? "Offerer" : "Requester"}
+                  value={requesterName}
+                  truncate
+                />
                 <DetailRow
                   label="Status"
                   value={
@@ -293,7 +310,7 @@ export default function OrderDetailsModal({
                   }
                 />
 
-                {hasPrice && (
+                {!isOfferDetails && hasPrice && (
                   <DetailRow label="Offered Price" value={`$${price}`} />
                 )}
 
