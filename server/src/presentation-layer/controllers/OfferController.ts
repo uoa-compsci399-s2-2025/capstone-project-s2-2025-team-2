@@ -12,6 +12,7 @@ import {
   Body,
   Tags,
   Path,
+  Patch,
 } from "tsoa"
 import { AuthRequest } from "../../service-layer/dtos/request/AuthRequest"
 import { OfferService } from "../../data-layer/repositories/OfferRepository"
@@ -105,4 +106,51 @@ export class OfferController extends Controller {
       throw new Error("Failed to fetch offer: " + (err as Error).message)
     }
   }
+
+    @SuccessResponse("200", "order successfully approved")
+    @Security("jwt")
+    @Patch("{id}/approve")
+    public async approveOrder(
+      @Path() id: string,
+      @Request() request: AuthRequest,
+    ): Promise<Order | Trade | Exchange> {
+      const user = request.user
+      const order = await new OfferService().getOfferById(id)
+      if (!order) {
+        this.setStatus(404)
+        console.error("Order not found")
+      }
+      //only owner can approve
+      if (user.uid !== order.owner_id) {
+        this.setStatus(403)
+        console.error("Unauthorized to approve this order request")
+      }
+      const updatedOrder = await new OfferService().approveOffer(id)
+      return updatedOrder
+    }
+
+    @SuccessResponse("200", "order successfully canceled")
+    @Security("jwt")
+    @Patch("{id}/cancel")
+    public async cancelOrder(
+      @Path() id: string,
+      @Request() request: AuthRequest,
+    ): Promise<Order | Trade | Exchange> {
+      const user = request.user
+      const order = await new OfferService().getOfferById(id)
+      if (!order) {
+        this.setStatus(404)
+        throw new Error("Order not found")
+      }
+      //only owner or requester can cancel
+      if (user.uid !== order.requester_id && user.uid !== order.owner_id) {
+        this.setStatus(403)
+        throw new Error("Unauthorized to cancel this order request")
+      }
+      const updatedOrder = await new OfferService().updateOfferStatus(
+        id,
+        "canceled",
+      )
+      return updatedOrder
+    }
 }

@@ -172,4 +172,109 @@ export class OfferService {
       throw new Error(`Failed to get offer: ${(err as Error).message}`)
     }
   }
+
+    async updateOfferStatus(
+    id: string,
+    status: string,
+  ): Promise<Offer | TradeOffer> {
+    try {
+      const offerRef = await FirestoreCollections.offers.doc(id)
+      await offerRef.update({
+        status: status,
+      })
+      return await this.getOfferById(id)
+    } catch (err) {
+      throw new Error(
+        `Failed to update order status: ${(err as Error).message}`,
+      )
+    }
+  }
+
+  async approveOffer(id: string): Promise<Offer> {
+    return await this.db.runTransaction(async (tx) => {
+      const offerRef = FirestoreCollections.offers.doc(id)
+      const offerDoc = await tx.get(offerRef)
+      if (!offerDoc.exists) {
+        throw new Error(`Offer ${id} not found`)
+      }
+      const offer = offerDoc.data() as Offer
+
+      //read pending offers for requested reagent
+      const otherOffersQuery = this.db
+        .collection("offers")
+        .where("reagent_id", "==", offer.reagent_id)
+        .where("status", "==", "pending")
+      const otherOffers = await tx.get(otherOffersQuery)
+
+      //read pending offers for offered reagent
+      let otherOfferedOffers: FirebaseFirestore.QuerySnapshot | null = null
+      if ("offeredReagentId" in (offer as any)) {
+        const exchange = offer as Offer
+        const otherOfferedOffersQuery = this.db
+          .collection("offers")
+          .where("reagent_id", "==", exchange.offeredReagentId)
+          .where("status", "==", "pending")
+        otherOfferedOffers = await tx.get(otherOfferedOffersQuery)
+      }
+
+      //update offer status
+      tx.update(offerRef, { status: "approved" })
+
+      //handle trade
+      if ("offeredReagentId" in (offer as any)) {
+        const exchange = offer as Offer
+
+        //fetch requesterOfferedReagentId
+        const wantedDoc = await this.db
+          .collection("wanted")
+          .doc(exchange.reagent_id)
+          .get();
+        const wantedData = wantedDoc.data() as any;
+        const requesterOfferedReagentId = wantedData.requesterOfferedReagentId;
+        
+        //transfer requester's offered reagent to the offerer, set to private
+        const requestedReagentRef = this.db
+          .collection("reagents")
+          .doc(requesterOfferedReagentId);
+        tx.update(requestedReagentRef, {
+          user_id: exchange.requester_id,
+          visibility: "private",
+        });
+
+        //transfer wanted reagent to the requester, set to private
+        const offeredReagentRef = this.db
+          .collection("reagents")
+          .doc(exchange.offeredReagentId)
+        tx.update(offeredReagentRef, {
+          user_id: offer.owner_id,
+          visibility: "private",
+        })
+
+        //cancel pending offers for offered reagent
+        if (otherOfferedOffers) {
+          otherOfferedOffers.docs.forEach((doc) => {
+            if (doc.id !== id) {
+              tx.update(doc.ref, { status: "canceled" })
+            }
+          })
+        }
+      } else {
+        //one way transfer for sell/trade, set to private
+        const reagentRef = this.db.collection("reagents").doc(offer.offeredReagentId)
+        tx.update(reagentRef, {
+          user_id: offer.owner_id,
+          visibility: "private",
+        })
+      }
+
+      //cancel pending offers for requested reagent
+      otherOffers.docs.forEach((doc) => {
+        if (doc.id !== id) {
+          tx.update(doc.ref, { status: "canceled" })
+        }
+      })
+
+      return { ...offer, status: "approved" }
+    })
+  }
 }

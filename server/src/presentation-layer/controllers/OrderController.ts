@@ -137,7 +137,7 @@ export class OrderController extends Controller {
     return updatedOrder
   }
 
-  @SuccessResponse("200", "order successfully canceld")
+  @SuccessResponse("200", "order successfully canceled")
   @Security("jwt")
   @Patch("{id}/cancel")
   public async cancelOrder(
