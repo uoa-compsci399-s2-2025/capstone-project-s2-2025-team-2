@@ -133,7 +133,7 @@ const ReagentDetails = ({
       )}
       {reagent?.categories?.length > 0 && (
         <div className="flex flex-wrap gap-1 mt-4">
-          {reagent.categories.map((cat: string) => (
+          {reagent.categorie.map((cat: string) => (
             <span
               key={cat}
               className="bg-secondary/20 text-white text-xs px-2 py-1 rounded"

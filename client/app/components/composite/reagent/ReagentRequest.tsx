@@ -9,6 +9,7 @@ import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../../../config/firebase"
 import LoadingState from "../loadingstate/LoadingState"
 import Link from "next/link"
+import { is } from "zod/v4/locales"
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
 
@@ -311,11 +312,11 @@ export const ReagentRequest = ({
       //call endpoint based on trading type and context
       const baseEndpoint = isBountyBoard ? "/offers" : "/orders"
       const endpoint =
-        reagent.tradingType === "giveaway"
+        reagent.tradingType === "giveaway" || (isBountyBoard && reagent.tradingType === "trade")
           ? baseEndpoint
           : reagent.tradingType === "sell"
             ? `${baseEndpoint}/trades`
-            : baseEndpoint
+            : `${baseEndpoint}/exchanges`
 
       console.log(
         `Making ${reagent.tradingType} ${isBountyBoard ? "offer" : "request"}!`,
