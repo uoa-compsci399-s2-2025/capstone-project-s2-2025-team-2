@@ -65,7 +65,7 @@ const BountyBoard = () => {
     try {
       const token = localStorage.getItem("authToken")
       const { data } = await client.GET("/offers" as any, {
-                headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}` },
       })
       setOffers((data as Offer[]) || [])
     } catch (error) {
