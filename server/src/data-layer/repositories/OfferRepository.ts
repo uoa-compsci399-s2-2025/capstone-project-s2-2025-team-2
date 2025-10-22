@@ -216,20 +216,21 @@ export class OfferService {
           .where("status", "==", "pending")
         otherOfferedOffers = await tx.get(otherOfferedOffersQuery)
       }
+        //fetch requesterOfferedReagentId
+          let wantedData: any = null
+    if ("offeredReagentId" in (offer as any)) {
+      const exchange = offer as Offer
+      const wantedRef = this.db.collection("wanted").doc(exchange.reagent_id)
+      const wantedDoc = await tx.get(wantedRef)
+      wantedData = wantedDoc.data()
+    }
 
       //update offer status
       tx.update(offerRef, { status: "approved" })
 
       //handle trade
-      if ("offeredReagentId" in (offer as any)) {
+      if ("requesterOfferedReagentId" in (wantedData as any)) {
         const exchange = offer as Offer
-
-        //fetch requesterOfferedReagentId
-        const wantedDoc = await this.db
-          .collection("wanted")
-          .doc(exchange.reagent_id)
-          .get();
-        const wantedData = wantedDoc.data() as any;
         const requesterOfferedReagentId = wantedData.requesterOfferedReagentId;
         
         //transfer requester's offered reagent to the offerer, set to private

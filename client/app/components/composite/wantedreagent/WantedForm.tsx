@@ -257,7 +257,7 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
           label="Offer one of your reagents"
           input={
             <select
-              value={selectedReagentId}
+              value={formData.requesterOfferedReagentId}
               onChange={(e) =>
                 handleFieldChange("requesterOfferedReagentId", e.target.value)
               }

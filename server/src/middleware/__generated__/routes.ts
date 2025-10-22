@@ -1465,6 +1465,70 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsOfferController_approveOrder: Record<string, TsoaRoute.ParameterSchema> = {
+                id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                request: {"in":"request","name":"request","required":true,"dataType":"object"},
+        };
+        app.patch('/offers/:id/approve',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(OfferController)),
+            ...(fetchMiddlewares<RequestHandler>(OfferController.prototype.approveOrder)),
+
+            async function OfferController_approveOrder(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsOfferController_approveOrder, request, response });
+
+                const controller = new OfferController();
+
+              await templateService.apiHandler({
+                methodName: 'approveOrder',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsOfferController_cancelOrder: Record<string, TsoaRoute.ParameterSchema> = {
+                id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                request: {"in":"request","name":"request","required":true,"dataType":"object"},
+        };
+        app.patch('/offers/:id/cancel',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(OfferController)),
+            ...(fetchMiddlewares<RequestHandler>(OfferController.prototype.cancelOrder)),
+
+            async function OfferController_cancelOrder(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsOfferController_cancelOrder, request, response });
+
+                const controller = new OfferController();
+
+              await templateService.apiHandler({
+                methodName: 'cancelOrder',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsInboxController_createChatRoom: Record<string, TsoaRoute.ParameterSchema> = {
                 request: {"in":"body","name":"request","required":true,"ref":"CreateChatRoomRequest"},
         };

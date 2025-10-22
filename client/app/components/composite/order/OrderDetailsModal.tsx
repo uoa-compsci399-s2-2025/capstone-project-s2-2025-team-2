@@ -95,11 +95,13 @@ const ReagentDetails = ({
   reagent,
   offerDetails = false,
   requesterOfferedReagentName,
+  offerPrice: price,
 }: {
   title: string
   reagent: any
   offerDetails?: boolean
   requesterOfferedReagentName?: string | null
+  offerPrice?: string | number
 }) => (
   <div className="bg-primary/80 backdrop-blur-sm rounded-2xl p-6 border border-muted shadow-xl w-fit min-w-[300px] h-fit">
     <h3 className="text-white text-lg font-medium mb-4">{title}</h3>
@@ -129,11 +131,11 @@ const ReagentDetails = ({
 
       <DetailRow label="Location" value={reagent?.location} truncate />
       {offerDetails && reagent.price && (
-        <DetailRow label="Offered Price" value={`$${reagent.price}`} />
+        <DetailRow label="Offered Price" value={`$${price}`} />
       )}
       {reagent?.categories?.length > 0 && (
         <div className="flex flex-wrap gap-1 mt-4">
-          {reagent.categorie.map((cat: string) => (
+          {reagent.categories.map((cat: string) => (
             <span
               key={cat}
               className="bg-secondary/20 text-white text-xs px-2 py-1 rounded"
@@ -190,9 +192,14 @@ export default function OrderDetailsModal({
     setApproving(true)
     try {
       const token = localStorage.getItem("authToken")
+      if (isOfferDetails) {
+        await client.PATCH(`/offers/${order.id}/approve` as any, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+      } else {
       await client.PATCH(`/orders/${order.id}/approve` as any, {
         headers: { Authorization: `Bearer ${token}` },
-      })
+      })}
       toast("Request approved!")
       setApproved(true)
       onApprove?.(order.id)
@@ -272,6 +279,7 @@ export default function OrderDetailsModal({
             requesterOfferedReagentName={
               fetchedRequesterOfferedReagent?.name ?? undefined
             }
+            offerPrice={hasPrice ? price : undefined}
           />
 
           {!isOfferDetails &&

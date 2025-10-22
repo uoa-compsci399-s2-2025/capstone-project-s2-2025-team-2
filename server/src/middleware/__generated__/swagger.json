@@ -2138,7 +2138,7 @@
 				"operationId": "CancelOrder",
 				"responses": {
 					"200": {
-						"description": "order successfully canceld",
+						"description": "order successfully canceled",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -2283,6 +2283,96 @@
 				"responses": {
 					"200": {
 						"description": "All offers returned successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/Order"
+										},
+										{
+											"$ref": "#/components/schemas/Trade"
+										},
+										{
+											"$ref": "#/components/schemas/Exchange"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Offers"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/offers/{id}/approve": {
+			"patch": {
+				"operationId": "ApproveOrder",
+				"responses": {
+					"200": {
+						"description": "order successfully approved",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/Order"
+										},
+										{
+											"$ref": "#/components/schemas/Trade"
+										},
+										{
+											"$ref": "#/components/schemas/Exchange"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Offers"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/offers/{id}/cancel": {
+			"patch": {
+				"operationId": "CancelOrder",
+				"responses": {
+					"200": {
+						"description": "order successfully canceled",
 						"content": {
 							"application/json": {
 								"schema": {

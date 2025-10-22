@@ -1,6 +1,6 @@
 "use client"
 import client from "@/app/services/fetch-client"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { toast } from "sonner"
 import { ReagentRequest } from "../reagent/ReagentRequest"
 
@@ -30,6 +30,35 @@ interface ContactButtonProps {
 const ContactButton = ({ wanted, className = "" }: ContactButtonProps) => {
   const [isCheckingInventory, setIsCheckingInventory] = useState(false)
   const [isRequestOpen, setIsRequestOpen] = useState(false)
+
+    // Fetch offered reagent name if requesterOfferedReagentId is present
+    const [offeredReagentName, setOfferedReagentName] = useState<string>("")
+
+    useEffect(() => {
+      const fetchOfferedReagentName = async () => {
+        if (!wanted?.requesterOfferedReagentId) {
+          setOfferedReagentName("")
+          return
+        }
+        try {
+          const token = localStorage.getItem("authToken")
+          const { data: reagent, error } = await client.GET(
+            `/reagents/${wanted.requesterOfferedReagentId}` as any,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            },
+          )
+          if (error || !reagent) {
+            setOfferedReagentName("")
+          } else {
+            setOfferedReagentName(reagent.name)
+          }
+        } catch {
+          setOfferedReagentName("")
+        }
+      }
+      fetchOfferedReagentName()
+    }, [wanted?.requesterOfferedReagentId])
 
   const handleRequestClick = async () => {
     if (!wanted) return
@@ -103,7 +132,7 @@ const ContactButton = ({ wanted, className = "" }: ContactButtonProps) => {
           title="Offer a Reagent"
           isBountyBoard={true}
           requesterOfferedReagentId={wanted.requesterOfferedReagentId}
-          requesterOfferedReagentName={wanted.name}
+            requesterOfferedReagentName={offeredReagentName}
         />
       )}
     </div>
