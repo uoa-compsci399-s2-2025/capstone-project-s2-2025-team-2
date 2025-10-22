@@ -25,10 +25,24 @@ type FirestoreWantedReagent = {
   tradingType: ReagentTradingType
 }
 
+type Offer = {
+  id: string
+  requester_id: string // offerer_id the user who makes the offer
+  reagent_id: string
+  owner_id: string // the user who wants a reagent
+  status: "pending" | "approved" | "canceled"
+  createdAt: Date
+  message?: string
+  quantity?: number
+  unit?: string
+  offeredReagentId: string
+}
+
 const BountyBoard = () => {
   const [wanted, setWanted] = useState<FirestoreWantedReagent[]>([])
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState("all")
+  const [offers, setOffers] = useState<Offer[]>([])
   const [sort, setSort] = useState<
     "newest" | "oldest" | "nameAZ" | "nameZA" | ""
   >("newest")
@@ -37,11 +51,26 @@ const BountyBoard = () => {
 
   const fetchWantedReagents = useCallback(async () => {
     try {
-      const { data } = await client.GET("/wanted" as any, {})
+      const { data } = await client.GET("/wanted" as any, {
+
+      })
       setWanted((data as FirestoreWantedReagent[]) || [])
     } catch (error) {
       console.error("Failed to fetch wanted reagents:", error)
       setWanted([])
+    }
+  }, [])
+
+    const fetchOffers = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("authToken")
+      const { data } = await client.GET("/offers" as any, {
+                headers: { Authorization: `Bearer ${token}` },
+      })
+      setOffers((data as Offer[]) || [])
+    } catch (error) {
+      console.error("Failed to fetch offers:", error)
+      setOffers([])
     }
   }, [])
 
@@ -50,22 +79,45 @@ const BountyBoard = () => {
       setIsFormOpen(false)
     }
   }
-  useEffect(() => {
+
+    useEffect(() => {
     fetchWantedReagents()
+    fetchOffers()
     try {
       const token = localStorage.getItem("authToken")
       setIsSignedIn(!!token)
     } catch {
       setIsSignedIn(false)
     }
-  }, [fetchWantedReagents])
+  }, [fetchWantedReagents, fetchOffers])
 
   const handleFormSubmit = async () => {
     await fetchWantedReagents()
     setIsFormOpen(false)
   }
-
-  const filtered = wanted.filter((r) => {
+  // Filter out wanted reagents with approved offers
+  const availableWanted = wanted.filter((wantedReagent) => {
+    const hasApprovedOffer = offers.some(
+      (offer) =>
+        offer.reagent_id === wantedReagent.id && offer.status === "approved"
+    )
+    return !hasApprovedOffer
+  })
+useEffect(() => {
+  console.log('All wanted:', wanted.length);
+  console.log('All offers:', offers.length);
+  console.log('Approved offers:', offers.filter(o => o.status === 'approved'));
+  console.log('Available wanted:', availableWanted.length);
+  
+  // Check specific matches
+  wanted.forEach(w => {
+    const matchingOffer = offers.find(o => o.reagent_id === w.id);
+    if (matchingOffer) {
+      console.log(`Wanted ${w.name} (${w.id}) has offer:`, matchingOffer);
+    }
+  });
+}, [wanted, offers]);
+  const filtered = availableWanted.filter((r) => {
     const query = search.trim().toLowerCase()
     if (!query) return true
 
