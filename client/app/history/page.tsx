@@ -4,6 +4,7 @@ import client from "../services/fetch-client"
 import { useState, useEffect } from "react"
 import { auth } from "@/app/config/firebase"
 import { components } from "@/models/__generated__/schema"
+import RecordCard from "../components/composite/history/RecordCard"
 
 type Order = components["schemas"]["Order"]
 
