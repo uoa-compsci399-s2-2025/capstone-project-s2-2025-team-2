@@ -105,7 +105,7 @@ export class OrderController extends Controller {
         this.setStatus(404)
         console.error("Order not found")
       }
-      if (user.uid !== order.requester_id) {
+      if (user.uid !== order.requester_id && user.uid !== order.owner_id) {
         this.setStatus(403)
         console.error("Unauthorized to retrieve this order")
       }
