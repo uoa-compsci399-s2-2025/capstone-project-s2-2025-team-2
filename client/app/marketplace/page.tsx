@@ -2,7 +2,6 @@
 import { useCallback, useEffect, useState } from "react"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../config/firebase"
-import { toast } from "sonner"
 import Overlay from "../components/composite/Overlay"
 import SearchBar from "../components/composite/searchbar/SearchBar"
 import ReagentCard from "../components/composite/reagent/ReagentCard"

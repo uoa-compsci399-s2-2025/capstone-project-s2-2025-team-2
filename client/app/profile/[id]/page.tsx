@@ -3,7 +3,6 @@ import { useEffect, useState, ElementType } from "react"
 import { useParams } from "next/navigation"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "@/app/config/firebase"
-import { toast } from "sonner"
 import client from "../../services/fetch-client"
 // components
 import ReagentCard from "../../components/composite/reagent/ReagentCard"

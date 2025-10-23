@@ -270,7 +270,7 @@ export const ReagentForm = ({
     }
 
     // upload new images if any
-    let newImageUrls: string[] = []
+    const newImageUrls: string[] = []
     if (formData.images.length > 0) {
       toast("Uploading new images...")
       for (let i = 0; i < formData.images.length; i++) {
