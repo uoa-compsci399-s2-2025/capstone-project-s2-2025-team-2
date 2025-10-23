@@ -1,11 +1,16 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 // import SearchBar from "../../components/composite/searchbar/SearchBar"
 import ConversationItem from "./ConversationItem"
 import { ConversationListResponseDto } from "../../models/response-models/ChatRoomResponseDto"
 import { formatTime } from "../../hooks/utils/timeFormatter"
 import LoadingState from "@/app/components/composite/loadingstate/LoadingState"
+import useAuthGuard from "../../hooks/useAuthGuard"
+import { components } from "../../../models/__generated__/schema"
+
+type Order = components["schemas"]["Order"]
+type Reagent = components["schemas"]["Reagent"]
 
 //            function: MessageListBox           //
 export default function MessageListBox({
@@ -25,6 +30,30 @@ export default function MessageListBox({
 }) {
   //            state           //
   const [searchQuery, setSearchQuery] = useState("")
+  const [reagentNames, setReagentNames] = useState<Map<string, string>>(new Map())
+  const { fetchWithAuth } = useAuthGuard({ redirectToAuth: false })
+
+  const fetchReagentNames = async (conversations: ConversationListResponseDto | null) => {
+    //extract conversation order ids
+    const orderIds = conversations?.conversations
+      ?.map(conv => conv.chat_room.order_id)
+      .filter(Boolean) || []
+
+      //get reagent names by fetching order and reagent data by id
+    const promises = orderIds.map(async (orderId) => {
+      const order = await fetchWithAuth<Order>(`/orders/${orderId}`, { protectedEndpoint: true }).catch(() => null)
+      const reagent = await fetchWithAuth<Reagent>(`/reagents/${order?.data?.reagent_id}`, { protectedEndpoint: true }).catch(() => null)
+      return { orderId, name: reagent?.data?.name }
+    })
+
+    //map names to order ids
+    const reagentData = await Promise.all(promises)
+    setReagentNames(new Map(reagentData.filter(r => r.orderId && r.name).map(r => [r.orderId!, r.name!])))
+  }
+
+  useEffect(() => {
+    fetchReagentNames(conversations)
+  }, [conversations])
 
   //            function: getLastMessage           //
   const getLastMessage = (messages: any[]) => {
@@ -46,7 +75,7 @@ export default function MessageListBox({
             conversation.messages[conversation.messages.length - 1].created_at,
           )
         : "No messages",
-    reagent: "Reagent", // This would need to be added to the backend response
+    reagent: reagentNames.get(conversation.chat_room.order_id) || "Unknown Reagent",
     isActive: selectedConversation?.id === conversation.chat_room.id,
     avatar: "/placeholder.webp",
     originalData: conversation,
