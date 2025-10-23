@@ -48,6 +48,12 @@ const Sidebar = () => {
       icon: ShoppingCartIcon,
       requireSignIn: false,
     },
+        {
+      href: "/bountyboard",
+      label: "Bounty Board",
+      icon: UserGroupIcon,
+      requireSignIn: true,
+    },
     { href: "/inbox", label: "Inbox", icon: EnvelopeIcon, requireSignIn: true },
     {
       href: "/requests",
@@ -55,12 +61,7 @@ const Sidebar = () => {
       icon: ClipboardDocumentListIcon,
       requireSignIn: true,
     },
-    {
-      href: "/bountyboard",
-      label: "Bounty Board",
-      icon: UserGroupIcon,
-      requireSignIn: true,
-    },
+
   ]
 
   return (
