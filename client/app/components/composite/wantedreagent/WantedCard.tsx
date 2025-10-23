@@ -6,6 +6,7 @@ import {
   GiftIcon,
   ArrowsRightLeftIcon,
   ClockIcon,
+  ArrowRightIcon,
 } from "@heroicons/react/24/outline"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../../../config/firebase"
@@ -108,7 +109,8 @@ const WantedCard = ({
             </h3>
           </div>
 
-          <div className="flex flex-wrap items-start gap-2 md:gap-4">
+
+          <div className="flex flex-wrap items-start gap-y-2 gap-x-2 md:gap-x-4">
             {/* User */}
             <div className="flex items-center gap-0.5 text-white/60">
               <UserIcon className="w-4 h-4" />
@@ -128,13 +130,15 @@ const WantedCard = ({
 
           {/* Description */}
           <p className="text-sm text-white line-clamp-2 leading-relaxed">
-            {wanted.description}
+            {onViewDetails
+              ? offer.message
+          : wanted.description}
           </p>
         </div>
 
         <div className="flex flex-row justify-between text-sm">
           {/* Categories */}
-          <div className="flex flex-wrap gap-1">
+          <div className="flex flex-wrap gap-1 mt-1">
             {wanted.categories.map((cat, i) => (
               <span
                 key={i}
@@ -154,9 +158,10 @@ const WantedCard = ({
           {onViewDetails && offer && (
             <button
               onClick={() => onViewDetails(offer.id)}
-              className="px-3 py-1.5 text-xs font-medium bg-blue-primary/20 text-blue-primary border border-blue-primary/40 rounded-md hover:bg-blue-primary/30 hover:border-blue-primary/60 transition-all md:ml-auto"
-            >
-              View Details
+              className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer"
+    >
+      View
+      <ArrowRightIcon className="w-5 h-5" />
             </button>
           )}
         </div>

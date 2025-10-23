@@ -24,12 +24,28 @@ type ReagentWithId = Reagent & {
   id: string
   requesterOfferedReagentId?: string
 }
+interface EnrichedWantedReagent {
+  id: string
+  name: string
+  description: string
+  createdAt: string
+  createdAtReadable: string
+  user_id: string
+  price?: number
+  categories: any[]
+  tradingType: string
+  location: string
+  expiryDate: string
+  requesterInfo?: any
+  offeredReagentName?: string | null
+  requesterOfferedReagentId?: string
+}
 
 interface OrderDetailsModalProps {
   isOpen: boolean
   onClose: () => void
-  order: OrderWithId
-  reagent: ReagentWithId
+  order: OrderWithId | any
+  reagent: ReagentWithId | EnrichedWantedReagent
   offeredReagent?: ReagentWithId
   onApprove?: (orderId: string) => void
   isOfferDetails?: boolean
@@ -183,7 +199,7 @@ export default function OrderDetailsModal({
 
   const offeredReagent = testOfferedReagent || fetchedOfferedReagent
   const isTradeLoading =
-    reagent.tradingType === "trade" &&
+    reagent.tradingType === "trade" || isOfferDetails &&
     !testOfferedReagent &&
     (offeredReagentLoading ||
       (!fetchedOfferedReagent && !!order.offeredReagentId))

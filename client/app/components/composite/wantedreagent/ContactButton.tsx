@@ -3,6 +3,7 @@ import client from "@/app/services/fetch-client"
 import { useState, useEffect } from "react"
 import { toast } from "sonner"
 import { ReagentRequest } from "../reagent/ReagentRequest"
+import { ArrowRightIcon } from "@heroicons/react/24/outline"
 
 type ReagentCategory = "chemical" | "hazardous" | "biological"
 type ReagentTradingType = "trade" | "giveaway" | "sell"
@@ -119,9 +120,13 @@ const ContactButton = ({ wanted, className = "" }: ContactButtonProps) => {
         onClick={handleRequestClick}
         disabled={isCheckingInventory}
         aria-busy={isCheckingInventory}
-        className="px-3 py-1.5 text-xs font-medium bg-blue-primary/20 text-blue-primary border border-blue-primary/40 rounded-md hover:bg-blue-primary/30 hover:border-blue-primary/60 transition-all"
-      >
-        {isCheckingInventory ? "Checking..." : "Offer"}
+
+
+                      className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer"
+    >
+              {isCheckingInventory ? "Checking..." : "Offer"}
+
+      <ArrowRightIcon className="w-5 h-5" />
       </button>
       {wanted && (
         <ReagentRequest
