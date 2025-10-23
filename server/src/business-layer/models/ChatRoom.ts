@@ -2,6 +2,7 @@ export interface ChatRoom {
   id?: string
   user1_id: string
   user2_id: string
+  order_id: string
   created_at: Date
 }
 

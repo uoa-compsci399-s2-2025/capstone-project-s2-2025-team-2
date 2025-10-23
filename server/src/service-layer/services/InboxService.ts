@@ -27,6 +27,7 @@ export class InboxService {
     const chatRoom: ChatRoom = {
       user1_id: request.user1_id,
       user2_id: request.user2_id,
+      order_id: request.order_id,
       created_at: new Date(),
     }
 
