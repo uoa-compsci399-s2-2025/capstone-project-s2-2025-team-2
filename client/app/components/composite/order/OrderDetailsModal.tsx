@@ -12,6 +12,7 @@ import client from "@/app/services/fetch-client"
 import { toast } from "sonner"
 import LoadingState from "../loadingstate/LoadingState"
 import { is } from "zod/v4/locales"
+import { auth } from "@/app/config/firebase"
 
 type Order = components["schemas"]["Order"]
 type OrderWithId = Order & {
@@ -174,6 +175,8 @@ export default function OrderDetailsModal({
   onApprove,
   isOfferDetails = false,
 }: OrderDetailsModalProps) {
+  const currentUserId = auth?.currentUser?.uid
+  const isOwner = currentUserId === order?.owner_id
   const [approving, setApproving] = useState(false)
   const [approved, setApproved] = useState(false)
 
@@ -357,13 +360,15 @@ export default function OrderDetailsModal({
             >
               Chat
             </button>
-            <button
-              onClick={handleApprove}
-              disabled={approving || approved}
-              className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 disabled:bg-blue-primary/50 disabled:cursor-not-allowed rounded-lg transition-colors"
-            >
-              {approved ? "Approved" : approving ? "Approving..." : "Approve"}
-            </button>
+            {isOwner && (
+              <button
+                onClick={handleApprove}
+                disabled={approving || approved}
+                className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 disabled:bg-blue-primary/50 disabled:cursor-not-allowed rounded-lg transition-colors"
+              >
+                {approved ? "Approved" : approving ? "Approving..." : "Approve"}
+              </button>
+            )}
           </div>
         </div>
       </div>
