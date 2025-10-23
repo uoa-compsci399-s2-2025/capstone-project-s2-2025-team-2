@@ -5,11 +5,16 @@ export class InboxRepository {
   private db = FirestoreCollections
 
   async createChatRoom(chatRoom: ChatRoom): Promise<ChatRoom> {
+    console.log("InboxRepository: About to save to Firestore:", chatRoom)
     const docRef = await this.db.chatRooms.add(chatRoom)
-    return {
+    console.log("InboxRepository: Saved to Firestore with ID:", docRef.id)
+    
+    const result = {
       ...chatRoom,
       id: docRef.id,
     }
+    console.log("InboxRepository: Returning:", result)
+    return result
   }
 
   async getChatRoomById(chatRoomId: string): Promise<ChatRoom | null> {
