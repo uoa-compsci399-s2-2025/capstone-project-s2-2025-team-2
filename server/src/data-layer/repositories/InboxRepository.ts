@@ -26,10 +26,15 @@ export class InboxRepository {
   async getChatRoomByUsers(
     user1Id: string,
     user2Id: string,
+    reagentId?: string,
   ): Promise<ChatRoom | null> {
-    const query = this.db.chatRooms
+    let query = this.db.chatRooms
       .where("user1_id", "in", [user1Id, user2Id])
       .where("user2_id", "in", [user1Id, user2Id])
+
+    if (reagentId) {
+      query = query.where("reagent_id", "==", reagentId)
+    }
 
     const snapshot = await query.get()
 

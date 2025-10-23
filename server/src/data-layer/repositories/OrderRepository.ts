@@ -48,6 +48,7 @@ export class OrderService {
       await this.inboxService.createChatRoom({
         user1_id: user_id,
         user2_id: reagent.user_id,
+        reagent_id: requestBody.reagent_id,
         initial_message: requestBody.message,
       })
     } catch (error) {
@@ -92,6 +93,7 @@ export class OrderService {
       await this.inboxService.createChatRoom({
         user1_id: user_id,
         user2_id: reagent.user_id,
+        reagent_id: requestBody.reagent_id,
         initial_message: requestBody.message,
       })
     } catch (error) {
@@ -139,6 +141,7 @@ export class OrderService {
       await this.inboxService.createChatRoom({
         user1_id: user_id,
         user2_id: reagent.user_id,
+        reagent_id: requestBody.reagent_id,
         initial_message: requestBody.message,
       })
     } catch (error) {
