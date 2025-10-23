@@ -7,7 +7,6 @@ import {
   ArrowsRightLeftIcon,
   ClockIcon,
 } from "@heroicons/react/24/outline"
-import client from "@/app/services/fetch-client"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../../../config/firebase"
 import ContactButton from "./ContactButton"
@@ -33,6 +32,8 @@ interface WantedReagent {
 
 interface WantedCardProps {
   wanted: WantedReagent
+  requesterInfo?: any
+  offeredReagentName?: string | null
   onViewDetails?: (offerId: string) => void
   offer?: any
   showContactButton?: boolean
@@ -47,15 +48,13 @@ const TRADING_TYPE_STYLES = {
 
 const WantedCard = ({
   wanted,
+  requesterInfo,
+  offeredReagentName,
   onViewDetails,
   offer,
   showContactButton,
 }: WantedCardProps) => {
-  const [requesterInfo, setRequesterInfo] = useState<any>(null)
   const [isSignedIn, setIsSignedIn] = useState(false)
-  const [offeredReagentName, setOfferedReagentName] = useState<string | null>(
-    null,
-  )
 
   //reusable components for both mobile and desktop view
   const tradingTypeLabel =
@@ -69,50 +68,6 @@ const WantedCard = ({
     return () => unsubscribe()
   }, [])
 
-  //fetch requester info using user id
-  useEffect(() => {
-    if (!wanted?.user_id) return
-
-    const fetchRequesterInfo = async () => {
-      try {
-        const { data } = await client.GET(`/users/${wanted.user_id}` as any, {})
-        if (data) {
-          setRequesterInfo(data)
-        }
-      } catch (error) {
-        console.error("Failed to fetch requester information:", error)
-      }
-    }
-
-    fetchRequesterInfo()
-  }, [wanted?.user_id])
-
-  useEffect(() => {
-    if (wanted.tradingType !== "trade") return
-    const id = (wanted as any).requesterOfferedReagentId
-    if (!id) {
-      setOfferedReagentName(null)
-      return
-    }
-
-    let cancelled = false
-    ;(async () => {
-      try {
-        const resp = await client.GET(`/reagents/${id}` as any, {})
-        if (!cancelled && !resp.error && resp.data?.name) {
-          setOfferedReagentName(resp.data.name)
-        }
-      } catch (err) {
-        if (!cancelled)
-          console.error("Failed to fetch offered reagent name:", err)
-      }
-    })()
-
-    return () => {
-      cancelled = true
-    }
-  }, [wanted.tradingType, (wanted as any).requesterOfferedReagentId])
-
   const tradingType = wanted.tradingType as keyof typeof TRADING_TYPE_STYLES
   const tradingStyle =
     TRADING_TYPE_STYLES[tradingType] ?? TRADING_TYPE_STYLES.giveaway
@@ -124,16 +79,16 @@ const WantedCard = ({
       <Icon className="w-5 h-5" />
     </p>
   )
+
   return (
     <div className="w-full bg-primary border border-white/10 rounded-xl cursor-pointer hover:border-blue-primary/50 hover:bg-primary/80 transition-all">
       <div className="p-5 flex flex-col gap-4">
         <div className="flex-1 space-y-2">
           <div className="flex items-center gap-3 flex-wrap">
             {/* Trading Type */}
-
             <TradingTypeDisplay />
-            {/* Title */}
 
+            {/* Title */}
             <h3 className="text-xl font-semibold text-white">
               {wanted.name}
               {wanted.tradingType === "sell" &&
@@ -151,25 +106,25 @@ const WantedCard = ({
                 </Link>
               )}
             </h3>
+          </div>
+
+          <div className="flex flex-wrap items-start gap-2 md:gap-4">
+            {/* User */}
+            <div className="flex items-center gap-0.5 text-white/60">
+              <UserIcon className="w-4 h-4" />
+              <span className="text-xs">
+                {requesterInfo?.displayName || requesterInfo?.preferredName},{" "}
+                {wanted?.location || "Unknown University"}
+              </span>
             </div>
-            <div className="flex flex-col flex-row flex-wrap items-start gap-2 md:gap-4">
-              {/* User */}
-              <div className="flex items-center gap-0.5 text-white/60">
-                <UserIcon className="w-4 h-4" />
-                <span className="text-xs">
-                  {requesterInfo?.displayName || requesterInfo?.preferredName},{" "}
-                  {wanted?.location || "Unknown University"}
-                </span>
-              </div>
-              {/* Expiring Date */}
-              <div className="flex items-center gap-1 text-warning">
-                <ClockIcon className="w-4 h-4" />
-                <span className="text-xs">
-                  {wanted.expiryDate || "No date specified"}
-                </span>
-              </div>
+            {/* Expiring Date */}
+            <div className="flex items-center gap-1 text-warning">
+              <ClockIcon className="w-4 h-4" />
+              <span className="text-xs">
+                {wanted.expiryDate || "No date specified"}
+              </span>
             </div>
-          
+          </div>
 
           {/* Description */}
           <p className="text-sm text-white line-clamp-2 leading-relaxed">

@@ -8,6 +8,7 @@ import SearchBar from "../components/composite/searchbar/SearchBar"
 import { WantedForm } from "../components/composite/wantedreagent/WantedForm"
 import { usePagination } from "../hooks/usePagination"
 import Pagination from "../components/composite/pagination/Pagination"
+import LoadingState from "../components/composite/loadingstate/LoadingState"
 
 type ReagentCategory = "chemical" | "hazardous" | "biological"
 type ReagentTradingType = "trade" | "giveaway" | "sell"
@@ -26,11 +27,16 @@ type FirestoreWantedReagent = {
   expiryDate: string
 }
 
+type EnrichedWantedReagent = FirestoreWantedReagent & {
+  requesterInfo?: any
+  offeredReagentName?: string | null
+}
+
 type Offer = {
   id: string
-  requester_id: string // offerer_id the user who makes the offer
+  requester_id: string
   reagent_id: string
-  owner_id: string // the user who wants a reagent
+  owner_id: string
   status: "pending" | "approved" | "canceled"
   createdAt: Date
   message?: string
@@ -40,7 +46,7 @@ type Offer = {
 }
 
 const BountyBoard = () => {
-  const [wanted, setWanted] = useState<FirestoreWantedReagent[]>([])
+  const [wanted, setWanted] = useState<EnrichedWantedReagent[]>([])
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState("all")
   const [offers, setOffers] = useState<Offer[]>([])
@@ -49,14 +55,62 @@ const BountyBoard = () => {
   >("newest")
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [isSignedIn, setIsSignedIn] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   const fetchWantedReagents = useCallback(async () => {
+    setIsLoading(true)
     try {
+      // Fetch wanted reagents
       const { data } = await client.GET("/wanted" as any, {})
-      setWanted((data as FirestoreWantedReagent[]) || [])
+      const reagents = (data as FirestoreWantedReagent[]) || []
+
+      // Get unique user IDs
+      const uniqueUserIds = [...new Set(reagents.map(r => r.user_id))]
+
+      // Fetch all users in parallel
+      const userDataPromises = uniqueUserIds.map(userId =>
+        client.GET(`/users/${userId}` as any, {})
+      )
+      const userResults = await Promise.allSettled(userDataPromises)
+
+      // Create a map of userId -> userData
+      const userMap = new Map()
+      uniqueUserIds.forEach((userId, index) => {
+        const result = userResults[index]
+        if (result.status === 'fulfilled' && result.value.data) {
+          userMap.set(userId, result.value.data)
+        }
+      })
+
+      // Fetch offered reagent names for trades in parallel
+      const enrichedData = await Promise.all(
+        reagents.map(async (reagent) => {
+          let offeredReagentName = null
+          if (reagent.tradingType === "trade" && (reagent as any).requesterOfferedReagentId) {
+            try {
+              const resp = await client.GET(`/reagents/${(reagent as any).requesterOfferedReagentId}` as any, {})
+              if (resp.data?.name) {
+                offeredReagentName = resp.data.name
+              }
+            } catch (err) {
+              console.error("Failed to fetch offered reagent:", err)
+            }
+          }
+
+          return {
+            ...reagent,
+            requesterInfo: userMap.get(reagent.user_id),
+            offeredReagentName
+          }
+        })
+      )
+
+      setWanted(enrichedData)
     } catch (error) {
       console.error("Failed to fetch wanted reagents:", error)
       setWanted([])
+    } finally {
+      setIsLoading(false)
     }
   }, [])
 
@@ -94,6 +148,7 @@ const BountyBoard = () => {
     await fetchWantedReagents()
     setIsFormOpen(false)
   }
+
   // Filter out wanted reagents with approved offers
   const availableWanted = wanted.filter((wantedReagent) => {
     const hasApprovedOffer = offers.some(
@@ -102,23 +157,7 @@ const BountyBoard = () => {
     )
     return !hasApprovedOffer
   })
-  useEffect(() => {
-    console.log("All wanted:", wanted.length)
-    console.log("All offers:", offers.length)
-    console.log(
-      "Approved offers:",
-      offers.filter((o) => o.status === "approved"),
-    )
-    console.log("Available wanted:", availableWanted.length)
 
-    // Check specific matches
-    wanted.forEach((w) => {
-      const matchingOffer = offers.find((o) => o.reagent_id === w.id)
-      if (matchingOffer) {
-        console.log(`Wanted ${w.name} (${w.id}) has offer:`, matchingOffer)
-      }
-    })
-  }, [wanted, offers])
   const filtered = availableWanted.filter((r) => {
     const query = search.trim().toLowerCase()
     if (!query) return true
@@ -226,7 +265,11 @@ const BountyBoard = () => {
       </div>
 
       <div className="bg-transparent grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pt-[2rem] gap-y-2.5 md:gap-x-4 md:gap-y-3 lg:gap-x-6 mx-4 md:mx-[2rem] pb-[4rem]">
-        {currentData.length === 0 ? (
+        {isLoading ? (
+          <div className="col-span-full flex items-center justify-center min-h-[300px]">
+            <LoadingState pageName="Bounty Board" />
+          </div>
+        ) : currentData.length === 0 ? (
           <div className="text-center text-white/60 py-12 col-span-full">
             <p className="text-lg">No wanted reagents found</p>
           </div>
@@ -235,6 +278,8 @@ const BountyBoard = () => {
             <WantedCard
               key={reagent.id}
               wanted={reagent}
+              requesterInfo={reagent.requesterInfo}
+              offeredReagentName={reagent.offeredReagentName}
               showContactButton={true}
             />
           ))
