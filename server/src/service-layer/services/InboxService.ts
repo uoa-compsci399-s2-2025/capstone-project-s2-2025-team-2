@@ -12,37 +12,56 @@ export class InboxService {
   private inboxRepository = new InboxRepository()
   private userService = new UserService()
 
-  async createChatRoom(request: CreateChatRoomRequest): Promise<ChatRoom> {
-    // Check if chat room already exists between these users
-    const existingChatRoom = await this.inboxRepository.getChatRoomByUsers(
-      request.user1_id,
-      request.user2_id,
-    )
+async createChatRoom(request: CreateChatRoomRequest): Promise<ChatRoom> {
+  console.log("Checking for existing chat room...")
+  
+  // Check if chat room already exists between these users
+  const existingChatRoom = await this.inboxRepository.getChatRoomByUsers(
+    request.user1_id,
+    request.user2_id,
+  )
 
-    if (existingChatRoom) {
-      return existingChatRoom
-    }
-
-    // Create new chat room
-    const chatRoom: ChatRoom = {
-      user1_id: request.user1_id,
-      user2_id: request.user2_id,
-      created_at: new Date(),
-    }
-
-    const createdChatRoom = await this.inboxRepository.createChatRoom(chatRoom)
-
-    // If there's an initial message, create it
+  if (existingChatRoom) {
+    console.log("Found existing chat room:", existingChatRoom.id)
+    
+    // Still send the initial message to the existing chat room
     if (request.initial_message) {
+      console.log("Sending initial message to existing chat room")
       await this.sendMessage({
-        chat_room_id: createdChatRoom.id!,
+        chat_room_id: existingChatRoom.id!,
         sender_id: request.user1_id,
         content: request.initial_message,
       })
     }
-
-    return createdChatRoom
+    
+    return existingChatRoom
   }
+
+  console.log("No existing chat room found, creating new one...")
+  
+  // Create new chat room
+  const chatRoom: ChatRoom = {
+    user1_id: request.user1_id,
+    user2_id: request.user2_id,
+    created_at: new Date(),
+  }
+
+  const createdChatRoom = await this.inboxRepository.createChatRoom(chatRoom)
+  console.log("Chat room created with ID:", createdChatRoom.id)
+
+  // If there's an initial message, create it
+  if (request.initial_message) {
+    console.log("Sending initial message to new chat room")
+    await this.sendMessage({
+      chat_room_id: createdChatRoom.id!,
+      sender_id: request.user1_id,
+      content: request.initial_message,
+    })
+    console.log("Initial message sent successfully")
+  }
+
+  return createdChatRoom
+}
 
   async sendMessage(request: SendMessageRequest): Promise<Message> {
     const message: Message = {
