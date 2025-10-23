@@ -20,7 +20,6 @@ const defaultReagentFields = {
   condition: "N/A",
   quantity: 1,
   unit: "N/A",
-  expiryDate: "N/A",
 }
 @Tags("Wanted")
 @Route("wanted")

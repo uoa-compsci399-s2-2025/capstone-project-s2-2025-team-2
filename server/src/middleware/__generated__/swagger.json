@@ -134,6 +134,9 @@
 					"price": {
 						"type": "number",
 						"format": "double"
+					},
+					"expiryDate": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -141,7 +144,8 @@
 					"description",
 					"location",
 					"categories",
-					"tradingType"
+					"tradingType",
+					"expiryDate"
 				],
 				"type": "object",
 				"additionalProperties": false

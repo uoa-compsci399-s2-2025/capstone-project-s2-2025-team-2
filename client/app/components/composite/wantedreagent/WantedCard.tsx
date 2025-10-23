@@ -2,11 +2,10 @@
 import { useEffect, useState } from "react"
 import {
   UserIcon,
-  CalendarIcon,
   CurrencyDollarIcon,
   GiftIcon,
   ArrowsRightLeftIcon,
-  HomeIcon,
+  ClockIcon,
 } from "@heroicons/react/24/outline"
 import client from "@/app/services/fetch-client"
 import { onAuthStateChanged } from "firebase/auth"
@@ -29,6 +28,7 @@ interface WantedReagent {
   categories: ReagentCategory[]
   tradingType: ReagentTradingType
   location: string
+  expiryDate: string
 }
 
 interface WantedCardProps {
@@ -151,28 +151,28 @@ const WantedCard = ({
                 </Link>
               )}
             </h3>
-
+            </div>
             <div className="flex flex-col flex-row flex-wrap items-start gap-2 md:gap-4">
               {/* User */}
-              <div className="flex items-center gap-2 text-white/60">
-                <UserIcon className="w-5 h-5" />
-                <span className="">
+              <div className="flex items-center gap-0.5 text-white/60">
+                <UserIcon className="w-4 h-4" />
+                <span className="text-xs">
                   {requesterInfo?.displayName || requesterInfo?.preferredName},{" "}
                   {wanted?.location || "Unknown University"}
                 </span>
               </div>
-              {/*Listed Date */}
-              <div className="flex items-center gap-2 text-white/60">
-                <CalendarIcon className="w-5 h-5" />
-                <span className="whitespace-nowrap">
-                  {wanted.createdAtReadable}
+              {/* Expiring Date */}
+              <div className="flex items-center gap-1 text-warning">
+                <ClockIcon className="w-4 h-4" />
+                <span className="text-xs">
+                  {wanted.expiryDate || "No date specified"}
                 </span>
               </div>
             </div>
-          </div>
+          
 
           {/* Description */}
-          <p className="text-sm text-white/70 line-clamp-2 leading-relaxed">
+          <p className="text-sm text-white line-clamp-2 leading-relaxed">
             {wanted.description}
           </p>
         </div>
@@ -183,7 +183,7 @@ const WantedCard = ({
             {wanted.categories.map((cat, i) => (
               <span
                 key={i}
-                className="bg-background/70 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm"
+                className="bg-secondary/40 text-white text-xs px-2 py-1.5 rounded-lg backdrop-blur-sm"
               >
                 {cat}
               </span>

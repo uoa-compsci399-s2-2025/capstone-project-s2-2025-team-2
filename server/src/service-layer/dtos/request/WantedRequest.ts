@@ -11,4 +11,5 @@ export interface CreateWantedRequest {
   tradingType: ReagentTradingType
   requesterOfferedReagentId?: string
   price?: number
+  expiryDate: string
 }

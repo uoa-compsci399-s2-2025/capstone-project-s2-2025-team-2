@@ -79,6 +79,7 @@ const models: TsoaRoute.Models = {
             "tradingType": {"ref":"ReagentTradingType","required":true},
             "requesterOfferedReagentId": {"dataType":"string"},
             "price": {"dataType":"double"},
+            "expiryDate": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },

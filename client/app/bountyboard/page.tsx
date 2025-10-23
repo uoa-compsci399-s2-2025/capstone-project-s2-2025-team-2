@@ -23,6 +23,7 @@ type FirestoreWantedReagent = {
   name: string
   price: number
   tradingType: ReagentTradingType
+  expiryDate: string
 }
 
 type Offer = {

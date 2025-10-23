@@ -25,6 +25,7 @@ interface FormData {
   location: string
   price?: string
   requesterOfferedReagentId?: string
+  expiryDate: string
 }
 
 type Reagent = components["schemas"]["Reagent"]
@@ -38,6 +39,7 @@ interface CreateWantedRequest {
   tradingType: ReagentTradingType
   price?: number
   requesterOfferedReagentId?: string
+  expiryDate: string
 }
 
 //reusable styling classes
@@ -75,11 +77,14 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
     price: "",
     location: "",
     requesterOfferedReagentId: "",
+    expiryDate: "",
   })
 
   const [dataSubmitting, setDataSubmitting] = useState(false)
   const [userReagents, setUserReagents] = useState<ReagentWithId[]>([])
   const [selectedReagentId, setSelectedReagentId] = useState<string>("")
+  //today date calc
+  const todaysDate = useMemo(() => new Date().toISOString().split("T")[0], [])
 
   useEffect(() => {
     // Only fetch when user chooses 'trade' as listing type
@@ -156,6 +161,7 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
         location: formData.location,
         categories: formData.categories,
         tradingType: formData.tradingType,
+        expiryDate: formData.expiryDate,
         price:
           formData.tradingType === "sell" && formData.price
             ? Number(formData.price)
@@ -236,7 +242,9 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
           >
             {TRADING_TYPES.map((type) => (
               <option key={type} value={type} className="bg-primary">
-                {type.charAt(0).toUpperCase() + type.slice(1)}
+                {type === "sell"
+                  ? "Buy"
+                  : type.charAt(0).toUpperCase() + type.slice(1)}
               </option>
             ))}
           </select>
@@ -277,14 +285,25 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
           }
         />
       )}
-      <FormField
-        label="Location"
-        required
-        input={formInput("location", {
-          placeholder: "Current location",
-          required: true,
-        })}
-      />
+      <div className="grid grid-cols-2 gap-4">
+        <FormField
+          label="Date You Need It By"
+          required
+          input={formInput("expiryDate", {
+            type: "date",
+            min: todaysDate,
+            required: true,
+          })}
+        />
+        <FormField
+          label="Location"
+          required
+          input={formInput("location", {
+            placeholder: "Current location",
+            required: true,
+          })}
+        />
+      </div>
       <FormField
         label="Categories"
         input={
