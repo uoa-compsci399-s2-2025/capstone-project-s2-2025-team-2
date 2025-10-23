@@ -29,15 +29,15 @@ const RecordCard = ({
       : statusKey === "approved"
         ? "bg-gradient-to-r from-green-300 to-green-900"
         : statusKey === "canceled"
-          ? "bg-gradient-to-r from-red-300 to-red-900"
+          ? "bg-gradient-to-r from-red-500 to-red-900"
           : "bg-gradient-to-r from-gray-300 to-gray-900"
   return (
-    <div className="w-full border border-black px-4 py-2 rounded-2xl bg-primary/60">
+    <div className="w-full border border-black px-4 py-2 rounded-2xl bg-primary/60 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <div>
         <div className="md:flex md:justify-between items-center m-2">
           <h3 className="mb-4 md:m-0">{name}</h3>
           <div
-            className={`px-2 py-0.5 ml-4 rounded-full text-center ${statusClasses}`}
+            className={`shadow-xl px-2 py-0.5 ml-4 rounded-full text-center ${statusClasses}`}
           >
             <p>{status}</p>
           </div>
