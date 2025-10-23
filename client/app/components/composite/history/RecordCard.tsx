@@ -25,12 +25,12 @@ const RecordCard = ({
   const statusKey = String(status).toLowerCase()
   const statusClasses =
     statusKey === "pending"
-      ? "bg-yellow-300 text-yellow-900"
+      ? "bg-gradient-to-r from-yellow-300 to-yellow-900"
       : statusKey === "approved"
-        ? "bg-green-300"
+        ? "bg-gradient-to-r from-green-300 to-green-900"
         : statusKey === "canceled"
-          ? "bg-red-300 text-red-900"
-          : "bg-gray-300 text-gray-900"
+          ? "bg-gradient-to-r from-red-300 to-red-900"
+          : "bg-gradient-to-r from-gray-300 to-gray-900"
   return (
     <div className="w-full border border-black px-4 py-2 rounded-2xl bg-primary/60">
       <div>
@@ -48,7 +48,7 @@ const RecordCard = ({
           <p className="text-gray-300">{name}</p>{" "}
           <p className="text-gray-300">{createdAt}</p>
         </div>
-        <div className="w-full h-[1px] bg-white my-2"></div>
+        <div className="w-full h-[1px] bg-white/60 my-2"></div>
         <div className="m-2">
           <p>Order Id</p>
           <p className="">{orderId}</p>
