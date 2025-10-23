@@ -312,7 +312,8 @@ export const ReagentRequest = ({
       //call endpoint based on trading type and context
       const baseEndpoint = isBountyBoard ? "/offers" : "/orders"
       const endpoint =
-        reagent.tradingType === "giveaway" || (isBountyBoard && reagent.tradingType === "trade")
+        reagent.tradingType === "giveaway" ||
+        (isBountyBoard && reagent.tradingType === "trade")
           ? baseEndpoint
           : reagent.tradingType === "sell"
             ? `${baseEndpoint}/trades`

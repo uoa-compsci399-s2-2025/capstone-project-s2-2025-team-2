@@ -48,7 +48,7 @@ const Sidebar = () => {
       icon: ShoppingCartIcon,
       requireSignIn: false,
     },
-        {
+    {
       href: "/bountyboard",
       label: "Bounty Board",
       icon: UserGroupIcon,
@@ -61,7 +61,6 @@ const Sidebar = () => {
       icon: ClipboardDocumentListIcon,
       requireSignIn: true,
     },
-
   ]
 
   return (

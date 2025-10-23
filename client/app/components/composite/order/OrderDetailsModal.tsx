@@ -197,9 +197,10 @@ export default function OrderDetailsModal({
           headers: { Authorization: `Bearer ${token}` },
         })
       } else {
-      await client.PATCH(`/orders/${order.id}/approve` as any, {
-        headers: { Authorization: `Bearer ${token}` },
-      })}
+        await client.PATCH(`/orders/${order.id}/approve` as any, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+      }
       toast("Request approved!")
       setApproved(true)
       onApprove?.(order.id)

@@ -173,7 +173,7 @@ export class OfferService {
     }
   }
 
-    async updateOfferStatus(
+  async updateOfferStatus(
     id: string,
     status: string,
   ): Promise<Offer | TradeOffer> {
@@ -216,14 +216,14 @@ export class OfferService {
           .where("status", "==", "pending")
         otherOfferedOffers = await tx.get(otherOfferedOffersQuery)
       }
-        //fetch requesterOfferedReagentId
-          let wantedData: any = null
-    if ("offeredReagentId" in (offer as any)) {
-      const exchange = offer as Offer
-      const wantedRef = this.db.collection("wanted").doc(exchange.reagent_id)
-      const wantedDoc = await tx.get(wantedRef)
-      wantedData = wantedDoc.data()
-    }
+      //fetch requesterOfferedReagentId
+      let wantedData: any = null
+      if ("offeredReagentId" in (offer as any)) {
+        const exchange = offer as Offer
+        const wantedRef = this.db.collection("wanted").doc(exchange.reagent_id)
+        const wantedDoc = await tx.get(wantedRef)
+        wantedData = wantedDoc.data()
+      }
 
       //update offer status
       tx.update(offerRef, { status: "approved" })
@@ -231,12 +231,12 @@ export class OfferService {
       //handle trade
       if ("requesterOfferedReagentId" in (wantedData as any)) {
         const exchange = offer as Offer
-        const requesterOfferedReagentId = wantedData.requesterOfferedReagentId;
-        
+        const requesterOfferedReagentId = wantedData.requesterOfferedReagentId
+
         //transfer requester's offered reagent to the offerer, set to private
         const requestedReagentRef = this.db
           .collection("reagents")
-          .doc(requesterOfferedReagentId);
+          .doc(requesterOfferedReagentId)
         tx.update(requestedReagentRef, {
           user_id: exchange.requester_id,
           visibility: "private",
@@ -261,7 +261,9 @@ export class OfferService {
         }
       } else {
         //one way transfer for sell/trade, set to private
-        const reagentRef = this.db.collection("reagents").doc(offer.offeredReagentId)
+        const reagentRef = this.db
+          .collection("reagents")
+          .doc(offer.offeredReagentId)
         tx.update(reagentRef, {
           user_id: offer.owner_id,
           visibility: "private",

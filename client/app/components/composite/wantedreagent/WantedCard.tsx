@@ -126,7 +126,7 @@ const WantedCard = ({
   )
   return (
     <div className="w-full bg-primary border border-white/10 rounded-xl cursor-pointer hover:border-blue-primary/50 hover:bg-primary/80 transition-all">
-      <div className="p-5 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+      <div className="p-5 flex flex-col gap-4">
         <div className="flex-1 space-y-2">
           <div className="flex items-center gap-3 flex-wrap">
             {/* Trading Type */}
@@ -151,16 +151,23 @@ const WantedCard = ({
                 </Link>
               )}
             </h3>
-            {/* Categories */}
-            <div className="flex flex-wrap gap-1">
-              {wanted.categories.map((cat, i) => (
-                <span
-                  key={i}
-                  className="bg-background/70 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm"
-                >
-                  {cat}
+
+            <div className="flex flex-col flex-row flex-wrap items-start gap-2 md:gap-4">
+              {/* User */}
+              <div className="flex items-center gap-2 text-white/60">
+                <UserIcon className="w-5 h-5" />
+                <span className="">
+                  {requesterInfo?.displayName || requesterInfo?.preferredName},{" "}
+                  {wanted?.location || "Unknown University"}
                 </span>
-              ))}
+              </div>
+              {/*Listed Date */}
+              <div className="flex items-center gap-2 text-white/60">
+                <CalendarIcon className="w-5 h-5" />
+                <span className="whitespace-nowrap">
+                  {wanted.createdAtReadable}
+                </span>
+              </div>
             </div>
           </div>
 
@@ -170,7 +177,19 @@ const WantedCard = ({
           </p>
         </div>
 
-        <div className="flex flex-col gap-4 md:gap-2 text-sm">
+        <div className="flex flex-row justify-between text-sm">
+          {/* Categories */}
+          <div className="flex flex-wrap gap-1">
+            {wanted.categories.map((cat, i) => (
+              <span
+                key={i}
+                className="bg-background/70 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm"
+              >
+                {cat}
+              </span>
+            ))}
+          </div>
+
           {/* ContactButton on Marketplace page */}
           {showContactButton && isSignedIn && (
             <ContactButton wanted={wanted} className="md:ml-auto" />
@@ -185,30 +204,6 @@ const WantedCard = ({
               View Details
             </button>
           )}
-
-          <div className="flex flex-col md:flex-row md:flex-wrap items-start md:items-center gap-2 md:gap-4">
-            {/* User */}
-            <div className="flex items-center gap-2 text-white/60">
-              <UserIcon className="w-5 h-5" />
-              <span className="truncate max-w-[120px]">
-                {requesterInfo?.displayName || requesterInfo?.preferredName}
-              </span>
-            </div>
-            {/* University */}
-            <div className="flex items-center gap-2 text-white/60">
-              <HomeIcon className="w-5 h-5" />
-              <span className="whitespace-nowrap">
-                {wanted?.location || "Unknown University"}
-              </span>
-            </div>
-            {/*Listed Date */}
-            <div className="flex items-center gap-2 text-white/60">
-              <CalendarIcon className="w-5 h-5" />
-              <span className="whitespace-nowrap">
-                {wanted.createdAtReadable}
-              </span>
-            </div>
-          </div>
         </div>
       </div>
     </div>

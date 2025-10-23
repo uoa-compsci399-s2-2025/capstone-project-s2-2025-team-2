@@ -191,19 +191,20 @@ export default function Orders() {
               From Bounty Board
             </h2>
             <div className="flex flex-wrap gap-2">
-              {offers.filter((offer) => offer.status !== "approved")
-              .map((offer) => {
-                const wanted = wantedReagents.get(offer.reagent_id)
-                if (!wanted) return null
-                return (
-                  <WantedCard
-                    key={offer.id}
-                    wanted={wanted}
-                    offer={offer}
-                    onViewDetails={handleOfferDetails}
-                  />
-                )
-              })}
+              {offers
+                .filter((offer) => offer.status !== "approved")
+                .map((offer) => {
+                  const wanted = wantedReagents.get(offer.reagent_id)
+                  if (!wanted) return null
+                  return (
+                    <WantedCard
+                      key={offer.id}
+                      wanted={wanted}
+                      offer={offer}
+                      onViewDetails={handleOfferDetails}
+                    />
+                  )
+                })}
             </div>
           </div>
         )}

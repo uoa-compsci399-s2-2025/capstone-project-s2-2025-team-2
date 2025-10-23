@@ -31,34 +31,34 @@ const ContactButton = ({ wanted, className = "" }: ContactButtonProps) => {
   const [isCheckingInventory, setIsCheckingInventory] = useState(false)
   const [isRequestOpen, setIsRequestOpen] = useState(false)
 
-    // Fetch offered reagent name if requesterOfferedReagentId is present
-    const [offeredReagentName, setOfferedReagentName] = useState<string>("")
+  // Fetch offered reagent name if requesterOfferedReagentId is present
+  const [offeredReagentName, setOfferedReagentName] = useState<string>("")
 
-    useEffect(() => {
-      const fetchOfferedReagentName = async () => {
-        if (!wanted?.requesterOfferedReagentId) {
-          setOfferedReagentName("")
-          return
-        }
-        try {
-          const token = localStorage.getItem("authToken")
-          const { data: reagent, error } = await client.GET(
-            `/reagents/${wanted.requesterOfferedReagentId}` as any,
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            },
-          )
-          if (error || !reagent) {
-            setOfferedReagentName("")
-          } else {
-            setOfferedReagentName(reagent.name)
-          }
-        } catch {
-          setOfferedReagentName("")
-        }
+  useEffect(() => {
+    const fetchOfferedReagentName = async () => {
+      if (!wanted?.requesterOfferedReagentId) {
+        setOfferedReagentName("")
+        return
       }
-      fetchOfferedReagentName()
-    }, [wanted?.requesterOfferedReagentId])
+      try {
+        const token = localStorage.getItem("authToken")
+        const { data: reagent, error } = await client.GET(
+          `/reagents/${wanted.requesterOfferedReagentId}` as any,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        )
+        if (error || !reagent) {
+          setOfferedReagentName("")
+        } else {
+          setOfferedReagentName(reagent.name)
+        }
+      } catch {
+        setOfferedReagentName("")
+      }
+    }
+    fetchOfferedReagentName()
+  }, [wanted?.requesterOfferedReagentId])
 
   const handleRequestClick = async () => {
     if (!wanted) return
@@ -132,7 +132,7 @@ const ContactButton = ({ wanted, className = "" }: ContactButtonProps) => {
           title="Offer a Reagent"
           isBountyBoard={true}
           requesterOfferedReagentId={wanted.requesterOfferedReagentId}
-            requesterOfferedReagentName={offeredReagentName}
+          requesterOfferedReagentName={offeredReagentName}
         />
       )}
     </div>

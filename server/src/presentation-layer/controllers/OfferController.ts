@@ -92,52 +92,52 @@ export class OfferController extends Controller {
     }
   }
 
-    @SuccessResponse("200", "order successfully approved")
-    @Security("jwt")
-@Patch("{id}/approve")
-public async approveOrder(
-  @Path() id: string,
-  @Request() request: AuthRequest,
-): Promise<Order | Trade | Exchange> {
-  const user = request.user
-  const order = await new OfferService().getOfferById(id)
-  
-  if (!order) {
-    this.setStatus(404)
-    throw new Error("Order not found")
-  }
-  
-  if (user.uid !== order.owner_id) {
-    this.setStatus(403)
-    throw new Error("Unauthorized to approve this order request") 
-  }
-  
-  const updatedOrder = await new OfferService().approveOffer(id)
-  return updatedOrder
-}
+  @SuccessResponse("200", "order successfully approved")
+  @Security("jwt")
+  @Patch("{id}/approve")
+  public async approveOrder(
+    @Path() id: string,
+    @Request() request: AuthRequest,
+  ): Promise<Order | Trade | Exchange> {
+    const user = request.user
+    const order = await new OfferService().getOfferById(id)
 
-    @SuccessResponse("200", "order successfully canceled")
-    @Security("jwt")
-    @Patch("{id}/cancel")
-    public async cancelOrder(
-      @Path() id: string,
-      @Request() request: AuthRequest,
-    ): Promise<Order | Trade | Exchange> {
-      const user = request.user
-      const order = await new OfferService().getOfferById(id)
-      if (!order) {
-        this.setStatus(404)
-        throw new Error("Order not found")
-      }
-      //only owner or requester can cancel
-      if (user.uid !== order.requester_id && user.uid !== order.owner_id) {
-        this.setStatus(403)
-        throw new Error("Unauthorized to cancel this order request")
-      }
-      const updatedOrder = await new OfferService().updateOfferStatus(
-        id,
-        "canceled",
-      )
-      return updatedOrder
+    if (!order) {
+      this.setStatus(404)
+      throw new Error("Order not found")
     }
+
+    if (user.uid !== order.owner_id) {
+      this.setStatus(403)
+      throw new Error("Unauthorized to approve this order request")
+    }
+
+    const updatedOrder = await new OfferService().approveOffer(id)
+    return updatedOrder
+  }
+
+  @SuccessResponse("200", "order successfully canceled")
+  @Security("jwt")
+  @Patch("{id}/cancel")
+  public async cancelOrder(
+    @Path() id: string,
+    @Request() request: AuthRequest,
+  ): Promise<Order | Trade | Exchange> {
+    const user = request.user
+    const order = await new OfferService().getOfferById(id)
+    if (!order) {
+      this.setStatus(404)
+      throw new Error("Order not found")
+    }
+    //only owner or requester can cancel
+    if (user.uid !== order.requester_id && user.uid !== order.owner_id) {
+      this.setStatus(403)
+      throw new Error("Unauthorized to cancel this order request")
+    }
+    const updatedOrder = await new OfferService().updateOfferStatus(
+      id,
+      "canceled",
+    )
+    return updatedOrder
+  }
 }

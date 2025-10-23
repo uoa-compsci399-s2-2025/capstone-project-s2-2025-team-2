@@ -51,9 +51,7 @@ const BountyBoard = () => {
 
   const fetchWantedReagents = useCallback(async () => {
     try {
-      const { data } = await client.GET("/wanted" as any, {
-
-      })
+      const { data } = await client.GET("/wanted" as any, {})
       setWanted((data as FirestoreWantedReagent[]) || [])
     } catch (error) {
       console.error("Failed to fetch wanted reagents:", error)
@@ -61,7 +59,7 @@ const BountyBoard = () => {
     }
   }, [])
 
-    const fetchOffers = useCallback(async () => {
+  const fetchOffers = useCallback(async () => {
     try {
       const token = localStorage.getItem("authToken")
       const { data } = await client.GET("/offers" as any, {
@@ -80,7 +78,7 @@ const BountyBoard = () => {
     }
   }
 
-    useEffect(() => {
+  useEffect(() => {
     fetchWantedReagents()
     fetchOffers()
     try {
@@ -99,24 +97,27 @@ const BountyBoard = () => {
   const availableWanted = wanted.filter((wantedReagent) => {
     const hasApprovedOffer = offers.some(
       (offer) =>
-        offer.reagent_id === wantedReagent.id && offer.status === "approved"
+        offer.reagent_id === wantedReagent.id && offer.status === "approved",
     )
     return !hasApprovedOffer
   })
-useEffect(() => {
-  console.log('All wanted:', wanted.length);
-  console.log('All offers:', offers.length);
-  console.log('Approved offers:', offers.filter(o => o.status === 'approved'));
-  console.log('Available wanted:', availableWanted.length);
-  
-  // Check specific matches
-  wanted.forEach(w => {
-    const matchingOffer = offers.find(o => o.reagent_id === w.id);
-    if (matchingOffer) {
-      console.log(`Wanted ${w.name} (${w.id}) has offer:`, matchingOffer);
-    }
-  });
-}, [wanted, offers]);
+  useEffect(() => {
+    console.log("All wanted:", wanted.length)
+    console.log("All offers:", offers.length)
+    console.log(
+      "Approved offers:",
+      offers.filter((o) => o.status === "approved"),
+    )
+    console.log("Available wanted:", availableWanted.length)
+
+    // Check specific matches
+    wanted.forEach((w) => {
+      const matchingOffer = offers.find((o) => o.reagent_id === w.id)
+      if (matchingOffer) {
+        console.log(`Wanted ${w.name} (${w.id}) has offer:`, matchingOffer)
+      }
+    })
+  }, [wanted, offers])
   const filtered = availableWanted.filter((r) => {
     const query = search.trim().toLowerCase()
     if (!query) return true
@@ -187,7 +188,7 @@ useEffect(() => {
     }
   })
 
-  const pageSize = 6
+  const pageSize = 12
   const { currentPage, setCurrentPage, currentData, totalPages } =
     usePagination(sorted, pageSize)
 
@@ -223,9 +224,9 @@ useEffect(() => {
         />
       </div>
 
-      <div className="bg-transparent flex flex-wrap pt-[2rem] gap-2 mx-4 md:mx-[2rem] pb-[4rem]">
+      <div className="bg-transparent grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 pt-[2rem] gap-y-2.5 md:gap-x-4 md:gap-y-3 lg:gap-x-6 mx-4 md:mx-[2rem] pb-[4rem]">
         {currentData.length === 0 ? (
-          <div className="text-center text-white/60 py-12">
+          <div className="text-center text-white/60 py-12 col-span-full">
             <p className="text-lg">No wanted reagents found</p>
           </div>
         ) : (
