@@ -22,15 +22,22 @@ const RecordCard = ({
   unit,
 }: RecordCardProps) => {
   return (
-    <div className="w-full border border-black p-2 rounded-md">
+    <div className="w-full border border-black px-4 py-2 rounded-2xl bg-secondary/30">
       <div>
-        <h3>{name}</h3>
-        <div>
-          {status} {name} {createdAt}
+        <div className="md:flex justify-between items-center">
+          <h3>{name}</h3>
+          <div>button</div>
         </div>
+
+        <div className="md:flex gap-4">
+          <p className="opacity-70">{status}</p>
+          <p className="opacity-70">{name}</p>{" "}
+          <p className="opacity-70">{createdAt}</p>
+        </div>
+        <div className="w-full h-[1px] bg-white my-2"></div>
         <div>
           <p>Order Id</p>
-          {orderId}
+          <p className="">{orderId}</p>
         </div>
       </div>
     </div>
