@@ -33,7 +33,11 @@ const RecordCard = ({
     <div className="w-full border-2 border-secondary/20 px-4 py-1 rounded-2xl bg-primary/60 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <div>
         <div className="md:flex justify-between items-center m-2">
-          <h3 className="md:mr-10 text-lg md:text-xl">{orderId}</h3>
+          <h3 className="md:mr-10 text-lg md:text-xl">
+            <span className="text-gray-400 mr-4 italic">Order Id</span>
+            <span className="text-gray-400 mr-4 italic">-</span>
+            {orderId}
+          </h3>
           <div
             className={`shadow-xl mt-4 hidden md:block md:m-0 px-3 py-0.5 ml-4 rounded-full text-center ${statusClasses}`}
           >
