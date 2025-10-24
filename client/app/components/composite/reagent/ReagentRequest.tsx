@@ -334,7 +334,7 @@ export const ReagentRequest = ({
         if (e.target === e.currentTarget) handleClose()
       }}
     >
-      <div className="relative w-full max-w-2xl bg-primary/70 backdrop-blur-sm rounded-2xl p-8 border border-muted shadow-2xl">
+      <div className="relative w-full max-w-xl bg-primary/80 backdrop-blur-sm rounded-2xl p-6 border border-muted shadow-2xl">
         <button
           onClick={handleClose}
           disabled={isSubmitting}
@@ -386,12 +386,12 @@ export const ReagentRequest = ({
               />
             </div>
 
-            <div className="mb-8">
+            <div className="mb-6">
               <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Attach a message (optional)..."
-                className="w-full px-4 py-3 rounded-xl bg-gray-100/25 text-gray-100 placeholder-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-primary resize-none"
+                className="w-full px-4 py-3 rounded-xl bg-gray-100/20 text-gray-100 placeholder-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-primary resize-none"
                 rows={4}
                 maxLength={500}
                 disabled={isSubmitting}
