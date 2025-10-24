@@ -23,7 +23,7 @@ const RecordCard = ({
   const statusKey = String(status).toLowerCase()
   const statusClasses =
     statusKey === "pending"
-      ? "bg-gradient-to-r from-yellow-300 to-yellow-900"
+      ? "bg-yellow-700"
       : statusKey === "approved"
         ? "bg-gradient-to-r from-green-300 to-green-900"
         : statusKey === "canceled"

@@ -5,6 +5,7 @@ import { useState, useEffect } from "react"
 import { auth } from "@/app/config/firebase"
 import { components } from "@/models/__generated__/schema"
 import RecordCard from "../components/composite/history/RecordCard"
+import LoadingState from "../components/composite/loadingstate/LoadingState"
 
 type Order = components["schemas"]["Order"]
 
@@ -54,7 +55,9 @@ const History = () => {
   if (isLoading) {
     return (
       <Overlay>
-        <div>Loading...</div>
+        <div className="flex flex-col justify-center w-full h-[100vh]">
+          <LoadingState pageName="History" />
+        </div>
       </Overlay>
     )
   }
