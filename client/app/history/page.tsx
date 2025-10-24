@@ -8,9 +8,10 @@ import RecordCard from "../components/composite/history/RecordCard"
 import LoadingState from "../components/composite/loadingstate/LoadingState"
 
 type Order = components["schemas"]["Order"]
+type OrderWithId = Order & { id: string }
 
 const History = () => {
-  const [orders, setOrders] = useState<Order[]>([])
+  const [orders, setOrders] = useState<OrderWithId[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [err, setErr] = useState<string | null>(null)
 
@@ -35,7 +36,7 @@ const History = () => {
           headers: { Authorization: `Bearer ${token}` },
         })
         if (!cancelled) {
-          setOrders(response.data || [])
+          setOrders((response.data as any) || [])
           setErr(null)
         }
       } catch (e) {
@@ -73,16 +74,21 @@ const History = () => {
       <div className="mx-8 mt-4">
         <div className="text-white gap-2 flex flex-col">
           <p className="text-4xl">History</p>
-          <p className="text-warning italic font-bold inline mr-2 my-2">View</p>
-          <p className="text-gray-100 italic inline">Past orders</p>
+          <span>
+            <p className="text-blue-primary italic font-bold inline mr-2 my-2">
+              View
+            </p>
+            <p className="text-gray-100 italic inline">Past orders</p>
+          </span>
+
           {orders.length === 0 ? (
             <p>No orders found</p>
           ) : (
             <div className="flex flex-col gap-4">
               {orders.map((order, index) => (
                 <RecordCard
-                  key={order.reagent_id}
-                  orderId={order.reagent_id}
+                  key={order.id}
+                  orderId={order.id}
                   name="name"
                   status={order.status}
                   createdAt={new Date(order.createdAt).toLocaleDateString()}
