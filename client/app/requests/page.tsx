@@ -46,6 +46,7 @@ export default function Orders() {
   const [reagents, setReagents] = useState<Map<string, ReagentWithId>>(
     new Map(),
   )
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [offers, setOffers] = useState<any[]>([])
   const [wantedReagents, setWantedReagents] = useState<
@@ -81,6 +82,11 @@ export default function Orders() {
     setOfferModalState({ isOpen: false, offer: null, wanted: null })
   }
 
+  //fetch userID of the logged in user
+useEffect(() => {
+  const currentUserId = localStorage.getItem("userId")
+  setCurrentUserId(currentUserId)
+}, [])
   //fetch all orders where user is owner/requester
   const fetchOrders = useCallback(async () => {
     const token = localStorage.getItem("authToken")
@@ -241,9 +247,13 @@ export default function Orders() {
       </div>
 
       <div className="mt-5"></div>
-
-      <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
-        {/*loading state*/}
+                  {!loading && (
+              <h2 className="text-2xl text-white pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem]">
+                From Bounty Board
+              </h2>
+            )}
+<div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
+  {/*loading state*/}
         {loading ? (
           <LoadingState pageName="Requests" />
         ) : !orders.length ? (
@@ -255,31 +265,90 @@ export default function Orders() {
             </p>
           </div>
         ) : (
-          //render order cards
-          orders.map((order) => {
-            const reagent = reagents.get(order.reagent_id)
-            if (!reagent) return null
-            return (
-              <OrderCard
-                key={order.id}
-                reagent={reagent}
-                order={order}
-                onViewDetails={handleOrderDetails}
-              />
-            )
-          })
+          <div className="">
+            {orders.filter((order) => order.owner_id === currentUserId).length > 0 && (
+              <div>
+                <div className="text-xl font-medium text-white mb-4">Requests You Received</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-x-4 md:gap-y-3 lg:gap-x-6">
+                  {orders
+                    .filter((order) => order.owner_id === currentUserId)
+                    .map((order) => {
+                      const reagent = reagents.get(order.reagent_id)
+                      if (!reagent) return null
+                      return (
+                        <OrderCard
+                          key={order.id}
+                          reagent={reagent}
+                          order={order}
+                          onViewDetails={handleOrderDetails}
+                        />
+                      )
+                    })}
+                </div>
+              </div>
+            )}
+
+            {orders.filter((order) => order.owner_id !== currentUserId).length > 0 && (
+              <div>
+                <div className="text-xl font-medium text-white mb-4 mt-[2rem]">Requests You Sent</div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-x-4 md:gap-y-3 lg:gap-x-6">
+                  {orders
+                    .filter((order) => order.owner_id !== currentUserId)
+                    .map((order) => {
+                      const reagent = reagents.get(order.reagent_id)
+                      if (!reagent) return null
+                      return (
+                        <OrderCard
+                          key={order.id}
+                          reagent={reagent}
+                          order={order}
+                          onViewDetails={handleOrderDetails}
+                        />
+                      )
+                    })}
+                </div>
+              </div>
+            )}
+          </div>
         )}
         {offers.length > 0 && (
           <div className="w-full">
             {!loading && (
-              <h2 className="text-2xl font-medium text-white mb-4">
+              <h2 className="text-2xl font-medium text-white mb-[2.5rem] mt-[2rem]">
                 From Bounty Board
               </h2>
             )}
-
+                 {!loading && (
+          <div className="text-xl font-medium text-white mb-4">Offers You Received</div>
+            )}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-x-4 md:gap-y-3 lg:gap-x-6">
               {offers
-                .filter((offer) => offer.status !== "approved")
+                .filter((offer) => offer.status !== "approved" && offer.owner_id === currentUserId)
+                .map((offer) => {
+                  const wanted = wantedReagents.get(offer.reagent_id)
+                  if (!wanted) return null
+                  return (
+                    <WantedCard
+                      key={offer.id}
+                      wanted={{
+                        ...wanted,
+                        tradingType:
+                          wanted.tradingType as import("@/models/__generated__/schema").components["schemas"]["ReagentTradingType"],
+                      }}
+                      requesterInfo={wanted.requesterInfo}
+                      offeredReagentName={wanted.offeredReagentName}
+                      offer={offer}
+                      onViewDetails={handleOfferDetails}
+                    />
+                  )
+                })}
+            </div>
+             {!loading && (
+          <div className="text-xl font-medium text-white mb-4 mt-[3rem]">Offers You Sent</div>
+            )}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-x-4 md:gap-y-3 lg:gap-x-6">
+              {offers
+                .filter((offer) => offer.status !== "approved" && offer.owner_id !== currentUserId)
                 .map((offer) => {
                   const wanted = wantedReagents.get(offer.reagent_id)
                   if (!wanted) return null
