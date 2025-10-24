@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect, useCallback } from "react"
-import { BeakerIcon, XMarkIcon } from "@heroicons/react/20/solid"
+import { BeakerIcon, XMarkIcon, GiftIcon, CurrencyDollarIcon, ArrowsRightLeftIcon } from "@heroicons/react/20/solid"
 import type { components } from "@/models/__generated__/schema"
 import client from "../../../services/fetch-client"
 import { toast } from "sonner"
@@ -11,6 +11,12 @@ import LoadingState from "../loadingstate/LoadingState"
 
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
+
+const TRADING_CONFIG = {
+  giveaway: { icon: GiftIcon, color: "text-blue-100" },
+  sell: { icon: CurrencyDollarIcon, color: "text-green-100" },
+  trade: { icon: ArrowsRightLeftIcon, color: "text-purple-100" },
+} as const
 
 interface ReagentRequestProps {
   isOpen: boolean
@@ -351,8 +357,12 @@ export const ReagentRequest = ({
         ) : (
           //request window
           <div>
-            <h2 className="text-white text-center text-2xl font-medium mb-8">
-              Reagent Request
+            <h2 className="text-white text-center text-2xl font-medium mb-8 flex items-center justify-center gap-2">
+              <span className={`flex items-center gap-1 ${TRADING_CONFIG[reagent.tradingType as keyof typeof TRADING_CONFIG].color}`}>
+                {React.createElement(TRADING_CONFIG[reagent.tradingType as keyof typeof TRADING_CONFIG].icon, { className: "w-6 h-6" })}
+                {reagent.tradingType.charAt(0).toUpperCase() + reagent.tradingType.slice(1)}
+              </span>
+              Request
             </h2>
 
             <div className="flex items-center justify-center mb-8">
