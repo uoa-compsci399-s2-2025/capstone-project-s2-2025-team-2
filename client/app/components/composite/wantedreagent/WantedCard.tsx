@@ -82,35 +82,35 @@ const WantedCard = ({
   const Icon = tradingStyle.icon
 
   const TradingTypeDisplay = () => (
-    <p className={`flex items-center gap-1 text-sm md:text-base ${color}`}>
-      <Icon className="w-5 h-5" />
-    </p>
+    <div className={`flex items-center gap-1 text-sm md:text-base ${color}`}>
+      <Icon className="w-6 h-6" />
+    </div>
   )
 
   return (
-    <div className="w-full border border-white/10 rounded-xl cursor-pointer hover:border-blue-primary/50 transition-all relative">
+    <div className="w-full border border-white/20 rounded-xl cursor-pointer hover:border-blue-primary/50 transition-all relative">
       {BG_LAYERS.map((style, i) => (
         <div key={i} className="absolute inset-0 rounded-xl" style={style} />
       ))}
       <div className="relative p-5 flex flex-col gap-4">
-        <div className="flex-1 space-y-2">
-          <div className="flex items-center gap-3 flex-wrap">
+        <div className="flex-1 space-y-3">
+          <div className="flex items-center gap-2 flex-wrap">
             {/* Trading Type */}
             <TradingTypeDisplay />
 
             {/* Title */}
-            <h3 className="text-xl font-semibold text-white">
+            <h3 className="text-white text-base md:text-lg tracking-wider leading-normal font-semibold truncate max-w-9/10">
               {wanted.name}
               {wanted.tradingType === "sell" &&
                 typeof wanted.price === "number" && (
-                  <span className="text-white/70 text-sm font-normal ml-2">
+                  <span className="text-white/80 text-sm font-normal ml-2">
                     • ${wanted.price.toFixed(2)}
                   </span>
                 )}
               {wanted.tradingType === "trade" && offeredReagentName && (
                 <Link
                   href={`/marketplace/${(wanted as any).requesterOfferedReagentId}`}
-                  className="text-white/70 text-sm font-normal ml-2 hover:underline"
+                  className="text-white/80 text-sm font-normal ml-2 hover:underline"
                 >
                   • offering: {offeredReagentName}
                 </Link>
@@ -118,11 +118,11 @@ const WantedCard = ({
             </h3>
           </div>
 
-          <div className="flex flex-wrap items-start gap-y-2 gap-x-2 md:gap-x-4">
+          <div className="flex flex-wrap items-center gap-y-1 gap-x-3">
             {/* User */}
-            <div className="flex items-center gap-0.5 text-white/60">
+            <div className="flex items-center gap-1 text-white/70">
               <UserIcon className="w-4 h-4" />
-              <span className="text-xs">
+              <span className="text-sm">
                 {requesterInfo?.displayName || requesterInfo?.preferredName},{" "}
                 {wanted?.location || "Unknown University"}
               </span>
@@ -130,25 +130,25 @@ const WantedCard = ({
             {/* Expiring Date */}
             <div className="flex items-center gap-1 text-warning">
               <ClockIcon className="w-4 h-4" />
-              <span className="text-xs">
+              <span className="text-sm">
                 {wanted.expiryDate || "No date specified"}
               </span>
             </div>
           </div>
 
           {/* Description */}
-          <p className="text-sm text-white line-clamp-2 leading-relaxed">
+          <p className="text-white text-sm md:text-base leading-relaxed line-clamp-2 mt-4">
             {onViewDetails ? offer.message : wanted.description}
           </p>
         </div>
 
-        <div className="flex flex-row justify-between text-sm">
+        <div className="flex flex-row justify-between items-center">
           {/* Categories */}
-          <div className="flex flex-wrap gap-1 mt-1">
+          <div className="flex flex-wrap gap-1">
             {wanted.categories.map((cat, i) => (
               <span
                 key={i}
-                className="bg-secondary/20 text-white text-xs px-2 py-1 rounded backdrop-blur-sm"
+                className="bg-secondary/20 text-white text-xs md:text-sm px-2 py-1 rounded backdrop-blur-sm"
               >
                 {cat}
               </span>
@@ -157,14 +157,14 @@ const WantedCard = ({
 
           {/* ContactButton on Marketplace page */}
           {showContactButton && isSignedIn && (
-            <ContactButton wanted={wanted} className="md:ml-auto" />
+            <ContactButton wanted={wanted} className="ml-auto" />
           )}
 
           {/* View Details button on Orders page */}
           {onViewDetails && offer && (
             <button
               onClick={() => onViewDetails(offer.id)}
-              className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer"
+              className="flex items-center gap-0.5 px-2 py-1.5 text-xs md:text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer ml-auto"
             >
               View
               <ArrowRightIcon className="w-5 h-5" />
