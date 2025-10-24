@@ -32,7 +32,7 @@ const RecordCard = ({
           ? "bg-gradient-to-r from-red-500 to-red-900"
           : "bg-gradient-to-r from-gray-300 to-gray-900"
   return (
-    <div className="w-full border border-black px-4 py-2 rounded-2xl bg-primary/60 shadow-lg hover:shadow-xl transition-shadow duration-300">
+    <div className="w-full border border-primary/50 px-4 py-1 rounded-2xl bg-primary/60 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <div>
         <div className="md:flex md:justify-between items-center m-2">
           <h3 className="md:mr-10">{name}</h3>
@@ -48,7 +48,7 @@ const RecordCard = ({
           <p className="text-gray-300 text-sm">{name}</p>{" "}
           <p className="text-gray-300 text-sm">{createdAt}</p>
         </div>
-        <div className="w-full h-[1px] bg-white/60 my-2"></div>
+        <div className="w-full h-[1px] bg-white/40 my-3"></div>
         <div className="m-2">
           <p>Order Id</p>
           <p className="text-gray-400">{orderId}</p>
