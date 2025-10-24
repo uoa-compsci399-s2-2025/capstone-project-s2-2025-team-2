@@ -100,7 +100,7 @@ const UserDisplay = ({
     ) : (
       reagentName && (
         <div
-          className="text-gray-400 text-base font-light mt-2 truncate max-w-[140px]"
+          className="text-gray-400 text-base font-light truncate max-w-[140px]"
           title={reagentName}
         >
           {reagentName}
@@ -358,11 +358,11 @@ export const ReagentRequest = ({
           //request window
           <div>
             <h2 className="text-white text-center text-2xl font-medium mb-8 flex items-center justify-center gap-2">
-              <span className={`flex items-center gap-1 ${TRADING_CONFIG[reagent.tradingType as keyof typeof TRADING_CONFIG].color}`}>
+              <span className={`flex items-center gap-1 text-2xl font-medium ${TRADING_CONFIG[reagent.tradingType as keyof typeof TRADING_CONFIG].color}`}>
                 {React.createElement(TRADING_CONFIG[reagent.tradingType as keyof typeof TRADING_CONFIG].icon, { className: "w-6 h-6" })}
                 {reagent.tradingType.charAt(0).toUpperCase() + reagent.tradingType.slice(1)}
               </span>
-              Request
+              <span className="text-2xl font-medium">Request</span>
             </h2>
 
             <div className="flex items-center justify-center mb-8">
