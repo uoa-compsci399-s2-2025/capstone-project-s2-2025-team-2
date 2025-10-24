@@ -54,7 +54,7 @@ const UserDisplay = ({
 }: UserDisplayProps) => (
   <div className="flex flex-col items-center flex-1 min-w-0">
     <div className="flex items-center gap-3">
-      <div className="text-white text-3xl font-semibold">
+      <div className="text-white text-3xl font-semibold truncate md:truncate-none max-w-[80px] md:max-w-none">
         {name}
       </div>
       {showIcon && !showPriceInput && (
