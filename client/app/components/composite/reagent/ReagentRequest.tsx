@@ -382,7 +382,7 @@ export const ReagentRequest = ({
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Attach a message (optional)..."
                 className="w-full px-3 py-2 rounded-xl bg-gray-100/15 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-primary resize-none"
-                rows={3}
+                rows={4}
                 maxLength={500}
                 disabled={isSubmitting}
               />
