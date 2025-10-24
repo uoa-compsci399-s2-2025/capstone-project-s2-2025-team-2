@@ -67,24 +67,27 @@ const History = () => {
   }
   return (
     <Overlay>
-      <div className="m-4">
+      <div className="mx-8 mt-4">
         <div className="text-white gap-2 flex flex-col">
+          <p className="text-4xl">History</p>
+          <p className="text-warning italic font-bold inline mr-2 my-2">View</p>
+          <p className="text-gray-100 italic inline">Past orders</p>
           {orders.length === 0 ? (
             <p>No orders found</p>
           ) : (
-            <ul>
+            <div className="flex flex-col gap-4">
               {orders.map((order, index) => (
-                <div
-                  className="flex flex-col my-2 bg-primary rounded-md p-3"
-                  key={order.reagent_id ?? index}
-                >
-                  <p>Order: {order.reagent_id}</p>
-                  <p>Initiate Message:{order.message}</p>
-                  <p>Quantity: {order.quantity}</p>
-                  <p>Status: {order.status}</p>
-                </div>
+                <RecordCard
+                  key={order.reagent_id}
+                  orderId={order.reagent_id}
+                  name="name"
+                  status={order.status}
+                  createdAt={new Date(order.createdAt).toLocaleDateString()}
+                  // price={order.price || undefined}
+                  quantity={order.quantity || 0}
+                />
               ))}
-            </ul>
+            </div>
           )}
         </div>
       </div>

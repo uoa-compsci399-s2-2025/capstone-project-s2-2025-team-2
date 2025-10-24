@@ -8,7 +8,6 @@ interface RecordCardProps {
   offeredReagentId?: string
   price?: number
   quantity: number
-  unit: number
 }
 
 const RecordCard = ({
@@ -19,7 +18,6 @@ const RecordCard = ({
   offeredReagentId,
   price,
   quantity,
-  unit,
 }: RecordCardProps) => {
   const tradeType = price ? "Trade" : offeredReagentId ? "Exchange" : "Giveaway"
   const statusKey = String(status).toLowerCase()
