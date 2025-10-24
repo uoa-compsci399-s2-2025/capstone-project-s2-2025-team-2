@@ -147,7 +147,7 @@ const ReagentDetails = ({
       )}
 
       <DetailRow label="Location" value={reagent?.location} truncate />
-      {offerDetails && reagent.price && (
+      {offerDetails && reagent.price>0 && (
         <DetailRow label="Offered Price" value={`$${price}`} />
       )}
       {reagent?.categories?.length > 0 && (
