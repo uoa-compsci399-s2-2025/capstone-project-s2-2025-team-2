@@ -170,7 +170,7 @@ const BountyBoard = () => {
           r.categories.some((c) => c.toLowerCase().includes(query))
         )
       case "date":
-        return (r.createdAt ?? "").toLowerCase().includes(query)
+        return (r.createdAtReadable ?? "").toLowerCase().includes(query)
       default:
         return (r.name ?? "").toLowerCase().includes(query)
     }
