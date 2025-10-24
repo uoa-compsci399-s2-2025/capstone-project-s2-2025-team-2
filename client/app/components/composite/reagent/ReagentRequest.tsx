@@ -68,7 +68,7 @@ const UserDisplay = ({
             type="number"
             value={price}
             onChange={(e) => onPriceChange?.(e.target.value)}
-            className="bg-transparent text-white w-12 text-center focus:outline-none text-base font-medium leading-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            className="bg-transparent text-white w-16 text-center focus:outline-none text-base font-medium leading-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             placeholder="0.00"
             min="0"
             disabled={isSubmitting}
