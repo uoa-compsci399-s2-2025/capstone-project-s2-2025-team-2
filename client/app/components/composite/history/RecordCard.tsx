@@ -35,23 +35,23 @@ const RecordCard = ({
     <div className="w-full border border-black px-4 py-2 rounded-2xl bg-primary/60 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <div>
         <div className="md:flex md:justify-between items-center m-2">
-          <h3 className="mb-4 md:m-0">{name}</h3>
+          <h3 className="md:mr-10">{name}</h3>
           <div
-            className={`shadow-xl px-2 py-0.5 ml-4 rounded-full text-center ${statusClasses}`}
+            className={`shadow-xl mt-4 md:m-0 px-3 py-0.5 ml-4 rounded-full  text-center ${statusClasses}`}
           >
-            <p>{status}</p>
+            <p className="text-sm">{status}</p>
           </div>
         </div>
 
         <div className="md:flex gap-4 m-2">
-          <p className="text-gray-300">{tradeType}</p>
-          <p className="text-gray-300">{name}</p>{" "}
-          <p className="text-gray-300">{createdAt}</p>
+          <p className="text-gray-300 text-sm">{tradeType}</p>
+          <p className="text-gray-300 text-sm">{name}</p>{" "}
+          <p className="text-gray-300 text-sm">{createdAt}</p>
         </div>
         <div className="w-full h-[1px] bg-white/60 my-2"></div>
         <div className="m-2">
           <p>Order Id</p>
-          <p className="">{orderId}</p>
+          <p className="text-gray-400">{orderId}</p>
         </div>
       </div>
     </div>
