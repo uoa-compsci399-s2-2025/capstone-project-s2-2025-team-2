@@ -145,7 +145,7 @@ const Landing = () => {
           className="mt-[20vh] md:mt-[15vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-40"
         >
           <div className="lg:ml-[3rem] w-full lg:w-1/2 bg-white/90 dark:bg-primary/90 lg:bg-transparent lg:dark:bg-transparent rounded-2xl p-6">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-slide-up-1">
+            <h1 className="text-4xl md:text-5xl hero-gradient-text-dark font-bold mb-4 animate-slide-up-1">
               <span className="hero-text-light">No More Waste.</span>
               <br />
               <span className="hero-gradient-text-dark">
@@ -237,7 +237,7 @@ const Landing = () => {
             className="flex flex-col lg:flex-row items-center justify-center gap-20 mt-40 mb-40 relative"
           >
             <div className="relative">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-left hero-text-light">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-left hero-gradient-text-dark">
                 Reduce, Reuse,
                 <br />
                 Reagent.

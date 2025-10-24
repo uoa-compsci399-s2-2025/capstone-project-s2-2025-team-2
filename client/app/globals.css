@@ -187,8 +187,8 @@
   .hero-text-light {
     background-image: radial-gradient(
       circle farthest-corner at 20% 0%,
-      #adaef4 25%,
-      #9799f7
+      #d4d4fe 25%,
+      #d3d4fc
     );
     -webkit-text-fill-color: transparent;
     -webkit-background-clip: text;
@@ -209,8 +209,8 @@
   .hero-gradient-text-dark {
     background-image: radial-gradient(
       circle farthest-corner at 20% 0%,
-      #9fa1ff 5%,
-      #6366ff
+      #dfe0ff 5%,
+      #8a8cff
     ) !important;
     -webkit-text-fill-color: transparent !important;
     -webkit-background-clip: text !important;
