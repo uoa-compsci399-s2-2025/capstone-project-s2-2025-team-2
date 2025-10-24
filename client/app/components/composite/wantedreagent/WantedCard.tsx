@@ -109,7 +109,6 @@ const WantedCard = ({
             </h3>
           </div>
 
-
           <div className="flex flex-wrap items-start gap-y-2 gap-x-2 md:gap-x-4">
             {/* User */}
             <div className="flex items-center gap-0.5 text-white/60">
@@ -130,9 +129,7 @@ const WantedCard = ({
 
           {/* Description */}
           <p className="text-sm text-white line-clamp-2 leading-relaxed">
-            {onViewDetails
-              ? offer.message
-          : wanted.description}
+            {onViewDetails ? offer.message : wanted.description}
           </p>
         </div>
 
@@ -159,9 +156,9 @@ const WantedCard = ({
             <button
               onClick={() => onViewDetails(offer.id)}
               className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer"
-    >
-      View
-      <ArrowRightIcon className="w-5 h-5" />
+            >
+              View
+              <ArrowRightIcon className="w-5 h-5" />
             </button>
           )}
         </div>

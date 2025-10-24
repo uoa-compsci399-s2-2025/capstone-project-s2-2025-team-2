@@ -48,9 +48,9 @@ export default function Orders() {
   )
   const [loading, setLoading] = useState(true)
   const [offers, setOffers] = useState<any[]>([])
-  const [wantedReagents, setWantedReagents] = useState<Map<string, EnrichedWantedReagent>>(
-    new Map(),
-  )
+  const [wantedReagents, setWantedReagents] = useState<
+    Map<string, EnrichedWantedReagent>
+  >(new Map())
   const [offerModalState, setOfferModalState] = useState<{
     isOpen: boolean
     offer: any | null
@@ -134,13 +134,15 @@ export default function Orders() {
         const validWantedReagents = wantedReagentData.filter(Boolean)
 
         // Get unique user IDs from wanted reagents
-        const uniqueUserIds = [...new Set(validWantedReagents.map(r => r.user_id))]
+        const uniqueUserIds = [
+          ...new Set(validWantedReagents.map((r) => r.user_id)),
+        ]
 
         // Fetch all users in parallel
-        const userDataPromises = uniqueUserIds.map(userId =>
+        const userDataPromises = uniqueUserIds.map((userId) =>
           client.GET(`/users/${userId}` as any, {
             headers: { Authorization: `Bearer ${token}` },
-          })
+          }),
         )
         const userResults = await Promise.allSettled(userDataPromises)
 
@@ -148,7 +150,7 @@ export default function Orders() {
         const userMap = new Map()
         uniqueUserIds.forEach((userId, index) => {
           const result = userResults[index]
-          if (result.status === 'fulfilled' && result.value.data) {
+          if (result.status === "fulfilled" && result.value.data) {
             userMap.set(userId, result.value.data)
           }
         })
@@ -157,11 +159,17 @@ export default function Orders() {
         const enrichedWantedReagents = await Promise.all(
           validWantedReagents.map(async (wanted) => {
             let offeredReagentName = null
-            if (wanted.tradingType === "trade" && wanted.requesterOfferedReagentId) {
+            if (
+              wanted.tradingType === "trade" &&
+              wanted.requesterOfferedReagentId
+            ) {
               try {
-                const resp = await client.GET(`/reagents/${wanted.requesterOfferedReagentId}` as any, {
-                  headers: { Authorization: `Bearer ${token}` },
-                })
+                const resp = await client.GET(
+                  `/reagents/${wanted.requesterOfferedReagentId}` as any,
+                  {
+                    headers: { Authorization: `Bearer ${token}` },
+                  },
+                )
                 if (resp.data?.name) {
                   offeredReagentName = resp.data.name
                 }
@@ -173,14 +181,12 @@ export default function Orders() {
             return {
               ...wanted,
               requesterInfo: userMap.get(wanted.user_id),
-              offeredReagentName
+              offeredReagentName,
             } as EnrichedWantedReagent
-          })
+          }),
         )
 
-        setWantedReagents(
-          new Map(enrichedWantedReagents.map((r) => [r.id, r]))
-        )
+        setWantedReagents(new Map(enrichedWantedReagents.map((r) => [r.id, r])))
       }
     } catch (error) {
       console.error("Error fetching orders:", error)
@@ -265,10 +271,10 @@ export default function Orders() {
         )}
         {offers.length > 0 && (
           <div className="w-full">
-            {!loading &&(
-            <h2 className="text-2xl font-medium text-white mb-4">
-              From Bounty Board
-            </h2>
+            {!loading && (
+              <h2 className="text-2xl font-medium text-white mb-4">
+                From Bounty Board
+              </h2>
             )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-x-4 md:gap-y-3 lg:gap-x-6">
@@ -282,7 +288,8 @@ export default function Orders() {
                       key={offer.id}
                       wanted={{
                         ...wanted,
-                        tradingType: wanted.tradingType as import("@/models/__generated__/schema").components["schemas"]["ReagentTradingType"]
+                        tradingType:
+                          wanted.tradingType as import("@/models/__generated__/schema").components["schemas"]["ReagentTradingType"],
                       }}
                       requesterInfo={wanted.requesterInfo}
                       offeredReagentName={wanted.offeredReagentName}

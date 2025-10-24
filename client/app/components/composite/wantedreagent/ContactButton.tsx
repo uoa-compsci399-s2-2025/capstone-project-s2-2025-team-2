@@ -120,13 +120,11 @@ const ContactButton = ({ wanted, className = "" }: ContactButtonProps) => {
         onClick={handleRequestClick}
         disabled={isCheckingInventory}
         aria-busy={isCheckingInventory}
+        className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer"
+      >
+        {isCheckingInventory ? "Checking..." : "Offer"}
 
-
-                      className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer"
-    >
-              {isCheckingInventory ? "Checking..." : "Offer"}
-
-      <ArrowRightIcon className="w-5 h-5" />
+        <ArrowRightIcon className="w-5 h-5" />
       </button>
       {wanted && (
         <ReagentRequest

@@ -146,9 +146,11 @@ const Landing = () => {
         >
           <div className="lg:ml-[3rem] w-full lg:w-1/2 bg-white/90 dark:bg-primary/90 lg:bg-transparent lg:dark:bg-transparent rounded-2xl p-6">
             <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-slide-up-1">
-              <span className=" hero-gradient-text-dark">No More Waste.</span>
+              <span className="hero-text-light">No More Waste.</span>
               <br />
-              <span className="hero-text-light">Collaborate to Innovate.</span>
+              <span className="hero-gradient-text-dark">
+                Collaborate to Innovate.
+              </span>
             </h1>
             <p className="text-lg text-white mb-8 leading-relaxed animate-slide-up-2">
               CoLab helps researchers connect across labs and institutions in
@@ -235,7 +237,7 @@ const Landing = () => {
             className="flex flex-col lg:flex-row items-center justify-center gap-20 mt-40 mb-40 relative"
           >
             <div className="relative">
-              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-left hero-gradient-text-dark">
+              <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-left hero-text-light">
                 Reduce, Reuse,
                 <br />
                 Reagent.

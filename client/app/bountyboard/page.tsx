@@ -65,11 +65,11 @@ const BountyBoard = () => {
       const reagents = (data as FirestoreWantedReagent[]) || []
 
       // Get unique user IDs
-      const uniqueUserIds = [...new Set(reagents.map(r => r.user_id))]
+      const uniqueUserIds = [...new Set(reagents.map((r) => r.user_id))]
 
       // Fetch all users in parallel
-      const userDataPromises = uniqueUserIds.map(userId =>
-        client.GET(`/users/${userId}` as any, {})
+      const userDataPromises = uniqueUserIds.map((userId) =>
+        client.GET(`/users/${userId}` as any, {}),
       )
       const userResults = await Promise.allSettled(userDataPromises)
 
@@ -77,7 +77,7 @@ const BountyBoard = () => {
       const userMap = new Map()
       uniqueUserIds.forEach((userId, index) => {
         const result = userResults[index]
-        if (result.status === 'fulfilled' && result.value.data) {
+        if (result.status === "fulfilled" && result.value.data) {
           userMap.set(userId, result.value.data)
         }
       })
@@ -86,9 +86,15 @@ const BountyBoard = () => {
       const enrichedData = await Promise.all(
         reagents.map(async (reagent) => {
           let offeredReagentName = null
-          if (reagent.tradingType === "trade" && (reagent as any).requesterOfferedReagentId) {
+          if (
+            reagent.tradingType === "trade" &&
+            (reagent as any).requesterOfferedReagentId
+          ) {
             try {
-              const resp = await client.GET(`/reagents/${(reagent as any).requesterOfferedReagentId}` as any, {})
+              const resp = await client.GET(
+                `/reagents/${(reagent as any).requesterOfferedReagentId}` as any,
+                {},
+              )
               if (resp.data?.name) {
                 offeredReagentName = resp.data.name
               }
@@ -100,9 +106,9 @@ const BountyBoard = () => {
           return {
             ...reagent,
             requesterInfo: userMap.get(reagent.user_id),
-            offeredReagentName
+            offeredReagentName,
           }
-        })
+        }),
       )
 
       setWanted(enrichedData)
