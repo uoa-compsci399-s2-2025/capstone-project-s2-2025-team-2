@@ -2,7 +2,7 @@
 
 interface RecordCardProps {
   orderId: string
-  name: string
+  reagentId: string
   status: string
   createdAt: string
   offeredReagentId?: string
@@ -12,7 +12,7 @@ interface RecordCardProps {
 
 const RecordCard = ({
   orderId,
-  name,
+  reagentId,
   status,
   createdAt,
   offeredReagentId,
@@ -33,7 +33,7 @@ const RecordCard = ({
     <div className="w-full border border-primary/50 px-4 py-1 rounded-2xl bg-primary/60 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <div>
         <div className="flex justify-between items-center m-2">
-          <h3 className="md:mr-10">{name}</h3>
+          <h3 className="md:mr-10">{orderId}</h3>
           <div
             className={`shadow-xl mt-4 md:m-0 px-3 py-0.5 ml-4 rounded-full text-center ${statusClasses}`}
           >
@@ -43,14 +43,19 @@ const RecordCard = ({
 
         <div className="md:flex gap-4 m-2">
           <p className="text-gray-300 text-sm">Order Type: {tradeType}</p>
-          <p className="text-gray-300 text-sm">Reagent: {name}</p>{" "}
+          {price && <p className="text-gray-300 text-sm">Price: ${price}</p>}
+          {offeredReagentId && (
+            <p className="text-gray-300 text-sm">
+              Offered Reagent ID: {offeredReagentId}
+            </p>
+          )}
           <p className="text-gray-300 text-sm">Date: {createdAt}</p>
           <p className="text-gray-300 text-sm">Quantity: {quantity}</p>
         </div>
         <div className="w-full h-[1px] bg-white/40 my-3"></div>
         <div className="m-2">
-          <p>Order Id</p>
-          <p className="text-gray-400">{orderId}</p>
+          <p>Reagent Id</p>
+          <p className="text-gray-400">{reagentId}</p>
         </div>
       </div>
     </div>

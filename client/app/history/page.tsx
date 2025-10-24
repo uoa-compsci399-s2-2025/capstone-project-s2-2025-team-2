@@ -8,6 +8,8 @@ import RecordCard from "../components/composite/history/RecordCard"
 import LoadingState from "../components/composite/loadingstate/LoadingState"
 
 type Order = components["schemas"]["Order"]
+type Exchange = components["schemas"]["Exchange"]
+type Trade = components["schemas"]["Trade"]
 type OrderWithId = Order & { id: string }
 
 const History = () => {
@@ -36,7 +38,8 @@ const History = () => {
           headers: { Authorization: `Bearer ${token}` },
         })
         if (!cancelled) {
-          setOrders((response.data as any) || [])
+          const ordersData = response.data as OrderWithId[]
+          setOrders((ordersData as OrderWithId[]) || [])
           setErr(null)
         }
       } catch (e) {
@@ -65,7 +68,9 @@ const History = () => {
   if (err) {
     return (
       <Overlay>
-        <div>{err}</div>
+        <div className="flex flex-col text-white items-center justify-center w-full h-[100vh]">
+          {err}!
+        </div>
       </Overlay>
     )
   }
@@ -85,17 +90,27 @@ const History = () => {
             <p>No orders found</p>
           ) : (
             <div className="flex flex-col gap-4">
-              {orders.map((order, index) => (
-                <RecordCard
-                  key={order.id}
-                  orderId={order.id}
-                  name="name"
-                  status={order.status}
-                  createdAt={new Date(order.createdAt).toLocaleDateString()}
-                  // price={order.price || undefined}
-                  quantity={order.quantity || 0}
-                />
-              ))}
+              {orders.map((order) => {
+                const isTrade = "price" in order
+                const isExchange = "offeredReagentId" in order
+
+                return (
+                  <RecordCard
+                    key={order.id}
+                    orderId={order.id}
+                    reagentId={order.reagent_id}
+                    status={order.status}
+                    createdAt={new Date(order.createdAt).toLocaleDateString()}
+                    price={isTrade ? (order as Trade).price : undefined}
+                    offeredReagentId={
+                      isExchange
+                        ? (order as Exchange).offeredReagentId
+                        : undefined
+                    }
+                    quantity={order.quantity || 0}
+                  />
+                )
+              })}
             </div>
           )}
         </div>
