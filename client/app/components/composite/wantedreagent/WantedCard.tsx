@@ -47,6 +47,12 @@ const TRADING_TYPE_STYLES = {
   trade: { color: "text-purple-100", icon: ArrowsRightLeftIcon },
 } as const
 
+const BG_LAYERS = [
+  { backgroundColor: "rgba(204, 204, 204)" },
+  { backgroundColor: "rgba(0, 0, 0, 0.9)" },
+  { backgroundColor: "rgba(255, 255, 255, 0.06)" },
+]
+
 const WantedCard = ({
   wanted,
   requesterInfo,
@@ -82,8 +88,11 @@ const WantedCard = ({
   )
 
   return (
-    <div className="w-full bg-primary border border-white/10 rounded-xl cursor-pointer hover:border-blue-primary/50 hover:bg-primary/80 transition-all">
-      <div className="p-5 flex flex-col gap-4">
+    <div className="w-full border border-white/10 rounded-xl cursor-pointer hover:border-blue-primary/50 transition-all relative">
+      {BG_LAYERS.map((style, i) => (
+        <div key={i} className="absolute inset-0 rounded-xl" style={style} />
+      ))}
+      <div className="relative p-5 flex flex-col gap-4">
         <div className="flex-1 space-y-2">
           <div className="flex items-center gap-3 flex-wrap">
             {/* Trading Type */}
@@ -139,7 +148,7 @@ const WantedCard = ({
             {wanted.categories.map((cat, i) => (
               <span
                 key={i}
-                className="bg-secondary/40 text-white text-xs px-2 py-1.5 rounded-lg backdrop-blur-sm"
+                className="bg-secondary/20 text-white text-xs px-2 py-1 rounded backdrop-blur-sm"
               >
                 {cat}
               </span>
