@@ -48,10 +48,7 @@ const UserDisplay = ({
 }: UserDisplayProps) => (
   <div className="flex flex-col items-center flex-1 min-w-0">
     <div className="flex items-center gap-3">
-      <div
-        className="text-white text-3xl font-semibold truncate max-w-[120px]"
-        title={name}
-      >
+      <div className="text-white text-3xl font-semibold">
         {name}
       </div>
       {showIcon && !showPriceInput && (
@@ -331,7 +328,7 @@ export const ReagentRequest = ({
         if (e.target === e.currentTarget) handleClose()
       }}
     >
-      <div className="relative w-full max-w-lg bg-primary/70 backdrop-blur-sm rounded-2xl p-6 border border-muted shadow-2xl">
+      <div className="relative w-full max-w-2xl bg-primary/70 backdrop-blur-sm rounded-2xl p-6 border border-muted shadow-2xl">
         <button
           onClick={handleClose}
           disabled={isSubmitting}
