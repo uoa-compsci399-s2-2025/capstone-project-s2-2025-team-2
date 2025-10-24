@@ -83,10 +83,10 @@ export default function Orders() {
   }
 
   //fetch userID of the logged in user
-useEffect(() => {
-  const currentUserId = localStorage.getItem("userId")
-  setCurrentUserId(currentUserId)
-}, [])
+  useEffect(() => {
+    const currentUserId = localStorage.getItem("userId")
+    setCurrentUserId(currentUserId)
+  }, [])
   //fetch all orders where user is owner/requester
   const fetchOrders = useCallback(async () => {
     const token = localStorage.getItem("authToken")
@@ -247,13 +247,13 @@ useEffect(() => {
       </div>
 
       <div className="mt-5"></div>
-                  {!loading && (
-              <h2 className="text-2xl text-white pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem]">
-                From Bounty Board
-              </h2>
-            )}
-<div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
-  {/*loading state*/}
+      {!loading && (
+        <h2 className="text-2xl text-white pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem]">
+          From Bounty Board
+        </h2>
+      )}
+      <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
+        {/*loading state*/}
         {loading ? (
           <LoadingState pageName="Requests" />
         ) : !orders.length ? (
@@ -266,9 +266,12 @@ useEffect(() => {
           </div>
         ) : (
           <div className="">
-            {orders.filter((order) => order.owner_id === currentUserId).length > 0 && (
+            {orders.filter((order) => order.owner_id === currentUserId).length >
+              0 && (
               <div>
-                <div className="text-xl font-medium text-white mb-4">Requests You Received</div>
+                <div className="text-xl font-medium text-white mb-4">
+                  Requests You Received
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-x-4 md:gap-y-3 lg:gap-x-6">
                   {orders
                     .filter((order) => order.owner_id === currentUserId)
@@ -288,9 +291,12 @@ useEffect(() => {
               </div>
             )}
 
-            {orders.filter((order) => order.owner_id !== currentUserId).length > 0 && (
+            {orders.filter((order) => order.owner_id !== currentUserId).length >
+              0 && (
               <div>
-                <div className="text-xl font-medium text-white mb-4 mt-[2rem]">Requests You Sent</div>
+                <div className="text-xl font-medium text-white mb-4 mt-[0.5rem]">
+                  Requests You Sent
+                </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-x-4 md:gap-y-3 lg:gap-x-6">
                   {orders
                     .filter((order) => order.owner_id !== currentUserId)
@@ -318,12 +324,18 @@ useEffect(() => {
                 From Bounty Board
               </h2>
             )}
-                 {!loading && (
-          <div className="text-xl font-medium text-white mb-4">Offers You Received</div>
+            {!loading && (
+              <div className="text-xl font-medium text-white mb-4">
+                Offers You Received
+              </div>
             )}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-x-4 md:gap-y-3 lg:gap-x-6">
               {offers
-                .filter((offer) => offer.status !== "approved" && offer.owner_id === currentUserId)
+                .filter(
+                  (offer) =>
+                    offer.status !== "approved" &&
+                    offer.owner_id === currentUserId,
+                )
                 .map((offer) => {
                   const wanted = wantedReagents.get(offer.reagent_id)
                   if (!wanted) return null
@@ -343,12 +355,18 @@ useEffect(() => {
                   )
                 })}
             </div>
-             {!loading && (
-          <div className="text-xl font-medium text-white mb-4 mt-[3rem]">Offers You Sent</div>
+            {!loading && (
+              <div className="text-xl font-medium text-white mb-4 mt-[3rem]">
+                Offers You Sent
+              </div>
             )}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-x-4 md:gap-y-3 lg:gap-x-6">
               {offers
-                .filter((offer) => offer.status !== "approved" && offer.owner_id !== currentUserId)
+                .filter(
+                  (offer) =>
+                    offer.status !== "approved" &&
+                    offer.owner_id !== currentUserId,
+                )
                 .map((offer) => {
                   const wanted = wantedReagents.get(offer.reagent_id)
                   if (!wanted) return null
