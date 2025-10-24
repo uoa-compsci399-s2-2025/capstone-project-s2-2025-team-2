@@ -202,7 +202,7 @@ export default function OrderDetailsModal({
 
   const offeredReagent = testOfferedReagent || fetchedOfferedReagent
   const isTradeLoading =
-    reagent.tradingType === "trade" || isOfferDetails &&
+    (reagent.tradingType === "trade" || isOfferDetails) &&
     !testOfferedReagent &&
     (offeredReagentLoading ||
       (!fetchedOfferedReagent && !!order.offeredReagentId))
