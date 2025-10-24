@@ -379,15 +379,12 @@ export const ReagentRequest = ({
               />
             </div>
 
-            <div className="mb-6">
-              <label className="block text-sm text-gray-300 mb-2">
-                Message (optional)
-              </label>
+            <div className="mb-4">
               <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="Attach a message..."
-                className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent resize-none"
+                placeholder="Attach a message (optional)..."
+                className="w-full px-3 py-2 rounded-xl bg-gray-100/15 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-primary resize-none"
                 rows={3}
                 maxLength={500}
                 disabled={isSubmitting}
