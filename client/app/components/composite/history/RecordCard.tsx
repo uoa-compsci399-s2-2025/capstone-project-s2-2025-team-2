@@ -32,10 +32,15 @@ const RecordCard = ({
   return (
     <div className="w-full border border-primary/50 px-4 py-1 rounded-2xl bg-primary/60 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <div>
-        <div className="flex justify-between items-center m-2">
+        <div className="md:flex justify-between items-center m-2">
           <h3 className="md:mr-10">{orderId}</h3>
           <div
-            className={`shadow-xl mt-4 md:m-0 px-3 py-0.5 ml-4 rounded-full text-center ${statusClasses}`}
+            className={`shadow-xl mt-4 hidden md:block md:m-0 px-3 py-0.5 ml-4 rounded-full text-center ${statusClasses}`}
+          >
+            <p className="text-sm">{status}</p>
+          </div>
+          <div
+            className={`shadow-xl w-24 md:hidden block my-2 md:m-0 px-3 py-0.5 rounded-full text-center ${statusClasses}`}
           >
             <p className="text-sm">{status}</p>
           </div>
