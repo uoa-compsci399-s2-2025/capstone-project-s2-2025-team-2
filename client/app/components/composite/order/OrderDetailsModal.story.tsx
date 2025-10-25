@@ -31,6 +31,7 @@ const testReagent = {
   createdAt: "2025-01-01T00:00:00.000Z",
   createdAtReadable: "January 1, 2025",
   images: [],
+  restricted: false,
 }
 
 const testOfferedReagent = {
@@ -49,6 +50,7 @@ const testOfferedReagent = {
   createdAt: "2025-01-01T00:00:00.000Z",
   createdAtReadable: "January 1, 2025",
   images: [],
+  restricted: false,
 }
 
 const meta = {

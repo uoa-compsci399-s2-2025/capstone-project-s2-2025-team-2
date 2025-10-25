@@ -47,6 +47,7 @@ interface FormData {
   expiryDate: string
   location: string
   images: File[]
+  restricted: boolean
   existingImages: string[] //the firebase storage urls of existing images
 }
 
@@ -96,6 +97,7 @@ export const ReagentForm = ({
     expiryDate: reagentData?.expiryDate || "",
     location: reagentData?.location || "",
     images: [], // type File[]
+    restricted: reagentData?.restricted || false,
     existingImages: reagentData?.images || [], // type string[] (firebase storage urls), which is why we have both images & existingImages
   })
 
@@ -177,6 +179,7 @@ export const ReagentForm = ({
           : 0,
       quantity: Number(formData.quantity),
       unit: formData.unit,
+      restricted: formData.restricted,
     }
 
     console.log("Token:", idToken)
@@ -409,8 +412,8 @@ export const ReagentForm = ({
   }
 
   const formInput = (
-    // image input doesnt consume this func, so exclude "images" field
-    field: Exclude<keyof FormData, "images">,
+    // image input + restricted field dont consume this func, so exclude both fields
+    field: Exclude<keyof FormData, "images" | "restricted">,
     props: React.InputHTMLAttributes<HTMLInputElement> = {},
   ) => (
     <input
@@ -661,6 +664,33 @@ export const ReagentForm = ({
               </div>
             )}
           </>
+        }
+      />
+
+      <FormField
+        label="Restricted Access"
+        input={
+          <label
+            className={`flex items-center gap-2 px-3 py-2 border rounded-lg cursor-pointer ${
+              formData.restricted
+                ? "border-blue-primary bg-blue-primary/20"
+                : "border-muted hover:border-gray-400"
+            }`}
+          >
+            <input
+              type="checkbox"
+              id="restricted"
+              checked={formData.restricted}
+              onChange={(e) =>
+                handleFieldChange("restricted", e.target.checked)
+              }
+              className="w-4 h-4"
+            />
+            <span className="text-white text-sm">
+              This reagent is subject to strict regulations and requires special
+              approval.
+            </span>
+          </label>
         }
       />
 

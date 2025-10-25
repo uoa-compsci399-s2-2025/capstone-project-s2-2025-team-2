@@ -47,6 +47,7 @@ export const DefaultReagentCard: Story = {
       location: "UoA, Auckland",
       price: 0,
       createdAtReadable: "1st Jan 2025",
+      restricted: false,
     },
   },
 }

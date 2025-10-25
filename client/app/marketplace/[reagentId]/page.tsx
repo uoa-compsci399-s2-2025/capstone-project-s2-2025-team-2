@@ -127,10 +127,15 @@ export default function ReagentView({ params }: ReagentViewProps) {
                             "No description provided for this reagent."}
                         </p>
                         <div className="mt-[2rem] flex justify-center">
+                          {reagent.restricted && (
+                            <div className="px-2 py-1 mr-[1rem] text-xs rounded-lg font-medium tracking-widest text-white bg-red-400/70">
+                              restricted
+                            </div>
+                          )}
                           {reagent.categories?.map((tag) => {
                             return (
                               <div
-                                className="px-2 py-1 mr-[1rem] text-xs rounded-lg tracking-widest text-white bg-secondary/30"
+                                className="px-2 py-1 mr-[1rem] text-xs rounded-lg font-medium tracking-widest text-white bg-secondary/30"
                                 key={tag}
                               >
                                 {tag}

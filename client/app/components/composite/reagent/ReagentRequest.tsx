@@ -1,7 +1,13 @@
 "use client"
 
 import React, { useState, useEffect, useCallback } from "react"
-import { BeakerIcon, XMarkIcon } from "@heroicons/react/20/solid"
+import {
+  BeakerIcon,
+  XMarkIcon,
+  GiftIcon,
+  CurrencyDollarIcon,
+  ArrowsRightLeftIcon,
+} from "@heroicons/react/20/solid"
 import type { components } from "@/models/__generated__/schema"
 import client from "../../../services/fetch-client"
 import { toast } from "sonner"
@@ -11,6 +17,12 @@ import LoadingState from "../loadingstate/LoadingState"
 
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
+
+const TRADING_CONFIG = {
+  giveaway: { icon: GiftIcon, color: "text-blue-100" },
+  sell: { icon: CurrencyDollarIcon, color: "text-green-100" },
+  trade: { icon: ArrowsRightLeftIcon, color: "text-purple-100" },
+} as const
 
 interface ReagentRequestProps {
   isOpen: boolean
@@ -48,10 +60,7 @@ const UserDisplay = ({
 }: UserDisplayProps) => (
   <div className="flex flex-col items-center flex-1 min-w-0">
     <div className="flex items-center gap-3">
-      <div
-        className="text-white text-3xl font-semibold truncate max-w-[120px]"
-        title={name}
-      >
+      <div className="text-white text-3xl font-semibold truncate md:truncate-none max-w-[80px] md:max-w-none">
         {name}
       </div>
       {showIcon && !showPriceInput && (
@@ -71,7 +80,7 @@ const UserDisplay = ({
             type="number"
             value={price}
             onChange={(e) => onPriceChange?.(e.target.value)}
-            className="bg-transparent text-white w-12 text-center focus:outline-none text-base font-medium leading-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+            className="bg-transparent text-white w-16 text-center focus:outline-none text-base font-medium leading-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
             placeholder="0.00"
             min="0"
             disabled={isSubmitting}
@@ -97,7 +106,7 @@ const UserDisplay = ({
     ) : (
       reagentName && (
         <div
-          className="text-gray-400 text-base font-light mt-2 truncate max-w-[140px]"
+          className="text-gray-400 text-base font-light truncate max-w-[140px]"
           title={reagentName}
         >
           {reagentName}
@@ -331,7 +340,7 @@ export const ReagentRequest = ({
         if (e.target === e.currentTarget) handleClose()
       }}
     >
-      <div className="relative w-full max-w-lg bg-primary rounded-2xl p-8 border border-muted shadow-2xl">
+      <div className="relative w-full max-w-xl bg-primary/80 backdrop-blur-sm rounded-2xl p-6 border border-muted shadow-2xl">
         <button
           onClick={handleClose}
           disabled={isSubmitting}
@@ -354,8 +363,20 @@ export const ReagentRequest = ({
         ) : (
           //request window
           <div>
-            <h2 className="text-white text-center text-2xl font-medium mb-8">
-              Reagent Request
+            <h2 className="text-white text-center text-2xl font-medium mb-8 flex items-center justify-center gap-2">
+              <span
+                className={`flex items-center gap-1 text-2xl font-medium ${TRADING_CONFIG[reagent.tradingType as keyof typeof TRADING_CONFIG].color}`}
+              >
+                {React.createElement(
+                  TRADING_CONFIG[
+                    reagent.tradingType as keyof typeof TRADING_CONFIG
+                  ].icon,
+                  { className: "w-6 h-6" },
+                )}
+                {reagent.tradingType.charAt(0).toUpperCase() +
+                  reagent.tradingType.slice(1)}
+              </span>
+              <span className="text-2xl font-medium">Request</span>
             </h2>
 
             <div className="flex items-center justify-center mb-8">
@@ -380,15 +401,12 @@ export const ReagentRequest = ({
             </div>
 
             <div className="mb-6">
-              <label className="block text-sm text-gray-300 mb-2">
-                Message (optional)
-              </label>
               <textarea
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder="Attach a message..."
-                className="w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent resize-none"
-                rows={3}
+                placeholder="Attach a message (optional)..."
+                className="w-full px-4 py-3 rounded-xl bg-gray-100/20 text-gray-100 placeholder-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-primary resize-none"
+                rows={4}
                 maxLength={500}
                 disabled={isSubmitting}
               />
