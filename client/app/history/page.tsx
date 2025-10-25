@@ -10,7 +10,11 @@ import LoadingState from "../components/composite/loadingstate/LoadingState"
 type Order = components["schemas"]["Order"]
 type Exchange = components["schemas"]["Exchange"]
 type Trade = components["schemas"]["Trade"]
-type OrderWithId = Order & { id: string; ownerName: string }
+type OrderWithId = Order & {
+  id: string
+  reagentName: string
+  ownerName: string
+}
 
 const History = () => {
   const [orders, setOrders] = useState<OrderWithId[]>([])
@@ -41,18 +45,31 @@ const History = () => {
           const ordersData = response.data as OrderWithId[]
           const ordersWithInfo = await Promise.all(
             ordersData.map(async (order) => {
-              const response = await client.GET(
-                `/users/${order.owner_id}/jwt` as any,
-                {
-                  headers: { Authorization: `Bearer ${token}` },
-                },
-              )
-              console.log(response.data.name)
-              const ownerName = response.data.name
-              return { ...order, ownerName }
+              try {
+                const reagentResponse = await client.GET(
+                  `/reagents/${order.reagent_id}` as any,
+                  {
+                    headers: { Authorization: `Bearer ${token}` },
+                  },
+                )
+                const ownerResponse = await client.GET(
+                  `/users/${order.owner_id}` as any,
+                  {
+                    headers: { Authorization: `Bearer ${token}` },
+                  },
+                )
+                return {
+                  ...order,
+                  reagentName: reagentResponse.data?.name || "Reagent Deleted",
+                  ownerName: ownerResponse.data?.displayName || "Unknown Owner",
+                }
+              } catch (e) {
+                console.error("fetch owner name failed", e)
+                return { ...order, ownerName: "Unknown" }
+              }
             }),
           )
-          setOrders(ordersWithInfo || [])
+          setOrders(ordersWithInfo)
           setErr(null)
         }
       } catch (e) {
@@ -111,8 +128,9 @@ const History = () => {
                   <RecordCard
                     key={order.id}
                     orderId={order.id}
-                    ownerId={order.owner_id}
+                    ownerName={order.ownerName}
                     reagentId={order.reagent_id}
+                    reagentName={order.reagentName}
                     status={order.status}
                     createdAt={new Date(order.createdAt).toLocaleDateString()}
                     price={isTrade ? (order as Trade).price : undefined}
