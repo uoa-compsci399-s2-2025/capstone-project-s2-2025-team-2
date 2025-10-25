@@ -46,11 +46,15 @@ export default function Orders() {
     })
 
     //only show pending orders
-    const pendingOrders = (ordersData as OrderWithId[]).filter(order => order.status === "pending")
+    const pendingOrders = (ordersData as OrderWithId[]).filter(
+      (order) => order.status === "pending",
+    )
     setOrders(pendingOrders)
 
     //fetch all reagents involved in orders, map ids
-    const uniqueIds = [...new Set(pendingOrders.map((o: Order) => o.reagent_id))]
+    const uniqueIds = [
+      ...new Set(pendingOrders.map((o: Order) => o.reagent_id)),
+    ]
     const reagentData = await Promise.all(
       uniqueIds.map(async (id) => {
         const { data } = await client.GET(`/reagents/${id}` as any, {

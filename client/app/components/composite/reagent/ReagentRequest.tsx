@@ -1,7 +1,13 @@
 "use client"
 
 import React, { useState, useEffect, useCallback } from "react"
-import { BeakerIcon, XMarkIcon, GiftIcon, CurrencyDollarIcon, ArrowsRightLeftIcon } from "@heroicons/react/20/solid"
+import {
+  BeakerIcon,
+  XMarkIcon,
+  GiftIcon,
+  CurrencyDollarIcon,
+  ArrowsRightLeftIcon,
+} from "@heroicons/react/20/solid"
 import type { components } from "@/models/__generated__/schema"
 import client from "../../../services/fetch-client"
 import { toast } from "sonner"
@@ -358,9 +364,17 @@ export const ReagentRequest = ({
           //request window
           <div>
             <h2 className="text-white text-center text-2xl font-medium mb-8 flex items-center justify-center gap-2">
-              <span className={`flex items-center gap-1 text-2xl font-medium ${TRADING_CONFIG[reagent.tradingType as keyof typeof TRADING_CONFIG].color}`}>
-                {React.createElement(TRADING_CONFIG[reagent.tradingType as keyof typeof TRADING_CONFIG].icon, { className: "w-6 h-6" })}
-                {reagent.tradingType.charAt(0).toUpperCase() + reagent.tradingType.slice(1)}
+              <span
+                className={`flex items-center gap-1 text-2xl font-medium ${TRADING_CONFIG[reagent.tradingType as keyof typeof TRADING_CONFIG].color}`}
+              >
+                {React.createElement(
+                  TRADING_CONFIG[
+                    reagent.tradingType as keyof typeof TRADING_CONFIG
+                  ].icon,
+                  { className: "w-6 h-6" },
+                )}
+                {reagent.tradingType.charAt(0).toUpperCase() +
+                  reagent.tradingType.slice(1)}
               </span>
               <span className="text-2xl font-medium">Request</span>
             </h2>

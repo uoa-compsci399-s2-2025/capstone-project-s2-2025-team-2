@@ -681,11 +681,14 @@ export const ReagentForm = ({
               type="checkbox"
               id="restricted"
               checked={formData.restricted}
-              onChange={(e) => handleFieldChange("restricted", e.target.checked)}
+              onChange={(e) =>
+                handleFieldChange("restricted", e.target.checked)
+              }
               className="w-4 h-4"
             />
             <span className="text-white text-sm">
-              This reagent is subject to strict regulations and requires special approval.
+              This reagent is subject to strict regulations and requires special
+              approval.
             </span>
           </label>
         }

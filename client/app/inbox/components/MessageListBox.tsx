@@ -71,11 +71,13 @@ export default function MessageListBox({
     //sort messages by recency (most recent first)
     const sorted = transformed.sort((a, b) => {
       const getTime = (conv: any) => {
-        //format firebase timestamp 
+        //format firebase timestamp
         const lastMsg = conv.originalData?.messages?.slice(-1)[0]
-        return lastMsg?.created_at?._seconds ? lastMsg.created_at._seconds * 1000 : 0
+        return lastMsg?.created_at?._seconds
+          ? lastMsg.created_at._seconds * 1000
+          : 0
       }
-      return getTime(b) - getTime(a)  
+      return getTime(b) - getTime(a)
     })
 
     if (!searchQuery) return sorted
