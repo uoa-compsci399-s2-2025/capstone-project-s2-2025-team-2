@@ -54,7 +54,7 @@ const RecordCard = ({
     <div className="w-full border-2 border-secondary/20 px-4 py-1 rounded-2xl bg-primary/70 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <div>
         <div className="md:flex justify-between items-center m-2">
-          <h3 className="md:mr-10 text-lg md:text-xl flex items-center gap-2">
+          <h3 className="md:mr-10 text-lg flex items-center gap-2">
             {Icon && <Icon className={`w-5 h-5 flex-shrink-0 ${color}`} />}
             <span>{reagentName}</span>
           </h3>
@@ -109,7 +109,7 @@ const RecordCard = ({
         <div className="w-full h-[1px] bg-white/40 my-3"></div>
         <div className="m-2">
           <p>Order Id</p>
-          <p className="text-gray-400">{orderId}</p>
+          <p className="text-gray-400 text-sm">{orderId}</p>
         </div>
       </div>
     </div>

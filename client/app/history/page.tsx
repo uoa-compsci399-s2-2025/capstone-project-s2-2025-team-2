@@ -116,20 +116,23 @@ const History = () => {
   }
   return (
     <Overlay>
+      <p className="text-4xl font-medium text-white mt-4 ml-8 tracking-[0.05em]">
+        History
+      </p>
+      <div className="ml-8">
+        <p className="text-blue-primary italic font-bold inline mr-2 tracking-[0.05em]">
+          View
+        </p>
+        <p className="text-gray-100 italic inline">Past orders</p>
+      </div>
+
+      <div className="mt-5"></div>
       <div className="mx-8 mt-4">
         <div className="text-white gap-2 flex flex-col">
-          <p className="text-4xl">History</p>
-          <span>
-            <p className="text-blue-primary italic font-bold inline mr-2 my-2">
-              View
-            </p>
-            <p className="text-gray-100 italic inline">Past orders</p>
-          </span>
-
           {orders.length === 0 ? (
             <p>No orders found</p>
           ) : (
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-4 pb-[4rem]">
               {orders.map((order) => {
                 const isTrade = "price" in order
                 const isExchange = "offeredReagentId" in order
