@@ -29,6 +29,7 @@ type FirestoreReagent = {
   unit: string
   user_id: string
   visibility: string
+  restricted: boolean
 }
 
 const Marketplace = () => {
