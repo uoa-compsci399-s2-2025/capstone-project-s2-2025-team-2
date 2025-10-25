@@ -45,10 +45,12 @@ export default function Orders() {
       headers: { Authorization: `Bearer ${token}` },
     })
 
-    setOrders(ordersData as OrderWithId[])
+    //only show pending orders
+    const pendingOrders = (ordersData as OrderWithId[]).filter(order => order.status === "pending")
+    setOrders(pendingOrders)
 
     //fetch all reagents involved in orders, map ids
-    const uniqueIds = [...new Set(ordersData.map((o: Order) => o.reagent_id))]
+    const uniqueIds = [...new Set(pendingOrders.map((o: Order) => o.reagent_id))]
     const reagentData = await Promise.all(
       uniqueIds.map(async (id) => {
         const { data } = await client.GET(`/reagents/${id}` as any, {
@@ -101,7 +103,7 @@ export default function Orders() {
         <p className="md:ml-8 text-warning italic font-bold inline mr-2 tracking-[0.05em]">
           Manage & Track
         </p>
-        <p className="text-gray-100 italic inline">Your Orders</p>
+        <p className="text-gray-100 italic inline">Your Pending Requests</p>
       </div>
 
       <div className="mt-5"></div>
@@ -115,7 +117,7 @@ export default function Orders() {
           <div className="bg-primary/50 rounded-lg p-8 border border-muted text-gray-400 text-center w-full">
             <h3 className="text-lg font-medium mb-2">No Requests Found.</h3>
             <p className="text-sm">
-              Requests tied to your account will appear here.
+              Pending requests tied to your account will appear here.
             </p>
           </div>
         ) : (
