@@ -1,6 +1,11 @@
 // libs/packages
 import { v4 as uuidv4 } from "uuid"
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage"
+import {
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage"
 // config
 import { storage } from "../config/firebase"
 
@@ -31,5 +36,23 @@ export const uploadProfilePicture = async (
   } catch (error) {
     console.error("Error uploading profile picture:", error)
     throw error
+  }
+}
+
+export const deleteReagentImage = async (
+  imageUrl: string,
+): Promise<boolean> => {
+  try {
+    // firebase img url format: https://firebasestorage.googleapis.com/v0/b/{bucket}/o/{path}?{params}
+    const urlPart = imageUrl.split("/o/")[1].split("?")[0]
+    const filePath = decodeURIComponent(urlPart)
+    const fileRef = ref(storage, filePath)
+
+    await deleteObject(fileRef)
+    console.log(`Deleted image: '${imageUrl}'`)
+    return true
+  } catch (err) {
+    console.error(`Error deleting image '${imageUrl}': ${err}`)
+    return false
   }
 }
