@@ -177,6 +177,7 @@ export const ReagentForm = ({
           : 0,
       quantity: Number(formData.quantity),
       unit: formData.unit,
+      restricted: false,
     }
 
     console.log("Token:", idToken)
