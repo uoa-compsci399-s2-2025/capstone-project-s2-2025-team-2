@@ -1,5 +1,7 @@
 "use client"
 import { useCallback, useEffect, useState } from "react"
+import { onAuthStateChanged } from "firebase/auth"
+import { auth } from "../config/firebase"
 import Overlay from "../components/composite/Overlay"
 import SearchBar from "../components/composite/searchbar/SearchBar"
 import ReagentCard from "../components/composite/reagent/ReagentCard"
@@ -34,10 +36,17 @@ const Marketplace = () => {
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState("all")
   const [sort, setSort] = useState<
-    "newest" | "oldest" | "nameAZ" | "nameZA" | ""
-  >("newest")
-  const [isSignedIn, setIsSignedIn] = useState(false)
+    "earliestExpiry" | "latestExpiry" | "nameAZ" | "nameZA" | ""
+  >("earliestExpiry")
   const [isFormOpen, setIsFormOpen] = useState(false)
+  const [isSignedIn, setIsSignedIn] = useState(false)
+  const [userUid, setUserUid] = useState<string | null>(null)
+
+  const [isCreateFormOpen, setIsCreateFormOpen] = useState(false)
+  const [isEditFormOpen, setIsEditFormOpen] = useState(false)
+  const [selectedReagentToEdit, setSelectedReagentToEdit] =
+    useState<FirestoreReagent | null>(null)
+
   const fetchReagents = useCallback(async () => {
     try {
       const { data } = await client.GET("/reagents", {})
@@ -59,14 +68,68 @@ const Marketplace = () => {
     }
   }, [fetchReagents])
 
-  const handleFormSubmit = async () => {
+  // need reagent owner id to check for reagent edit perms
+  useEffect(() => {
+    if (!auth) return
+
+    const unsub = onAuthStateChanged(auth, (user) => {
+      setUserUid(user?.uid ?? null)
+    })
+    return () => unsub()
+  }, [])
+
+  const handleCreateReagentFormSubmit = async () => {
     await fetchReagents()
-    setIsFormOpen(false)
+    setIsCreateFormOpen(false)
+  }
+
+  const handleEditReagentClick = (reagent: FirestoreReagent) => {
+    setSelectedReagentToEdit(reagent)
+    setIsEditFormOpen(true)
+  }
+
+  const handleEditReagentFormSubmit = async () => {
+    await fetchReagents() // prob not ideal but i couldnt make the reagent update (without user refreshing page) w/ any other method
+    setIsEditFormOpen(false)
+    setSelectedReagentToEdit(null)
+  }
+
+  const handleEditReagentFormCancel = () => {
+    setIsEditFormOpen(false)
+    setSelectedReagentToEdit(null)
+  }
+
+  const handleDeleteReagent = async (reagentId: string) => {
+    try {
+      const idToken = localStorage.getItem("authToken")
+      if (!idToken) return
+
+      const { error } = await client.DELETE(
+        `/users/reagents/${reagentId}` as any,
+        {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        },
+      )
+
+      if (error) {
+        throw new Error(`Failed to delete reagent: ${error}`)
+      }
+
+      await fetchReagents()
+      setIsEditFormOpen(false)
+      setSelectedReagentToEdit(null)
+    } catch (err) {
+      console.error(`Error deleting reagent: ${err}`)
+      throw new Error(`Failed to delete reagent: ${err}`)
+    }
   }
 
   const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
-      setIsFormOpen(false)
+      setIsCreateFormOpen(false)
+      setIsEditFormOpen(false)
     }
   }
 
@@ -84,8 +147,14 @@ const Marketplace = () => {
           Array.isArray(r.categories) &&
           r.categories.some((c) => c.toLowerCase().includes(query))
         )
-      case "date":
+      case "expiryDate":
         return (r.expiryDate ?? "").toLowerCase().includes(query)
+      case "condition":
+        return (r.condition ?? "").toLowerCase().includes(query)
+      case "location":
+        return (r.location ?? "").toLowerCase().includes(query)
+      case "tradingType":
+        return (r.tradingType ?? "").toLowerCase().includes(query)
       default:
         return (r.name ?? "").toLowerCase().includes(query)
     }
@@ -93,8 +162,8 @@ const Marketplace = () => {
 
   const sorted = [...filtered].sort((a, b) => {
     switch (sort) {
-      case "newest":
-      case "oldest": {
+      case "earliestExpiry":
+      case "latestExpiry": {
         const getTimestamp = (item: FirestoreReagent): number => {
           const date = item.createdAt
 
@@ -131,7 +200,7 @@ const Marketplace = () => {
         if (aTime === 0) return 1
         if (bTime === 0) return -1
 
-        return sort === "newest" ? bTime - aTime : aTime - bTime
+        return sort === "earliestExpiry" ? bTime - aTime : aTime - bTime
       }
 
       case "nameAZ":
@@ -223,6 +292,8 @@ const Marketplace = () => {
                   categories,
                   visibility,
                 }}
+                onEditClick={() => handleEditReagentClick(r)}
+                showEditButton={userUid === r.user_id}
               />
             )
           })
@@ -244,13 +315,15 @@ const Marketplace = () => {
 
       {isSignedIn && (
         <button
-          onClick={() => setIsFormOpen(true)}
+          onClick={() => setIsCreateFormOpen(true)}
           className="fixed bottom-8 right-8 w-14 h-14 bg-blue-primary hover:bg-blue-primary/90 text-white rounded-full transition-all duration-200 flex items-center text-3xl justify-center hover:scale-110 active:scale-95 group z-50"
         >
           +
         </button>
       )}
-      {isFormOpen && (
+
+      {/* marketplace CREATE REAGENT form */}
+      {isCreateFormOpen && (
         <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 "
           onClick={handleBackdropClick}
@@ -261,7 +334,7 @@ const Marketplace = () => {
                 List New Reagent
               </h2>
               <button
-                onClick={() => setIsFormOpen(false)}
+                onClick={() => setIsCreateFormOpen(false)}
                 className="text-gray-400 text-3xl hover:text-white "
               >
                 ❌
@@ -270,8 +343,55 @@ const Marketplace = () => {
 
             <div className="p-6 overflow-y-auto flex-1">
               <ReagentForm
-                onSubmit={handleFormSubmit}
-                onCancel={() => setIsFormOpen(false)}
+                onSubmit={handleCreateReagentFormSubmit}
+                onCancel={() => setIsCreateFormOpen(false)}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* reagent card EDIT REAGENT form */}
+      {isEditFormOpen && selectedReagentToEdit && (
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          onClick={handleBackdropClick}
+        >
+          <div className="bg-primary rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
+            <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
+              <h2 className="text-2xl font-medium text-white">Edit Reagent</h2>
+              <button
+                onClick={handleEditReagentFormCancel}
+                className="text-gray-400 text-3xl hover:text-white"
+              >
+                ❌
+              </button>
+            </div>
+
+            <div className="p-6 overflow-y-auto flex-1 scrollbar-hide">
+              <ReagentForm
+                onSubmit={handleEditReagentFormSubmit}
+                onCancel={handleEditReagentFormCancel}
+                editMode={true}
+                reagentData={{
+                  ...selectedReagentToEdit,
+                  // need to specify these property types as theyre too generic in FirestoreReagent model
+                  tradingType: selectedReagentToEdit.tradingType as
+                    | "trade"
+                    | "giveaway"
+                    | "sell",
+                  categories: selectedReagentToEdit.categories as (
+                    | "chemical"
+                    | "hazardous"
+                    | "biological"
+                  )[],
+                  visibility: selectedReagentToEdit.visibility as
+                    | "everyone"
+                    | "region"
+                    | "institution"
+                    | "private",
+                }}
+                onDelete={handleDeleteReagent}
               />
             </div>
           </div>
