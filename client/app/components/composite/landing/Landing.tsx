@@ -145,10 +145,12 @@ const Landing = () => {
           className="mt-[20vh] md:mt-[15vh] max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12 mb-40"
         >
           <div className="lg:ml-[3rem] w-full lg:w-1/2 bg-white/90 dark:bg-primary/90 lg:bg-transparent lg:dark:bg-transparent rounded-2xl p-6">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4 animate-slide-up-1">
-              <span className=" hero-gradient-text-dark">No More Waste.</span>
+            <h1 className="text-4xl md:text-5xl hero-gradient-text-dark font-bold mb-4 animate-slide-up-1">
+              <span className="hero-text-light">No More Waste.</span>
               <br />
-              <span className="hero-text-light">Collaborate to Innovate.</span>
+              <span className="hero-gradient-text-dark">
+                Collaborate to Innovate.
+              </span>
             </h1>
             <p className="text-lg text-white mb-8 leading-relaxed animate-slide-up-2">
               CoLab helps researchers connect across labs and institutions in

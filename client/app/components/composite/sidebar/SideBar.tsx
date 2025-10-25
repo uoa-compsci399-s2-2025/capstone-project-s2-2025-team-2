@@ -8,6 +8,7 @@ import {
   Bars3Icon,
   EnvelopeIcon,
   ClipboardDocumentListIcon,
+  UserGroupIcon,
   FolderIcon,
 } from "@heroicons/react/24/outline"
 import Button from "../../generic/button/regular/Button"
@@ -47,6 +48,12 @@ const Sidebar = () => {
       label: "Marketplace",
       icon: ShoppingCartIcon,
       requireSignIn: false,
+    },
+    {
+      href: "/bountyboard",
+      label: "Bounty Board",
+      icon: UserGroupIcon,
+      requireSignIn: true,
     },
     { href: "/inbox", label: "Inbox", icon: EnvelopeIcon, requireSignIn: true },
     {

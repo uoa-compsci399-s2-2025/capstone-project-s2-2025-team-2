@@ -36,7 +36,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.4.4",
-    "eslint-plugin-storybook": "9.0.18",
+    "eslint-plugin-storybook": "9.1.10",
     "googleapis": "^157.0.0",
     "storybook": "9.1.10",
     "tailwindcss": "^4",

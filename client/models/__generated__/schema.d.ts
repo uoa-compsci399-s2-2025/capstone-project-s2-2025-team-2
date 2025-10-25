@@ -4,6 +4,60 @@
  */
 
 export interface paths {
+  "/wanted": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description Get all wanted reagents with an option to filter them by category. */
+    get: operations["GetAllWantedReagents"]
+    put?: never
+    /** @description Create a reagent by passing in all the required props.
+     *     User must be authenticated to access this endpoint (lab manager / admin) */
+    post: operations["CreateWantedReagent"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/wanted/{id}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description Get a wanted reagent by its ID. */
+    get: operations["GetWantedReagentById"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/users/{id}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    /** @description Update user information by their ID
+     *     User **must** be authenticated to access this endpoint */
+    patch: operations["UpdateUser"]
+    trace?: never
+  }
   "/users/reagents/expiring": {
     parameters: {
       query?: never
@@ -449,6 +503,57 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  "/auth/valid-email-domains": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description Gets all valid valid email domains for signup */
+    get: operations["GetValidEmailDomains"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/auth/{domain_id}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    /** @description Allows admins to remove a valid signup email domain */
+    delete: operations["RemoveValidSignupEmailDomain"]
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/auth": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    /** @description Allows admins to add a new valid signup email domain */
+    post: operations["AddValidSignupEmailDomain"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
 }
 export type webhooks = Record<string, never>
 export interface components {
@@ -459,6 +564,65 @@ export interface components {
     ReagentCategory: "chemical" | "hazardous" | "biological"
     /** @enum {string} */
     ReagentVisibility: "everyone" | "region" | "institution" | "private"
+    /** @description From T, pick a set of properties whose keys are in the union K */
+    "Pick_Reagent.Exclude_keyofReagent.condition-or-quantity-or-unit-or-expiryDate__": {
+      user_id: string
+      name: string
+      description: string
+      /** Format: double */
+      price?: number
+      tradingType: components["schemas"]["ReagentTradingType"]
+      images?: string[]
+      categories: components["schemas"]["ReagentCategory"][]
+      createdAt: string
+      createdAtReadable: string
+      location: string
+      visibility?: components["schemas"]["ReagentVisibility"]
+    }
+    Wanted: {
+      user_id: string
+      name: string
+      description: string
+      /** Format: double */
+      price?: number
+      tradingType: components["schemas"]["ReagentTradingType"]
+      images?: string[]
+      categories: components["schemas"]["ReagentCategory"][]
+      createdAt: string
+      createdAtReadable: string
+      location: string
+      visibility?: components["schemas"]["ReagentVisibility"]
+    }
+    CreateWantedRequest: {
+      name: string
+      description: string
+      location: string
+      categories: components["schemas"]["ReagentCategory"][]
+      tradingType: components["schemas"]["ReagentTradingType"]
+    }
+    User: {
+      email: string
+      displayName: string
+      preferredName: string
+      lastName?: string
+      university: string
+      about?: string
+      /** @enum {string} */
+      role: "user" | "lab_manager" | "admin"
+      image?: string
+    }
+    /** @description Make all properties in T optional */
+    Partial_User_: {
+      email?: string
+      displayName?: string
+      preferredName?: string
+      lastName?: string
+      university?: string
+      about?: string
+      /** @enum {string} */
+      role?: "user" | "lab_manager" | "admin"
+      image?: string
+    }
     Reagent: {
       user_id: string
       name: string
@@ -477,14 +641,6 @@ export interface components {
       location: string
       unit: string
       visibility?: components["schemas"]["ReagentVisibility"]
-    }
-    User: {
-      email: string
-      displayName: string
-      preferredName: string
-      university: string
-      /** @enum {string} */
-      role: "user" | "lab_manager" | "admin"
     }
     CreateReagentRequest: {
       name: string
@@ -676,6 +832,17 @@ export interface components {
       preferredName?: string
       university?: string
     }
+    AuthDomainAllowedRoles: ("staff" | "student")[]
+    AuthDomain: {
+      emailDomains: string[]
+      institutionName: string
+      allowedRoles: components["schemas"]["AuthDomainAllowedRoles"]
+    }
+    AddSignupEmailDomainRequest: {
+      institutionName: string
+      emailDomains: string[]
+      allowedRoles: components["schemas"]["AuthDomainAllowedRoles"]
+    }
   }
   responses: never
   parameters: never
@@ -685,6 +852,104 @@ export interface components {
 }
 export type $defs = Record<string, never>
 export interface operations {
+  GetAllWantedReagents: {
+    parameters: {
+      query?: {
+        /** @description - The list of all categories to fetch wanted reagents from. */
+        category?: components["schemas"]["ReagentCategory"][]
+      }
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description All wanted reagents returned successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Wanted"][]
+        }
+      }
+    }
+  }
+  CreateWantedReagent: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateWantedRequest"]
+      }
+    }
+    responses: {
+      /** @description Wanted reagent created successfully */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Wanted"]
+        }
+      }
+    }
+  }
+  GetWantedReagentById: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description - The ID of the wanted reagent to retrieve. */
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Wanted reagents retrieved successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Wanted"]
+        }
+      }
+    }
+  }
+  UpdateUser: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description - The ID of the user to update */
+        id: string
+      }
+      cookie?: never
+    }
+    /** @description - The user information to update */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Partial_User_"]
+      }
+    }
+    responses: {
+      /** @description Ok */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["User"]
+        }
+      }
+    }
+  }
   GetReagentsExpiringSoon: {
     parameters: {
       query?: never
@@ -1451,6 +1716,73 @@ export interface operations {
         }
         content: {
           "application/json": components["schemas"]["VerifyTokenResponse"]
+        }
+      }
+    }
+  }
+  GetValidEmailDomains: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Valid email domains retrieved successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": string[]
+        }
+      }
+    }
+  }
+  RemoveValidSignupEmailDomain: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description - the ID of the domain to delete */
+        domain_id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Valid signup domain removed successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["AuthDomain"]
+        }
+      }
+    }
+  }
+  AddValidSignupEmailDomain: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["AddSignupEmailDomainRequest"]
+      }
+    }
+    responses: {
+      /** @description Valid signup email domain added successfully */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["AuthDomain"]
         }
       }
     }

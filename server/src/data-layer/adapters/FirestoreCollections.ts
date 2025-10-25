@@ -10,6 +10,8 @@ import {
   CHAT_ROOMS_COLLECTION,
   MESSAGES_COLLECTION,
   AUTH_DOMAINS_COLLECTION,
+  WANTED_COLLECTION,
+  OFFERS_COLLECTION,
 } from "./CollectionNames"
 import firestore from "./Firestore"
 
@@ -20,6 +22,8 @@ const FirestoreCollections = {
   chatRooms: firestore.collection<ChatRoom>(CHAT_ROOMS_COLLECTION),
   messages: firestore.collection<Message>(MESSAGES_COLLECTION),
   authDomains: firestore.collection<AuthDomain>(AUTH_DOMAINS_COLLECTION),
+  wanted: firestore.collection<Reagent>(WANTED_COLLECTION),
+  offers: firestore.collection<Order>(OFFERS_COLLECTION),
 } as const
 
 export default FirestoreCollections
