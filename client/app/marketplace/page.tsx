@@ -30,13 +30,14 @@ type FirestoreReagent = {
 }
 
 const Marketplace = () => {
+  const [isFormOpen, setIsFormOpen] = useState(false)
+
   const [reagents, setReagents] = useState<FirestoreReagent[]>([])
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState("all")
   const [sort, setSort] = useState<
     "newest" | "oldest" | "nameAZ" | "nameZA" | ""
   >("newest")
-  const [isFormOpen, setIsFormOpen] = useState(false)
   const [isSignedIn, setIsSignedIn] = useState(false)
 
   const fetchReagents = useCallback(async () => {
