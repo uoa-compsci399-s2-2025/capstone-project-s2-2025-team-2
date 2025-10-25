@@ -273,14 +273,14 @@ useEffect(() => {
             </p>
           </div>
         ) : (
-          <div className="">
+          <div className="w-full">
             {orders.filter((order) => order.owner_id === currentUserId).length >
               0 && (
               <div>
                 <div className="text-xl font-medium text-white mb-4">
                   Requests You Received
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-x-4 md:gap-y-3 lg:gap-x-6">
+                <div className="bg-transparent flex flex-wrap gap-4 md:gap-[2rem] pb-[1rem]">
                   {orders
                     .filter((order) => order.owner_id === currentUserId)
                     .map((order) => {
@@ -302,10 +302,10 @@ useEffect(() => {
             {orders.filter((order) => order.owner_id !== currentUserId).length >
               0 && (
               <div>
-                <div className="text-xl font-medium text-white mb-4 mt-[0.5rem]">
+                <div className="text-xl font-medium text-white mb-4 mt-[1rem]">
                   Requests You Sent
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-x-4 md:gap-y-3 lg:gap-x-6">
+                <div className="bg-transparent flex flex-wrap gap-4 md:gap-[2rem]">
                   {orders
                     .filter((order) => order.owner_id !== currentUserId)
                     .map((order) => {
@@ -333,7 +333,7 @@ useEffect(() => {
               </h2>
             )}
             {!loading && (
-              <div className="text-xl font-medium text-white mb-4">
+              <div className="text-xl font-medium text-white mb-[1rem]">
                 Offers You Received
               </div>
             )}
@@ -365,7 +365,7 @@ useEffect(() => {
                 })}
             </div>
             {!loading && (
-              <div className="text-xl font-medium text-white mb-4 mt-[3rem]">
+              <div className="text-xl font-medium text-white mb-4 mt-[2rem]">
                 Offers You Sent
               </div>
             )}
