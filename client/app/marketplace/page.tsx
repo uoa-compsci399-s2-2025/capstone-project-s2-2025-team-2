@@ -34,8 +34,8 @@ const Marketplace = () => {
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState("all")
   const [sort, setSort] = useState<
-    "newest" | "oldest" | "nameAZ" | "nameZA" | ""
-  >("newest")
+    "earliestExpiry" | "latestExpiry" | "nameAZ" | "nameZA" | ""
+  >("earliestExpiry")
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [isSignedIn, setIsSignedIn] = useState(false)
 
@@ -85,8 +85,14 @@ const Marketplace = () => {
           Array.isArray(r.categories) &&
           r.categories.some((c) => c.toLowerCase().includes(query))
         )
-      case "date":
+      case "expiryDate":
         return (r.expiryDate ?? "").toLowerCase().includes(query)
+      case "condition":
+        return (r.condition ?? "").toLowerCase().includes(query)
+      case "location":
+        return (r.location ?? "").toLowerCase().includes(query)
+      case "tradingType":
+        return (r.tradingType ?? "").toLowerCase().includes(query)
       default:
         return (r.name ?? "").toLowerCase().includes(query)
     }
@@ -94,8 +100,8 @@ const Marketplace = () => {
 
   const sorted = [...filtered].sort((a, b) => {
     switch (sort) {
-      case "newest":
-      case "oldest": {
+      case "earliestExpiry":
+      case "latestExpiry": {
         const getTimestamp = (item: FirestoreReagent): number => {
           const date = item.createdAt
 
@@ -132,7 +138,7 @@ const Marketplace = () => {
         if (aTime === 0) return 1
         if (bTime === 0) return -1
 
-        return sort === "newest" ? bTime - aTime : aTime - bTime
+        return sort === "earliestExpiry" ? bTime - aTime : aTime - bTime
       }
 
       case "nameAZ":
