@@ -10,7 +10,7 @@ import LoadingState from "../components/composite/loadingstate/LoadingState"
 type Order = components["schemas"]["Order"]
 type Exchange = components["schemas"]["Exchange"]
 type Trade = components["schemas"]["Trade"]
-type OrderWithId = Order & { id: string }
+type OrderWithId = Order & { id: string; ownerName: string }
 
 const History = () => {
   const [orders, setOrders] = useState<OrderWithId[]>([])
@@ -39,7 +39,20 @@ const History = () => {
         })
         if (!cancelled) {
           const ordersData = response.data as OrderWithId[]
-          setOrders((ordersData as OrderWithId[]) || [])
+          const ordersWithInfo = await Promise.all(
+            ordersData.map(async (order) => {
+              const response = await client.GET(
+                `/users/${order.owner_id}/jwt` as any,
+                {
+                  headers: { Authorization: `Bearer ${token}` },
+                },
+              )
+              console.log(response.data.name)
+              const ownerName = response.data.name
+              return { ...order, ownerName }
+            }),
+          )
+          setOrders(ordersWithInfo || [])
           setErr(null)
         }
       } catch (e) {
@@ -98,6 +111,7 @@ const History = () => {
                   <RecordCard
                     key={order.id}
                     orderId={order.id}
+                    ownerId={order.owner_id}
                     reagentId={order.reagent_id}
                     status={order.status}
                     createdAt={new Date(order.createdAt).toLocaleDateString()}

@@ -2,6 +2,7 @@
 
 interface RecordCardProps {
   orderId: string
+  ownerName: string
   reagentId: string
   status: string
   createdAt: string
@@ -12,6 +13,7 @@ interface RecordCardProps {
 
 const RecordCard = ({
   orderId,
+  ownerName,
   reagentId,
   status,
   createdAt,
@@ -58,6 +60,7 @@ const RecordCard = ({
               Offered Reagent ID: {offeredReagentId}
             </p>
           )}
+          <p className="text-gray-300 text-sm">Owner: {ownerName}</p>
           <p className="text-gray-300 text-sm">Date: {createdAt}</p>
           <p className="text-gray-300 text-sm">Quantity: {quantity}</p>
         </div>
