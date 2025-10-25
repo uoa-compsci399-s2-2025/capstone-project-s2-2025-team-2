@@ -98,11 +98,6 @@ export default function SignInBox({
         uid: response.uid,
         email: response.email,
       })
-      // Store userId in localStorage
-      if (response.uid) {
-        localStorage.setItem("userId", response.uid)
-        console.log("Email/password userId stored in localStorage")
-      }
       // Store ID token in localStorage
       try {
         const idToken = await getIdToken()
