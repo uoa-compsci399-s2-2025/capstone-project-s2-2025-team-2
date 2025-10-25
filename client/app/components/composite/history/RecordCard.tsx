@@ -72,7 +72,7 @@ const RecordCard = ({
 
         <div className="md:flex gap-4 m-2">
           <p className="text-gray-300 text-sm">Order Type: {tradeType}</p>
-          {price && (
+          {!!price && (
             <span className="flex gap-1">
               <p className="text-gray-300 text-sm">Price: </p>
               <p className="text-gray-400 text-sm">{price}</p>
