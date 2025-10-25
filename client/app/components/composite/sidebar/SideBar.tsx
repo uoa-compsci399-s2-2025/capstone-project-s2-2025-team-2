@@ -8,6 +8,7 @@ import {
   Bars3Icon,
   EnvelopeIcon,
   ClipboardDocumentListIcon,
+  FolderIcon,
 } from "@heroicons/react/24/outline"
 import Button from "../../generic/button/regular/Button"
 import { firebaseSignOut } from "../../../services/firebase-auth"
@@ -52,6 +53,12 @@ const Sidebar = () => {
       href: "/requests",
       label: "Requests",
       icon: ClipboardDocumentListIcon,
+      requireSignIn: true,
+    },
+    {
+      href: "/history",
+      label: "History",
+      icon: FolderIcon,
       requireSignIn: true,
     },
   ]
