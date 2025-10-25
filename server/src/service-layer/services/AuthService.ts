@@ -6,6 +6,7 @@ import EmailService from "./EmailService"
 import { SendVerificationCodeResponse } from "../dtos/response/SendVerificationCodeResponse"
 import { VerifyCodeResponse } from "../dtos/response/VerifyCodeResponse"
 import { VerifyTokenResponse } from "../dtos/response/VerifyTokenResponse"
+import { ResetPasswordResponse } from "../dtos/response/ResetPasswordResponse"
 
 import {
   EmailDomainValidationSchema,
@@ -158,6 +159,67 @@ export default class AuthService {
         `User email is a not an accepted institutional email: ${err}`,
       )
       return false
+    }
+  }
+
+  public async resetPassword(
+    email: string,
+    newPassword: string,
+  ): Promise<ResetPasswordResponse> {
+    try {
+      // Get user by email to find their UID
+      const user = await this.authRepository.getUserByEmail(email)
+      console.log("User found:", user)
+      if (!user) {
+        return {
+          success: false,
+          message: "User not found",
+        }
+      }
+
+      // Update password in Firebase Auth
+      await auth.updateUser(user.uid, {
+        password: newPassword,
+      })
+
+      return {
+        success: true,
+        message: "Password reset successfully",
+      }
+    } catch (err) {
+      console.error("Error resetting password:", err)
+      console.error("Error details:", {
+        name: err instanceof Error ? err.name : "Unknown",
+        message: err instanceof Error ? err.message : String(err),
+        stack: err instanceof Error ? err.stack : undefined,
+      })
+
+      // Check if it's a Google OAuth user error
+      // Firebase Admin SDK errors might have different structure
+      const errorMessage = err instanceof Error ? err.message : String(err)
+      const errorCode = (err as any)?.code || (err as any)?.errorInfo?.code
+
+      console.log("Checking for Google OAuth error:", {
+        errorMessage,
+        errorCode,
+      })
+
+      if (
+        errorMessage.includes("auth/invalid-uid") ||
+        errorCode === "auth/invalid-uid"
+      ) {
+        console.log("Detected Google OAuth user error")
+        return {
+          success: false,
+          message:
+            "Google sign-in users cannot change their password in CoLab. Please use Google to manage your account.",
+        }
+      }
+
+      return {
+        success: false,
+        message: "Failed to reset password",
+      }
     }
   }
 }

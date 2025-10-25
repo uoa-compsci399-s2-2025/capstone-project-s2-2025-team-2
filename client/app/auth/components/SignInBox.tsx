@@ -22,7 +22,9 @@ import { toast } from "sonner"
 export default function SignInBox({
   setAuthType,
 }: {
-  setAuthType: (authType: "signin" | "signup" | "forgotpassword") => void
+  setAuthType: (
+    authType: "signin" | "signup" | "forgetemail" | "forgetpassword",
+  ) => void
 }) {
   //            state           //
   const router = useRouter()
@@ -40,7 +42,7 @@ export default function SignInBox({
 
   //            function: handleForgotPasswordClick           //
   const handleForgotPasswordClick = () => {
-    setAuthType("forgotpassword")
+    setAuthType("forgetemail")
   }
 
   //            function: handleGoogleSuccess           //

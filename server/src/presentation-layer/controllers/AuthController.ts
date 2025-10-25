@@ -24,6 +24,8 @@ import { VerifyTokenResponse } from "../../service-layer/dtos/response/VerifyTok
 import { AuthDomain } from "../../business-layer/models/AuthDomain"
 import { AuthRequest } from "../../service-layer/dtos/request/AuthRequest"
 import { AddSignupEmailDomainRequest } from "../../service-layer/dtos/request/SignupEmailDomainRequest"
+import { ResetPasswordRequest } from "../../service-layer/dtos/request/ResetPasswordRequest"
+import { ResetPasswordResponse } from "../../service-layer/dtos/response/ResetPasswordResponse"
 
 @Route("auth")
 @Tags("Authentication")
@@ -51,6 +53,17 @@ export class AuthController extends Controller {
     const result = await this.authService.verifyCode(
       requestBody.email,
       requestBody.inputCode,
+    )
+    return result
+  }
+
+  @Post("/reset-password")
+  public async resetPassword(
+    @Body() requestBody: ResetPasswordRequest,
+  ): Promise<ResetPasswordResponse> {
+    const result = await this.authService.resetPassword(
+      requestBody.email,
+      requestBody.newPassword,
     )
     return result
   }
