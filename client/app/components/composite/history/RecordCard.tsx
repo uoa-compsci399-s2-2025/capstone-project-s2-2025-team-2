@@ -1,4 +1,10 @@
 "use client"
+import type { ElementType } from "react"
+import {
+  GiftIcon,
+  CurrencyDollarIcon,
+  ArrowsRightLeftIcon,
+} from "@heroicons/react/24/outline"
 
 interface RecordCardProps {
   orderId: string
@@ -24,6 +30,14 @@ const RecordCard = ({
   price,
 }: RecordCardProps) => {
   const tradeType = price ? "Trade" : offeredReagentId ? "Exchange" : "Giveaway"
+  const TRADING_ICONS: Record<string, { Icon: ElementType; color: string }> = {
+    trade: { Icon: CurrencyDollarIcon, color: "text-green-300" },
+    exchange: { Icon: ArrowsRightLeftIcon, color: "text-purple-300" },
+    giveaway: { Icon: GiftIcon, color: "text-blue-200" },
+  }
+  const { Icon, color } =
+    TRADING_ICONS[tradeType.toLowerCase()] || TRADING_ICONS.giveaway
+
   const statusKey = String(status).toLowerCase()
   const ownerKey = String(ownerName).toLowerCase()
   const reqKey = String(requesterName).toLowerCase()
@@ -41,7 +55,10 @@ const RecordCard = ({
     <div className="w-full border-2 border-secondary/20 px-4 py-1 rounded-2xl bg-primary/70 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <div>
         <div className="md:flex justify-between items-center m-2">
-          <h3 className="md:mr-10 text-lg md:text-xl">{reagentName}</h3>
+          <h3 className="md:mr-10 text-lg md:text-xl flex items-center gap-2">
+            {Icon && <Icon className={`w-5 h-5 flex-shrink-0 ${color}`} />}
+            <span>{reagentName}</span>
+          </h3>
           <div
             className={`shadow-xl mt-4 hidden md:block md:m-0 px-3 py-0.5 ml-4 rounded-full text-center ${statusClasses}`}
           >
