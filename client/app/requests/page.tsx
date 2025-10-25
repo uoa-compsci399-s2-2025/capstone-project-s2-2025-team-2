@@ -103,7 +103,7 @@ export default function Orders() {
         <p className="md:ml-8 text-warning italic font-bold inline mr-2 tracking-[0.05em]">
           Manage & Track
         </p>
-        <p className="text-gray-100 italic inline">Your Pending Requests</p>
+        <p className="text-gray-100 italic inline">Your Requested Reagents</p>
       </div>
 
       <div className="mt-5"></div>
@@ -117,7 +117,7 @@ export default function Orders() {
           <div className="bg-primary/50 rounded-lg p-8 border border-muted text-gray-400 text-center w-full">
             <h3 className="text-lg font-medium mb-2">No Requests Found.</h3>
             <p className="text-sm">
-              Pending requests tied to your account will appear here.
+              Pending reagent requests tied to your account will appear here.
             </p>
           </div>
         ) : (
