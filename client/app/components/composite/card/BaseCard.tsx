@@ -117,8 +117,7 @@ const BaseCard = ({
             <div className="absolute rounded-b-lg bottom-0 left-0 right-0 p-2">
               <div className="hidden md:flex flex-wrap gap-1">
                 {restricted && (
-                  <span className="bg-red-500/70 text-white text-xs px-2 py-1 rounded-lg font-medium backdrop-blur-sm flex items-center gap-1">
-                    <ExclamationTriangleIcon className="w-4 h-4" />
+                  <span className="bg-red-500/70 text-white text-xs px-2 py-1 rounded-lg font-medium backdrop-blur-sm">
                     restricted
                   </span>
                 )}
