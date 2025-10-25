@@ -27,8 +27,8 @@ const RecordCard = ({
   const statusKey = String(status).toLowerCase()
   const ownerKey = String(ownerName).toLowerCase()
   const reqKey = String(requesterName).toLowerCase()
-  const ownerClasses = ownerKey === "unknown owner" ? "text-red-500" : ""
-  const reqClasses = reqKey === "unknown requester" ? "text-red-500" : ""
+  const ownerClasses = ownerKey === "unknown owner" ? "text-red-800" : ""
+  const reqClasses = reqKey === "unknown requester" ? "text-red-800" : ""
   const statusClasses =
     statusKey === "pending"
       ? "bg-yellow-300/40 backdrop-blur-sm border border-yellow-300/90"
@@ -56,24 +56,39 @@ const RecordCard = ({
 
         <div className="md:flex gap-4 m-2">
           <p className="text-gray-300 text-sm">Order Type: {tradeType}</p>
-          {price && <p className="text-gray-300 text-sm">Price: ${price}</p>}
-          {offeredReagentId && (
-            <p className="text-gray-300 text-sm">
-              Offered Reagent ID: {offeredReagentId}
-            </p>
+          {price && (
+            <span className="flex gap-1">
+              <p className="text-gray-300 text-sm">Price: </p>
+              <p className="text-gray-400 text-sm">{price}</p>
+            </span>
           )}
-          <span className="flex gap-2">
-            <p className="text-gray-300 text-sm">Requester: </p>
-            <p className={`text-gray-300 text-sm ${reqClasses}`}>
-              {requesterName}
-            </p>
-            <p className="text-gray-300 text-sm">Owner: </p>
-            <p className={`text-gray-300 text-sm ${ownerClasses}`}>
-              {ownerName}
-            </p>
-          </span>
+          {offeredReagentId && (
+            <span className="flex gap-1">
+              <p className="text-gray-300 text-sm">Offered Reagent: </p>
+              <p className="text-gray-400 text-sm">{offeredReagentId}</p>
+            </span>
+          )}
+          <span className="md:flex gap-2">
+            <span className="flex gap-1">
+              {" "}
+              <p className="text-gray-300 text-sm">Requester: </p>
+              <p className={`text-gray-400 text-sm ${reqClasses}`}>
+                {requesterName}
+              </p>
+            </span>
 
-          <p className="text-gray-300 text-sm">Date: {createdAt}</p>
+            <span className="flex gap-1">
+              {" "}
+              <p className="text-gray-300 text-sm">Owner: </p>
+              <p className={`text-gray-400 text-sm ${ownerClasses}`}>
+                {ownerName}
+              </p>
+            </span>
+          </span>
+          <span className="flex gap-1">
+            <p className="text-gray-300 text-sm">Date: </p>
+            <p className="text-gray-400 text-sm">{createdAt}</p>
+          </span>
         </div>
         <div className="w-full h-[1px] bg-white/40 my-3"></div>
         <div className="m-2">
