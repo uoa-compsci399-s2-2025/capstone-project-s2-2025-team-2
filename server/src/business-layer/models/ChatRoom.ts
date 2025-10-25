@@ -4,6 +4,7 @@ export interface ChatRoom {
   user2_id: string
   reagent_id?: string
   reagent_name?: string
+  order_id?: string
   created_at: Date
 }
 

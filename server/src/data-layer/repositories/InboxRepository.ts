@@ -8,7 +8,7 @@ export class InboxRepository {
     console.log("InboxRepository: About to save to Firestore:", chatRoom)
     const docRef = await this.db.chatRooms.add(chatRoom)
     console.log("InboxRepository: Saved to Firestore with ID:", docRef.id)
-
+    
     const result = {
       ...chatRoom,
       id: docRef.id,

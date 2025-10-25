@@ -31,6 +31,7 @@ export class InboxService {
       user1_id: request.user1_id,
       user2_id: request.user2_id,
       reagent_id: request.reagent_id,
+      order_id: request.order_id,
       created_at: new Date(),
     }
 
