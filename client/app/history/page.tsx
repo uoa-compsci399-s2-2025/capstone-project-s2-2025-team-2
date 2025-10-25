@@ -139,6 +139,7 @@ const History = () => {
                     key={order.id}
                     orderId={order.id}
                     ownerName={order.ownerName}
+                    requesterName={order.requesterName}
                     reagentId={order.reagent_id}
                     reagentName={order.reagentName}
                     status={order.status}
@@ -149,7 +150,6 @@ const History = () => {
                         ? (order as Exchange).offeredReagentId
                         : undefined
                     }
-                    quantity={order.quantity || 0}
                   />
                 )
               })}

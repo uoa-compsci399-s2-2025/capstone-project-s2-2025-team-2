@@ -63,6 +63,10 @@ const RecordCard = ({
             </p>
           )}
           <span className="flex gap-2">
+            <p className="text-gray-300 text-sm">Requester: </p>
+            <p className={`text-gray-300 text-sm ${reqClasses}`}>
+              {requesterName}
+            </p>
             <p className="text-gray-300 text-sm">Owner: </p>
             <p className={`text-gray-300 text-sm ${ownerClasses}`}>
               {ownerName}
@@ -70,14 +74,11 @@ const RecordCard = ({
           </span>
 
           <p className="text-gray-300 text-sm">Date: {createdAt}</p>
-          <p className={`text-gray-300 text-sm ${reqClasses}`}>
-            {requesterName}
-          </p>
         </div>
         <div className="w-full h-[1px] bg-white/40 my-3"></div>
         <div className="m-2">
-          <p>Reagent Id</p>
-          <p className="text-gray-400">{reagentId}</p>
+          <p>Order Id</p>
+          <p className="text-gray-400">{orderId}</p>
         </div>
       </div>
     </div>
