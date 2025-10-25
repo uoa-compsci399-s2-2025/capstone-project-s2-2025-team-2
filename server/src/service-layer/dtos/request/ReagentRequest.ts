@@ -17,4 +17,5 @@ export interface CreateReagentRequest {
   location: string
   images?: string[]
   visibility?: ReagentVisibility
+  restricted: boolean
 }
