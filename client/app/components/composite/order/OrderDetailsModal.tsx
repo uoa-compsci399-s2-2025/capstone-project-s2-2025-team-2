@@ -11,7 +11,6 @@ import type { components } from "@/models/__generated__/schema"
 import client from "@/app/services/fetch-client"
 import { toast } from "sonner"
 import LoadingState from "../loadingstate/LoadingState"
-import { is } from "zod/v4/locales"
 import { auth } from "@/app/config/firebase"
 
 type Order = components["schemas"]["Order"]

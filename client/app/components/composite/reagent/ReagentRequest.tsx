@@ -9,7 +9,6 @@ import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../../../config/firebase"
 import LoadingState from "../loadingstate/LoadingState"
 import Link from "next/link"
-import { is } from "zod/v4/locales"
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
 

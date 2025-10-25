@@ -12,7 +12,6 @@ import { usePageSize } from "../hooks/usePageSize"
 import { usePagination } from "../hooks/usePagination"
 import Pagination from "../components/composite/pagination/Pagination"
 import LoadingState from "../components/composite/loadingstate/LoadingState"
-import { is } from "zod/v4/locales"
 import { auth } from "@/app/config/firebase"
 import { onAuthStateChanged } from "firebase/auth"
 
@@ -85,16 +84,16 @@ export default function Orders() {
   }
 
   //fetch userID of the logged in user
-useEffect(() => {
-  const unsubscribe = onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setCurrentUserId(user.uid);
-    } else {
-      setCurrentUserId(null);
-    }
-  });
-  return () => unsubscribe();
-}, []);
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUserId(user.uid)
+      } else {
+        setCurrentUserId(null)
+      }
+    })
+    return () => unsubscribe()
+  }, [])
   //fetch all orders where user is owner/requester
   const fetchOrders = useCallback(async () => {
     const token = localStorage.getItem("authToken")
@@ -338,7 +337,6 @@ useEffect(() => {
               </div>
             )}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-x-4 md:gap-y-3 lg:gap-x-6">
-              
               {offers
                 .filter(
                   (offer) =>
@@ -431,4 +429,3 @@ useEffect(() => {
     </Overlay>
   )
 }
-

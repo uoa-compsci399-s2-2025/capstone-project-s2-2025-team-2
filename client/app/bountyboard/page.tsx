@@ -51,8 +51,8 @@ const BountyBoard = () => {
   const [filter, setFilter] = useState("all")
   const [offers, setOffers] = useState<Offer[]>([])
   const [sort, setSort] = useState<
-    "newest" | "oldest" | "nameAZ" | "nameZA" | ""
-  >("newest")
+    "earliestExpiry" | "latestExpiry" | "nameAZ" | "nameZA" | ""
+  >("earliestExpiry")
   const [isFormOpen, setIsFormOpen] = useState(false)
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -175,8 +175,12 @@ const BountyBoard = () => {
           Array.isArray(r.categories) &&
           r.categories.some((c) => c.toLowerCase().includes(query))
         )
-      case "date":
-        return (r.createdAtReadable ?? "").toLowerCase().includes(query)
+      case "expiryDate":
+        return (r.expiryDate ?? "").toLowerCase().includes(query)
+      case "location":
+        return (r.location ?? "").toLowerCase().includes(query)
+      case "tradingType":
+        return (r.tradingType ?? "").toLowerCase().includes(query)
       default:
         return (r.name ?? "").toLowerCase().includes(query)
     }
@@ -184,8 +188,8 @@ const BountyBoard = () => {
 
   const sorted = [...filtered].sort((a, b) => {
     switch (sort) {
-      case "newest":
-      case "oldest": {
+      case "earliestExpiry":
+      case "latestExpiry": {
         const getTimestamp = (item: FirestoreWantedReagent): number => {
           const date = item.createdAt
 
@@ -214,6 +218,7 @@ const BountyBoard = () => {
 
           return 0
         }
+
         const aTime = getTimestamp(a)
         const bTime = getTimestamp(b)
 
@@ -221,8 +226,9 @@ const BountyBoard = () => {
         if (aTime === 0) return 1
         if (bTime === 0) return -1
 
-        return sort === "newest" ? bTime - aTime : aTime - bTime
+        return sort === "earliestExpiry" ? bTime - aTime : aTime - bTime
       }
+
       case "nameAZ":
         return (a.name || "").localeCompare(b.name || "")
 

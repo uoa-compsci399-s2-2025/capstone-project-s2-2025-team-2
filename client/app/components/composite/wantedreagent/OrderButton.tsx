@@ -1,5 +1,4 @@
 "use client"
-import { useState } from "react"
 
 type ReagentCategory = "chemical" | "hazardous" | "biological"
 type ReagentTradingType = "trade" | "giveaway" | "sell"
@@ -27,7 +26,6 @@ interface ContactButtonProps {
 }
 
 const OrderButton = ({
-  wanted,
   offer,
   onViewDetails,
   className = "",

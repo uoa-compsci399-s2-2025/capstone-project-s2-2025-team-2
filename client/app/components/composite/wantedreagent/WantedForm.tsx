@@ -82,7 +82,6 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
 
   const [dataSubmitting, setDataSubmitting] = useState(false)
   const [userReagents, setUserReagents] = useState<ReagentWithId[]>([])
-  const [selectedReagentId, setSelectedReagentId] = useState<string>("")
   //today date calc
   const todaysDate = useMemo(() => new Date().toISOString().split("T")[0], [])
 
@@ -107,9 +106,6 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
         }
 
         setUserReagents(reagents || [])
-        if (reagents && reagents.length > 0) {
-          setSelectedReagentId(reagents[0].id)
-        }
       } catch (err) {
         console.error("Error fetching user reagents:", err)
         setUserReagents([])

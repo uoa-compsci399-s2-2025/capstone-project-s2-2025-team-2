@@ -63,10 +63,6 @@ const WantedCard = ({
 }: WantedCardProps) => {
   const [isSignedIn, setIsSignedIn] = useState(false)
 
-  //reusable components for both mobile and desktop view
-  const tradingTypeLabel =
-    wanted.tradingType[0].toUpperCase() + wanted.tradingType.slice(1)
-
   //check auth state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
