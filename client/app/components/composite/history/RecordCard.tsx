@@ -28,10 +28,10 @@ const RecordCard = ({
   offeredReagentId,
   price,
 }: RecordCardProps) => {
-  const tradeType = price ? "Trade" : offeredReagentId ? "Exchange" : "Giveaway"
+  const tradeType = price ? "Sell" : offeredReagentId ? "Trade" : "Giveaway"
   const TRADING_ICONS: Record<string, { Icon: ElementType; color: string }> = {
-    trade: { Icon: CurrencyDollarIcon, color: "text-green-300" },
-    exchange: { Icon: ArrowsRightLeftIcon, color: "text-purple-300" },
+    sell: { Icon: CurrencyDollarIcon, color: "text-green-300" },
+    trade: { Icon: ArrowsRightLeftIcon, color: "text-purple-300" },
     giveaway: { Icon: GiftIcon, color: "text-blue-200" },
   }
   const { Icon, color } =
