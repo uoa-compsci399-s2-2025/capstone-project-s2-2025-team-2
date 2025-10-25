@@ -97,21 +97,26 @@ interface SearchBarProps {
   setSearch: (val: string) => void
   filter: string
   setFilter: (val: string) => void
-  sort: "oldest" | "newest" | "nameAZ" | "nameZA" | ""
-  setSort: (val: "newest" | "oldest" | "nameAZ" | "nameZA" | "") => void
+  sort: "latestExpiry" | "earliestExpiry" | "nameAZ" | "nameZA" | ""
+  setSort: (
+    val: "earliestExpiry" | "latestExpiry" | "nameAZ" | "nameZA" | "",
+  ) => void
 }
 
 //dropdown options for filter and sort
 const FILTER_OPTIONS: DropdownOption[] = [
   { value: "all", label: "Filter by..." },
   { value: "category", label: "Category" },
-  { value: "date", label: "Date" },
+  { value: "expiryDate", label: "Expiry Date" },
+  { value: "condition", label: "Condition" },
+  { value: "location", label: "Location" },
+  { value: "tradingType", label: "Trading Type" },
 ]
 
 const SORT_OPTIONS: DropdownOption[] = [
   { value: "", label: "Sort by..." },
-  { value: "newest", label: "Newest" },
-  { value: "oldest", label: "Oldest" },
+  { value: "earliestExpiry", label: "Newest Post" },
+  { value: "latestExpiry", label: "Oldest Post" },
   { value: "nameAZ", label: "Name [A - Z]" },
   { value: "nameZA", label: "Name [Z - A]" },
 ]

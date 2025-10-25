@@ -145,7 +145,7 @@ export class UserController extends Controller {
     @Request() request: AuthRequest,
   ): Promise<User> {
     try {
-      if (request.user.role !== "admin" && request.user.uid !== user_id) {
+      if (request.user.role !== "admin") {
         this.setStatus(403)
         console.error(
           "You don't have permission to access other users information",
@@ -155,6 +155,16 @@ export class UserController extends Controller {
       return user
     } catch (err) {
       throw new Error(`Failed to fetch user: ${(err as Error).message}`)
+    }
+  }
+
+  @SuccessResponse("200", "retrieved user info")
+  public async getUserF(@Path() id: string): Promise<User> {
+    try {
+      const user = await new UserService().getUserById(id)
+      return user
+    } catch (err) {
+      throw new Error(`Failed to fetch user info: ${err as Error}`)
     }
   }
 

@@ -163,6 +163,9 @@
 					},
 					"visibility": {
 						"$ref": "#/components/schemas/ReagentVisibility"
+					},
+					"restricted": {
+						"type": "boolean"
 					}
 				},
 				"required": [
@@ -177,7 +180,8 @@
 					"createdAt",
 					"createdAtReadable",
 					"location",
-					"unit"
+					"unit",
+					"restricted"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -227,6 +231,9 @@
 					},
 					"visibility": {
 						"$ref": "#/components/schemas/ReagentVisibility"
+					},
+					"restricted": {
+						"type": "boolean"
 					}
 				},
 				"required": [
@@ -237,7 +244,8 @@
 					"unit",
 					"expiryDate",
 					"tradingType",
-					"location"
+					"location",
+					"restricted"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -296,6 +304,9 @@
 					},
 					"visibility": {
 						"$ref": "#/components/schemas/ReagentVisibility"
+					},
+					"restricted": {
+						"type": "boolean"
 					}
 				},
 				"type": "object",
@@ -1408,7 +1419,7 @@
 						}
 					}
 				},
-				"description": "\nGet all reagents that are expiring in 30 days",
+				"description": "\r\nGet all reagents that are expiring in 30 days",
 				"security": [],
 				"parameters": []
 			}
@@ -1462,7 +1473,7 @@
 						}
 					}
 				},
-				"description": "Get a reagent by its ID.\nCan only be done by lab_admin and admin",
+				"description": "Get a reagent by its ID.\r\nCan only be done by lab_admin and admin",
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -1522,7 +1533,7 @@
 						}
 					}
 				},
-				"description": "Delete a reagent by its ID.\nCan only be done by lab_admin (who owns the reagent) and admin",
+				"description": "Delete a reagent by its ID.\r\nCan only be done by lab_admin (who owns the reagent) and admin",
 				"security": [],
 				"parameters": [
 					{
@@ -1550,7 +1561,7 @@
 						}
 					}
 				},
-				"description": "Update a reagent by its ID.\nCan only be done by lab_admin (who owns the reagent) and admin",
+				"description": "Update a reagent by its ID.\r\nCan only be done by lab_admin (who owns the reagent) and admin",
 				"security": [],
 				"parameters": [
 					{
