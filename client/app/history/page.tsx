@@ -14,6 +14,7 @@ type OrderWithId = Order & {
   id: string
   reagentName: string
   ownerName: string
+  requesterName: string
 }
 
 const History = () => {
@@ -58,10 +59,19 @@ const History = () => {
                     headers: { Authorization: `Bearer ${token}` },
                   },
                 )
+
+                const requesterResponse = await client.GET(
+                  `/users/${order.requester_id}` as any,
+                  {
+                    headers: { Authorization: `Bearer ${token}` },
+                  },
+                )
                 return {
                   ...order,
                   reagentName: reagentResponse.data?.name || "Reagent Deleted",
                   ownerName: ownerResponse.data?.displayName || "Unknown Owner",
+                  requesterName:
+                    requesterResponse.data?.displayName || "Unknown Requester",
                 }
               } catch (e) {
                 console.error("fetch owner name failed", e)

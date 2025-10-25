@@ -83,6 +83,7 @@ export class OrderController extends Controller {
       const user_id = user.uid
       if (user_id) {
         const orders = await new OrderService().getAllOrders(user_id)
+        console.log(orders)
         return orders
       }
       return []
