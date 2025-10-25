@@ -28,13 +28,14 @@ type Story = StoryObj<typeof meta>
 
 export const DefaultRecordCard: Story = {
   args: {
-    name: "Sample Reagent",
+    reagentName: "Sample Reagent",
     orderId: "123456",
     status: "Canceled",
     createdAt: "2024-06-01",
     offeredReagentId: "111",
     price: 69,
-    quantity: 2,
-    unit: 1,
+    requesterName: "kayn",
+    ownerName: "zed",
+    reagentId: "987654",
   },
 }
