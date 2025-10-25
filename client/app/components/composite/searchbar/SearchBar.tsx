@@ -115,8 +115,8 @@ const FILTER_OPTIONS: DropdownOption[] = [
 
 const SORT_OPTIONS: DropdownOption[] = [
   { value: "", label: "Sort by..." },
-  { value: "earliestExpiry", label: "Earliest Expiry" },
-  { value: "latestExpiry", label: "Latest Expiry" },
+  { value: "earliestExpiry", label: "Newest Post" },
+  { value: "latestExpiry", label: "Oldest Post" },
   { value: "nameAZ", label: "Name [A - Z]" },
   { value: "nameZA", label: "Name [Z - A]" },
 ]
