@@ -36,7 +36,7 @@ export class OrderService {
     }
 
     console.log("Order: ", order)
-    console.log("2");
+    console.log("2")
 
     const docRef = await FirestoreCollections.orders.add(order)
     const createdOrder = {
@@ -52,14 +52,14 @@ export class OrderService {
         reagent_id: requestBody.reagent_id,
         initial_message: requestBody.message,
       })
-      
+
       const chatRoom = await this.inboxService.createChatRoom({
         user1_id: user_id,
         user2_id: reagent.user_id,
         reagent_id: requestBody.reagent_id,
         initial_message: requestBody.message,
       })
-      
+
       console.log("Chat room created successfully:", chatRoom)
     } catch (error) {
       console.error("Error creating chat room for order:", error)
@@ -91,7 +91,7 @@ export class OrderService {
     }
 
     console.log("Order: ", order)
-    console.log("1");
+    console.log("1")
 
     const docRef = await FirestoreCollections.orders.add(order)
     const createdTrade = {
@@ -107,14 +107,14 @@ export class OrderService {
         reagent_id: requestBody.reagent_id,
         initial_message: requestBody.message,
       })
-      
+
       const chatRoom = await this.inboxService.createChatRoom({
         user1_id: user_id,
         user2_id: reagent.user_id,
         reagent_id: requestBody.reagent_id,
         initial_message: requestBody.message,
       })
-      
+
       console.log("Chat room created successfully for trade:", chatRoom)
     } catch (error) {
       console.error("Error creating chat room for trade:", error)
@@ -149,7 +149,7 @@ export class OrderService {
     }
 
     console.log("Order: ", order)
-    console.log("3");
+    console.log("3")
 
     const docRef = await FirestoreCollections.orders.add(order)
     const createdExchange = {

@@ -86,7 +86,9 @@ export class InboxService {
       let reagentName: string | undefined
       if (chatRoom.reagent_id) {
         try {
-          const reagent = await this.reagentService.getReagentById(chatRoom.reagent_id)
+          const reagent = await this.reagentService.getReagentById(
+            chatRoom.reagent_id,
+          )
           reagentName = reagent?.name
         } catch (error) {
           console.error("Error fetching reagent:", error)
@@ -164,7 +166,9 @@ export class InboxService {
     let reagentName: string | undefined
     if (chatRoom.reagent_id) {
       try {
-        const reagent = await this.reagentService.getReagentById(chatRoom.reagent_id)
+        const reagent = await this.reagentService.getReagentById(
+          chatRoom.reagent_id,
+        )
         reagentName = reagent?.name
       } catch (error) {
         console.error("Error fetching reagent:", error)

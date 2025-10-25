@@ -46,7 +46,7 @@ export default function MessageListBox({
             conversation.messages[conversation.messages.length - 1].created_at,
           )
         : "No messages",
-    reagent: "Reagent", // This would need to be added to the backend response
+    reagent: conversation.chat_room.reagent_name || "Reagent",
     isActive: selectedConversation?.id === conversation.chat_room.id,
     avatar: "/placeholder.webp",
     originalData: conversation,
