@@ -38,7 +38,6 @@ const Marketplace = () => {
   const [sort, setSort] = useState<
     "earliestExpiry" | "latestExpiry" | "nameAZ" | "nameZA" | ""
   >("earliestExpiry")
-  const [isFormOpen, setIsFormOpen] = useState(false)
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [userUid, setUserUid] = useState<string | null>(null)
 
