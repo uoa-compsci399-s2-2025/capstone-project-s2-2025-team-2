@@ -22,7 +22,6 @@ const RecordCard = ({
   orderId,
   requesterName,
   ownerName,
-  reagentId,
   reagentName,
   status,
   createdAt,
