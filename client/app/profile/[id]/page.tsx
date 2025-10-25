@@ -3,6 +3,7 @@ import { useEffect, useState, ElementType } from "react"
 import { useParams } from "next/navigation"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "@/app/config/firebase"
+import client from "../../services/fetch-client"
 // components
 import ReagentCard from "../../components/composite/reagent/ReagentCard"
 import Overlay from "../../components/composite/Overlay"
@@ -11,6 +12,7 @@ import OutlinedButton from "../../components/generic/button/outlined/OutlinedBut
 import SearchBar from "../../components/composite/searchbar/SearchBar"
 import Pagination from "../../components/composite/pagination/Pagination"
 import { ProfileForm } from "../../components/composite/profileform/profileForm"
+import { ReagentForm } from "../../components/composite/reagent/ReagentForm"
 // services
 import useAuthGuard from "@/app/hooks/useAuthGuard"
 // other
@@ -64,6 +66,10 @@ const UserProfile = () => {
 
   const { fetchWithAuth } = useAuthGuard({ redirectToAuth: true })
   const [showEditProfile, setShowEditProfile] = useState(false)
+  const [showEditReagentForm, setShowEditReagentForm] = useState(false)
+  const [selectedReagent, setSelectedReagent] = useState<ReagentWithId | null>(
+    null,
+  )
   // to be used when mapping reagent filter btns
   const reagentFilters: {
     label: string
@@ -97,6 +103,22 @@ const UserProfile = () => {
     },
   ]
 
+  const getReagents = async () => {
+    const result = await fetchWithAuth<ReagentWithId[]>(
+      `/users/${idOfUserBeingViewed}/reagents`,
+      { protectedEndpoint: true },
+    )
+
+    if (result) {
+      const { data, error } = result
+      if (data && !error) {
+        setReagents(result.data)
+      } else if (error) {
+        console.error(`Failed to fetch user reagents: ${error}`)
+      }
+    }
+  }
+
   // keep reagent filter index in sync with the selected filter
   useEffect(() => {
     const i = reagentFilters.findIndex(
@@ -126,22 +148,6 @@ const UserProfile = () => {
         const { data, error } = result
         if (data && !error) {
           setUserBeingViewed(result.data)
-        } else if (error) {
-          console.error(`Failed to fetch user reagents: ${error}`)
-        }
-      }
-    }
-
-    const getReagents = async () => {
-      const result = await fetchWithAuth<ReagentWithId[]>(
-        `/users/${idOfUserBeingViewed}/reagents`,
-        { protectedEndpoint: true },
-      )
-
-      if (result) {
-        const { data, error } = result
-        if (data && !error) {
-          setReagents(result.data)
         } else if (error) {
           console.error(`Failed to fetch user reagents: ${error}`)
         }
@@ -248,6 +254,49 @@ const UserProfile = () => {
     setUserBeingViewed(updatedUserData)
     setShowEditProfile(false)
     console.log("Profile updated successfully!")
+  }
+
+  const handleEditReagentClick = (reagent: ReagentWithId) => {
+    setSelectedReagent(reagent)
+    setShowEditReagentForm(true)
+  }
+
+  const handleEditReagentFormSubmit = async () => {
+    await getReagents() // prob not ideal but i couldnt make the reagent update (without user refreshing page) w/ any other method
+    setShowEditReagentForm(false)
+    setSelectedReagent(null)
+  }
+
+  const handleReagentFormCancel = () => {
+    setShowEditReagentForm(false)
+    setSelectedReagent(null)
+  }
+
+  const handleDeleteReagent = async (reagentId: string) => {
+    try {
+      const idToken = localStorage.getItem("authToken")
+      if (!idToken) return
+
+      const { error } = await client.DELETE(
+        `/users/reagents/${reagentId}` as any,
+        {
+          headers: {
+            Authorization: `Bearer ${idToken}`,
+          },
+        },
+      )
+
+      if (error) {
+        throw new Error(`Failed to delete reagent: ${error}`)
+      }
+
+      await getReagents()
+      setShowEditReagentForm(false)
+      setSelectedReagent(null)
+    } catch (err) {
+      console.error(`Error deleting reagent: ${err}`)
+      throw new Error(`Failed to delete reagent: ${err}`)
+    }
   }
 
   return (
@@ -401,7 +450,14 @@ const UserProfile = () => {
             ) : (
               <div className="bg-transparent flex flex-wrap gap-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
                 {currentData.map((r) => (
-                  <ReagentCard key={r.id} reagent={r as ReagentWithId} />
+                  <ReagentCard
+                    key={r.id}
+                    reagent={r as ReagentWithId}
+                    onEditClick={() =>
+                      handleEditReagentClick(r as ReagentWithId)
+                    }
+                    showEditButton={idOfUserBeingViewed === userUid}
+                  />
                 ))}
               </div>
             )}
@@ -415,6 +471,8 @@ const UserProfile = () => {
           onPageChange={setCurrentPage}
         />
       </div>
+
+      {/* profile EDIT form */}
       {showEditProfile && (
         <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4 "
@@ -436,6 +494,40 @@ const UserProfile = () => {
                 onSubmit={handleProfileFormSubmit}
                 onCancel={() => setShowEditProfile(false)}
                 userId={idOfUserBeingViewed}
+              />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* reagent card EDIT REAGENT form */}
+      {showEditReagentForm && selectedReagent && (
+        <div
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              handleReagentFormCancel()
+            }
+          }}
+        >
+          <div className="bg-primary rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
+            <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
+              <h2 className="text-2xl font-medium text-white">Edit Reagent</h2>
+              <button
+                onClick={handleReagentFormCancel}
+                className="text-gray-400 text-3xl hover:text-white"
+              >
+                ❌
+              </button>
+            </div>
+
+            <div className="p-6 overflow-y-auto flex-1 scrollbar-hide">
+              <ReagentForm
+                onSubmit={handleEditReagentFormSubmit}
+                onCancel={handleReagentFormCancel}
+                editMode={true}
+                reagentData={selectedReagent}
+                onDelete={handleDeleteReagent}
               />
             </div>
           </div>
