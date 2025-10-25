@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import Button from "../../components/generic/button/regular/Button"
 import AuthInputBox from "../../components/auth/AuthInputBox"
 import AuthNotificationBox, {
@@ -24,6 +25,7 @@ export default function ForgetPasswordSection({
   const [confirmPassword, setConfirmPassword] = useState("")
   const [notificationState, setNotificationState] =
     useState<AuthNotificationState>("not-displaying")
+  const router = useRouter()
 
   //            function: handlePasswordReset           //
   const handlePasswordReset = async () => {
@@ -47,6 +49,7 @@ export default function ForgetPasswordSection({
 
       console.log("Resetting password:", { email })
       const response = await resetPassword(requestBody)
+      console.log("Reset password response:", response)
 
       if (response.success) {
         setNotificationState("forget-password-success")
@@ -54,11 +57,38 @@ export default function ForgetPasswordSection({
           onSignInClick()
         }, 2000)
       } else {
-        setNotificationState("forget-password-fail")
+        // Check if it's a Google OAuth user error
+        if (
+          response.message &&
+          response.message.includes(
+            "Google sign-in users cannot change their password",
+          )
+        ) {
+          setNotificationState("google-oauth-password-reset-not-allowed")
+          // Redirect to /auth after 2 seconds
+          setTimeout(() => {
+            router.push("/auth")
+          }, 2000)
+        } else {
+          setNotificationState("forget-password-fail")
+        }
       }
     } catch (error) {
       console.error("Error during password reset:", error)
-      setNotificationState("forget-password-fail")
+
+      // Check if it's a Google OAuth user error
+      if (
+        error instanceof Error &&
+        error.message.includes("auth/invalid-uid")
+      ) {
+        setNotificationState("google-oauth-password-reset-not-allowed")
+        // Redirect to /auth after 2 seconds
+        setTimeout(() => {
+          router.push("/auth")
+        }, 2000)
+      } else {
+        setNotificationState("forget-password-fail")
+      }
     }
   }
 

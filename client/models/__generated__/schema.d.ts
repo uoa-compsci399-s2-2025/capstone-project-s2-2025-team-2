@@ -17,10 +17,8 @@ export interface paths {
     delete?: never
     options?: never
     head?: never
-    /**
-     * @description Update user information by their ID
-     *     User **must** be authenticated to access this endpoint
-     */
+    /** @description Update user information by their ID
+     *     User **must** be authenticated to access this endpoint */
     patch: operations["UpdateUser"]
     trace?: never
   }
@@ -64,16 +62,12 @@ export interface paths {
       path?: never
       cookie?: never
     }
-    /**
-     * @description Get all reagents under a user
-     *     User must be authenticated to access this endpoint
-     */
+    /** @description Get all reagents under a user
+     *     User must be authenticated to access this endpoint */
     get: operations["GetReagents"]
     put?: never
-    /**
-     * @description Create a reagent by passing in all the required props.
-     *     User **must** be authenticated to access this endpoint (lab manager / admin) [seller]
-     */
+    /** @description Create a reagent by passing in all the required props.
+     *     User **must** be authenticated to access this endpoint (lab manager / admin) [seller] */
     post: operations["CreateReagent"]
     delete?: never
     options?: never
@@ -139,24 +133,18 @@ export interface paths {
       path?: never
       cookie?: never
     }
-    /**
-     * @description Get a reagent by using its ID
-     *     User must be authenticated to access this endpoint
-     */
+    /** @description Get a reagent by using its ID
+     *     User must be authenticated to access this endpoint */
     get: operations["GetReagentById"]
     put?: never
     post?: never
-    /**
-     * @description Delete a reagent by using its ID
-     *     User **must** be authenticated to access this endpoint
-     */
+    /** @description Delete a reagent by using its ID
+     *     User **must** be authenticated to access this endpoint */
     delete: operations["DeleteReagentById"]
     options?: never
     head?: never
-    /**
-     * @description Update a reagent by its ID.
-     *     User **must** be authenticated to access this endpoint
-     */
+    /** @description Update a reagent by its ID.
+     *     User **must** be authenticated to access this endpoint */
     patch: operations["UpdateReagent"]
     trace?: never
   }
@@ -167,10 +155,9 @@ export interface paths {
       path?: never
       cookie?: never
     }
-    /**
-     * @description Get all reagents under another user by their user id
-     *     Can only be done by admin*
-     */
+    /** @description
+     *     Get all reagents under another user by their user id
+     *     Can only be done by admin* */
     get: operations["GetReagentsByUserId"]
     put?: never
     post?: never
@@ -187,7 +174,8 @@ export interface paths {
       path?: never
       cookie?: never
     }
-    /** @description Get all reagents that are expiring in 30 days */
+    /** @description
+     *     Get all reagents that are expiring in 30 days */
     get: operations["GetReagentsExpiringSoon"]
     put?: never
     post?: never
@@ -207,10 +195,8 @@ export interface paths {
     /** @description Get all reagents with an option to filter them by category. */
     get: operations["GetAllReagents"]
     put?: never
-    /**
-     * @description Get a reagent by its ID.
-     *     Can only be done by lab_admin and admin
-     */
+    /** @description Get a reagent by its ID.
+     *     Can only be done by lab_admin and admin */
     post: operations["CreateReagent"]
     delete?: never
     options?: never
@@ -229,17 +215,13 @@ export interface paths {
     get: operations["GetReagent"]
     put?: never
     post?: never
-    /**
-     * @description Delete a reagent by its ID.
-     *     Can only be done by lab_admin (who owns the reagent) and admin
-     */
+    /** @description Delete a reagent by its ID.
+     *     Can only be done by lab_admin (who owns the reagent) and admin */
     delete: operations["DeleteReagent"]
     options?: never
     head?: never
-    /**
-     * @description Update a reagent by its ID.
-     *     Can only be done by lab_admin (who owns the reagent) and admin
-     */
+    /** @description Update a reagent by its ID.
+     *     Can only be done by lab_admin (who owns the reagent) and admin */
     patch: operations["UpdateReagent"]
     trace?: never
   }

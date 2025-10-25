@@ -19,6 +19,7 @@ export type AuthNotificationState =
   | "forget-password-success"
   | "forget-password-fail"
   | "setting-forget-password"
+  | "google-oauth-password-reset-not-allowed"
 
 // type: NotificationType
 type NotificationType = "info" | "success" | "error"
@@ -149,6 +150,12 @@ const getNotificationConfig = (
       return {
         type: "info",
         message: "Setting your new password...",
+      }
+    case "google-oauth-password-reset-not-allowed":
+      return {
+        type: "error",
+        message:
+          "Google sign-in users cannot change their password in CoLab. Please use Google to manage your account.",
       }
     default:
       return {
