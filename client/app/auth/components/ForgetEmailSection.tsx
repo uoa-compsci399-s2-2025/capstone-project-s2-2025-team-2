@@ -3,8 +3,6 @@
 import Button from "../../components/generic/button/regular/Button"
 import DisabledButton from "../../components/generic/button/disabled/DisabledButton"
 
-import AuthText from "../../components/auth/AuthText"
-import AuthLink from "../../components/auth/AuthLink"
 import { useEffect, useState } from "react"
 import { useEmailValidation } from "../../hooks/useSignupEmailValidation"
 import SendVerificationCodeRequestDto from "../../models/request-models/SendVerificationCodeRequestDto"
@@ -24,7 +22,6 @@ interface ForgetEmailSectionProps {
 //            function: ForgetEmailSection           //
 export default function ForgetEmailSection({
   onNextStep,
-  onSignInClick,
 }: ForgetEmailSectionProps) {
   //            state           //
   const [email, setEmail] = useState("")
@@ -61,7 +58,7 @@ export default function ForgetEmailSection({
     response: SendVerificationCodeResponseDto,
   ) => {
     if (response.success) {
-        console.log("Verification code sent successfully")
+      console.log("Verification code sent successfully")
       setNotificationState("sent")
     } else {
       console.log("Failed to send verification code")
@@ -203,8 +200,7 @@ export default function ForgetEmailSection({
       <div className="mt-auto space-y-6">
         {/* Next Step Button */}
         <div className="flex justify-center w-full">
-          {notificationState !== "validated" ||
-          !isEmailValid  ? (
+          {notificationState !== "validated" || !isEmailValid ? (
             <DisabledButton
               label="Next Page"
               textSize="text-sm"

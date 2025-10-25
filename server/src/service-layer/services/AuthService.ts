@@ -173,24 +173,24 @@ export default class AuthService {
       if (!user) {
         return {
           success: false,
-          message: "User not found"
+          message: "User not found",
         }
       }
 
       // Update password in Firebase Auth
       await auth.updateUser(user.uid, {
-        password: newPassword
+        password: newPassword,
       })
 
       return {
         success: true,
-        message: "Password reset successfully"
+        message: "Password reset successfully",
       }
     } catch (err) {
       console.error("Error resetting password:", err)
       return {
         success: false,
-        message: "Failed to reset password"
+        message: "Failed to reset password",
       }
     }
   }

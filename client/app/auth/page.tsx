@@ -17,7 +17,7 @@ export default function AuthPage() {
   const [forgetEmail, setForgetEmail] = useState("")
 
   // Forgot password handlers
-  const handleForgetNextStep = (email: string, verificationCode: string) => {
+  const handleForgetNextStep = (email: string) => {
     setForgetEmail(email)
     setAuthType("forgetpassword")
   }
@@ -41,7 +41,9 @@ export default function AuthPage() {
           <div className="max-w-md min-w-full w-full md:min-w-0 p-4 bg-primary rounded-lg shadow-lg min-h-[600px] flex flex-col">
             <div className="text-left md:text-center mb-4">
               <h2 className="text-2xl md:text-3xl">Reset Password</h2>
-              <p className="mt-2 text-secondary">Enter your email to reset your password</p>
+              <p className="mt-2 text-secondary">
+                Enter your email to reset your password
+              </p>
             </div>
             <ForgetEmailSection
               onNextStep={handleForgetNextStep}

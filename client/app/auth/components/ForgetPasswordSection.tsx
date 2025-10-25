@@ -3,8 +3,6 @@
 import { useState } from "react"
 import Button from "../../components/generic/button/regular/Button"
 import AuthInputBox from "../../components/auth/AuthInputBox"
-import AuthText from "../../components/auth/AuthText"
-import AuthLink from "../../components/auth/AuthLink"
 import AuthNotificationBox, {
   AuthNotificationState,
 } from "./AuthNotificationBox"
@@ -41,15 +39,15 @@ export default function ForgetPasswordSection({
 
     try {
       setNotificationState("setting-forget-password")
-      
+
       const requestBody: ResetPasswordRequestDto = {
         email,
         newPassword: password,
       }
-      
+
       console.log("Resetting password:", { email })
       const response = await resetPassword(requestBody)
-      
+
       if (response.success) {
         setNotificationState("forget-password-success")
         setTimeout(() => {

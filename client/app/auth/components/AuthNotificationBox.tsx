@@ -137,7 +137,8 @@ const getNotificationConfig = (
     case "forget-password-success":
       return {
         type: "success",
-        message: "Password reset successfully! You can now sign in with your new password.",
+        message:
+          "Password reset successfully! You can now sign in with your new password.",
       }
     case "forget-password-fail":
       return {
