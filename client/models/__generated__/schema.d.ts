@@ -58,6 +58,24 @@ export interface paths {
     patch: operations["UpdateUser"]
     trace?: never
   }
+  "/users/{id}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    /** @description Update user information by their ID
+     *     User **must** be authenticated to access this endpoint */
+    patch: operations["UpdateUser"]
+    trace?: never
+  }
   "/users/reagents/expiring": {
     parameters: {
       query?: never
@@ -558,6 +576,29 @@ export interface paths {
 export type webhooks = Record<string, never>
 export interface components {
   schemas: {
+    User: {
+      email: string
+      displayName: string
+      preferredName: string
+      lastName?: string
+      university: string
+      about?: string
+      /** @enum {string} */
+      role: "user" | "lab_manager" | "admin"
+      image?: string
+    }
+    /** @description Make all properties in T optional */
+    Partial_User_: {
+      email?: string
+      displayName?: string
+      preferredName?: string
+      lastName?: string
+      university?: string
+      about?: string
+      /** @enum {string} */
+      role?: "user" | "lab_manager" | "admin"
+      image?: string
+    }
     /** @enum {string} */
     ReagentTradingType: "trade" | "giveaway" | "sell"
     /** @enum {string} */
@@ -641,6 +682,7 @@ export interface components {
       location: string
       unit: string
       visibility?: components["schemas"]["ReagentVisibility"]
+      restricted: boolean
     }
     CreateReagentRequest: {
       name: string
@@ -657,6 +699,7 @@ export interface components {
       location: string
       images?: string[]
       visibility?: components["schemas"]["ReagentVisibility"]
+      restricted: boolean
     }
     /** @description Make all properties in T optional */
     Partial_Reagent_: {
@@ -677,6 +720,7 @@ export interface components {
       location?: string
       unit?: string
       visibility?: components["schemas"]["ReagentVisibility"]
+      restricted?: boolean
     }
     /** @description Construct a type with a set of properties K of type T */
     "Record_string.Reagent-Array_": {
@@ -918,6 +962,34 @@ export interface operations {
         }
         content: {
           "application/json": components["schemas"]["Wanted"]
+        }
+      }
+    }
+  }
+  UpdateUser: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        /** @description - The ID of the user to update */
+        id: string
+      }
+      cookie?: never
+    }
+    /** @description - The user information to update */
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["Partial_User_"]
+      }
+    }
+    responses: {
+      /** @description Ok */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["User"]
         }
       }
     }

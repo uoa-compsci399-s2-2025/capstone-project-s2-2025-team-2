@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
   ShoppingCartIcon,
   UserCircleIcon,
@@ -15,9 +15,21 @@ import Button from "../../generic/button/regular/Button"
 import { firebaseSignOut } from "../../../services/firebase-auth"
 import { toast } from "sonner"
 import { auth } from "@/app/config/firebase"
+import { onAuthStateChanged, User } from "firebase/auth"
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false)
+  const [user, setUser] = useState<User | null>(null)
+  const [isSignedIn, setIsSignedIn] = useState(false)
+
+  //auth state change listener
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user)
+      setIsSignedIn(!!user)
+    })
+    return () => unsubscribe()
+  }, [])
 
   //sign out, clear token from localStorage, reload page
   const handleSignOut = async () => {
@@ -30,10 +42,8 @@ const Sidebar = () => {
     }
   }
 
-  const uid = auth?.currentUser?.uid
+  const uid = user?.uid
   const profileHref = uid ? `/profile/${uid}` : "/auth"
-
-  const isSignedIn = !!auth?.currentUser
 
   const links = [
     {
