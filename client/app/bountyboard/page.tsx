@@ -306,7 +306,6 @@ const BountyBoard = () => {
             onPageChange={setCurrentPage}
           />
         )}
-
       </div>
       {isSignedIn && (
         <button

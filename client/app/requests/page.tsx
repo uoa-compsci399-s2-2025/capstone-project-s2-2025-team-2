@@ -118,7 +118,7 @@ export default function Orders() {
 
       console.debug("[Requests] fetched offers:", offersData)
       setOffers(offersData as any[])
-      
+
       //fetch all reagents involved in orders
       const uniqueIds = [
         ...new Set(pendingOrders.map((o: Order) => o.reagent_id)),

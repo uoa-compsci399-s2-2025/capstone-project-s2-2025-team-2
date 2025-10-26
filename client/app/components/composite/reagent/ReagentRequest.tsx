@@ -414,8 +414,10 @@ export const ReagentRequest = ({
                   ].icon,
                   { className: "w-6 h-6" },
                 )}
-                {reagent.tradingType.charAt(0).toUpperCase() +
-                  reagent.tradingType.slice(1)}
+                {isBountyBoard && reagent.tradingType === "sell"
+                  ? "Purchase"
+                  : reagent.tradingType.charAt(0).toUpperCase() +
+                    reagent.tradingType.slice(1)}
               </span>
               <span className="text-2xl font-medium">
                 {isBountyBoard ? "Offer" : "Request"}
@@ -427,7 +429,9 @@ export const ReagentRequest = ({
                 name={requesterName}
                 showDropdown={isBountyBoard || reagent.tradingType === "trade"}
                 showIcon={reagent.tradingType === "trade"}
-                showPriceInput={!isBountyBoard && reagent.tradingType === "sell"}
+                showPriceInput={
+                  !isBountyBoard && reagent.tradingType === "sell"
+                }
                 price={price}
                 onPriceChange={setPrice}
                 userReagents={userReagents}
@@ -446,7 +450,8 @@ export const ReagentRequest = ({
                     : reagent.name
                 }
                 showPriceInput={isBountyBoard && reagent.tradingType === "sell"}
-
+                price={price}
+                onPriceChange={setPrice}
                 reagentLink={
                   isBountyBoard && requesterOfferedReagentId
                     ? `/marketplace/${requesterOfferedReagentId}`
