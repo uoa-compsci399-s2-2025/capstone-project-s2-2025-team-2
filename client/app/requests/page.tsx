@@ -16,6 +16,9 @@ type Order = components["schemas"]["Order"]
 type OrderWithId = Order & { id: string; owner_id: string }
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
+interface OrderWithReagentResponse extends OrderWithId {
+  reagent?: Reagent | null
+}
 
 interface ModalState {
   isOpen: boolean
@@ -36,26 +39,52 @@ export default function Orders() {
   })
   const router = useRouter()
 
-  //fetch all orders where user is owner/requester
+  // fetch all orders where user is owner/requester
   const fetchOrders = useCallback(async () => {
     const token = localStorage.getItem("authToken")
-    if (!token) return router.push("/auth")
+    if (!token) {
+      router.push("/auth")
+      return
+    }
 
-    const { data: ordersData = [] } = await client.GET(
-      "/orders/pending" as any,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      },
-    )
-    console.log(ordersData)
-    setOrders(ordersData as OrderWithId[])
+    setLoading(true)
+    try {
+      const { data: ordersData = [] } = await client.GET(
+        "/orders/pending" as any,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
+      console.log(ordersData)
+      const ordersWithReagents = ordersData as OrderWithReagentResponse[]
+      const reagentMap = new Map<string, ReagentWithId>()
+      const ordersList: OrderWithId[] = []
+
+      ordersWithReagents.forEach((orderData) => {
+        const { reagent, ...order } = orderData
+        ordersList.push(order)
+        if (reagent) {
+          reagentMap.set(order.reagent_id, {
+            ...reagent,
+            id: order.reagent_id,
+          })
+        }
+      })
+
+      setOrders(ordersList)
+      setReagents(reagentMap)
+    } catch (err) {
+      console.error("Failed to fetch orders:", err)
+    } finally {
+      setLoading(false)
+    }
   }, [router])
 
   useEffect(() => {
     fetchOrders()
   }, [fetchOrders])
 
-  //open order details modal
+  // open order details modal
   const handleOrderDetails = (orderId: string) => {
     const order = orders.find((o) => o.id === orderId)
     const reagent = order ? reagents.get(order.reagent_id) : null
@@ -68,19 +97,22 @@ export default function Orders() {
   const handleCloseModal = () => {
     setModalState({ isOpen: false, order: null, reagent: null })
   }
+
   // pagination
   const pageSize = usePageSize()
   const { currentPage, setCurrentPage, totalPages } = usePagination(
     orders,
     pageSize,
   )
+
   useEffect(() => {
     if (currentPage > totalPages && totalPages > 0) {
       setCurrentPage(totalPages)
     } else if (currentPage < 1) {
       setCurrentPage(1)
     }
-  }, [currentPage, totalPages])
+  }, [currentPage, totalPages, setCurrentPage])
+
   return (
     <Overlay>
       <p className="text-4xl font-medium text-white mt-4 ml-4 md:ml-8 tracking-[0.05em]">
