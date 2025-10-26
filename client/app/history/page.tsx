@@ -63,21 +63,22 @@ const History = () => {
             ),
             Promise.all(
               ownerIds.map((id) => {
-                const res = client.GET(`/orders/${id}` as any, {
-                  Authorization: `Bearer ${token}`,
+                const res = client.GET(`/users/${id}` as any, {
+                  headers: { Authorization: `Bearer ${token}` },
                 })
                 return res
               }),
             ),
             Promise.all(
               requesterIds.map((id) => {
-                const res = client.GET(`/orders/${id}` as any, {
-                  Authorization: `Bearer ${token}`,
+                const res = client.GET(`/users/${id}` as any, {
+                  headers: { Authorization: `Bearer ${token}` },
                 })
                 return res
               }),
             ),
           ])
+          
           const reagentMap = Object.fromEntries(
             reagentRes.map((res, i) => [reagentIds[i], res.data]),
           )
@@ -91,12 +92,13 @@ const History = () => {
             ...order,
             reagentName:
               reagentMap[order.reagent_id]?.name || "Deleted Reagent",
-            ownerName: ownerMap[order.owner_id]?.name || "Unknown Owner",
+            ownerName: ownerMap[order.owner_id]?.displayName || ownerMap[order.owner_id]?.preferredName || "Unknown Owner",
             requesterName:
-              requesterMap[order.requester_id]?.name || "Unknown Requester",
+              requesterMap[order.requester_id]?.displayName || requesterMap[order.requester_id]?.preferredName || "Unknown Requester",
           }))
           setOrders(ordersWithInfo)
         }
+        
       } catch (e) {
         console.error("fetch orders failed", e)
         if (!cancelled) setErr("Failed to fetch orders")
@@ -122,6 +124,7 @@ const History = () => {
       setCurrentPage(1)
     }
   }, [currentPage, totalPages])
+  
   if (isLoading) {
     return (
       <Overlay>
