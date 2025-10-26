@@ -166,7 +166,6 @@ const History = () => {
               {currentData.map((order) => {
                 const isTrade = "price" in order
                 const isExchange = "offeredReagentId" in order
-
                 return (
                   <RecordCard
                     key={order.id}
@@ -176,7 +175,7 @@ const History = () => {
                     reagentId={order.reagent_id}
                     reagentName={order.reagentName}
                     status={order.status}
-                    createdAt={new Date(order.createdAt).toLocaleDateString()}
+                    createdAt={new Date(order.createdAt).toLocaleDateString().split('T')[0]}
                     price={isTrade ? (order as Trade).price : undefined}
                     offeredReagentId={
                       isExchange

@@ -17,7 +17,6 @@ type Story = StoryObj<typeof SellerContactMobile>
 
 export const DefaultSellerContact: Story = {
   args: {
-    rating: 99,
     reagent: {
       id: "test-id",
       user_id: "user_1",
