@@ -220,6 +220,23 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "OrderWithReagent": {
+        "dataType": "refObject",
+        "properties": {
+            "requester_id": {"dataType":"string","required":true},
+            "reagent_id": {"dataType":"string","required":true},
+            "owner_id": {"dataType":"string","required":true},
+            "status": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["pending"]},{"dataType":"enum","enums":["approved"]},{"dataType":"enum","enums":["canceled"]}],"required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "message": {"dataType":"string"},
+            "quantity": {"dataType":"double"},
+            "unit": {"dataType":"string"},
+            "id": {"dataType":"string","required":true},
+            "reagent": {"dataType":"union","subSchemas":[{"ref":"Reagent"},{"dataType":"enum","enums":[null]}]},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Offer": {
         "dataType": "refObject",
         "properties": {
@@ -276,23 +293,6 @@ const models: TsoaRoute.Models = {
             "quantity": {"dataType":"double"},
             "type": {"dataType":"enum","enums":["trade"],"required":true},
             "unit": {"dataType":"string"},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "OrderWithReagent": {
-        "dataType": "refObject",
-        "properties": {
-            "requester_id": {"dataType":"string","required":true},
-            "reagent_id": {"dataType":"string","required":true},
-            "owner_id": {"dataType":"string","required":true},
-            "status": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["pending"]},{"dataType":"enum","enums":["approved"]},{"dataType":"enum","enums":["canceled"]}],"required":true},
-            "createdAt": {"dataType":"datetime","required":true},
-            "message": {"dataType":"string"},
-            "quantity": {"dataType":"double"},
-            "unit": {"dataType":"string"},
-            "id": {"dataType":"string","required":true},
-            "reagent": {"dataType":"union","subSchemas":[{"ref":"Reagent"},{"dataType":"enum","enums":[null]}]},
         },
         "additionalProperties": false,
     },

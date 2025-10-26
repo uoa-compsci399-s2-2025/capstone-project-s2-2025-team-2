@@ -611,6 +611,62 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"OrderWithReagent": {
+				"properties": {
+					"requester_id": {
+						"type": "string"
+					},
+					"reagent_id": {
+						"type": "string"
+					},
+					"owner_id": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string",
+						"enum": [
+							"pending",
+							"approved",
+							"canceled"
+						]
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"message": {
+						"type": "string"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"unit": {
+						"type": "string"
+					},
+					"id": {
+						"type": "string"
+					},
+					"reagent": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/Reagent"
+							}
+						],
+						"nullable": true
+					}
+				},
+				"required": [
+					"requester_id",
+					"reagent_id",
+					"owner_id",
+					"status",
+					"createdAt",
+					"id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"Offer": {
 				"properties": {
 					"requester_id": {
@@ -781,62 +837,6 @@
 					"price",
 					"offeredReagentId",
 					"type"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"OrderWithReagent": {
-				"properties": {
-					"requester_id": {
-						"type": "string"
-					},
-					"reagent_id": {
-						"type": "string"
-					},
-					"owner_id": {
-						"type": "string"
-					},
-					"status": {
-						"type": "string",
-						"enum": [
-							"pending",
-							"approved",
-							"canceled"
-						]
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"message": {
-						"type": "string"
-					},
-					"quantity": {
-						"type": "number",
-						"format": "double"
-					},
-					"unit": {
-						"type": "string"
-					},
-					"id": {
-						"type": "string"
-					},
-					"reagent": {
-						"allOf": [
-							{
-								"$ref": "#/components/schemas/Reagent"
-							}
-						],
-						"nullable": true
-					}
-				},
-				"required": [
-					"requester_id",
-					"reagent_id",
-					"owner_id",
-					"status",
-					"createdAt",
-					"id"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -2205,10 +2205,7 @@
 											"$ref": "#/components/schemas/Trade"
 										},
 										{
-											"items": {
-												"$ref": "#/components/schemas/Exchange"
-											},
-											"type": "array"
+											"$ref": "#/components/schemas/Exchange"
 										}
 									]
 								}
@@ -2263,240 +2260,6 @@
 				},
 				"tags": [
 					"Order"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/offers": {
-			"post": {
-				"operationId": "CreateOffer",
-				"responses": {
-					"201": {
-						"description": "Offer created successfully",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/Offer"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Offers"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/CreateOfferRequest"
-							}
-						}
-					}
-				}
-			},
-			"get": {
-				"operationId": "GetOffers",
-				"responses": {
-					"200": {
-						"description": "All offers returned successfully",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/Offer"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Offers"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": []
-			}
-		},
-		"/offers/trades": {
-			"post": {
-				"operationId": "CreateTrade",
-				"responses": {
-					"201": {
-						"description": "Trade created successfully",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/TradeOffer"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Offers"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/CreateOfferTradeRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/offers/{id}": {
-			"get": {
-				"operationId": "GetOfferById",
-				"responses": {
-					"200": {
-						"description": "All offers returned successfully",
-						"content": {
-							"application/json": {
-								"schema": {
-									"anyOf": [
-										{
-											"$ref": "#/components/schemas/Order"
-										},
-										{
-											"$ref": "#/components/schemas/Trade"
-										},
-										{
-											"$ref": "#/components/schemas/Exchange"
-										}
-									]
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Offers"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/offers/{id}/approve": {
-			"patch": {
-				"operationId": "ApproveOrder",
-				"responses": {
-					"200": {
-						"description": "order successfully approved",
-						"content": {
-							"application/json": {
-								"schema": {
-									"anyOf": [
-										{
-											"$ref": "#/components/schemas/Order"
-										},
-										{
-											"$ref": "#/components/schemas/Trade"
-										},
-										{
-											"$ref": "#/components/schemas/Exchange"
-										}
-									]
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Offers"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/offers/{id}/cancel": {
-			"patch": {
-				"operationId": "CancelOrder",
-				"responses": {
-					"200": {
-						"description": "order successfully canceled",
-						"content": {
-							"application/json": {
-								"schema": {
-									"anyOf": [
-										{
-											"$ref": "#/components/schemas/Order"
-										},
-										{
-											"$ref": "#/components/schemas/Trade"
-										},
-										{
-											"$ref": "#/components/schemas/Exchange"
-										}
-									]
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Offers"
 				],
 				"security": [
 					{
