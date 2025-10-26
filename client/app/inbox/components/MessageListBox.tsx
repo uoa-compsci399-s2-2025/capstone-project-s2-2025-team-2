@@ -68,9 +68,21 @@ export default function MessageListBox({
 
     const transformed = conversations.conversations.map(transformConversation)
 
-    if (!searchQuery) return transformed
+    //sort messages by recency (most recent first)
+    const sorted = transformed.sort((a, b) => {
+      const getTime = (conv: any) => {
+        //format firebase timestamp
+        const lastMsg = conv.originalData?.messages?.slice(-1)[0]
+        return lastMsg?.created_at?._seconds
+          ? lastMsg.created_at._seconds * 1000
+          : 0
+      }
+      return getTime(b) - getTime(a)
+    })
 
-    return transformed.filter(
+    if (!searchQuery) return sorted
+
+    return sorted.filter(
       (conv) =>
         conv.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         conv.lastMessage.toLowerCase().includes(searchQuery.toLowerCase()),
