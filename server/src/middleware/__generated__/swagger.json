@@ -163,6 +163,9 @@
 					},
 					"visibility": {
 						"$ref": "#/components/schemas/ReagentVisibility"
+					},
+					"restricted": {
+						"type": "boolean"
 					}
 				},
 				"required": [
@@ -177,7 +180,8 @@
 					"createdAt",
 					"createdAtReadable",
 					"location",
-					"unit"
+					"unit",
+					"restricted"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -227,6 +231,9 @@
 					},
 					"visibility": {
 						"$ref": "#/components/schemas/ReagentVisibility"
+					},
+					"restricted": {
+						"type": "boolean"
 					}
 				},
 				"required": [
@@ -237,7 +244,8 @@
 					"unit",
 					"expiryDate",
 					"tradingType",
-					"location"
+					"location",
+					"restricted"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -296,6 +304,9 @@
 					},
 					"visibility": {
 						"$ref": "#/components/schemas/ReagentVisibility"
+					},
+					"restricted": {
+						"type": "boolean"
 					}
 				},
 				"type": "object",

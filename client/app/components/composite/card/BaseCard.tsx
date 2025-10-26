@@ -6,6 +6,7 @@ import {
   ArrowsRightLeftIcon,
   ArrowRightIcon,
   ClockIcon,
+  PencilSquareIcon,
 } from "@heroicons/react/24/outline"
 import Image from "next/image"
 import { useRouter } from "next/navigation"
@@ -22,6 +23,9 @@ interface BaseCardProps {
   footerLeft: ReactNode
   reagentId: string
   onViewClick?: () => void
+  restricted?: boolean
+  onEditClick?: () => void
+  showEditButton?: boolean
 }
 
 //trading type display style mapping
@@ -51,6 +55,9 @@ const BaseCard = ({
   footerLeft,
   reagentId,
   onViewClick,
+  restricted = false,
+  onEditClick,
+  showEditButton = false,
 }: BaseCardProps) => {
   const router = useRouter()
   const { color, icon: Icon } = TRADING_TYPE_STYLES[tradingType] || {}
@@ -79,6 +86,16 @@ const BaseCard = ({
     >
       View
       <ArrowRightIcon className="w-5 h-5" />
+    </button>
+  )
+
+  const EditButton = () => (
+    <button
+      onClick={onEditClick}
+      className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 rounded-lg transition-colors cursor-pointer"
+    >
+      Edit
+      <PencilSquareIcon className="w-4 h-4" />
     </button>
   )
 
@@ -113,10 +130,15 @@ const BaseCard = ({
             />
             <div className="absolute rounded-b-lg bottom-0 left-0 right-0 p-2">
               <div className="hidden md:flex flex-wrap gap-1">
+                {restricted && (
+                  <span className="bg-red-500/70 text-white text-xs px-2 py-1 rounded-lg font-medium backdrop-blur-sm">
+                    restricted
+                  </span>
+                )}
                 {categories.map((cat, i) => (
                   <span
                     key={i}
-                    className="bg-background/70 text-white text-xs px-2 py-1 rounded-lg backdrop-blur-sm"
+                    className="bg-background/70 text-white text-xs px-2 py-1 rounded-lg font-medium backdrop-blur-sm"
                   >
                     {cat}
                   </span>
@@ -154,7 +176,10 @@ const BaseCard = ({
                   {/*mobile: expiry + view button footer*/}
                   <div className="flex justify-between w-full md:hidden">
                     <ExpiryDisplay />
-                    <ViewButton />
+                    <div className="flex gap-2">
+                      {showEditButton && <EditButton />}
+                      <ViewButton />
+                    </div>
                   </div>
 
                   {/*desktop: expiry inline with trading type*/}
@@ -174,7 +199,10 @@ const BaseCard = ({
                   <span className="truncate max-w-[10rem]">{footerLeft}</span>
                 </div>
               </div>
-              <ViewButton />
+              <div className="flex gap-2">
+                {showEditButton && <EditButton />}
+                <ViewButton />
+              </div>
             </div>
           </div>
         </div>

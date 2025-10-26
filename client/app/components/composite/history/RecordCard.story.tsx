@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/nextjs"
-import ReagentCard from "./ReagentCard"
+import RecordCard from "./RecordCard"
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta = {
-  title: "Example/ReagentCard",
-  component: ReagentCard,
+  title: "History/RecordCard",
+  component: RecordCard,
   parameters: {
     // Optional parameter to center the component in the Canvas. More info: https://storybook.js.org/docs/configure/story-layout
     layout: "centered",
@@ -21,33 +21,21 @@ const meta = {
   argTypes: {},
   // Use `fn` to spy on the onClick arg, which will appear in the actions panel once invoked: https://storybook.js.org/docs/essentials/actions#action-args
   args: {},
-} satisfies Meta<typeof ReagentCard>
+} satisfies Meta<typeof RecordCard>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const DefaultReagentCard: Story = {
+export const DefaultRecordCard: Story = {
   args: {
-    reagent: {
-      id: "abcd",
-      user_id: "user_1",
-      name: "Ethanol",
-      categories: ["chemical"],
-      expiryDate: "25/10/2026",
-      images: [
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4R4SrdU7Rbyr3DqFDmKBsFH9t9lqjLcJetw&s",
-      ],
-      tradingType: "trade",
-      description: "High purity ethanol",
-      condition: "New",
-      quantity: 1,
-      unit: "L",
-      createdAt: "2025-01-01T00:00:00.000Z",
-      location: "UoA, Auckland",
-      price: 0,
-      createdAtReadable: "1st Jan 2025",
-      restricted: false,
-    },
+    reagentName: "Sample Reagent",
+    orderId: "123456",
+    status: "Canceled",
+    createdAt: "2024-06-01",
+    offeredReagentId: "111",
+    price: 69,
+    requesterName: "kayn",
+    ownerName: "zed",
+    reagentId: "987654",
   },
 }

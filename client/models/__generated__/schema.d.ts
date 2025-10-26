@@ -22,6 +22,24 @@ export interface paths {
     patch: operations["UpdateUser"]
     trace?: never
   }
+  "/users/{id}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    /** @description Update user information by their ID
+     *     User **must** be authenticated to access this endpoint */
+    patch: operations["UpdateUser"]
+    trace?: never
+  }
   "/users/reagents/expiring": {
     parameters: {
       query?: never
@@ -585,6 +603,7 @@ export interface components {
       location: string
       unit: string
       visibility?: components["schemas"]["ReagentVisibility"]
+      restricted: boolean
     }
     CreateReagentRequest: {
       name: string
@@ -601,6 +620,7 @@ export interface components {
       location: string
       images?: string[]
       visibility?: components["schemas"]["ReagentVisibility"]
+      restricted: boolean
     }
     /** @description Make all properties in T optional */
     Partial_Reagent_: {
@@ -621,6 +641,7 @@ export interface components {
       location?: string
       unit?: string
       visibility?: components["schemas"]["ReagentVisibility"]
+      restricted?: boolean
     }
     /** @description Construct a type with a set of properties K of type T */
     "Record_string.Reagent-Array_": {
