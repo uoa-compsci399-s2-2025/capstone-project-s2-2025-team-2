@@ -197,9 +197,9 @@ export class OrderService {
       uniqueReagentIds.map((id) => reagentRepo.getReagentById(id)),
     )
     const reagentMap: { [key: string]: any } = {}
-    reagents.forEach((reagent) => {
-      if (reagent) {
-        reagentMap[reagent.createdAtReadable] = reagent
+    uniqueReagentIds.forEach((id, index) => {
+      if (reagents[index]) {
+        reagentMap[id] = reagents[index]
       }
     })
 
