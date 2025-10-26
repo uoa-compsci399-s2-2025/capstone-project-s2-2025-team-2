@@ -299,11 +299,14 @@ const BountyBoard = () => {
       </div>
 
       <div className="pb-[4rem] md:pb-0">
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={setCurrentPage}
-        />
+        {!isLoading && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        )}
+
       </div>
       {isSignedIn && (
         <button

@@ -118,7 +118,7 @@ export default function Orders() {
 
       console.debug("[Requests] fetched offers:", offersData)
       setOffers(offersData as any[])
-
+      
       //fetch all reagents involved in orders
       const uniqueIds = [
         ...new Set(pendingOrders.map((o: Order) => o.reagent_id)),
@@ -262,7 +262,7 @@ export default function Orders() {
       <div className="mt-5"></div>
       {!loading && (
         <h2 className="text-2xl text-white pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem]">
-          From Bounty Board
+          From Marketplace
         </h2>
       )}
       <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
