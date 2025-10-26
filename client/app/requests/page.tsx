@@ -105,11 +105,11 @@ export default function Orders() {
         headers: { Authorization: `Bearer ${token}` },
       })
 
-    //only show pending orders
-    const pendingOrders = (ordersData as OrderWithId[]).filter(
-      (order) => order.status === "pending",
-    )
-    setOrders(pendingOrders)
+      //only show pending orders
+      const pendingOrders = (ordersData as OrderWithId[]).filter(
+        (order) => order.status === "pending",
+      )
+      setOrders(pendingOrders)
 
       //fetch offers
       const { data: offersData = [] } = await client.GET("/offers" as any, {
@@ -121,8 +121,8 @@ export default function Orders() {
 
       //fetch all reagents involved in orders
       const uniqueIds = [
-      ...new Set(pendingOrders.map((o: Order) => o.reagent_id)),
-    ]
+        ...new Set(pendingOrders.map((o: Order) => o.reagent_id)),
+      ]
       const reagentData = await Promise.all(
         uniqueIds.map(async (id) => {
           const { data } = await client.GET(`/reagents/${id}` as any, {

@@ -136,7 +136,6 @@ export const ReagentRequest = ({
   onClose,
   onSubmit,
   reagent,
-  title = "Reagent Request",
   isBountyBoard = false,
   requesterOfferedReagentId,
   requesterOfferedReagentName,
@@ -418,7 +417,9 @@ export const ReagentRequest = ({
                 {reagent.tradingType.charAt(0).toUpperCase() +
                   reagent.tradingType.slice(1)}
               </span>
-              <span className="text-2xl font-medium">Request</span>
+              <span className="text-2xl font-medium">
+                {isBountyBoard ? "Offer" : "Request"}
+              </span>
             </h2>
 
             <div className="flex items-center justify-center mb-8">

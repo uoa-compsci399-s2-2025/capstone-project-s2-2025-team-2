@@ -1,5 +1,4 @@
 import { LuHouse } from "react-icons/lu"
-import { FaRegStar } from "react-icons/fa"
 import Button from "../../generic/button/regular/Button"
 import { useState, useEffect } from "react"
 import ReagentRequest from "../reagent/ReagentRequest"
@@ -17,7 +16,7 @@ interface SellerContactProps {
   reagent?: ReagentWithId
 }
 
-const SellerContact = ({ rating, reagent }: SellerContactProps) => {
+const SellerContact = ({ reagent }: SellerContactProps) => {
   const [isRequestOpen, setIsRequestOpen] = useState(false)
   const [sellerInfo, setSellerInfo] = useState<any>(null)
   const [isCheckingInventory, setIsCheckingInventory] = useState(false)
