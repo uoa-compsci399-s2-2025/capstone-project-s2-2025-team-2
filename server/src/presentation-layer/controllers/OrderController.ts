@@ -1,4 +1,4 @@
-import { Order } from "../../business-layer/models/Order"
+import { Order, OrderWithReagent } from "../../business-layer/models/Order"
 import { Trade } from "../../business-layer/models/Order"
 import { Exchange } from "../../business-layer/models/Order"
 import { CreateOrderRequest } from "../../service-layer/dtos/request/CreateOrderRequest"
@@ -92,25 +92,41 @@ export class OrderController extends Controller {
     }
   }
 
+  @SuccessResponse("200", "All pending orders returned successfully")
+  @Security("jwt")
+  @Get("pending")
+  public async getPendingOrdersWithReagents(
+    @Request() request: AuthRequest,
+  ): Promise<OrderWithReagent[]> {
+    try {
+      const user = request.user
+      const ordersWithReagents = await new OrderService().getAllPendingOrders(
+        user.uid,
+      )
+      if (!ordersWithReagents) {
+        this.setStatus(404)
+        console.error("there are no pending orders")
+      }
+      return ordersWithReagents
+    } catch (err) {
+      throw new Error("Failed to fetch order: " + (err as Error).message)
+    }
+  }
+
   @SuccessResponse("200", "All orders returned successfully")
   @Security("jwt")
   @Get("{id}")
   public async getOrderById(
-    @Path() id: string,
     @Request() request: AuthRequest,
-  ): Promise<Order | Trade | Exchange> {
+  ): Promise<Order[] | Trade[] | Exchange[]> {
     try {
       const user = request.user
-      const order = await new OrderService().getOrderById(id)
-      if (!order) {
+      const orders = await new OrderService().getAllPendingOrders(user.uid)
+      if (!orders) {
         this.setStatus(404)
-        console.error("Order not found")
+        console.error("there are no pending orders")
       }
-      if (user.uid !== order.requester_id) {
-        this.setStatus(403)
-        console.error("Unauthorized to retrieve this order")
-      }
-      return order
+      return orders
     } catch (err) {
       throw new Error("Failed to fetch order: " + (err as Error).message)
     }
