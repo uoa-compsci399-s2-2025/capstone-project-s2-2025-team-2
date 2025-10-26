@@ -44,43 +44,56 @@ const History = () => {
         })
         if (!cancelled) {
           const ordersData = response.data as OrderWithId[]
-          const ordersWithInfo = await Promise.all(
-            ordersData.map(async (order) => {
-              try {
-                const reagentResponse = await client.GET(
-                  `/reagents/${order.reagent_id}` as any,
-                  {
-                    headers: { Authorization: `Bearer ${token}` },
-                  },
-                )
-                const ownerResponse = await client.GET(
-                  `/users/${order.owner_id}` as any,
-                  {
-                    headers: { Authorization: `Bearer ${token}` },
-                  },
-                )
+          const reagentIds = [...new Set(ordersData.map((o) => o.reagent_id))]
+          const ownerIds = [...new Set(ordersData.map((o) => o.owner_id))]
+          const requesterIds = [
+            ...new Set(ordersData.map((o) => o.requester_id)),
+          ]
 
-                const requesterResponse = await client.GET(
-                  `/users/${order.requester_id}` as any,
-                  {
-                    headers: { Authorization: `Bearer ${token}` },
-                  },
-                )
-                return {
-                  ...order,
-                  reagentName: reagentResponse.data?.name || "Reagent Deleted",
-                  ownerName: ownerResponse.data?.displayName || "Unknown Owner",
-                  requesterName:
-                    requesterResponse.data?.displayName || "Unknown Requester",
-                }
-              } catch (e) {
-                console.error("fetch owner name failed", e)
-                return { ...order, ownerName: "Unknown" }
-              }
-            }),
+          const [reagentRes, ownerRes, requesterRes] = await Promise.all([
+            Promise.all(
+              reagentIds.map((reagentId) => {
+                const res = client.GET(`/reagents/${reagentId}` as any, {
+                  Authorization: `Bearer ${token}`,
+                })
+                return res
+              }),
+            ),
+            Promise.all(
+              ownerIds.map((id) => {
+                const res = client.GET(`/orders/${id}` as any, {
+                  Authorization: `Bearer ${token}`,
+                })
+                return res
+              }),
+            ),
+            Promise.all(
+              requesterIds.map((id) => {
+                const res = client.GET(`/orders/${id}` as any, {
+                  Authorization: `Bearer ${token}`,
+                })
+                return res
+              }),
+            ),
+          ])
+          const reagentMap = Object.fromEntries(
+            reagentRes.map((res, i) => [reagentIds[i], res.data]),
           )
+          const ownerMap = Object.fromEntries(
+            ownerRes.map((res, i) => [ownerIds[i], res.data]),
+          )
+          const requesterMap = Object.fromEntries(
+            requesterRes.map((res, i) => [requesterIds[i], res.data]),
+          )
+          const ordersWithInfo = ordersData.map((order) => ({
+            ...order,
+            reagentName:
+              reagentMap[order.reagent_id]?.name || "Deleted Reagent",
+            ownerName: ownerMap[order.owner_id]?.name || "Unknown Owner",
+            requesterName:
+              requesterMap[order.requester_id]?.name || "Unknown Requester",
+          }))
           setOrders(ordersWithInfo)
-          setErr(null)
         }
       } catch (e) {
         console.error("fetch orders failed", e)
