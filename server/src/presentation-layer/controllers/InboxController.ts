@@ -134,9 +134,8 @@ export class InboxController extends Controller {
     }
 
     try {
-      const messages = await this.inboxService.getMessagesByChatRoomId(
-        chatRoomId,
-      )
+      const messages =
+        await this.inboxService.getMessagesByChatRoomId(chatRoomId)
       this.setStatus(200)
       return { messages }
     } catch (error) {

@@ -60,7 +60,7 @@ export class InboxRepository {
 
   async createMessage(message: Message): Promise<Message> {
     const docRef = await this.db.messages.add(message)
-    
+
     // Update last_message in chat room
     await this.db.chatRooms.doc(message.chat_room_id).update({
       last_message: {
