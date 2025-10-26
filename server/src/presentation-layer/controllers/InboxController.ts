@@ -122,4 +122,27 @@ export class InboxController extends Controller {
       throw new Error("Internal server error")
     }
   }
+
+  @Security("jwt")
+  @Get("messages/{chatRoomId}")
+  async getMessagesByChatRoomId(
+    @Path() chatRoomId: string,
+  ): Promise<{ messages: any[] }> {
+    if (!chatRoomId) {
+      this.setStatus(400)
+      throw new Error("chatRoomId is required")
+    }
+
+    try {
+      const messages = await this.inboxService.getMessagesByChatRoomId(
+        chatRoomId,
+      )
+      this.setStatus(200)
+      return { messages }
+    } catch (error) {
+      console.error("Error getting messages:", error)
+      this.setStatus(500)
+      throw new Error("Internal server error")
+    }
+  }
 }

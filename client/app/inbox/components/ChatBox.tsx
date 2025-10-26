@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react"
 import MessageBubble from "../components/MessageBubble"
-import { sendMessage, getChatRoomById } from "../../services/inbox"
+import { sendMessage, getChatRoomById, getMessages } from "../../services/inbox"
 import { onAuthStateChanged, User } from "firebase/auth"
 import { auth } from "../../config/firebase"
 import { formatTime } from "../../hooks/utils/timeFormatter"
@@ -20,6 +20,8 @@ export default function ChatBox({
   const [sending, setSending] = useState(false)
   const [user, setUser] = useState<User | null>(null)
   const [isResponser, setIsResponser] = useState(false)
+  const [messages, setMessages] = useState<any[]>([])
+  const [loadingMessages, setLoadingMessages] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   //            effect: auth state change           //
@@ -35,10 +37,29 @@ export default function ChatBox({
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
+  //            effect: load messages when conversation changes           //
+  useEffect(() => {
+    const loadMessages = async () => {
+      if (!selectedConversation?.chat_room?.id) return
+
+      setLoadingMessages(true)
+      try {
+        const response = await getMessages(selectedConversation.chat_room.id)
+        setMessages(response.messages)
+      } catch (error) {
+        console.error("Error loading messages:", error)
+      } finally {
+        setLoadingMessages(false)
+      }
+    }
+
+    loadMessages()
+  }, [selectedConversation?.chat_room?.id])
+
   //            effect: scroll to bottom when messages change           //
   useEffect(() => {
     scrollToBottom()
-  }, [selectedConversation?.messages])
+  }, [messages])
 
   //            effect: check if user is responder           //
   useEffect(() => {
@@ -76,7 +97,11 @@ export default function ChatBox({
 
       setMessageInput("")
 
-      // Refresh the current conversation with latest messages
+      // Refresh messages after sending
+      const response = await getMessages(selectedConversation.chat_room.id)
+      setMessages(response.messages)
+
+      // Update conversation to refresh last message
       const updatedConversation = await getChatRoomById(
         selectedConversation.chat_room.id,
         user.uid,
@@ -84,7 +109,6 @@ export default function ChatBox({
       onConversationUpdate(updatedConversation)
     } catch (error) {
       console.error("Error sending message:", error)
-      // You could add a toast notification here
     } finally {
       setSending(false)
     }
@@ -98,12 +122,9 @@ export default function ChatBox({
     }
   }
 
-  //            function: getMessages           //
-  const getMessages = () => {
-    if (!selectedConversation?.messages) return []
-
-    // Messages are already sorted by server (oldest first)
-    return selectedConversation.messages.map((message: any) =>
+  //            function: getTransformedMessages           //
+  const getTransformedMessages = () => {
+    return messages.map((message: any) =>
       transformMessage(message, message.sender_id === user?.uid),
     )
   }
@@ -124,7 +145,7 @@ export default function ChatBox({
     )
   }
 
-  const messages = getMessages()
+  const transformedMessages = getTransformedMessages()
 
   return (
     <div className="h-[calc(100vh-4rem)] md:h-[calc(100vh-2rem)] w-full flex-1 flex flex-col bg-background">
@@ -167,7 +188,13 @@ export default function ChatBox({
 
       {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-thin">
-        {messages.length === 0 ? (
+        {loadingMessages ? (
+          <div className="flex items-center justify-center h-full">
+            <div className="text-center">
+              <p className="text-secondary">Loading messages...</p>
+            </div>
+          </div>
+        ) : transformedMessages.length === 0 ? (
           <div className="flex items-center justify-center h-full">
             <div className="text-center">
               <p className="text-secondary mb-2">No messages yet</p>
@@ -176,7 +203,7 @@ export default function ChatBox({
           </div>
         ) : (
           <>
-            {messages.map((message: any) => (
+            {transformedMessages.map((message: any) => (
               <MessageBubble
                 key={message.id}
                 message={message}

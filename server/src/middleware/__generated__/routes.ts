@@ -207,6 +207,7 @@ const models: TsoaRoute.Models = {
             "user1_id": {"dataType":"string","required":true},
             "user2_id": {"dataType":"string","required":true},
             "created_at": {"dataType":"datetime","required":true},
+            "last_message": {"dataType":"nestedObjectLiteral","nestedProperties":{"sender_id":{"dataType":"string","required":true},"created_at":{"dataType":"datetime","required":true},"content":{"dataType":"string","required":true}}},
         },
         "additionalProperties": false,
     },
@@ -1283,6 +1284,37 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'getChatRoomById',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsInboxController_getMessagesByChatRoomId: Record<string, TsoaRoute.ParameterSchema> = {
+                chatRoomId: {"in":"path","name":"chatRoomId","required":true,"dataType":"string"},
+        };
+        app.get('/inbox/messages/:chatRoomId',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(InboxController)),
+            ...(fetchMiddlewares<RequestHandler>(InboxController.prototype.getMessagesByChatRoomId)),
+
+            async function InboxController_getMessagesByChatRoomId(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsInboxController_getMessagesByChatRoomId, request, response });
+
+                const controller = new InboxController();
+
+              await templateService.apiHandler({
+                methodName: 'getMessagesByChatRoomId',
                 controller,
                 response,
                 next,

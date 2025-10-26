@@ -90,3 +90,23 @@ export const getChatRoomById = async (
 
   return response.data
 }
+
+//            function: getMessages           //
+export const getMessages = async (
+  chatRoomId: string,
+): Promise<{ messages: any[] }> => {
+  const authHeaders = await getAuthHeaders()
+
+  const response = await client.GET("/inbox/messages/{chatRoomId}", {
+    params: {
+      path: { chatRoomId },
+    },
+    headers: authHeaders,
+  })
+
+  if (response.error) {
+    throw new Error("Getting messages failed")
+  }
+
+  return response.data
+}

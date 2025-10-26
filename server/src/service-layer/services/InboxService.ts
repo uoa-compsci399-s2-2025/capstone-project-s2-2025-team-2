@@ -60,21 +60,24 @@ export class InboxService {
     const conversations: ChatRoomResponse[] = []
 
     for (const chatRoom of chatRooms) {
-      const messages =
-        await this.inboxRepository.getMessagesByChatRoomWithLimit(
-          chatRoom.id!,
-          50,
-        )
-
       // Get the other user's information
       const otherUserId =
         chatRoom.user1_id === userId ? chatRoom.user2_id : chatRoom.user1_id
       const otherUser = await this.userService.getUserById(otherUserId)
 
-      console.log("other user..")
-      console.log(otherUser)
-
       if (otherUser) {
+        // Convert last_message to Message[] for consistency
+        const messages = chatRoom.last_message
+          ? [
+              {
+                chat_room_id: chatRoom.id!,
+                sender_id: chatRoom.last_message.sender_id,
+                content: chatRoom.last_message.content,
+                created_at: chatRoom.last_message.created_at,
+              },
+            ]
+          : []
+
         conversations.push({
           chat_room: chatRoom,
           messages: messages,
@@ -89,25 +92,31 @@ export class InboxService {
 
     // Sort conversations by most recent message
     conversations.sort((a, b) => {
-      const aLastMessage = a.messages[a.messages.length - 1]
-      const bLastMessage = b.messages[b.messages.length - 1]
+      if (!a.chat_room.last_message && !b.chat_room.last_message) return 0
+      if (!a.chat_room.last_message) return 1
+      if (!b.chat_room.last_message) return -1
 
-      if (!aLastMessage && !bLastMessage) return 0
-      if (!aLastMessage) return 1
-      if (!bLastMessage) return -1
+      const aTime = (a.chat_room.last_message.created_at as any)._seconds
+        ? (a.chat_room.last_message.created_at as any)._seconds * 1000
+        : new Date(a.chat_room.last_message.created_at).getTime()
+      const bTime = (b.chat_room.last_message.created_at as any)._seconds
+        ? (b.chat_room.last_message.created_at as any)._seconds * 1000
+        : new Date(b.chat_room.last_message.created_at).getTime()
 
-      // Handle Firestore Timestamp objects
-      const aTime = (aLastMessage.created_at as any)._seconds
-        ? (aLastMessage.created_at as any)._seconds * 1000
-        : new Date(aLastMessage.created_at).getTime()
-      const bTime = (bLastMessage.created_at as any)._seconds
-        ? (bLastMessage.created_at as any)._seconds * 1000
-        : new Date(bLastMessage.created_at).getTime()
-
-      return aTime - bTime
+      return bTime - aTime // Most recent first
     })
 
     return { conversations }
+  }
+
+  async getMessagesByChatRoomId(
+    chatRoomId: string,
+    limit: number = 50,
+  ): Promise<Message[]> {
+    return await this.inboxRepository.getMessagesByChatRoomWithLimit(
+      chatRoomId,
+      limit,
+    )
   }
 
   async getChatRoomById(
