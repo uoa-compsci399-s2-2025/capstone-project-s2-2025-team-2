@@ -427,7 +427,7 @@ export const ReagentRequest = ({
                 name={requesterName}
                 showDropdown={isBountyBoard || reagent.tradingType === "trade"}
                 showIcon={reagent.tradingType === "trade"}
-                showPriceInput={reagent.tradingType === "sell"}
+                showPriceInput={!isBountyBoard && reagent.tradingType === "sell"}
                 price={price}
                 onPriceChange={setPrice}
                 userReagents={userReagents}
@@ -445,6 +445,8 @@ export const ReagentRequest = ({
                     ? requesterOfferedReagentName || undefined
                     : reagent.name
                 }
+                showPriceInput={isBountyBoard && reagent.tradingType === "sell"}
+
                 reagentLink={
                   isBountyBoard && requesterOfferedReagentId
                     ? `/marketplace/${requesterOfferedReagentId}`
