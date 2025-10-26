@@ -200,6 +200,23 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "OrderWithReagent": {
+        "dataType": "refObject",
+        "properties": {
+            "requester_id": {"dataType":"string","required":true},
+            "reagent_id": {"dataType":"string","required":true},
+            "owner_id": {"dataType":"string","required":true},
+            "status": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["pending"]},{"dataType":"enum","enums":["approved"]},{"dataType":"enum","enums":["canceled"]}],"required":true},
+            "createdAt": {"dataType":"datetime","required":true},
+            "message": {"dataType":"string"},
+            "quantity": {"dataType":"double"},
+            "unit": {"dataType":"string"},
+            "id": {"dataType":"string","required":true},
+            "reagent": {"dataType":"union","subSchemas":[{"ref":"Reagent"},{"dataType":"enum","enums":[null]}]},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "ChatRoom": {
         "dataType": "refObject",
         "properties": {
@@ -1073,26 +1090,26 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsOrderController_getPendingOrders: Record<string, TsoaRoute.ParameterSchema> = {
+        const argsOrderController_getPendingOrdersWithReagents: Record<string, TsoaRoute.ParameterSchema> = {
                 request: {"in":"request","name":"request","required":true,"dataType":"object"},
         };
         app.get('/orders/pending',
             authenticateMiddleware([{"jwt":[]}]),
             ...(fetchMiddlewares<RequestHandler>(OrderController)),
-            ...(fetchMiddlewares<RequestHandler>(OrderController.prototype.getPendingOrders)),
+            ...(fetchMiddlewares<RequestHandler>(OrderController.prototype.getPendingOrdersWithReagents)),
 
-            async function OrderController_getPendingOrders(request: ExRequest, response: ExResponse, next: any) {
+            async function OrderController_getPendingOrdersWithReagents(request: ExRequest, response: ExResponse, next: any) {
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
             let validatedArgs: any[] = [];
             try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsOrderController_getPendingOrders, request, response });
+                validatedArgs = templateService.getValidatedArgs({ args: argsOrderController_getPendingOrdersWithReagents, request, response });
 
                 const controller = new OrderController();
 
               await templateService.apiHandler({
-                methodName: 'getPendingOrders',
+                methodName: 'getPendingOrdersWithReagents',
                 controller,
                 response,
                 next,

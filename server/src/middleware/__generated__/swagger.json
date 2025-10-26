@@ -563,6 +563,62 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"OrderWithReagent": {
+				"properties": {
+					"requester_id": {
+						"type": "string"
+					},
+					"reagent_id": {
+						"type": "string"
+					},
+					"owner_id": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string",
+						"enum": [
+							"pending",
+							"approved",
+							"canceled"
+						]
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"message": {
+						"type": "string"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"unit": {
+						"type": "string"
+					},
+					"id": {
+						"type": "string"
+					},
+					"reagent": {
+						"allOf": [
+							{
+								"$ref": "#/components/schemas/Reagent"
+							}
+						],
+						"nullable": true
+					}
+				},
+				"required": [
+					"requester_id",
+					"reagent_id",
+					"owner_id",
+					"status",
+					"createdAt",
+					"id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"ChatRoom": {
 				"properties": {
 					"id": {
@@ -1731,33 +1787,17 @@
 		},
 		"/orders/pending": {
 			"get": {
-				"operationId": "GetPendingOrders",
+				"operationId": "GetPendingOrdersWithReagents",
 				"responses": {
 					"200": {
 						"description": "All pending orders returned successfully",
 						"content": {
 							"application/json": {
 								"schema": {
-									"anyOf": [
-										{
-											"items": {
-												"$ref": "#/components/schemas/Order"
-											},
-											"type": "array"
-										},
-										{
-											"items": {
-												"$ref": "#/components/schemas/Trade"
-											},
-											"type": "array"
-										},
-										{
-											"items": {
-												"$ref": "#/components/schemas/Exchange"
-											},
-											"type": "array"
-										}
-									]
+									"items": {
+										"$ref": "#/components/schemas/OrderWithReagent"
+									},
+									"type": "array"
 								}
 							}
 						}
