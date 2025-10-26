@@ -112,19 +112,13 @@ const SellerContact = ({ rating, reagent }: SellerContactProps) => {
           />
         </div>
 
-        <div className="hidden md:block  mx-[1.5rem]">
+        <div className="hidden md:block mx-[1.5rem] mt-[0.5rem]">
           <h4 className="text-[1rem] text-white">
             {sellerInfo?.displayName || "Unknown Seller"}
           </h4>
           <span className="flex items-center text-[0.8rem] font-bold text-white">
             <LuHouse className="mr-[0.3rem]" />
             {reagent?.location || "Location not specified"}
-          </span>
-          <span className="text-white items-center flex text-[0.8rem] font-bold">
-            <FaRegStar className="mr-[0.3rem]" />
-            {rating !== undefined
-              ? `${rating} (${rating}% Positive Feedback)`
-              : "No rating yet"}
           </span>
         </div>
       </div>
