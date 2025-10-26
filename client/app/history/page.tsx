@@ -6,6 +6,8 @@ import { auth } from "@/app/config/firebase"
 import { components } from "@/models/__generated__/schema"
 import RecordCard from "../components/composite/history/RecordCard"
 import LoadingState from "../components/composite/loadingstate/LoadingState"
+import { usePagination } from "../hooks/usePagination"
+import Pagination from "../components/composite/pagination/Pagination"
 
 type Order = components["schemas"]["Order"]
 type Exchange = components["schemas"]["Exchange"]
@@ -109,6 +111,17 @@ const History = () => {
     }
   }, [])
 
+  const pageSize = 8
+  const { currentPage, setCurrentPage, currentData, totalPages } =
+    usePagination(orders, pageSize)
+
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages)
+    } else if (currentPage < 1) {
+      setCurrentPage(1)
+    }
+  }, [currentPage, totalPages])
   if (isLoading) {
     return (
       <Overlay>
@@ -127,6 +140,7 @@ const History = () => {
       </Overlay>
     )
   }
+
   return (
     <Overlay>
       <p className="text-4xl font-medium text-white mt-4 ml-8 tracking-[0.05em]">
@@ -146,7 +160,7 @@ const History = () => {
             <p>No orders found</p>
           ) : (
             <div className="flex flex-col gap-4 pb-[4rem]">
-              {orders.map((order) => {
+              {currentData.map((order) => {
                 const isTrade = "price" in order
                 const isExchange = "offeredReagentId" in order
 
@@ -172,6 +186,13 @@ const History = () => {
             </div>
           )}
         </div>
+      </div>
+      <div className="pb-[4rem] md:pb-0">
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={setCurrentPage}
+        />
       </div>
     </Overlay>
   )
