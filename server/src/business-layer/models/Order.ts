@@ -1,3 +1,4 @@
+import { Reagent } from "./Reagent"
 export interface Order {
   requester_id: string
   reagent_id: string
@@ -15,4 +16,9 @@ export interface Exchange extends Order {
 
 export interface Trade extends Order {
   price: number
+}
+
+export interface OrderWithReagent extends Order {
+  id: string
+  reagent?: Reagent | null
 }

@@ -41,31 +41,14 @@ export default function Orders() {
     const token = localStorage.getItem("authToken")
     if (!token) return router.push("/auth")
 
-    const { data: ordersData = [] } = await client.GET("/orders" as any, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-
-    //only show pending orders
-    const pendingOrders = (ordersData as OrderWithId[]).filter(
-      (order) => order.status === "pending",
+    const { data: ordersData = [] } = await client.GET(
+      "/orders/pending" as any,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      },
     )
-    setOrders(pendingOrders)
-
-    //fetch all reagents involved in orders, map ids
-    const uniqueIds = [
-      ...new Set(pendingOrders.map((o: Order) => o.reagent_id)),
-    ]
-    const reagentData = await Promise.all(
-      uniqueIds.map(async (id) => {
-        const { data } = await client.GET(`/reagents/${id}` as any, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        return data && ({ ...data, id } as ReagentWithId)
-      }),
-    )
-
-    setReagents(new Map(reagentData.filter(Boolean).map((r) => [r!.id, r!])))
-    setLoading(false)
+    console.log(ordersData)
+    setOrders(ordersData as OrderWithId[])
   }, [router])
 
   useEffect(() => {
