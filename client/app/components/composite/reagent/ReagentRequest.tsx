@@ -66,7 +66,7 @@ const UserDisplay = ({
 }: UserDisplayProps) => (
   <div className="flex flex-col items-center flex-1 min-w-0">
     <div className="flex items-center gap-3">
-      <div className="text-white text-3xl font-semibold truncate md:truncate-none max-w-[80px] md:max-w-none">
+      <div className="text-white text-3xl font-semibold truncate md:truncate-none max-w-[100px] md:max-w-none">
         {name}
       </div>
       {showIcon && !showPriceInput && (
@@ -74,26 +74,26 @@ const UserDisplay = ({
           <BeakerIcon className="w-6 h-6" />
         </div>
       )}
-      {showPriceInput && (
-        <div
-          className="inline-flex items-center rounded-full px-1.5 py-1 shadow-lg"
-          style={{ backgroundColor: "var(--succ-green-light)" }}
-        >
-          <div className="w-6 h-6 flex items-center justify-center text-white font-black text-lg leading-none">
-            $
-          </div>
-          <input
-            type="number"
-            value={price}
-            onChange={(e) => onPriceChange?.(e.target.value)}
-            className="bg-transparent text-white w-16 text-center focus:outline-none text-base font-medium leading-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
-            placeholder="0.00"
-            min="0"
-            disabled={isSubmitting}
-          />
-        </div>
-      )}
     </div>
+    {showPriceInput && (
+      <div
+        className="mt-2 inline-flex items-center rounded-full px-1.5 py-0.5 shadow-lg"
+        style={{ backgroundColor: "var(--succ-green-light)" }}
+      >
+        <div className="w-6 h-6 flex items-center justify-center text-white font-black text-lg leading-none">
+          $
+        </div>
+        <input
+          type="number"
+          value={price}
+          onChange={(e) => onPriceChange?.(e.target.value)}
+          className="bg-transparent text-white w-16 text-center focus:outline-none text-base font-medium leading-none [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
+          placeholder="0.00"
+          min="0"
+          disabled={isSubmitting}
+        />
+      </div>
+    )}
     {showDropdown ? (
       <div className="mt-2 w-full max-w-[145px] relative">
         <select

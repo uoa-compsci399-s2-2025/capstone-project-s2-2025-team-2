@@ -16,6 +16,5 @@ export default meta
 type Story = StoryObj<typeof SellerContact>
 
 export const DefaultSellerContact: Story = {
-  args: {
-  },
+  args: {},
 }
