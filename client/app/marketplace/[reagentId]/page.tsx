@@ -17,7 +17,7 @@ interface ReagentViewProps {
 
 export default function ReagentView({ params }: ReagentViewProps) {
   const { reagentId } = use(params)
-
+  const [sellerInfo, setSellerInfo] = useState<any>(null)
   const [reagent, setReagent] = useState<Reagent | null>(null)
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -31,8 +31,28 @@ export default function ReagentView({ params }: ReagentViewProps) {
     fetchReagents()
   }, [])
 
+  //fetch seller info using user id
+  useEffect(() => {
+    if (!reagent?.user_id) return
+
+    const fetchSellerInfo = async () => {
+      try {
+        const { data } = await client.GET(
+          `/users/${reagent.user_id}` as any,
+          {},
+        )
+        if (data) {
+          setSellerInfo(data)
+        }
+      } catch (error) {
+        console.error("Failed to fetch seller information:", error)
+      }
+    }
+
+    fetchSellerInfo()
+  }, [reagent?.user_id])
   // loading state
-  if (!reagent)
+  if (!reagent || !sellerInfo)
     return (
       <div className="bg-transparent h-[100vh] w-full">
         <div className="bg-transparent w-full items-center gap-4 text-white flex justify-center mt-[50vh]">
@@ -190,6 +210,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                 </h4>
               </div>
               <SellerContact
+                sellerInfo={sellerInfo}
                 reagent={
                   reagent
                     ? {

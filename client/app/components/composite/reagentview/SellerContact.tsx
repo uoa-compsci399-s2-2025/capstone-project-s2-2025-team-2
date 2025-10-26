@@ -12,15 +12,15 @@ type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
 
 interface SellerContactProps {
-  rating?: number
   reagent?: ReagentWithId
+  sellerInfo?: any
 }
 
-const SellerContact = ({ reagent }: SellerContactProps) => {
+const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
   const [isRequestOpen, setIsRequestOpen] = useState(false)
-  const [sellerInfo, setSellerInfo] = useState<any>(null)
   const [isCheckingInventory, setIsCheckingInventory] = useState(false)
   const [isSignedIn, setIsSignedIn] = useState(false)
+  const [imageLoaded, setImageLoaded] = useState(false)
 
   //check auth state
   useEffect(() => {
@@ -29,27 +29,6 @@ const SellerContact = ({ reagent }: SellerContactProps) => {
     })
     return () => unsubscribe()
   }, [])
-
-  //fetch seller info using user id
-  useEffect(() => {
-    if (!reagent?.user_id) return
-
-    const fetchSellerInfo = async () => {
-      try {
-        const { data } = await client.GET(
-          `/users/${reagent.user_id}` as any,
-          {},
-        )
-        if (data) {
-          setSellerInfo(data)
-        }
-      } catch (error) {
-        console.error("Failed to fetch seller information:", error)
-      }
-    }
-
-    fetchSellerInfo()
-  }, [reagent?.user_id])
 
   const handleRequestClick = async () => {
     if (!reagent) return
@@ -100,14 +79,25 @@ const SellerContact = ({ reagent }: SellerContactProps) => {
     <div className="flex flex-row items-center md:mb-[2rem] gap-[4.5rem] md:gap-[8.5rem]">
       <div className="flex flex-row justify-center items-center">
         <div className="hidden md:block relative rounded-full border-2 border-white h-[4rem] w-[4rem] overflow-hidden">
+          {sellerInfo?.image && (
+            <img
+              src={sellerInfo.image}
+              alt="User Profile Photo"
+              onLoad={() => setImageLoaded(true)}
+              onError={() => setImageLoaded(false)}
+              className="hidden"
+            />
+          )}
+
           <img
-            src={sellerInfo?.image || "/default_pfp.jpg"}
+            src={
+              imageLoaded && sellerInfo?.image
+                ? sellerInfo.image
+                : "/default_pfp.jpg"
+            }
             alt="User Profile Photo"
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover transition-opacity duration-300"
             style={{ imageRendering: "auto" }}
-            onError={(e) => {
-              e.currentTarget.src = "/default_pfp.jpg"
-            }}
           />
         </div>
 
