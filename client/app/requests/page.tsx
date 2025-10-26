@@ -35,6 +35,9 @@ interface EnrichedWantedReagent {
   requesterInfo?: any
   offeredReagentName?: string | null
 }
+interface OrderWithReagentResponse extends OrderWithId {
+  reagent?: Reagent | null
+}
 
 interface ModalState {
   isOpen: boolean
@@ -94,47 +97,41 @@ export default function Orders() {
     })
     return () => unsubscribe()
   }, [])
-  //fetch all orders where user is owner/requester
+  // fetch all orders where user is owner/requester
   const fetchOrders = useCallback(async () => {
     const token = localStorage.getItem("authToken")
-    if (!token) return router.push("/auth")
+    if (!token) {
+      router.push("/auth")
+      return
+    }
 
+    setLoading(true)
     try {
-      //fetch orders
-      const { data: ordersData = [] } = await client.GET("/orders" as any, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-
-      //only show pending orders
-      const pendingOrders = (ordersData as OrderWithId[]).filter(
-        (order) => order.status === "pending",
+      const { data: ordersData = [] } = await client.GET(
+        "/orders/pending" as any,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
       )
-      setOrders(pendingOrders)
+      console.log(ordersData)
+      const ordersWithReagents = ordersData as OrderWithReagentResponse[]
+      const reagentMap = new Map<string, ReagentWithId>()
+      const ordersList: OrderWithId[] = []
 
-      //fetch offers
-      const { data: offersData = [] } = await client.GET("/offers" as any, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-
-      console.debug("[Requests] fetched offers:", offersData)
-      setOffers(offersData as any[])
-
-      //fetch all reagents involved in orders
-      const uniqueIds = [
-        ...new Set(pendingOrders.map((o: Order) => o.reagent_id)),
-      ]
-      const reagentData = await Promise.all(
-        uniqueIds.map(async (id) => {
-          const { data } = await client.GET(`/reagents/${id}` as any, {
-            headers: { Authorization: `Bearer ${token}` },
+      ordersWithReagents.forEach((orderData) => {
+        const { reagent, ...order } = orderData
+        ordersList.push(order)
+        if (reagent) {
+          reagentMap.set(order.reagent_id, {
+            ...reagent,
+            id: order.reagent_id,
           })
-          return data && ({ ...data, id } as ReagentWithId)
-        }),
-      )
+        }
+      })
 
-      setReagents(new Map(reagentData.filter(Boolean).map((r) => [r!.id, r!])))
-
-      //fetch all wanted reagents involved in offers
+      setOrders(ordersList)
+      setReagents(reagentMap)
+            //fetch all wanted reagents involved in offers
       const uniqueWantedIds = [
         ...new Set(offersData.map((o: any) => o.reagent_id)),
       ]
@@ -207,8 +204,8 @@ export default function Orders() {
 
         setWantedReagents(new Map(enrichedWantedReagents.map((r) => [r.id, r])))
       }
-    } catch (error) {
-      console.error("Error fetching orders:", error)
+    } catch (err) {
+      console.error("Failed to fetch orders:", err)
     } finally {
       setLoading(false)
     }
@@ -218,7 +215,7 @@ export default function Orders() {
     fetchOrders()
   }, [fetchOrders])
 
-  //open order details modal
+  // open order details modal
   const handleOrderDetails = (orderId: string) => {
     const order = orders.find((o) => o.id === orderId)
     const reagent = order ? reagents.get(order.reagent_id) : null
@@ -245,7 +242,7 @@ export default function Orders() {
     } else if (currentPage < 1) {
       setCurrentPage(1)
     }
-  }, [currentPage, totalPages])
+  }, [currentPage, totalPages, setCurrentPage])
 
   return (
     <Overlay>

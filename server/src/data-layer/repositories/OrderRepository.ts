@@ -2,6 +2,7 @@ import FirestoreCollections from "../adapters/FirestoreCollections"
 import { Order } from "../../business-layer/models/Order"
 import { Trade } from "../../business-layer/models/Order"
 import { Exchange } from "../../business-layer/models/Order"
+import { OrderWithReagent } from "../../business-layer/models/Order"
 import { CreateOrderRequest } from "../../service-layer/dtos/request/CreateOrderRequest"
 import { CreateTradeRequest } from "../../service-layer/dtos/request/CreateTradeRequest"
 import { CreateExchangeRequest } from "../../service-layer/dtos/request/CreateExchangeRequest"
@@ -165,6 +166,51 @@ export class OrderService {
         return { id: d.id, ...data }
       }),
     ]
+  }
+
+  async getAllPendingOrders(user_id: string): Promise<OrderWithReagent[]> {
+    const [snap1, snap2] = await Promise.all([
+      this.db.collection("orders").where("requester_id", "==", user_id).get(),
+      this.db.collection("orders").where("owner_id", "==", user_id).get(),
+    ])
+
+    const res = [
+      ...snap1.docs.map((d) => {
+        const data = d.data() as Omit<Order, "id">
+        return { id: d.id, ...data }
+      }),
+      ...snap2.docs.map((d) => {
+        const data = d.data() as Omit<Order, "id">
+        return { id: d.id, ...data }
+      }),
+    ]
+
+    const pendingOrders = res.filter((order) => order.status === "pending")
+    if (pendingOrders.length === 0) {
+      return []
+    }
+    const uniqueReagentIds = [
+      ...new Set(pendingOrders.map((o) => o.reagent_id)),
+    ]
+    const reagentRepo = new ReagentService()
+    const reagents = await Promise.all(
+      uniqueReagentIds.map((id) => reagentRepo.getReagentById(id)),
+    )
+    const reagentMap: { [key: string]: any } = {}
+    uniqueReagentIds.forEach((id, index) => {
+      if (reagents[index]) {
+        reagentMap[id] = reagents[index]
+      }
+    })
+
+    const ordersWithReagents: OrderWithReagent[] = pendingOrders.map(
+      (order) => ({
+        ...order,
+        reagent: reagentMap[order.reagent_id] || null,
+      }),
+    )
+
+    return ordersWithReagents
   }
 
   async getOrderById(id: string): Promise<Order | Trade | Exchange> {
