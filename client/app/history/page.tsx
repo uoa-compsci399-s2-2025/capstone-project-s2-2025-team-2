@@ -180,9 +180,7 @@ const History = () => {
                     reagentName={order.reagentName}
                     status={order.status}
                     createdAt={
-                      new Date(order.createdAt)
-                        .toLocaleDateString()
-                        .split("T")[0]
+                      new Date((order.createdAt as any)._seconds * 1000).toLocaleDateString()
                     }
                     price={isTrade ? (order as Trade).price : undefined}
                     offeredReagentId={
