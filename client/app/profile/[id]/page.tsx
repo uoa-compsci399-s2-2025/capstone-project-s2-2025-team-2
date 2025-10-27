@@ -110,7 +110,6 @@ const UserProfile = () => {
     }
   }
 
-
   // get users uid
   useEffect(() => {
     if (!auth) return
