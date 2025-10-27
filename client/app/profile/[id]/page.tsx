@@ -321,7 +321,7 @@ const UserProfile = () => {
                 {/* show 'edit profile' btn if user is viewing their own profile */}
                 {idOfUserBeingViewed === userUid && (
                   <PencilSquareIcon
-                    className="w-5 h-5 cursor-pointer hover:opacity-70 transition-opacity text-gray-400"
+                    className="w-5 h-5 cursor-pointer hover:opacity-70 transition-opacity text-gray-100"
                     onClick={() => setShowEditProfile(true)}
                   />
                 )}
@@ -361,7 +361,7 @@ const UserProfile = () => {
                           className={`flex items-center gap-2 px-4 py-3 text-sm transition-colors duration-200 ${
                             isSelected 
                               ? 'text-white font-semibold' 
-                              : 'text-gray-400 hover:text-white'
+                              : 'text-gray-100 hover:text-white'
                           }`}
                           onClick={() =>
                             setReagentCategoryFilter(btnProps.categoryFilterValue)
