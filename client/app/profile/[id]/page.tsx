@@ -26,6 +26,10 @@ type ReagentWithId = Reagent & { id: string }
 import {
   MapPinIcon,
   PencilSquareIcon,
+  Square3Stack3DIcon,
+  ShoppingCartIcon,
+  ExclamationTriangleIcon,
+  LockClosedIcon,
 } from "@heroicons/react/24/outline"
 import LoadingState from "@/app/components/composite/loadingstate/LoadingState"
 
@@ -69,22 +73,27 @@ const UserProfile = () => {
   const reagentFilters: {
     label: string
     categoryFilterValue: reagentCategoryFilter
+    icon: ElementType
   }[] = [
     {
       label: "All Reagents",
       categoryFilterValue: "all",
+      icon: Square3Stack3DIcon,
     },
     {
       label: "On Marketplace",
       categoryFilterValue: "on marketplace",
+      icon: ShoppingCartIcon,
     },
     {
       label: "Expiring Soon",
       categoryFilterValue: "expiring soon",
+      icon: ExclamationTriangleIcon,
     },
     {
       label: "Private Inventory",
       categoryFilterValue: "private",
+      icon: LockClosedIcon,
     },
   ]
 
@@ -356,22 +365,22 @@ const UserProfile = () => {
                         </button>
                       </span>
 
-                      {/*mobile view*/}
-                      <span className="block md:hidden">
-                        <button
-                          type="button"
-                          className={`p-3 text-sm transition-colors duration-200 ${
-                            isSelected 
-                              ? 'text-white font-semibold' 
-                              : 'text-gray-100 hover:text-white'
-                          }`}
-                          onClick={() =>
-                            setReagentCategoryFilter(btnProps.categoryFilterValue)
-                          }
-                        >
-                          {btnProps.label}
-                        </button>
-                      </span>
+                       {/*mobile view*/}
+                       <span className="block md:hidden">
+                         <button
+                           type="button"
+                           className={`flex items-center justify-center p-3 text-sm transition-colors duration-200 ${
+                             isSelected 
+                               ? 'text-white font-semibold' 
+                               : 'text-gray-100 hover:text-white'
+                           }`}
+                           onClick={() =>
+                             setReagentCategoryFilter(btnProps.categoryFilterValue)
+                           }
+                         >
+                           <btnProps.icon className="w-5 h-5" />
+                         </button>
+                       </span>
 
                       {/*active tab underline*/}
                       {isSelected && (
