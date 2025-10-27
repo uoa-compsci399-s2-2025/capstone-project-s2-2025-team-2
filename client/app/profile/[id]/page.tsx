@@ -346,86 +346,63 @@ const UserProfile = () => {
         </div>
         {/* reagent section */}
         <div className="mt-20 flex flex-col gap-8 md:gap-2">
-          {/* reagent filter btns */}
-          <div className="flex flex-col gap-4 mb-5">
-            <div className="flex gap-4 justify-center md:justify-start">
-              {reagentFilters.map((btnProps) =>
-                reagentCategoryFilter === btnProps.categoryFilterValue ? (
-                  <div key={btnProps.categoryFilterValue}>
-                    {/* variant for wide-screen views */}
-                    <span className="hidden md:block">
-                      <Button
-                        textSize="text-sm"
-                        fontWeight="normal"
-                        key={btnProps.categoryFilterValue}
-                        label={btnProps.label}
-                        backgroundColor={btnProps.bgColour}
-                        icon={btnProps.icon}
-                        onClick={() =>
-                          setReagentCategoryFilter(btnProps.categoryFilterValue)
-                        }
-                      />
-                    </span>
-                    {/* variant for mobile-screen views */}
-                    <span className="block md:hidden">
-                      <button
-                        type="button"
-                        className="p-2 text-white rounded-lg"
-                        onClick={() =>
-                          setReagentCategoryFilter(btnProps.categoryFilterValue)
-                        }
-                        style={{ backgroundColor: btnProps.bgColour }}
-                      >
-                        <btnProps.icon className={`w-7`} />
-                      </button>
-                    </span>
-                  </div>
-                ) : (
-                  <div key={btnProps.categoryFilterValue}>
-                    <span className="hidden md:block">
-                      <OutlinedButton
-                        textSize="text-sm"
-                        fontWeight="normal"
-                        key={btnProps.categoryFilterValue}
-                        label={btnProps.label}
-                        backgroundColor={btnProps.bgColour}
-                        className="bg-secondary/30 duration-300 hover:bg-secondary/10"
-                        icon={btnProps.icon}
-                        onClick={() =>
-                          setReagentCategoryFilter(btnProps.categoryFilterValue)
-                        }
-                      />
-                    </span>
-                    <span className="block md:hidden">
-                      <button
-                        type="button"
-                        className="bg-gradient-to-r from-primary to-primary/10 cursor-pointer p-2 rounded-lg outline-2"
-                        onClick={() =>
-                          setReagentCategoryFilter(btnProps.categoryFilterValue)
-                        }
-                        style={{
-                          outlineColor: btnProps.bgColour,
-                          color: btnProps.bgColour,
-                        }}
-                      >
-                        <btnProps.icon className={`w-7`} />
-                      </button>
-                    </span>
-                  </div>
-                ),
-              )}
-            </div>
-            <h5
-              className="text-center font-light text-sm italic  md:hidden"
-              style={{
-                color: reagentFilters[reagentCategoryFilterIndex].bgColour,
-              }}
-            >
-              {`Viewing '${reagentFilters[reagentCategoryFilterIndex].label}'`}
-            </h5>
-          </div>
-          {/* reagent search bar + results */}
           <div className="flex flex-col gap-6 max-w-[80rem] mx-auto w-full">
+            
+            {/*inventory tabs*/}
+            <div className="flex flex-col gap-4 mb-5">
+              <div className="flex justify-center gap-8 border-b border-gray-600/30">
+                {reagentFilters.map((btnProps, i) => {
+                  const isSelected = reagentCategoryFilter === btnProps.categoryFilterValue
+                  return (
+                    <div key={btnProps.categoryFilterValue} className="relative">
+
+                      {/*desktop view*/}
+                      <span className="hidden md:block">
+                        <button
+                          type="button"
+                          className={`flex items-center gap-2 px-4 py-3 text-sm transition-colors duration-200 ${
+                            isSelected 
+                              ? 'text-white font-semibold' 
+                              : 'text-gray-400 hover:text-white'
+                          }`}
+                          onClick={() =>
+                            setReagentCategoryFilter(btnProps.categoryFilterValue)
+                          }
+                        >
+                          <btnProps.icon className="w-4 h-4" />
+                          {btnProps.label}
+                        </button>
+                      </span>
+
+                      {/*mobile view*/}
+                      <span className="block md:hidden">
+                        <button
+                          type="button"
+                          className={`flex items-center justify-center p-3 text-sm transition-colors duration-200 ${
+                            isSelected 
+                              ? 'text-white font-semibold' 
+                              : 'text-gray-400 hover:text-white'
+                          }`}
+                          onClick={() =>
+                            setReagentCategoryFilter(btnProps.categoryFilterValue)
+                          }
+                        >
+                          <btnProps.icon className="w-5 h-5" />
+                        </button>
+                      </span>
+
+                      {/*active tab underline*/}
+                      {isSelected && (
+                        <div 
+                          className="absolute bottom-0 left-0 right-0 h-0.5"
+                          style={{ backgroundColor: btnProps.bgColour }}
+                        />
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+            </div>
             <SearchBar
               search={reagentSearch}
               setSearch={setReagentSearch}
@@ -442,7 +419,7 @@ const UserProfile = () => {
                   : "No reagents under selected filters and/or search query"}
               </p>
             ) : (
-              <div className="bg-transparent flex flex-wrap justify-center gap-4 md:gap-6 pb-[4rem]">
+              <div className="bg-transparent flex flex-wrap justify-center gap-3 md:gap-7 pb-[4rem]">
                 {currentData.map((r) => (
                   <ReagentCard
                     key={r.id}
