@@ -349,8 +349,8 @@ const UserProfile = () => {
           <div className="flex flex-col gap-6 max-w-[80rem] mx-auto w-full">
             
             {/*inventory tabs*/}
-            <div className="flex flex-col gap-4 mb-5">
-              <div className="flex justify-center gap-8 border-b border-gray-600/30">
+            <div className="flex flex-col gap-4">
+              <div className="flex justify-center gap-8 border-b-2 border-secondary/20">
                 {reagentFilters.map((btnProps, i) => {
                   const isSelected = reagentCategoryFilter === btnProps.categoryFilterValue
                   return (
