@@ -223,6 +223,9 @@ const models: TsoaRoute.Models = {
             "id": {"dataType":"string"},
             "user1_id": {"dataType":"string","required":true},
             "user2_id": {"dataType":"string","required":true},
+            "reagent_id": {"dataType":"string"},
+            "reagent_name": {"dataType":"string"},
+            "order_id": {"dataType":"string"},
             "created_at": {"dataType":"datetime","required":true},
         },
         "additionalProperties": false,
@@ -255,6 +258,8 @@ const models: TsoaRoute.Models = {
         "properties": {
             "user1_id": {"dataType":"string","required":true},
             "user2_id": {"dataType":"string","required":true},
+            "reagent_id": {"dataType":"string","required":true},
+            "order_id": {"dataType":"string"},
             "initial_message": {"dataType":"string"},
         },
         "additionalProperties": false,

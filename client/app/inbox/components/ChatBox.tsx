@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
+import { useRouter } from "next/navigation"
 import MessageBubble from "../components/MessageBubble"
 import { sendMessage, getChatRoomById } from "../../services/inbox"
 import { onAuthStateChanged, User } from "firebase/auth"
@@ -21,6 +22,7 @@ export default function ChatBox({
   const [user, setUser] = useState<User | null>(null)
   const [isResponser, setIsResponser] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
+  const router = useRouter()
 
   //            effect: auth state change           //
   useEffect(() => {
@@ -148,7 +150,16 @@ export default function ChatBox({
           </div>
 
           <div className="flex space-x-2 md:m-0 mt-4">
-            <button className="md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--dark-gray)] text-white hover:bg-[var(--dark-gray)]/70 cursor-pointer rounded-2xl transition-colors">
+            <button
+              onClick={() => {
+                if (selectedConversation.chat_room.reagent_id) {
+                  router.push(
+                    `/marketplace/${selectedConversation.chat_room.reagent_id}`,
+                  )
+                }
+              }}
+              className="md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--dark-gray)] text-white hover:bg-[var(--dark-gray)]/70 cursor-pointer rounded-2xl transition-colors"
+            >
               View Listing
             </button>
             {!isResponser && (

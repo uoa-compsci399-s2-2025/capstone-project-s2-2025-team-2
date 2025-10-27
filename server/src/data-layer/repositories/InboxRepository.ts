@@ -5,11 +5,16 @@ export class InboxRepository {
   private db = FirestoreCollections
 
   async createChatRoom(chatRoom: ChatRoom): Promise<ChatRoom> {
+    console.log("InboxRepository: About to save to Firestore:", chatRoom)
     const docRef = await this.db.chatRooms.add(chatRoom)
-    return {
+    console.log("InboxRepository: Saved to Firestore with ID:", docRef.id)
+
+    const result = {
       ...chatRoom,
       id: docRef.id,
     }
+    console.log("InboxRepository: Returning:", result)
+    return result
   }
 
   async getChatRoomById(chatRoomId: string): Promise<ChatRoom | null> {
@@ -26,10 +31,15 @@ export class InboxRepository {
   async getChatRoomByUsers(
     user1Id: string,
     user2Id: string,
+    reagentId?: string,
   ): Promise<ChatRoom | null> {
-    const query = this.db.chatRooms
+    let query = this.db.chatRooms
       .where("user1_id", "in", [user1Id, user2Id])
       .where("user2_id", "in", [user1Id, user2Id])
+
+    if (reagentId) {
+      query = query.where("reagent_id", "==", reagentId)
+    }
 
     const snapshot = await query.get()
 

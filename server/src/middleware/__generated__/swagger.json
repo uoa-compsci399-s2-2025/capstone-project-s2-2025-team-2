@@ -630,6 +630,15 @@
 					"user2_id": {
 						"type": "string"
 					},
+					"reagent_id": {
+						"type": "string"
+					},
+					"reagent_name": {
+						"type": "string"
+					},
+					"order_id": {
+						"type": "string"
+					},
 					"created_at": {
 						"type": "string",
 						"format": "date-time"
@@ -718,13 +727,20 @@
 					"user2_id": {
 						"type": "string"
 					},
+					"reagent_id": {
+						"type": "string"
+					},
+					"order_id": {
+						"type": "string"
+					},
 					"initial_message": {
 						"type": "string"
 					}
 				},
 				"required": [
 					"user1_id",
-					"user2_id"
+					"user2_id",
+					"reagent_id"
 				],
 				"type": "object",
 				"additionalProperties": false

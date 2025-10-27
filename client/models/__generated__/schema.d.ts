@@ -689,6 +689,9 @@ export interface components {
       id?: string
       user1_id: string
       user2_id: string
+      reagent_id?: string
+      reagent_name?: string
+      order_id?: string
       /** Format: date-time */
       created_at: string
     }
@@ -712,6 +715,8 @@ export interface components {
     CreateChatRoomRequest: {
       user1_id: string
       user2_id: string
+      reagent_id: string
+      order_id?: string
       initial_message?: string
     }
     SendMessageRequest: {
