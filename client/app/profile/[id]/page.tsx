@@ -307,7 +307,7 @@ const UserProfile = () => {
           <img
             src={userBeingViewed?.image || "/default_pfp.jpg"}
             alt="User Profile Photo"
-            className="w-32 h-32 rounded-full border-2 object-cover border-[#6C6C6C] dark:border-white"
+            className="w-32 h-32 rounded-full object-cover"
             onError={(e) => {
               e.currentTarget.src = "/default_pfp.jpg"
             }}
@@ -331,10 +331,6 @@ const UserProfile = () => {
             <p className="flex items-center gap-2 text-xs md:text-sm text-orange-200 dark:text-blue-primary">
               <HomeIcon className="w-5 h-5 md:w-6 md:h-6" />
               {userBeingViewed.university}
-            </p>
-            <p className="flex items-center gap-2 text-xs md:text-sm text-blue-primary dark:text-orange-200">
-              <EnvelopeIcon className="w-5 h-5 md:w-6 md:h-6" />
-              {userBeingViewed.email || "Unknown"}
             </p>
             {/* About Me section */}
             {userBeingViewed.about && (
