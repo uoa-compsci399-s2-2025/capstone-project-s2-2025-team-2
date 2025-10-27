@@ -24,7 +24,7 @@ import { usePageSize } from "../../hooks/usePageSize"
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
 import {
-  HomeIcon,
+  MapPinIcon,
   Square3Stack3DIcon,
   ShoppingCartIcon,
   ExclamationTriangleIcon,
@@ -303,41 +303,40 @@ const UserProfile = () => {
     <Overlay>
       <div className="px-5 pt-5">
         {/* profile header */}
-        <div className="flex gap-3 justify-center">
-          <img
-            src={userBeingViewed?.image || "/default_pfp.jpg"}
-            alt="User Profile Photo"
-            className="w-32 h-32 rounded-full object-cover"
-            onError={(e) => {
-              e.currentTarget.src = "/default_pfp.jpg"
-            }}
-          />
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-6">
-              <h1 className="font-light text-pearl text-xl md:text-4xl">
-                {idOfUserBeingViewed === userUid
-                  ? `Welcome back, ${userBeingViewed && userBeingViewed?.preferredName}`
-                  : `${userBeingViewed && userBeingViewed?.displayName}'s Profile`}
-              </h1>
-              {/* show 'edit profile' btn if user is viewing their own profile */}
-              {idOfUserBeingViewed === userUid && (
-                <PencilSquareIcon
-                  className="w-5 h-5 md:w-6 md:h-6 cursor-pointer hover:opacity-70 transition-opacity"
-                  style={{ color: "#A1A1A1" }}
-                  onClick={() => setShowEditProfile(true)}
-                />
+        <div className="flex flex-col items-center gap-6 max-w-[80rem] mx-auto w-full">
+          <div className="flex items-center gap-6">
+            <img
+              src={userBeingViewed?.image || "/default_pfp.jpg"}
+              alt="User Profile Photo"
+              className="w-32 h-32 rounded-full object-cover"
+              onError={(e) => {
+                e.currentTarget.src = "/default_pfp.jpg"
+              }}
+            />
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-4">
+                <h1 className="font-light text-white text-2xl md:text-3xl">
+                  {userBeingViewed?.displayName || userBeingViewed?.preferredName}
+                </h1>
+                {/* show 'edit profile' btn if user is viewing their own profile */}
+                {idOfUserBeingViewed === userUid && (
+                  <PencilSquareIcon
+                    className="w-5 h-5 cursor-pointer hover:opacity-70 transition-opacity text-gray-400"
+                    onClick={() => setShowEditProfile(true)}
+                  />
+                )}
+              </div>
+              <p className="flex items-center gap-2 text-sm text-gray-300">
+                <MapPinIcon className="w-4 h-4" />
+                {userBeingViewed.university}
+              </p>
+              {/* About Me section */}
+              {userBeingViewed.about && (
+                <p className="text-sm text-gray-400 leading-relaxed max-w-md">
+                  {userBeingViewed.about}
+                </p>
               )}
             </div>
-            <p className="flex items-center gap-2 text-xs md:text-sm text-orange-200 dark:text-blue-primary">
-              <HomeIcon className="w-5 h-5 md:w-6 md:h-6" />
-              {userBeingViewed.university}
-            </p>
-            {/* About Me section */}
-            {userBeingViewed.about && (
-              <p className="flex items-center gap-2 text-xs md:text-sm dark:text-gray-400 leading-relaxed">
-                {userBeingViewed.about}
-              </p>
-            )}
           </div>
         </div>
         {/* reagent section */}
