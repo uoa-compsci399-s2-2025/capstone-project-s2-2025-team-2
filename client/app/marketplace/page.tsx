@@ -11,6 +11,7 @@ import Pagination from "../components/composite/pagination/Pagination"
 import { usePageSize } from "../hooks/usePageSize"
 import client from "../services/fetch-client"
 import LoadingState from "../components/composite/loadingstate/LoadingState"
+import { XMarkIcon } from "@heroicons/react/24/outline"
 
 type FirestoreReagent = {
   id: string
@@ -335,9 +336,9 @@ const Marketplace = () => {
               </h2>
               <button
                 onClick={() => setIsCreateFormOpen(false)}
-                className="text-gray-400 text-3xl hover:text-white "
+                className="text-white hover:text-gray-300"
               >
-                ❌
+                <XMarkIcon className="w-6 h-6" />
               </button>
             </div>
 
@@ -362,9 +363,9 @@ const Marketplace = () => {
               <h2 className="text-2xl font-medium text-white">Edit Reagent</h2>
               <button
                 onClick={handleEditReagentFormCancel}
-                className="text-gray-400 text-3xl hover:text-white"
+                className="text-white hover:text-gray-300"
               >
-                ❌
+                <XMarkIcon className="w-6 h-6" />
               </button>
             </div>
 

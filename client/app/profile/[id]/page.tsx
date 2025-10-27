@@ -7,8 +7,6 @@ import client from "../../services/fetch-client"
 // components
 import ReagentCard from "../../components/composite/reagent/ReagentCard"
 import Overlay from "../../components/composite/Overlay"
-import Button from "@/app/components/generic/button/regular/Button"
-import OutlinedButton from "../../components/generic/button/outlined/OutlinedButton"
 import SearchBar from "../../components/composite/searchbar/SearchBar"
 import Pagination from "../../components/composite/pagination/Pagination"
 import { ProfileForm } from "../../components/composite/profileform/profileForm"
@@ -24,13 +22,13 @@ import { usePageSize } from "../../hooks/usePageSize"
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
 import {
-  HomeIcon,
+  MapPinIcon,
+  PencilSquareIcon,
   Square3Stack3DIcon,
   ShoppingCartIcon,
   ExclamationTriangleIcon,
   LockClosedIcon,
-  EnvelopeIcon,
-  PencilSquareIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline"
 import LoadingState from "@/app/components/composite/loadingstate/LoadingState"
 
@@ -56,8 +54,6 @@ const UserProfile = () => {
   const [reagentSearch, setReagentSearch] = useState<string>("")
   const [reagentCategoryFilter, setReagentCategoryFilter] =
     useState<reagentCategoryFilter>("all")
-  const [reagentCategoryFilterIndex, setReagentCategoryFilterIndex] =
-    useState<number>(0)
   const [reagentSearchFilter, setReagentSearchFilter] = useState("all")
   const [reagentSearchSort, setReagentSearchSort] = useState<
     "earliestExpiry" | "latestExpiry" | "nameAZ" | "nameZA" | ""
@@ -74,31 +70,26 @@ const UserProfile = () => {
   const reagentFilters: {
     label: string
     categoryFilterValue: reagentCategoryFilter
-    bgColour: string
     icon: ElementType
   }[] = [
     {
       label: "All Reagents",
       categoryFilterValue: "all",
-      bgColour: "#7C7EFF",
       icon: Square3Stack3DIcon,
     },
     {
       label: "On Marketplace",
       categoryFilterValue: "on marketplace",
-      bgColour: "#44A04A",
       icon: ShoppingCartIcon,
     },
     {
       label: "Expiring Soon",
       categoryFilterValue: "expiring soon",
-      bgColour: "#FF666C",
       icon: ExclamationTriangleIcon,
     },
     {
       label: "Private Inventory",
       categoryFilterValue: "private",
-      bgColour: "#FF9156",
       icon: LockClosedIcon,
     },
   ]
@@ -118,14 +109,6 @@ const UserProfile = () => {
       }
     }
   }
-
-  // keep reagent filter index in sync with the selected filter
-  useEffect(() => {
-    const i = reagentFilters.findIndex(
-      (filter) => filter.categoryFilterValue === reagentCategoryFilter,
-    )
-    setReagentCategoryFilterIndex(i)
-  }, [reagentCategoryFilter])
 
   // get users uid
   useEffect(() => {
@@ -303,135 +286,105 @@ const UserProfile = () => {
     <Overlay>
       <div className="px-5 pt-5">
         {/* profile header */}
-        <div className="flex gap-3">
-          <img
-            src={userBeingViewed?.image || "/default_pfp.jpg"}
-            alt="User Profile Photo"
-            className="w-32 h-32 rounded-full border-2 object-cover border-[#6C6C6C] dark:border-white"
-            onError={(e) => {
-              e.currentTarget.src = "/default_pfp.jpg"
-            }}
-          />
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center gap-6">
-              <h1 className="font-light text-pearl text-xl md:text-4xl">
-                {idOfUserBeingViewed === userUid
-                  ? `Welcome back, ${userBeingViewed && userBeingViewed?.preferredName}`
-                  : `${userBeingViewed && userBeingViewed?.displayName}'s Profile`}
-              </h1>
-              {/* show 'edit profile' btn if user is viewing their own profile */}
-              {idOfUserBeingViewed === userUid && (
-                <PencilSquareIcon
-                  className="w-5 h-5 md:w-6 md:h-6 cursor-pointer hover:opacity-70 transition-opacity"
-                  style={{ color: "#A1A1A1" }}
-                  onClick={() => setShowEditProfile(true)}
-                />
+        <div className="flex flex-col items-center gap-6 max-w-[80rem] mx-auto w-full mt-8">
+          <div className="flex items-center gap-6">
+            <img
+              src={userBeingViewed?.image || "/default_pfp.jpg"}
+              alt="User Profile Photo"
+              className="w-32 h-32 rounded-full object-cover"
+              onError={(e) => {
+                e.currentTarget.src = "/default_pfp.jpg"
+              }}
+            />
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-4">
+                <h1 className="font-light text-white text-2xl md:text-3xl">
+                  {userBeingViewed?.displayName ||
+                    userBeingViewed?.preferredName}
+                </h1>
+                {/* show 'edit profile' btn if user is viewing their own profile */}
+                {idOfUserBeingViewed === userUid && (
+                  <PencilSquareIcon
+                    className="w-5 h-5 cursor-pointer hover:opacity-70 transition-opacity text-gray-100"
+                    onClick={() => setShowEditProfile(true)}
+                  />
+                )}
+              </div>
+              <p className="text-sm text-white">{userBeingViewed.university}</p>
+              <p className="flex items-center gap-1 text-xs text-gray-100">
+                <MapPinIcon className="w-5 h-5" />
+                Auckland, New Zealand
+              </p>
+              {/* About Me section */}
+              {userBeingViewed.about && (
+                <p className="text-sm text-white leading-relaxed max-w-md">
+                  {userBeingViewed.about}
+                </p>
               )}
             </div>
-            <p className="flex items-center gap-2 text-xs md:text-sm text-orange-200 dark:text-blue-primary">
-              <HomeIcon className="w-5 h-5 md:w-6 md:h-6" />
-              {userBeingViewed.university}
-            </p>
-            <p className="flex items-center gap-2 text-xs md:text-sm text-blue-primary dark:text-orange-200">
-              <EnvelopeIcon className="w-5 h-5 md:w-6 md:h-6" />
-              {userBeingViewed.email || "Unknown"}
-            </p>
-            {/* About Me section */}
-            {userBeingViewed.about && (
-              <p className="flex items-center gap-2 text-xs md:text-sm dark:text-gray-400 leading-relaxed">
-                {userBeingViewed.about}
-              </p>
-            )}
           </div>
         </div>
         {/* reagent section */}
-        <div className="mt-20 flex flex-col gap-8 md:gap-2">
-          {/* reagent filter btns */}
-          <div className="flex flex-col gap-4 mb-5">
-            <div className="flex gap-4 justify-center md:justify-start">
-              {reagentFilters.map((btnProps) =>
-                reagentCategoryFilter === btnProps.categoryFilterValue ? (
-                  <div key={btnProps.categoryFilterValue}>
-                    {/* variant for wide-screen views */}
-                    <span className="hidden md:block">
-                      <Button
-                        textSize="text-sm"
-                        fontWeight="normal"
-                        key={btnProps.categoryFilterValue}
-                        label={btnProps.label}
-                        backgroundColor={btnProps.bgColour}
-                        icon={btnProps.icon}
-                        onClick={() =>
-                          setReagentCategoryFilter(btnProps.categoryFilterValue)
-                        }
-                      />
-                    </span>
-                    {/* variant for mobile-screen views */}
-                    <span className="block md:hidden">
-                      <button
-                        type="button"
-                        className="p-2 text-white rounded-lg"
-                        onClick={() =>
-                          setReagentCategoryFilter(btnProps.categoryFilterValue)
-                        }
-                        style={{ backgroundColor: btnProps.bgColour }}
-                      >
-                        <btnProps.icon className={`w-7`} />
-                      </button>
-                    </span>
-                  </div>
-                ) : (
-                  <div key={btnProps.categoryFilterValue}>
-                    <span className="hidden md:block">
-                      <OutlinedButton
-                        textSize="text-sm"
-                        fontWeight="normal"
-                        key={btnProps.categoryFilterValue}
-                        label={btnProps.label}
-                        backgroundColor={btnProps.bgColour}
-                        className="bg-secondary/30 duration-300 hover:bg-secondary/10"
-                        icon={btnProps.icon}
-                        onClick={() =>
-                          setReagentCategoryFilter(btnProps.categoryFilterValue)
-                        }
-                      />
-                    </span>
-                    <span className="block md:hidden">
-                      <button
-                        type="button"
-                        className="bg-gradient-to-r from-primary to-primary/10 cursor-pointer p-2 rounded-lg outline-2"
-                        onClick={() =>
-                          setReagentCategoryFilter(btnProps.categoryFilterValue)
-                        }
-                        style={{
-                          outlineColor: btnProps.bgColour,
-                          color: btnProps.bgColour,
-                        }}
-                      >
-                        <btnProps.icon className={`w-7`} />
-                      </button>
-                    </span>
-                  </div>
-                ),
-              )}
+        <div className="mt-12 flex flex-col gap-8 md:gap-2 md:mr-20 md:ml-20">
+          <div className="flex flex-col gap-6 max-w-[80rem] mx-auto w-full">
+            {/*inventory tabs*/}
+            <div className="flex flex-col gap-4">
+              <div className="flex justify-center gap-8 border-b-2 border-secondary/20">
+                {reagentFilters.map((btnProps) => {
+                  const isSelected =
+                    reagentCategoryFilter === btnProps.categoryFilterValue
+                  return (
+                    <div
+                      key={btnProps.categoryFilterValue}
+                      className="relative"
+                    >
+                      {/*desktop view*/}
+                      <span className="hidden md:block">
+                        <button
+                          type="button"
+                          className={`px-4 py-3 text-sm transition-colors duration-200 ${
+                            isSelected
+                              ? "text-white font-semibold"
+                              : "text-gray-100 hover:text-white"
+                          }`}
+                          onClick={() =>
+                            setReagentCategoryFilter(
+                              btnProps.categoryFilterValue,
+                            )
+                          }
+                        >
+                          {btnProps.label}
+                        </button>
+                      </span>
+
+                      {/*mobile view*/}
+                      <span className="block md:hidden">
+                        <button
+                          type="button"
+                          className={`flex items-center justify-center p-3 text-sm transition-colors duration-200 ${
+                            isSelected
+                              ? "text-white font-semibold"
+                              : "text-gray-100 hover:text-white"
+                          }`}
+                          onClick={() =>
+                            setReagentCategoryFilter(
+                              btnProps.categoryFilterValue,
+                            )
+                          }
+                        >
+                          <btnProps.icon className="w-5 h-5" />
+                        </button>
+                      </span>
+
+                      {/*active tab underline*/}
+                      {isSelected && (
+                        <div className="absolute bottom-[-1px] left-0 right-0 h-0.5 bg-white" />
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
             </div>
-            <h5
-              className="text-center font-light text-sm italic  md:hidden"
-              style={{
-                color: reagentFilters[reagentCategoryFilterIndex].bgColour,
-              }}
-            >
-              {`Viewing '${reagentFilters[reagentCategoryFilterIndex].label}'`}
-            </h5>
-          </div>
-          {/* reagent search bar + results */}
-          <div className="flex flex-col gap-2">
-            <h4 className="font-light text-lg md:text-xl text-tint">
-              {idOfUserBeingViewed === userUid
-                ? "Your Reagents"
-                : `${userBeingViewed?.displayName}'s Reagents`}
-            </h4>
-            <p className="text-dark-gray dark:text-light-gray"></p>
             <SearchBar
               search={reagentSearch}
               setSearch={setReagentSearch}
@@ -448,7 +401,7 @@ const UserProfile = () => {
                   : "No reagents under selected filters and/or search query"}
               </p>
             ) : (
-              <div className="bg-transparent flex flex-wrap gap-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
+              <div className="bg-transparent flex flex-wrap justify-center gap-3 md:gap-7 pb-[4rem]">
                 {currentData.map((r) => (
                   <ReagentCard
                     key={r.id}
@@ -483,9 +436,9 @@ const UserProfile = () => {
               <h2 className="text-2xl font-medium text-white">Edit</h2>
               <button
                 onClick={() => setShowEditProfile(false)}
-                className="text-gray-400 text-3xl hover:text-white "
+                className="text-white hover:text-gray-300"
               >
-                ❌
+                <XMarkIcon className="w-6 h-6" />
               </button>
             </div>
 
@@ -515,9 +468,9 @@ const UserProfile = () => {
               <h2 className="text-2xl font-medium text-white">Edit Reagent</h2>
               <button
                 onClick={handleReagentFormCancel}
-                className="text-gray-400 text-3xl hover:text-white"
+                className="text-white hover:text-gray-300"
               >
-                ❌
+                <XMarkIcon className="w-6 h-6" />
               </button>
             </div>
 
