@@ -25,11 +25,6 @@ type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
 import {
   MapPinIcon,
-  Square3Stack3DIcon,
-  ShoppingCartIcon,
-  ExclamationTriangleIcon,
-  LockClosedIcon,
-  EnvelopeIcon,
   PencilSquareIcon,
 } from "@heroicons/react/24/outline"
 import LoadingState from "@/app/components/composite/loadingstate/LoadingState"
@@ -74,32 +69,22 @@ const UserProfile = () => {
   const reagentFilters: {
     label: string
     categoryFilterValue: reagentCategoryFilter
-    bgColour: string
-    icon: ElementType
   }[] = [
     {
       label: "All Reagents",
       categoryFilterValue: "all",
-      bgColour: "#7C7EFF",
-      icon: Square3Stack3DIcon,
     },
     {
       label: "On Marketplace",
       categoryFilterValue: "on marketplace",
-      bgColour: "#44A04A",
-      icon: ShoppingCartIcon,
     },
     {
       label: "Expiring Soon",
       categoryFilterValue: "expiring soon",
-      bgColour: "#FF666C",
-      icon: ExclamationTriangleIcon,
     },
     {
       label: "Private Inventory",
       categoryFilterValue: "private",
-      bgColour: "#FF9156",
-      icon: LockClosedIcon,
     },
   ]
 
@@ -343,7 +328,7 @@ const UserProfile = () => {
           </div>
         </div>
         {/* reagent section */}
-        <div className="mt-10 flex flex-col gap-8 md:gap-2">
+        <div className="mt-12 flex flex-col gap-8 md:gap-2">
           <div className="flex flex-col gap-6 max-w-[80rem] mx-auto w-full">
             
             {/*inventory tabs*/}
@@ -358,7 +343,7 @@ const UserProfile = () => {
                       <span className="hidden md:block">
                         <button
                           type="button"
-                          className={`flex items-center gap-2 px-4 py-3 text-sm transition-colors duration-200 ${
+                          className={`px-4 py-3 text-sm transition-colors duration-200 ${
                             isSelected 
                               ? 'text-white font-semibold' 
                               : 'text-gray-100 hover:text-white'
@@ -367,7 +352,6 @@ const UserProfile = () => {
                             setReagentCategoryFilter(btnProps.categoryFilterValue)
                           }
                         >
-                          <btnProps.icon className="w-4 h-4" />
                           {btnProps.label}
                         </button>
                       </span>
@@ -376,24 +360,23 @@ const UserProfile = () => {
                       <span className="block md:hidden">
                         <button
                           type="button"
-                          className={`flex items-center justify-center p-3 text-sm transition-colors duration-200 ${
+                          className={`p-3 text-sm transition-colors duration-200 ${
                             isSelected 
                               ? 'text-white font-semibold' 
-                              : 'text-gray-400 hover:text-white'
+                              : 'text-gray-100 hover:text-white'
                           }`}
                           onClick={() =>
                             setReagentCategoryFilter(btnProps.categoryFilterValue)
                           }
                         >
-                          <btnProps.icon className="w-5 h-5" />
+                          {btnProps.label}
                         </button>
                       </span>
 
                       {/*active tab underline*/}
                       {isSelected && (
                         <div 
-                          className="absolute bottom-0 left-0 right-0 h-0.5"
-                          style={{ backgroundColor: btnProps.bgColour }}
+                          className="absolute bottom-[-1px] left-0 right-0 h-0.5 bg-white"
                         />
                       )}
                     </div>
