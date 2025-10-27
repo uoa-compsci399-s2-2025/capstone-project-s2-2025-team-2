@@ -7,8 +7,6 @@ import client from "../../services/fetch-client"
 // components
 import ReagentCard from "../../components/composite/reagent/ReagentCard"
 import Overlay from "../../components/composite/Overlay"
-import Button from "@/app/components/generic/button/regular/Button"
-import OutlinedButton from "../../components/generic/button/outlined/OutlinedButton"
 import SearchBar from "../../components/composite/searchbar/SearchBar"
 import Pagination from "../../components/composite/pagination/Pagination"
 import { ProfileForm } from "../../components/composite/profileform/profileForm"
@@ -56,8 +54,6 @@ const UserProfile = () => {
   const [reagentSearch, setReagentSearch] = useState<string>("")
   const [reagentCategoryFilter, setReagentCategoryFilter] =
     useState<reagentCategoryFilter>("all")
-  const [reagentCategoryFilterIndex, setReagentCategoryFilterIndex] =
-    useState<number>(0)
   const [reagentSearchFilter, setReagentSearchFilter] = useState("all")
   const [reagentSearchSort, setReagentSearchSort] = useState<
     "earliestExpiry" | "latestExpiry" | "nameAZ" | "nameZA" | ""
@@ -114,13 +110,6 @@ const UserProfile = () => {
     }
   }
 
-  // keep reagent filter index in sync with the selected filter
-  useEffect(() => {
-    const i = reagentFilters.findIndex(
-      (filter) => filter.categoryFilterValue === reagentCategoryFilter,
-    )
-    setReagentCategoryFilterIndex(i)
-  }, [reagentCategoryFilter])
 
   // get users uid
   useEffect(() => {
@@ -298,7 +287,7 @@ const UserProfile = () => {
     <Overlay>
       <div className="px-5 pt-5">
         {/* profile header */}
-        <div className="flex flex-col items-center gap-6 max-w-[80rem] mx-auto w-full mt-10">
+        <div className="flex flex-col items-center gap-6 max-w-[80rem] mx-auto w-full mt-8">
           <div className="flex items-center gap-6">
             <img
               src={userBeingViewed?.image || "/default_pfp.jpg"}
@@ -311,7 +300,8 @@ const UserProfile = () => {
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-4">
                 <h1 className="font-light text-white text-2xl md:text-3xl">
-                  {userBeingViewed?.displayName || userBeingViewed?.preferredName}
+                  {userBeingViewed?.displayName ||
+                    userBeingViewed?.preferredName}
                 </h1>
                 {/* show 'edit profile' btn if user is viewing their own profile */}
                 {idOfUserBeingViewed === userUid && (
@@ -321,9 +311,7 @@ const UserProfile = () => {
                   />
                 )}
               </div>
-              <p className="text-sm text-white">
-                {userBeingViewed.university}
-              </p>
+              <p className="text-sm text-white">{userBeingViewed.university}</p>
               <p className="flex items-center gap-1 text-xs text-gray-100">
                 <MapPinIcon className="w-5 h-5" />
                 Auckland, New Zealand
@@ -340,54 +328,58 @@ const UserProfile = () => {
         {/* reagent section */}
         <div className="mt-12 flex flex-col gap-8 md:gap-2">
           <div className="flex flex-col gap-6 max-w-[80rem] mx-auto w-full">
-            
             {/*inventory tabs*/}
             <div className="flex flex-col gap-4">
               <div className="flex justify-center gap-8 border-b-2 border-secondary/20">
-                {reagentFilters.map((btnProps, i) => {
-                  const isSelected = reagentCategoryFilter === btnProps.categoryFilterValue
+                {reagentFilters.map((btnProps) => {
+                  const isSelected =
+                    reagentCategoryFilter === btnProps.categoryFilterValue
                   return (
-                    <div key={btnProps.categoryFilterValue} className="relative">
-
+                    <div
+                      key={btnProps.categoryFilterValue}
+                      className="relative"
+                    >
                       {/*desktop view*/}
                       <span className="hidden md:block">
                         <button
                           type="button"
                           className={`px-4 py-3 text-sm transition-colors duration-200 ${
-                            isSelected 
-                              ? 'text-white font-semibold' 
-                              : 'text-gray-100 hover:text-white'
+                            isSelected
+                              ? "text-white font-semibold"
+                              : "text-gray-100 hover:text-white"
                           }`}
                           onClick={() =>
-                            setReagentCategoryFilter(btnProps.categoryFilterValue)
+                            setReagentCategoryFilter(
+                              btnProps.categoryFilterValue,
+                            )
                           }
                         >
                           {btnProps.label}
                         </button>
                       </span>
 
-                       {/*mobile view*/}
-                       <span className="block md:hidden">
-                         <button
-                           type="button"
-                           className={`flex items-center justify-center p-3 text-sm transition-colors duration-200 ${
-                             isSelected 
-                               ? 'text-white font-semibold' 
-                               : 'text-gray-100 hover:text-white'
-                           }`}
-                           onClick={() =>
-                             setReagentCategoryFilter(btnProps.categoryFilterValue)
-                           }
-                         >
-                           <btnProps.icon className="w-5 h-5" />
-                         </button>
-                       </span>
+                      {/*mobile view*/}
+                      <span className="block md:hidden">
+                        <button
+                          type="button"
+                          className={`flex items-center justify-center p-3 text-sm transition-colors duration-200 ${
+                            isSelected
+                              ? "text-white font-semibold"
+                              : "text-gray-100 hover:text-white"
+                          }`}
+                          onClick={() =>
+                            setReagentCategoryFilter(
+                              btnProps.categoryFilterValue,
+                            )
+                          }
+                        >
+                          <btnProps.icon className="w-5 h-5" />
+                        </button>
+                      </span>
 
                       {/*active tab underline*/}
                       {isSelected && (
-                        <div 
-                          className="absolute bottom-[-1px] left-0 right-0 h-0.5 bg-white"
-                        />
+                        <div className="absolute bottom-[-1px] left-0 right-0 h-0.5 bg-white" />
                       )}
                     </div>
                   )
@@ -460,10 +452,10 @@ const UserProfile = () => {
             </div>
           </div>
         </div>
-        )}
+      )}
 
-        {/* reagent card EDIT REAGENT form */}
-        {showEditReagentForm && selectedReagent && (
+      {/* reagent card EDIT REAGENT form */}
+      {showEditReagentForm && selectedReagent && (
         <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
           onClick={(e) => {
