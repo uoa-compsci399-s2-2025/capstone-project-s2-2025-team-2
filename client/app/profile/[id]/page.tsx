@@ -425,13 +425,7 @@ const UserProfile = () => {
             </h5>
           </div>
           {/* reagent search bar + results */}
-          <div className="flex flex-col gap-2">
-            <h4 className="font-light text-lg md:text-xl text-tint">
-              {idOfUserBeingViewed === userUid
-                ? "Your Reagents"
-                : `${userBeingViewed?.displayName}'s Reagents`}
-            </h4>
-            <p className="text-dark-gray dark:text-light-gray"></p>
+          <div className="flex flex-col gap-6 max-w-[80rem] mx-auto w-full">
             <SearchBar
               search={reagentSearch}
               setSearch={setReagentSearch}
@@ -448,7 +442,7 @@ const UserProfile = () => {
                   : "No reagents under selected filters and/or search query"}
               </p>
             ) : (
-              <div className="bg-transparent flex flex-wrap justify-center gap-4 md:gap-6 pb-[4rem]">
+              <div className="bg-transparent flex flex-wrap justify-between pb-[4rem]">
                 {currentData.map((r) => (
                   <ReagentCard
                     key={r.id}
