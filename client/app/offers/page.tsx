@@ -29,7 +29,6 @@ interface EnrichedWantedReagent {
 }
 
 export default function Orders() {
-
   const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
   const [offers, setOffers] = useState<any[]>([])
@@ -83,7 +82,6 @@ export default function Orders() {
 
     setLoading(true)
     try {
-
       //fetch offers
       const { data: offersData = [] } = await client.GET("/offers" as any, {
         headers: { Authorization: `Bearer ${token}` },
@@ -176,7 +174,6 @@ export default function Orders() {
     fetchOrders()
   }, [fetchOrders])
 
-
   // pagination
   const pageSize = usePageSize()
   const { currentPage, setCurrentPage, totalPages } = usePagination(
@@ -207,75 +204,82 @@ export default function Orders() {
       <div className="mt-5"></div>
       {/*loading state*/}
       {loading ? (
-                  <div className="text-2xl text-white pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem]">
-
-        <LoadingState pageName="Offers" />
-                    </div>
+        <div className="text-2xl text-white pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem]">
+          <LoadingState pageName="Offers" />
+        </div>
       ) : offers.length > 0 ? (
         <div className="w-full">
-        <div className="text-2xl text-white pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] mb-[2rem]">
-          <div className="text-xl font-medium text-white mb-[1rem]">
-            Offers You Received
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-x-4 md:gap-y-3 lg:gap-x-6">
-            {offers
-              .filter(
-                (offer) =>
-                  offer.status !== "approved" &&
-                  offer.owner_id === currentUserId,
-              )
-              .map((offer) => {
-                const wanted = wantedReagents.get(offer.reagent_id)
-                if (!wanted) return null
-                return (
-                  <WantedCard
-                    key={offer.id}
-                    wanted={{
-                      ...wanted,
-                      tradingType:
-                        wanted.tradingType as import("@/models/__generated__/schema").components["schemas"]["ReagentTradingType"],
-                    }}
-                    requesterInfo={wanted.requesterInfo}
-                    offeredReagentName={wanted.offeredReagentName}
-                    offer={offer}
-                    onViewDetails={handleOfferDetails}
-                  />
+          <div className="text-2xl text-white pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] mb-[2rem]">
+            <div className="text-xl font-medium text-white mb-[1rem]">
+              Offers You Received
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-x-4 md:gap-y-3 lg:gap-x-6">
+              {offers
+                .filter(
+                  (offer) =>
+                    offer.status !== "approved" &&
+                    offer.owner_id === currentUserId,
                 )
-              })}
-          </div>
-          <div className="text-xl font-medium text-white mb-4 mt-[2rem]">
-            Offers You Sent
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-x-4 md:gap-y-3 lg:gap-x-6">
-            {offers
-              .filter(
-                (offer) =>
-                  offer.status !== "approved" &&
-                  offer.owner_id !== currentUserId,
-              )
-              .map((offer) => {
-                const wanted = wantedReagents.get(offer.reagent_id)
-                if (!wanted) return null
-                return (
-                  <WantedCard
-                    key={offer.id}
-                    wanted={{
-                      ...wanted,
-                      tradingType:
-                        wanted.tradingType as import("@/models/__generated__/schema").components["schemas"]["ReagentTradingType"],
-                    }}
-                    requesterInfo={wanted.requesterInfo}
-                    offeredReagentName={wanted.offeredReagentName}
-                    offer={offer}
-                    onViewDetails={handleOfferDetails}
-                  />
+                .map((offer) => {
+                  const wanted = wantedReagents.get(offer.reagent_id)
+                  if (!wanted) return null
+                  return (
+                    <WantedCard
+                      key={offer.id}
+                      wanted={{
+                        ...wanted,
+                        tradingType:
+                          wanted.tradingType as import("@/models/__generated__/schema").components["schemas"]["ReagentTradingType"],
+                      }}
+                      requesterInfo={wanted.requesterInfo}
+                      offeredReagentName={wanted.offeredReagentName}
+                      offer={offer}
+                      onViewDetails={handleOfferDetails}
+                    />
+                  )
+                })}
+            </div>
+            <div className="text-xl font-medium text-white mb-4 mt-[2rem]">
+              Offers You Sent
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2.5 md:gap-x-4 md:gap-y-3 lg:gap-x-6">
+              {offers
+                .filter(
+                  (offer) =>
+                    offer.status !== "approved" &&
+                    offer.owner_id !== currentUserId,
                 )
-              })}
+                .map((offer) => {
+                  const wanted = wantedReagents.get(offer.reagent_id)
+                  if (!wanted) return null
+                  return (
+                    <WantedCard
+                      key={offer.id}
+                      wanted={{
+                        ...wanted,
+                        tradingType:
+                          wanted.tradingType as import("@/models/__generated__/schema").components["schemas"]["ReagentTradingType"],
+                      }}
+                      requesterInfo={wanted.requesterInfo}
+                      offeredReagentName={wanted.offeredReagentName}
+                      offer={offer}
+                      onViewDetails={handleOfferDetails}
+                    />
+                  )
+                })}
+            </div>
           </div>
         </div>
+      ) : (
+        <div className="text-2xl text-white pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem]">
+          <div className="bg-primary/50 rounded-lg p-8 border border-muted text-gray-400 text-center w-full">
+            <h3 className="text-lg font-medium mb-2">No Offers Found.</h3>
+            <p className="text-sm">
+              Pending reagent offers tied to your account will appear here.
+            </p>
           </div>
-
-      ) : null}
+        </div>
+      )}
 
       {/*  Pagination hidden for now
             {!loading && (

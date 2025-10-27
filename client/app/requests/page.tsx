@@ -13,7 +13,6 @@ import LoadingState from "../components/composite/loadingstate/LoadingState"
 import { auth } from "@/app/config/firebase"
 import { onAuthStateChanged } from "firebase/auth"
 
-
 type Order = components["schemas"]["Order"]
 type OrderWithId = Order & { id: string; owner_id: string }
 type Reagent = components["schemas"]["Reagent"]
@@ -127,7 +126,6 @@ export default function Orders() {
     }
   }, [currentPage, totalPages, setCurrentPage])
 
-
   return (
     <Overlay>
       <p className="text-4xl font-medium text-white mt-4 ml-4 md:ml-8 tracking-[0.05em]">
@@ -141,11 +139,6 @@ export default function Orders() {
       </div>
 
       <div className="mt-5"></div>
-      {!loading && (
-        <h2 className="text-2xl text-white pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem]">
-          From Marketplace
-        </h2>
-      )}
       <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
         {/*loading state*/}
         {loading ? (
