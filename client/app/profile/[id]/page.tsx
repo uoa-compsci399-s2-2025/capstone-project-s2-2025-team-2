@@ -30,6 +30,7 @@ import {
   ShoppingCartIcon,
   ExclamationTriangleIcon,
   LockClosedIcon,
+  XMarkIcon,
 } from "@heroicons/react/24/outline"
 import LoadingState from "@/app/components/composite/loadingstate/LoadingState"
 
@@ -444,9 +445,9 @@ const UserProfile = () => {
               <h2 className="text-2xl font-medium text-white">Edit</h2>
               <button
                 onClick={() => setShowEditProfile(false)}
-                className="text-gray-400 text-3xl hover:text-white "
+                className="text-white hover:text-gray-300"
               >
-                ❌
+                <XMarkIcon className="w-6 h-6" />
               </button>
             </div>
 
@@ -476,9 +477,9 @@ const UserProfile = () => {
               <h2 className="text-2xl font-medium text-white">Edit Reagent</h2>
               <button
                 onClick={handleReagentFormCancel}
-                className="text-gray-400 text-3xl hover:text-white"
+                className="text-white hover:text-gray-300"
               >
-                ❌
+                <XMarkIcon className="w-6 h-6" />
               </button>
             </div>
 
