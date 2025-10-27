@@ -448,7 +448,7 @@ const UserProfile = () => {
                   : "No reagents under selected filters and/or search query"}
               </p>
             ) : (
-              <div className="bg-transparent flex flex-wrap gap-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
+              <div className="bg-transparent flex flex-wrap justify-center gap-4 md:gap-6 pb-[4rem]">
                 {currentData.map((r) => (
                   <ReagentCard
                     key={r.id}
@@ -498,10 +498,10 @@ const UserProfile = () => {
             </div>
           </div>
         </div>
-      )}
+        )}
 
-      {/* reagent card EDIT REAGENT form */}
-      {showEditReagentForm && selectedReagent && (
+        {/* reagent card EDIT REAGENT form */}
+        {showEditReagentForm && selectedReagent && (
         <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4"
           onClick={(e) => {
