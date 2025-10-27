@@ -325,7 +325,7 @@ const UserProfile = () => {
           </div>
         </div>
         {/* reagent section */}
-        <div className="mt-12 flex flex-col gap-8 md:gap-2">
+        <div className="mt-12 flex flex-col gap-8 md:gap-2 md:mr-20 md:ml-20">
           <div className="flex flex-col gap-6 max-w-[80rem] mx-auto w-full">
             {/*inventory tabs*/}
             <div className="flex flex-col gap-4">
