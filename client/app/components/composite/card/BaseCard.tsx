@@ -158,9 +158,12 @@ const BaseCard = ({
                 {name}
               </h4>
 
-              {/*mobile: location*/}
-              <div className="mt-[-3px] underline-offset-2 text-white/50 text-xs md:hidden truncate">
-                {footerLeft}
+              {/*mobile: location + edit button*/}
+              <div className="mt-[-3px] flex items-center justify-between md:hidden">
+                <div className="underline-offset-2 text-white/50 text-xs truncate">
+                  {footerLeft}
+                </div>
+                {showEditButton && <EditButton />}
               </div>
 
               {/*desktop: trading type*/}
@@ -176,10 +179,7 @@ const BaseCard = ({
                   {/*mobile: expiry + view button footer*/}
                   <div className="flex justify-between w-full md:hidden">
                     <ExpiryDisplay />
-                    <div className="flex gap-2">
-                      {showEditButton && <EditButton />}
-                      <ViewButton />
-                    </div>
+                    <ViewButton />
                   </div>
 
                   {/*desktop: expiry inline with trading type*/}

@@ -131,7 +131,7 @@ export default function Orders() {
 
       setOrders(ordersList)
       setReagents(reagentMap)
-            //fetch offers
+      //fetch offers
       const { data: offersData = [] } = await client.GET("/offers" as any, {
         headers: { Authorization: `Bearer ${token}` },
       })
@@ -139,7 +139,7 @@ export default function Orders() {
       console.debug("[Requests] fetched offers:", offersData)
       setOffers(offersData as any[])
 
-            //fetch all wanted reagents involved in offers
+      //fetch all wanted reagents involved in offers
       const uniqueWantedIds = [
         ...new Set(offersData.map((o: any) => o.reagent_id)),
       ]
