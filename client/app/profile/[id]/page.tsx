@@ -442,7 +442,7 @@ const UserProfile = () => {
                   : "No reagents under selected filters and/or search query"}
               </p>
             ) : (
-              <div className="bg-transparent flex flex-wrap justify-between pb-[4rem]">
+              <div className="bg-transparent flex flex-wrap justify-center gap-4 md:gap-6 pb-[4rem]">
                 {currentData.map((r) => (
                   <ReagentCard
                     key={r.id}
