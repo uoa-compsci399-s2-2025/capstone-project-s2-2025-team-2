@@ -8,7 +8,9 @@ import {
   Bars3Icon,
   EnvelopeIcon,
   ClipboardDocumentListIcon,
+  UserGroupIcon,
   FolderIcon,
+  BanknotesIcon,
 } from "@heroicons/react/24/outline"
 import Button from "../../generic/button/regular/Button"
 import { firebaseSignOut } from "../../../services/firebase-auth"
@@ -58,11 +60,23 @@ const Sidebar = () => {
       icon: ShoppingCartIcon,
       requireSignIn: false,
     },
+    {
+      href: "/bountyboard",
+      label: "Bounty Board",
+      icon: UserGroupIcon,
+      requireSignIn: true,
+    },
     { href: "/inbox", label: "Inbox", icon: EnvelopeIcon, requireSignIn: true },
     {
       href: "/requests",
       label: "Requests",
       icon: ClipboardDocumentListIcon,
+      requireSignIn: true,
+    },
+    {
+      href: "/offers",
+      label: "Offers",
+      icon: BanknotesIcon,
       requireSignIn: true,
     },
     {
@@ -77,7 +91,7 @@ const Sidebar = () => {
     <>
       {/* Mobile Header */}
       <header className="fixed z-50 shadow-lg lg:hidden top-0 w-full h-[4rem] bg-primary text-white flex items-center justify-between px-4 z-10">
-        <Link href="/marketplace">
+        <Link href="/">
           <h3 className="m-0 lg:m-5 hover:text-light-gray duration-100 lg:hidden">
             CoLab
           </h3>
@@ -97,7 +111,7 @@ const Sidebar = () => {
       ${isOpen ? "translate-x-0 right-0" : "translate-x-full right-0"}
        lg:left-0 lg:right-auto lg:translate-x-0 lg:block`}
       >
-        <Link href="/marketplace">
+        <Link href="/">
           <h2 className="hidden lg:block text-center mt-7 mb-4 cursor-pointer">
             CoLab
           </h2>
