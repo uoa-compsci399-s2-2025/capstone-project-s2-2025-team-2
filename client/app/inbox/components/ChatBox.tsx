@@ -20,7 +20,6 @@ export default function ChatBox({
   const [messageInput, setMessageInput] = useState("")
   const [sending, setSending] = useState(false)
   const [user, setUser] = useState<User | null>(null)
-  const [isResponser, setIsResponser] = useState(false)
   const [messages, setMessages] = useState<any[]>([])
   const [loadingMessages, setLoadingMessages] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
