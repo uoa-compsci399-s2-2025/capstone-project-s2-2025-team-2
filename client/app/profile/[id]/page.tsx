@@ -303,7 +303,7 @@ const UserProfile = () => {
     <Overlay>
       <div className="px-5 pt-5">
         {/* profile header */}
-        <div className="flex flex-col items-center gap-6 max-w-[80rem] mx-auto w-full">
+        <div className="flex flex-col items-center gap-6 max-w-[80rem] mx-auto w-full mt-10">
           <div className="flex items-center gap-6">
             <img
               src={userBeingViewed?.image || "/default_pfp.jpg"}
@@ -343,7 +343,7 @@ const UserProfile = () => {
           </div>
         </div>
         {/* reagent section */}
-        <div className="mt-20 flex flex-col gap-8 md:gap-2">
+        <div className="mt-10 flex flex-col gap-8 md:gap-2">
           <div className="flex flex-col gap-6 max-w-[80rem] mx-auto w-full">
             
             {/*inventory tabs*/}
