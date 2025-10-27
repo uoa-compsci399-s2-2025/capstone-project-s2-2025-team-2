@@ -303,7 +303,7 @@ const UserProfile = () => {
     <Overlay>
       <div className="px-5 pt-5">
         {/* profile header */}
-        <div className="flex gap-3">
+        <div className="flex gap-3 justify-center">
           <img
             src={userBeingViewed?.image || "/default_pfp.jpg"}
             alt="User Profile Photo"
