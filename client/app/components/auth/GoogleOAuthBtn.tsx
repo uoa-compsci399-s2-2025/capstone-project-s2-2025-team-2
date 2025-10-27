@@ -33,7 +33,7 @@ export default function GoogleOAuthBtn({
       <div
         ref={buttonRef}
         id="google-signin-button"
-        className="w-full [&_div]:w-full"
+        className="w-full [&_div]:w-[100%]"
       />
     </div>
   )
