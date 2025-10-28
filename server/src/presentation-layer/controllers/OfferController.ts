@@ -15,7 +15,7 @@ import {
   Patch,
 } from "tsoa"
 import { AuthRequest } from "../../service-layer/dtos/request/AuthRequest"
-import { OfferService } from "../../data-layer/repositories/OfferRepository"
+import { OrderService } from "../../data-layer/repositories/OrderRepository"
 import { CreateOfferRequest } from "service-layer/dtos/request/CreateOfferRequest"
 import { Offer, TradeOffer } from "business-layer/models/Offer"
 import { CreateOfferTradeRequest } from "service-layer/dtos/request/CreateOfferTradeRequest"
@@ -33,7 +33,7 @@ export class OfferController extends Controller {
   ): Promise<Offer> {
     const user = request.user
     console.log("User: ", user)
-    const offer = await new OfferService().createOffer(user.uid, req)
+    const offer = await new OrderService().createOffer(user.uid, req)
     return offer
   }
 
@@ -47,7 +47,7 @@ export class OfferController extends Controller {
   ): Promise<TradeOffer> {
     const user = request.user
     console.log("User: ", user)
-    const trade = await new OfferService().createTrade(user.uid, req)
+    const trade = await new OrderService().createOfferTrade(user.uid, req)
     return trade
   }
 
@@ -59,8 +59,15 @@ export class OfferController extends Controller {
       const user = request.user
       const user_id = user.uid
       if (user_id) {
-        const offers = await new OfferService().getAllOffers(user_id)
-        return offers
+        const offers = await new OrderService().getAllTransactions(
+          user_id,
+          "offers",
+        )
+        // Filter only objects that are of type Offer (have 'offeredReagentId' property)
+        return offers.filter(
+          (offer: any): offer is Offer =>
+            offer && typeof offer.offeredReagentId !== "undefined",
+        )
       }
       return []
     } catch (err) {
@@ -77,7 +84,7 @@ export class OfferController extends Controller {
   ): Promise<Order | Trade | Exchange> {
     try {
       const user = request.user
-      const offer = await new OfferService().getOfferById(id)
+      const offer = await new OrderService().getTransactionById(id, "offers")
       if (!offer) {
         this.setStatus(404)
         console.error("Offer not found")
@@ -100,7 +107,7 @@ export class OfferController extends Controller {
     @Request() request: AuthRequest,
   ): Promise<Order | Trade | Exchange> {
     const user = request.user
-    const order = await new OfferService().getOfferById(id)
+    const order = await new OrderService().getTransactionById(id, "offers")
 
     if (!order) {
       this.setStatus(404)
@@ -112,7 +119,7 @@ export class OfferController extends Controller {
       throw new Error("Unauthorized to approve this order request")
     }
 
-    const updatedOrder = await new OfferService().approveOffer(id)
+    const updatedOrder = await new OrderService().approveOffer(id)
     return updatedOrder
   }
 
@@ -124,7 +131,7 @@ export class OfferController extends Controller {
     @Request() request: AuthRequest,
   ): Promise<Order | Trade | Exchange> {
     const user = request.user
-    const order = await new OfferService().getOfferById(id)
+    const order = await new OrderService().getTransactionById(id, "offers")
     if (!order) {
       this.setStatus(404)
       throw new Error("Order not found")
@@ -134,9 +141,10 @@ export class OfferController extends Controller {
       this.setStatus(403)
       throw new Error("Unauthorized to cancel this order request")
     }
-    const updatedOrder = await new OfferService().updateOfferStatus(
+    const updatedOrder = await new OrderService().updateTransactionStatus(
       id,
       "canceled",
+      "offers",
     )
     return updatedOrder
   }

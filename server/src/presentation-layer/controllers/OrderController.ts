@@ -82,7 +82,10 @@ export class OrderController extends Controller {
       const user = request.user
       const user_id = user.uid
       if (user_id) {
-        const orders = await new OrderService().getAllOrders(user_id)
+        const orders = await new OrderService().getAllTransactions(
+          user_id,
+          "orders",
+        )
         console.log(orders)
         return orders
       }
@@ -140,7 +143,7 @@ export class OrderController extends Controller {
     @Request() request: AuthRequest,
   ): Promise<Order | Trade | Exchange> {
     const user = request.user
-    const order = await new OrderService().getOrderById(id)
+    const order = await new OrderService().getTransactionById(id, "orders")
     if (!order) {
       this.setStatus(404)
       console.error("Order not found")
@@ -162,7 +165,7 @@ export class OrderController extends Controller {
     @Request() request: AuthRequest,
   ): Promise<Order | Trade | Exchange> {
     const user = request.user
-    const order = await new OrderService().getOrderById(id)
+    const order = await new OrderService().getTransactionById(id, "orders")
     if (!order) {
       this.setStatus(404)
       throw new Error("Order not found")
@@ -172,9 +175,10 @@ export class OrderController extends Controller {
       this.setStatus(403)
       throw new Error("Unauthorized to cancel this order request")
     }
-    const updatedOrder = await new OrderService().updateOrderStatus(
+    const updatedOrder = await new OrderService().updateTransactionStatus(
       id,
       "canceled",
+      "orders",
     )
     return updatedOrder
   }
