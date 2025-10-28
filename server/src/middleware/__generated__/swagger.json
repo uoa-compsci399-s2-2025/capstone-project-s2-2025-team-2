@@ -7,83 +7,6 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"User": {
-				"properties": {
-					"email": {
-						"type": "string"
-					},
-					"displayName": {
-						"type": "string"
-					},
-					"preferredName": {
-						"type": "string"
-					},
-					"lastName": {
-						"type": "string"
-					},
-					"university": {
-						"type": "string"
-					},
-					"about": {
-						"type": "string"
-					},
-					"role": {
-						"type": "string",
-						"enum": [
-							"user",
-							"lab_manager",
-							"admin"
-						]
-					},
-					"image": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"email",
-					"displayName",
-					"preferredName",
-					"university",
-					"role"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Partial_User_": {
-				"properties": {
-					"email": {
-						"type": "string"
-					},
-					"displayName": {
-						"type": "string"
-					},
-					"preferredName": {
-						"type": "string"
-					},
-					"lastName": {
-						"type": "string"
-					},
-					"university": {
-						"type": "string"
-					},
-					"about": {
-						"type": "string"
-					},
-					"role": {
-						"type": "string",
-						"enum": [
-							"user",
-							"lab_manager",
-							"admin"
-						]
-					},
-					"image": {
-						"type": "string"
-					}
-				},
-				"type": "object",
-				"description": "Make all properties in T optional"
-			},
 			"ReagentTradingType": {
 				"type": "string",
 				"enum": [
@@ -164,6 +87,9 @@
 					"visibility": {
 						"$ref": "#/components/schemas/ReagentVisibility"
 					},
+					"requesterOfferedReagentId": {
+						"type": "string"
+					},
 					"restricted": {
 						"type": "boolean"
 					}
@@ -185,6 +111,125 @@
 				],
 				"type": "object",
 				"additionalProperties": false
+			},
+			"CreateWantedRequest": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"description": {
+						"type": "string"
+					},
+					"location": {
+						"type": "string"
+					},
+					"categories": {
+						"items": {
+							"$ref": "#/components/schemas/ReagentCategory"
+						},
+						"type": "array"
+					},
+					"tradingType": {
+						"$ref": "#/components/schemas/ReagentTradingType"
+					},
+					"requesterOfferedReagentId": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"expiryDate": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"description",
+					"location",
+					"categories",
+					"tradingType",
+					"expiryDate"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"User": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"displayName": {
+						"type": "string"
+					},
+					"preferredName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"university": {
+						"type": "string"
+					},
+					"about": {
+						"type": "string"
+					},
+					"role": {
+						"type": "string",
+						"enum": [
+							"user",
+							"lab_manager",
+							"admin"
+						]
+					},
+					"image": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"email",
+					"displayName",
+					"preferredName",
+					"university",
+					"role"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Partial_User_": {
+				"properties": {
+					"email": {
+						"type": "string"
+					},
+					"displayName": {
+						"type": "string"
+					},
+					"preferredName": {
+						"type": "string"
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"university": {
+						"type": "string"
+					},
+					"about": {
+						"type": "string"
+					},
+					"role": {
+						"type": "string",
+						"enum": [
+							"user",
+							"lab_manager",
+							"admin"
+						]
+					},
+					"image": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"description": "Make all properties in T optional"
 			},
 			"CreateReagentRequest": {
 				"properties": {
@@ -304,6 +349,9 @@
 					},
 					"visibility": {
 						"$ref": "#/components/schemas/ReagentVisibility"
+					},
+					"requesterOfferedReagentId": {
+						"type": "string"
 					},
 					"restricted": {
 						"type": "boolean"
@@ -615,6 +663,180 @@
 					"status",
 					"createdAt",
 					"id"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"Offer": {
+				"properties": {
+					"requester_id": {
+						"type": "string"
+					},
+					"reagent_id": {
+						"type": "string"
+					},
+					"owner_id": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string",
+						"enum": [
+							"pending",
+							"approved",
+							"canceled"
+						]
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"message": {
+						"type": "string"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"unit": {
+						"type": "string"
+					},
+					"offeredReagentId": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"requester_id",
+					"reagent_id",
+					"owner_id",
+					"status",
+					"createdAt",
+					"offeredReagentId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateOfferRequest": {
+				"properties": {
+					"reagent_id": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"offeredReagentId": {
+						"type": "string"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"order"
+						],
+						"nullable": false
+					},
+					"unit": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"reagent_id",
+					"offeredReagentId",
+					"type"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TradeOffer": {
+				"properties": {
+					"requester_id": {
+						"type": "string"
+					},
+					"reagent_id": {
+						"type": "string"
+					},
+					"owner_id": {
+						"type": "string"
+					},
+					"status": {
+						"type": "string",
+						"enum": [
+							"pending",
+							"approved",
+							"canceled"
+						]
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"message": {
+						"type": "string"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"unit": {
+						"type": "string"
+					},
+					"offeredReagentId": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"requester_id",
+					"reagent_id",
+					"owner_id",
+					"status",
+					"createdAt",
+					"offeredReagentId",
+					"price"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"CreateOfferTradeRequest": {
+				"properties": {
+					"reagent_id": {
+						"type": "string"
+					},
+					"message": {
+						"type": "string"
+					},
+					"price": {
+						"type": "number",
+						"format": "double"
+					},
+					"offeredReagentId": {
+						"type": "string"
+					},
+					"quantity": {
+						"type": "number",
+						"format": "double"
+					},
+					"type": {
+						"type": "string",
+						"enum": [
+							"trade"
+						],
+						"nullable": false
+					},
+					"unit": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"reagent_id",
+					"price",
+					"offeredReagentId",
+					"type"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -992,6 +1214,113 @@
 		"contact": {}
 	},
 	"paths": {
+		"/wanted": {
+			"get": {
+				"operationId": "GetAllWantedReagents",
+				"responses": {
+					"200": {
+						"description": "All wanted reagents returned successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Reagent"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get all wanted reagents with an option to filter them by category.",
+				"tags": [
+					"Wanted"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "- The list of all categories to fetch wanted reagents from.",
+						"in": "query",
+						"name": "category",
+						"required": false,
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/components/schemas/ReagentCategory"
+							}
+						}
+					}
+				]
+			},
+			"post": {
+				"operationId": "CreateWantedReagent",
+				"responses": {
+					"201": {
+						"description": "Wanted reagent created successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Reagent"
+								}
+							}
+						}
+					}
+				},
+				"description": "\r\nCreate a reagent by passing in all the required props.\r\nUser must be authenticated to access this endpoint (lab manager / admin)",
+				"tags": [
+					"Wanted"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateWantedRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/wanted/{id}": {
+			"get": {
+				"operationId": "GetWantedReagentById",
+				"responses": {
+					"200": {
+						"description": "Wanted reagents retrieved successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Reagent"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get a wanted reagent by its ID.",
+				"tags": [
+					"Wanted"
+				],
+				"security": [],
+				"parameters": [
+					{
+						"description": "- The ID of the wanted reagent to retrieve.",
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/users/{id}": {
 			"patch": {
 				"operationId": "UpdateUser",
@@ -1007,7 +1336,7 @@
 						}
 					}
 				},
-				"description": "Update user information by their ID\nUser **must** be authenticated to access this endpoint",
+				"description": "Update user information by their ID\r\nUser **must** be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -1114,7 +1443,7 @@
 						}
 					}
 				},
-				"description": "Get all reagents under a user\nUser must be authenticated to access this endpoint",
+				"description": "Get all reagents under a user\r\nUser must be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -1139,7 +1468,7 @@
 						}
 					}
 				},
-				"description": "Create a reagent by passing in all the required props.\nUser **must** be authenticated to access this endpoint (lab manager / admin) [seller]",
+				"description": "Create a reagent by passing in all the required props.\r\nUser **must** be authenticated to access this endpoint (lab manager / admin) [seller]",
 				"tags": [
 					"User"
 				],
@@ -1302,7 +1631,7 @@
 						}
 					}
 				},
-				"description": "Get a reagent by using its ID\nUser must be authenticated to access this endpoint",
+				"description": "Get a reagent by using its ID\r\nUser must be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -1342,7 +1671,7 @@
 						}
 					}
 				},
-				"description": "Delete a reagent by using its ID\nUser **must** be authenticated to access this endpoint",
+				"description": "Delete a reagent by using its ID\r\nUser **must** be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -1377,7 +1706,7 @@
 						}
 					}
 				},
-				"description": "Update a reagent by its ID.\nUser **must** be authenticated to access this endpoint",
+				"description": "Update a reagent by its ID.\r\nUser **must** be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -1429,7 +1758,7 @@
 						}
 					}
 				},
-				"description": "\nGet all reagents under another user by their user id\nCan only be done by admin*",
+				"description": "\r\nGet all reagents under another user by their user id\r\nCan only be done by admin*",
 				"tags": [
 					"User"
 				],
@@ -1909,7 +2238,7 @@
 				"operationId": "CancelOrder",
 				"responses": {
 					"200": {
-						"description": "order successfully canceld",
+						"description": "order successfully canceled",
 						"content": {
 							"application/json": {
 								"schema": {
@@ -1931,6 +2260,240 @@
 				},
 				"tags": [
 					"Order"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/offers": {
+			"post": {
+				"operationId": "CreateOffer",
+				"responses": {
+					"201": {
+						"description": "Offer created successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Offer"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Offers"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateOfferRequest"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "GetOffers",
+				"responses": {
+					"200": {
+						"description": "All offers returned successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Offer"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Offers"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/offers/trades": {
+			"post": {
+				"operationId": "CreateTrade",
+				"responses": {
+					"201": {
+						"description": "Trade created successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TradeOffer"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Offers"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateOfferTradeRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/offers/{id}": {
+			"get": {
+				"operationId": "GetOfferById",
+				"responses": {
+					"200": {
+						"description": "All offers returned successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/Order"
+										},
+										{
+											"$ref": "#/components/schemas/Trade"
+										},
+										{
+											"$ref": "#/components/schemas/Exchange"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Offers"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/offers/{id}/approve": {
+			"patch": {
+				"operationId": "ApproveOrder",
+				"responses": {
+					"200": {
+						"description": "order successfully approved",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/Order"
+										},
+										{
+											"$ref": "#/components/schemas/Trade"
+										},
+										{
+											"$ref": "#/components/schemas/Exchange"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Offers"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/offers/{id}/cancel": {
+			"patch": {
+				"operationId": "CancelOrder",
+				"responses": {
+					"200": {
+						"description": "order successfully canceled",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/Order"
+										},
+										{
+											"$ref": "#/components/schemas/Trade"
+										},
+										{
+											"$ref": "#/components/schemas/Exchange"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Offers"
 				],
 				"security": [
 					{
