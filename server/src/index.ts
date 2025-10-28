@@ -17,6 +17,8 @@ const corsOptions = {
     "https://localhost:3000",
     "http://127.0.0.1:3000",
     "https://testt.jefferyji.com",
+    "https://server.colab.exchange",
+    "https://backend.colab.exchange",
   ],
   credentials: true, // Allow cookies/auth headers
   methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
