@@ -7,7 +7,6 @@ import type { components } from "@/models/__generated__/schema"
 import { toast } from "sonner"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../../../config/firebase"
-import { set } from "zod"
 
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
@@ -47,15 +46,15 @@ const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
         )
 
         if (error) {
-          toast.error("Failed to check request status. Please try again.")
+          console.error("Failed to check request status:", error)
           return
         }
 
         if (data) {
           setReagentRequested(true)
         }
-      } catch {
-        toast.error("Failed to check request status. Please try again.")
+      } catch (error) {
+        console.error("Failed to check request status:", error)
       } finally {
         setIsLoading(false)
       }
@@ -105,10 +104,13 @@ const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
     setIsRequestOpen(false)
   }
 
-  const handleRequestSubmit = () => {
-    setReagentRequested(true)
+const handleRequestSubmit = (success: boolean) => {
+  if (success) {
     console.log("Request submitted successfully")
+    setReagentRequested(true)
   }
+  setIsRequestOpen(false)
+}
 
   return (
     <div className="flex flex-row items-center md:mb-[2rem] gap-[4.5rem] md:gap-[8.5rem]">

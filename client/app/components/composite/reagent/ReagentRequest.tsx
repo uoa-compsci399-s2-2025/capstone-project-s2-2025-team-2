@@ -27,7 +27,7 @@ const TRADING_CONFIG = {
 interface ReagentRequestProps {
   isOpen: boolean
   onClose: () => void
-  onSubmit: () => void
+  onSubmit: (success: boolean) => void
   reagent: ReagentWithId
   title?: string
   isBountyBoard?: boolean
@@ -343,11 +343,13 @@ export const ReagentRequest = ({
           reagent.tradingType.slice(1) +
           ` ${actionWord} sent successfully!`,
       )
-      onSubmit()
+      onSubmit(true)
       onClose()
-    } catch {
+    } catch (error) {
+      onSubmit(false)
       setError("Failed to create request. Please try again.")
     } finally {
+      onSubmit(false)
       setIsSubmitting(false)
     }
   }, [
