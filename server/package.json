@@ -4,6 +4,11 @@
   "main": "src/index.ts",
   "packageManager": "pnpm@10.7.1",
   "scripts": {
+    "pm2": "NODE_ENV=production pm2 start build/server.js --watch -i max",
+    "pm2:staging": "NODE_ENV=staging pm2 start build/server.js --watch -i max",
+    "prod": "NODE_ENV=production node build/server.js",
+    "staging": "NODE_ENV=staging node build/server.js",
+    "dev": "HTTPS=true NODE_ENV=development ts-node-dev --inspect --respawn src/server.ts",
     "nodemon": "nodemon",
     "build": "tsc -p ./tsconfig.json && tsc-alias",
     "serve": "node --es-module-specifier-resolution=node dist/index.js",
