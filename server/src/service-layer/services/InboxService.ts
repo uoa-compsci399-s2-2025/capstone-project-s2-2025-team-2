@@ -23,6 +23,15 @@ export class InboxService {
     )
 
     if (existingChatRoom) {
+      // Still send the initial message to the existing chat room
+      if (request.initial_message) {
+        await this.sendMessage({
+          chat_room_id: existingChatRoom.id!,
+          sender_id: request.user1_id,
+          content: request.initial_message,
+        })
+      }
+
       return existingChatRoom
     }
 

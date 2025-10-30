@@ -9,8 +9,9 @@ import { useRouter } from "next/navigation"
 import type { components } from "@/models/__generated__/schema"
 import { usePageSize } from "../hooks/usePageSize"
 import { usePagination } from "../hooks/usePagination"
-import Pagination from "../components/composite/pagination/Pagination"
 import LoadingState from "../components/composite/loadingstate/LoadingState"
+import { auth } from "@/app/config/firebase"
+import { onAuthStateChanged } from "firebase/auth"
 
 type Order = components["schemas"]["Order"]
 type OrderWithId = Order & { id: string; owner_id: string }
@@ -28,6 +29,7 @@ interface ModalState {
 
 export default function Orders() {
   const [orders, setOrders] = useState<OrderWithId[]>([])
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const [reagents, setReagents] = useState<Map<string, ReagentWithId>>(
     new Map(),
   )
@@ -39,6 +41,17 @@ export default function Orders() {
   })
   const router = useRouter()
 
+  //fetch userID of the logged in user
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUserId(user.uid)
+      } else {
+        setCurrentUserId(null)
+      }
+    })
+    return () => unsubscribe()
+  }, [])
   // fetch all orders where user is owner/requester
   const fetchOrders = useCallback(async () => {
     const token = localStorage.getItem("authToken")
@@ -126,7 +139,6 @@ export default function Orders() {
       </div>
 
       <div className="mt-5"></div>
-
       <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
         {/*loading state*/}
         {loading ? (
@@ -140,22 +152,62 @@ export default function Orders() {
             </p>
           </div>
         ) : (
-          //render order cards
-          orders.map((order) => {
-            const reagent = reagents.get(order.reagent_id)
-            if (!reagent) return null
-            return (
-              <OrderCard
-                key={order.id}
-                reagent={reagent}
-                order={order}
-                onViewDetails={handleOrderDetails}
-              />
-            )
-          })
+          <div className="w-full">
+            {orders.filter((order) => order.owner_id === currentUserId).length >
+              0 && (
+              <div>
+                <div className="text-xl font-medium text-white mb-4">
+                  Requests You Received
+                </div>
+                <div className="bg-transparent flex flex-wrap gap-4 md:gap-[2rem] pb-[1rem]">
+                  {orders
+                    .filter((order) => order.owner_id === currentUserId)
+                    .map((order) => {
+                      const reagent = reagents.get(order.reagent_id)
+                      if (!reagent) return null
+                      return (
+                        <OrderCard
+                          key={order.id}
+                          reagent={reagent}
+                          order={order}
+                          onViewDetails={handleOrderDetails}
+                        />
+                      )
+                    })}
+                </div>
+              </div>
+            )}
+
+            {orders.filter((order) => order.owner_id !== currentUserId).length >
+              0 && (
+              <div>
+                <div className="text-xl font-medium text-white mb-4 mt-[1rem]">
+                  Requests You Sent
+                </div>
+                <div className="bg-transparent flex flex-wrap gap-4 md:gap-[2rem]">
+                  {orders
+                    .filter((order) => order.owner_id !== currentUserId)
+                    .map((order) => {
+                      const reagent = reagents.get(order.reagent_id)
+                      if (!reagent) return null
+                      return (
+                        <OrderCard
+                          key={order.id}
+                          reagent={reagent}
+                          order={order}
+                          onViewDetails={handleOrderDetails}
+                        />
+                      )
+                    })}
+                </div>
+              </div>
+            )}
+          </div>
         )}
       </div>
-      {!loading && (
+
+      {/*  Pagination hidden for now
+            {!loading && (
         <div className="pb-[4rem] md:pb-0">
           <Pagination
             currentPage={currentPage}
@@ -164,6 +216,7 @@ export default function Orders() {
           />
         </div>
       )}
+      */}
 
       {/*request details modal*/}
       {modalState.order && modalState.reagent && (

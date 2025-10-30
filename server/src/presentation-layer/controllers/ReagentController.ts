@@ -133,4 +133,20 @@ Get all reagents that are expiring in 30 days
       throw new Error(`[ERROR] while updating reagent ${id}: ${error}`)
     }
   }
+  /**
+   * Turn all expired reagents private by their ID.
+   *
+   * @param id - The ID of the reagent to make private.
+   * @returns Promise<Reagent> - The updated reagent.
+   */
+  @SuccessResponse("200", "Reagent made private successfully")
+  @Patch("{id}/private")
+  public async turnExpiredReagentsPrivate(): Promise<void> {
+    try {
+      await new ReagentService().turnExpiredReagentsPrivate()
+    } catch (error) {
+      this.setStatus(400)
+      throw new Error(`[ERROR] while turning reagent private: ${error}`)
+    }
+  }
 }

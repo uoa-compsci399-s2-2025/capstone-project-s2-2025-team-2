@@ -197,7 +197,7 @@ export const ReagentForm = ({
     )
 
     if (error) {
-      throw new Error("Failed to create reagent")
+      throw new Error(`Failed to create reagent: ${error}`)
     }
 
     // Variable to track the final reagent data
