@@ -43,6 +43,7 @@ type reagentCategoryFilter =
   | "on marketplace"
   | "expiring soon"
   | "private"
+  | "expired"
 
 const UserProfile = () => {
   const params = useParams<{ id: string }>()
@@ -91,6 +92,11 @@ const UserProfile = () => {
       label: "Private Inventory",
       categoryFilterValue: "private",
       icon: LockClosedIcon,
+    },
+    {
+      label: "Expired Reagents",
+      categoryFilterValue: "expired",
+      icon: XMarkIcon,
     },
   ]
 
@@ -162,6 +168,12 @@ const UserProfile = () => {
       case "private":
         categoryMatch = r.visibility === "private"
         break
+      case "expired": {
+        const expiryDate = new Date(r.expiryDate)
+        const today = new Date()
+        categoryMatch = expiryDate < today
+        break
+      }
       default:
         categoryMatch = true
         break

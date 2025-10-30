@@ -9,6 +9,7 @@ import * as swaggerJson from "./middleware/__generated__/swagger.json"
 import * as swaggerUI from "swagger-ui-express"
 
 const app: Express = express()
+
 app.use(cors())
 app.use(express.json())
 
@@ -32,6 +33,7 @@ RegisterRoutes(app)
 
 const scheduler = new ScheduleService()
 scheduler.scheduleExpiryEmails()
+scheduler.scheduleTurnExpiredReagentPrivate()
 
 const port = process.env.PORT || 8000
 
