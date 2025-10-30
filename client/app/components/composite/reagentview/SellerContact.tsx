@@ -7,6 +7,7 @@ import type { components } from "@/models/__generated__/schema"
 import { toast } from "sonner"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../../../config/firebase"
+import { set } from "zod"
 
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
@@ -21,8 +22,8 @@ const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
   const [isCheckingInventory, setIsCheckingInventory] = useState(false)
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
-  const [reagentrequested, setReagentRequested] = useState(false)
-
+  const [reagentRequested, setReagentRequested] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   //check auth state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -34,11 +35,12 @@ const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
   //check if reagent has already been requested by user
   useEffect(() => {
     const checkRequested = async () => {
+      setIsLoading(true)
       if (!reagent) return
       try {
         const token = localStorage.getItem("authToken")
         const { data, error } = await client.GET(
-          `/requests/reagent/${reagent.id}` as any,
+          `/orders/${reagent.id}/order` as any,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
@@ -49,12 +51,14 @@ const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
           return
         }
 
-        if (data && data.requested) {
+        if (data) {
           setReagentRequested(true)
         }
       } catch {
         toast.error("Failed to check request status. Please try again.")
-      } finally {}
+      } finally {
+        setIsLoading(false)
+      }
     }
     checkRequested()
   }, [])
@@ -94,6 +98,7 @@ const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
     }
 
     setIsRequestOpen(true)
+
   }
 
   const handleRequestClose = () => {
@@ -101,6 +106,7 @@ const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
   }
 
   const handleRequestSubmit = () => {
+    setReagentRequested(true)
     console.log("Request submitted successfully")
   }
 
@@ -143,12 +149,13 @@ const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
 
       {isSignedIn && (
         <Button
-          label={isCheckingInventory ? "Checking..." : "Request Reagent"}
+          label={isCheckingInventory || isLoading? "Checking..." : reagentRequested ? "Reagent Requested" : "Request Reagent"}
           onClick={handleRequestClick}
-          disabled={isCheckingInventory}
+          disabled={isCheckingInventory || reagentRequested}
           className="
             px-[1.5rem] py-[1.5rem] rounded-[18px] md:rounded-[8px] md:text-sm md:px-6 md:w-auto md:py-1.5 md:justify-center
             font-semibold hover:bg-blue-primary/70 transition-colors cursor-pointer
+            disabled:bg-blue-primary disabled:cursor-not-allowed disabled:opacity-50
             "
         />
       )}
