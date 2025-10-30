@@ -709,8 +709,7 @@
 					"reagent_id",
 					"owner_id",
 					"status",
-					"createdAt",
-					"offeredReagentId"
+					"createdAt"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -796,7 +795,6 @@
 					"owner_id",
 					"status",
 					"createdAt",
-					"offeredReagentId",
 					"price"
 				],
 				"type": "object",
@@ -2551,6 +2549,49 @@
 						}
 					}
 				},
+				"tags": [
+					"Offers"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/offers/{id}/offer": {
+			"get": {
+				"operationId": "GetOfferByReagentId",
+				"responses": {
+					"200": {
+						"description": "offer successfully fetched",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/Offer"
+										},
+										{
+											"$ref": "#/components/schemas/TradeOffer"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"description": "Get an offer for a user by reagent ID.",
 				"tags": [
 					"Offers"
 				],

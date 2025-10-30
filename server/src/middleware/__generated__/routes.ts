@@ -248,7 +248,7 @@ const models: TsoaRoute.Models = {
             "message": {"dataType":"string"},
             "quantity": {"dataType":"double"},
             "unit": {"dataType":"string"},
-            "offeredReagentId": {"dataType":"string","required":true},
+            "offeredReagentId": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -277,7 +277,7 @@ const models: TsoaRoute.Models = {
             "message": {"dataType":"string"},
             "quantity": {"dataType":"double"},
             "unit": {"dataType":"string"},
-            "offeredReagentId": {"dataType":"string","required":true},
+            "offeredReagentId": {"dataType":"string"},
             "price": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
@@ -1629,6 +1629,38 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'cancelOrder',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsOfferController_getOfferByReagentId: Record<string, TsoaRoute.ParameterSchema> = {
+                id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                request: {"in":"request","name":"request","required":true,"dataType":"object"},
+        };
+        app.get('/offers/:id/offer',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(OfferController)),
+            ...(fetchMiddlewares<RequestHandler>(OfferController.prototype.getOfferByReagentId)),
+
+            async function OfferController_getOfferByReagentId(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsOfferController_getOfferByReagentId, request, response });
+
+                const controller = new OfferController();
+
+              await templateService.apiHandler({
+                methodName: 'getOfferByReagentId',
                 controller,
                 response,
                 next,
