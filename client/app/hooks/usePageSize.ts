@@ -5,7 +5,10 @@ export function usePageSize() {
 
   useEffect(() => {
     const updatePageSize = () => {
-      if (window.innerWidth > 1900) {
+
+      if (window.innerWidth > 1700) {
+        setPageSize(20)
+      } else if (window.innerWidth > 1550) {
         setPageSize(16)
       } else if (window.innerWidth > 1505) {
         setPageSize(15)

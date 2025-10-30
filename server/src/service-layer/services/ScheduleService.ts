@@ -7,7 +7,7 @@ export class ScheduleService {
    */
   public scheduleExpiryEmails(): void {
     cron.schedule(
-      "0 9 * * *",
+      "0 11 * * *",
       async () => {
         try {
           await new ExpiryController().sendExpiryNotifications()
