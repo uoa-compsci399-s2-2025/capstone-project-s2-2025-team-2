@@ -1,6 +1,10 @@
 import OutlinedButton from "../generic/button/outlined/OutlinedButton"
 
-export default function AuthWelcomeBox() {
+
+interface AuthWelcomeBoxProps {
+  setAuthType: (authType: "signin" | "signup" | "forgotpassword") => void
+}
+export default function AuthWelcomeBox({ setAuthType }: AuthWelcomeBoxProps) {
   return (
     <div className="max-w-md w-full space-y-8 p-8 bg-gradient-to-b from-blue-400 to-purple-600 rounded-lg shadow-lg flex flex-col justify-center hidden lg:flex">
       {/* Welcome Content */}
@@ -17,6 +21,7 @@ export default function AuthWelcomeBox() {
           textSize="text-sm"
           backgroundColor="white"
           className="border-white"
+          onClick={() => setAuthType("signup")}
         />
       </div>
     </div>
