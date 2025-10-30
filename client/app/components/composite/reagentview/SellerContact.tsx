@@ -1,6 +1,6 @@
 import { LuHouse } from "react-icons/lu"
 import Button from "../../generic/button/regular/Button"
-import { useState, useEffect } from "react"
+import { useState, useEffect, use } from "react"
 import ReagentRequest from "../reagent/ReagentRequest"
 import client from "../../../services/fetch-client"
 import type { components } from "@/models/__generated__/schema"
@@ -21,6 +21,7 @@ const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
   const [isCheckingInventory, setIsCheckingInventory] = useState(false)
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
+  const [reagentrequested, setReagentRequested] = useState(false)
 
   //check auth state
   useEffect(() => {
@@ -28,6 +29,34 @@ const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
       setIsSignedIn(!!user)
     })
     return () => unsubscribe()
+  }, [])
+
+  //check if reagent has already been requested by user
+  useEffect(() => {
+    const checkRequested = async () => {
+      if (!reagent) return
+      try {
+        const token = localStorage.getItem("authToken")
+        const { data, error } = await client.GET(
+          `/requests/reagent/${reagent.id}` as any,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        )
+
+        if (error) {
+          toast.error("Failed to check request status. Please try again.")
+          return
+        }
+
+        if (data && data.requested) {
+          setReagentRequested(true)
+        }
+      } catch {
+        toast.error("Failed to check request status. Please try again.")
+      } finally {}
+    }
+    checkRequested()
   }, [])
 
   const handleRequestClick = async () => {

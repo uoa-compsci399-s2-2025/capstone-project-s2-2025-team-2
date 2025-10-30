@@ -324,4 +324,30 @@ export class OrderService {
       return { ...order, status: "approved" }
     })
   }
+
+  /**
+   * Get an order for a user by reagent ID
+   */
+  async getOrderByUserIdAndReagentId(
+    user_id: string,
+    reagent_id: string,
+  ): Promise<Order | Trade | Exchange | null> {
+    try {
+      const orderDoc = await FirestoreCollections.orders
+        .where("requester_id", "==", user_id)
+        .where("reagent_id", "==", reagent_id)
+        .get()
+
+      if (orderDoc.empty) {
+        return null
+      }
+      const doc = orderDoc.docs[0]
+      return {
+        id: doc.id,
+        ...doc.data(),
+      } as Order
+    } catch (err) {
+      throw new Error(`Failed to get order: ${(err as Error).message}`)
+    }
+  }
 }
