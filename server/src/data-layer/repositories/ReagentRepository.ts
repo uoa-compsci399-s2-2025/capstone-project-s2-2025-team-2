@@ -195,4 +195,29 @@ export class ReagentService {
       )
     }
   }
+
+  /**
+   * Turns all expired reagents private.
+   */
+  async turnExpiredReagentsPrivate(): Promise<void> {
+    try {
+      const reagentsSnapshot = await FirestoreCollections.reagents.get()
+      const reagents = reagentsSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }))
+
+      const expiredReagents = reagents.filter((reagent) => {
+        if (!reagent.expiryDate) return false
+        const daysLeft = daysUntilExpiry(reagent.expiryDate)
+        return daysLeft < 0
+      })
+      for (const reagent of expiredReagents) {
+        await this.updateReagent(reagent.id, { visibility: "private" })
+        console.log(`Reagent ${reagent.id} set to private due to expiry.`)
+      }
+    } catch (error) {
+      console.error("Error turning expired reagents private:", error)
+    }
+  }
 }

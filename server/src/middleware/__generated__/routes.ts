@@ -1135,6 +1135,35 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsReagentController_turnExpiredReagentsPrivate: Record<string, TsoaRoute.ParameterSchema> = {
+        };
+        app.patch('/reagents/:id/private',
+            ...(fetchMiddlewares<RequestHandler>(ReagentController)),
+            ...(fetchMiddlewares<RequestHandler>(ReagentController.prototype.turnExpiredReagentsPrivate)),
+
+            async function ReagentController_turnExpiredReagentsPrivate(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsReagentController_turnExpiredReagentsPrivate, request, response });
+
+                const controller = new ReagentController();
+
+              await templateService.apiHandler({
+                methodName: 'turnExpiredReagentsPrivate',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsOrderController_createOrder: Record<string, TsoaRoute.ParameterSchema> = {
                 req: {"in":"body","name":"req","required":true,"ref":"CreateOrderRequest"},
                 request: {"in":"request","name":"request","required":true,"dataType":"object"},
