@@ -40,7 +40,7 @@ const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
       try {
         const token = localStorage.getItem("authToken")
         const { data, error } = await client.GET(
-          `/orders/${reagent.id}/order` as any,
+          `/orders/requested/${reagent.id}` as any,
           {
             headers: { Authorization: `Bearer ${token}` },
           },

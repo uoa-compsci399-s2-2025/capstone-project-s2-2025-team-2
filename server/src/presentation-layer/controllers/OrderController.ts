@@ -184,19 +184,18 @@ export class OrderController extends Controller {
    */
   @SuccessResponse("200", "order successfully fetched")
   @Security("jwt")
-  @Get("{id}/order")
+  @Get("/requested/{reagent_id}")
   public async getOrderByReagentId(
-    @Path() id: string,
+    @Path() reagent_id: string,
     @Request() request: AuthRequest,
   ): Promise<Order | Trade | Exchange> {
     const user = request.user
     const order = await new OrderService().getOrderByUserIdAndReagentId(
       user.uid,
-      id,
+      reagent_id,
     )
     if (!order) {
-      this.setStatus(404)
-      console.error("Order not found")
+      console.log("This reagent was not requested by this user")
     }
     return order
   }
