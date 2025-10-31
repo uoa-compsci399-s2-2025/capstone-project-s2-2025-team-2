@@ -40,7 +40,7 @@ const ContactButton = ({ wanted, className = "" }: ContactButtonProps) => {
       try {
         const token = localStorage.getItem("authToken")
         const { data, error } = await client.GET(
-          `/offers/${wanted.id}/offer` as any,
+          `/offers/${wanted.id}` as any,
           {
             headers: { Authorization: `Bearer ${token}` },
           },
