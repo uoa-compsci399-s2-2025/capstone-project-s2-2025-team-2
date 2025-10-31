@@ -16,6 +16,7 @@ export type AuthNotificationState =
   | "signing-in"
   | "login-success"
   | "login-fail"
+  | "email-already-exists"
 
 // type: NotificationType
 type NotificationType = "info" | "success" | "error"
@@ -130,6 +131,11 @@ const getNotificationConfig = (
       return {
         type: "error",
         message: "Login failed. Please check your credentials and try again.",
+      }
+    case "email-already-exists":
+      return {
+        type: "error",
+        message: "This email is already registered. Please sign in instead.",
       }
     default:
       return {
