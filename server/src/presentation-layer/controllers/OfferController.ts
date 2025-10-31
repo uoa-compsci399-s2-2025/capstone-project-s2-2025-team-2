@@ -157,8 +157,7 @@ export class OfferController extends Controller {
       id,
     )
     if (!offer) {
-      this.setStatus(404)
-      console.error("Offer not found")
+      console.log("This reagent was not offered by this user")
     }
     return offer
   }

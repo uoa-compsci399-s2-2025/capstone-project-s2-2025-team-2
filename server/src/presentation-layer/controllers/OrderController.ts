@@ -195,8 +195,7 @@ export class OrderController extends Controller {
       id,
     )
     if (!order) {
-      this.setStatus(404)
-      console.error("Order not found")
+      console.log("This reagent was not requested by this user")
     }
     return order
   }
