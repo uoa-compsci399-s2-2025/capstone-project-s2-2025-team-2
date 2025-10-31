@@ -124,8 +124,8 @@ const WantedCard = ({
               </span>
             </div>
             {/* Expiring Date */}
-            <div className="flex items-center gap-1 text-warning">
-              <ClockIcon className="w-4 h-4" />
+            <div className="flex items-center gap-1 text-red-500">
+              <ClockIcon className="w-4 h-4 text-red-500" />
               <span className="text-sm">
                 {wanted.expiryDate || "No date specified"}
               </span>
