@@ -345,7 +345,7 @@ export const ReagentRequest = ({
       )
       onSubmit(true)
       onClose()
-    } catch (error) {
+    } catch {
       onSubmit(false)
       setError("Failed to create request. Please try again.")
     } finally {

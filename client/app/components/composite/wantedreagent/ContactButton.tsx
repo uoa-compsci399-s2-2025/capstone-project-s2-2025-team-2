@@ -34,7 +34,7 @@ const ContactButton = ({ wanted, className = "" }: ContactButtonProps) => {
   const [reagentOffered, setReagentOffered] = useState(false)
 
   //check if reagent has already been offered by the current user
-    useEffect(() => {
+  useEffect(() => {
     const checkOffered = async () => {
       if (!wanted) return
       try {
@@ -95,34 +95,33 @@ const ContactButton = ({ wanted, className = "" }: ContactButtonProps) => {
 
     //check if user has reagents to offer for exchange
 
-      setIsCheckingInventory(true)
-      try {
-        const token = localStorage.getItem("authToken")
-        const { data: userReagents, error } = await client.GET(
-          "/users/reagents" as any,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        )
+    setIsCheckingInventory(true)
+    try {
+      const token = localStorage.getItem("authToken")
+      const { data: userReagents, error } = await client.GET(
+        "/users/reagents" as any,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
 
-        if (error) {
-          toast.error("Failed to check your inventory. Please try again.")
-          return
-        }
-
-        if (!userReagents?.length) {
-          toast.error(
-            "You need to have reagents in your inventory to offer. Please list some reagents first.",
-          )
-          return
-        }
-      } catch {
+      if (error) {
         toast.error("Failed to check your inventory. Please try again.")
         return
-      } finally {
-        setIsCheckingInventory(false)
       }
-    
+
+      if (!userReagents?.length) {
+        toast.error(
+          "You need to have reagents in your inventory to offer. Please list some reagents first.",
+        )
+        return
+      }
+    } catch {
+      toast.error("Failed to check your inventory. Please try again.")
+      return
+    } finally {
+      setIsCheckingInventory(false)
+    }
 
     setIsRequestOpen(true)
   }
@@ -130,13 +129,13 @@ const ContactButton = ({ wanted, className = "" }: ContactButtonProps) => {
     setIsRequestOpen(false)
   }
 
-const handleRequestSubmit = (success: boolean) => {
-  if (success) {
-    console.log("Request submitted successfully")
-    setReagentOffered(true)
+  const handleRequestSubmit = (success: boolean) => {
+    if (success) {
+      console.log("Request submitted successfully")
+      setReagentOffered(true)
+    }
+    setIsRequestOpen(false)
   }
-  setIsRequestOpen(false)
-}
 
   // for the fields WantedReagent doesn't include from ReagentWithId.
   const reagentForRequest = {
@@ -153,12 +152,15 @@ const handleRequestSubmit = (success: boolean) => {
         onClick={handleRequestClick}
         disabled={isCheckingInventory || reagentOffered}
         aria-busy={isCheckingInventory}
-
         className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white 
         bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer
         disabled:bg-blue-primary disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {isCheckingInventory ? "Checking..." : reagentOffered ? "Offered" : "Offer"}
+        {isCheckingInventory
+          ? "Checking..."
+          : reagentOffered
+            ? "Offered"
+            : "Offer"}
 
         {!reagentOffered && <ArrowRightIcon className="w-5 h-5" />}
       </button>

@@ -281,11 +281,10 @@ export class OfferService {
     })
   }
 
-  
   /**
    * Get an offer for a user by reagent ID
    */
-    async getOfferByUserIdAndReagentId(
+  async getOfferByUserIdAndReagentId(
     user_id: string,
     reagent_id: string,
   ): Promise<Offer | TradeOffer | null> {

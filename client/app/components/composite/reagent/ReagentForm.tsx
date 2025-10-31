@@ -112,9 +112,6 @@ export const ReagentForm = ({
   )
   const [currentUser, setCurrentUser] = useState<any>(null)
 
-
-
-
   //today date calc
   const todaysDate = useMemo(() => new Date().toISOString().split("T")[0], [])
 
@@ -126,37 +123,35 @@ export const ReagentForm = ({
     [],
   )
 
-  
   //get user info on auth state change
-useEffect(() => {
-  const fetchUserInfo = async () => {
-    try {
-      const authToken = localStorage.getItem("authToken")
-      const userid = auth.currentUser?.uid
-      
-      if (authToken && userid) {
-        const userInfo = await client.GET(`/users/${userid}` as any, {
-          headers: {
-            Authorization: `Bearer ${authToken}`,
-          },
-        })
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken")
+        const userid = auth.currentUser?.uid
 
-        setCurrentUser(userInfo.data)
+        if (authToken && userid) {
+          const userInfo = await client.GET(`/users/${userid}` as any, {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          })
+
+          setCurrentUser(userInfo.data)
+        }
+      } catch (error) {
+        console.error("Error fetching user info:", error)
       }
     }
-    catch (error) {
-      console.error("Error fetching user info:", error)
-    }
-  }
-  
-  fetchUserInfo()
-}, [])
+
+    fetchUserInfo()
+  }, [])
 
   //validate user role
-const validateUserRole = (): boolean => {
-  if (!currentUser) return false
-  return currentUser.role === "admin" || currentUser.role === "lab_manager"
-}
+  const validateUserRole = (): boolean => {
+    if (!currentUser) return false
+    return currentUser.role === "admin" || currentUser.role === "lab_manager"
+  }
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -577,7 +572,8 @@ const validateUserRole = (): boolean => {
         <FormField
           label="Unit"
           required
-          input={            <select
+          input={
+            <select
               value={formData.unit}
               onChange={(e) => handleFieldChange("unit", e.target.value)}
               className={inputStyles}
@@ -587,9 +583,8 @@ const validateUserRole = (): boolean => {
                   {option.charAt(0).toUpperCase() + option.slice(1)}
                 </option>
               ))}
-            </select>}
-
-          
+            </select>
+          }
         />
       </div>
 

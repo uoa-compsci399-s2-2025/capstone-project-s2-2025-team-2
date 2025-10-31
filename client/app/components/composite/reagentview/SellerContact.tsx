@@ -1,6 +1,6 @@
 import { LuHouse } from "react-icons/lu"
 import Button from "../../generic/button/regular/Button"
-import { useState, useEffect, use } from "react"
+import { useState, useEffect } from "react"
 import ReagentRequest from "../reagent/ReagentRequest"
 import client from "../../../services/fetch-client"
 import type { components } from "@/models/__generated__/schema"
@@ -97,20 +97,19 @@ const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
     }
 
     setIsRequestOpen(true)
-
   }
 
   const handleRequestClose = () => {
     setIsRequestOpen(false)
   }
 
-const handleRequestSubmit = (success: boolean) => {
-  if (success) {
-    console.log("Request submitted successfully")
-    setReagentRequested(true)
+  const handleRequestSubmit = (success: boolean) => {
+    if (success) {
+      console.log("Request submitted successfully")
+      setReagentRequested(true)
+    }
+    setIsRequestOpen(false)
   }
-  setIsRequestOpen(false)
-}
 
   return (
     <div className="flex flex-row items-center md:mb-[2rem] gap-[4.5rem] md:gap-[8.5rem]">
@@ -151,7 +150,13 @@ const handleRequestSubmit = (success: boolean) => {
 
       {isSignedIn && (
         <Button
-          label={isCheckingInventory || isLoading? "Checking..." : reagentRequested ? "Reagent Requested" : "Request Reagent"}
+          label={
+            isCheckingInventory || isLoading
+              ? "Checking..."
+              : reagentRequested
+                ? "Reagent Requested"
+                : "Request Reagent"
+          }
           onClick={handleRequestClick}
           disabled={isCheckingInventory || reagentRequested}
           className="

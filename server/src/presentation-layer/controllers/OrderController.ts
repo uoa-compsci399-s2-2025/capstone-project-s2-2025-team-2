@@ -190,7 +190,10 @@ export class OrderController extends Controller {
     @Request() request: AuthRequest,
   ): Promise<Order | Trade | Exchange> {
     const user = request.user
-    const order = await new OrderService().getOrderByUserIdAndReagentId(user.uid, id)
+    const order = await new OrderService().getOrderByUserIdAndReagentId(
+      user.uid,
+      id,
+    )
     if (!order) {
       this.setStatus(404)
       console.error("Order not found")

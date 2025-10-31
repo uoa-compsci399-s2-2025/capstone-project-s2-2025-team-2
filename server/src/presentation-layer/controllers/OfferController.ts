@@ -144,19 +144,22 @@ export class OfferController extends Controller {
   /**
    * Get an offer for a user by reagent ID.
    */
-    @SuccessResponse("200", "offer successfully fetched")
-    @Security("jwt")
-    @Get("{id}/offer")
-    public async getOfferByReagentId(
-      @Path() id: string,
-      @Request() request: AuthRequest,
-    ): Promise<Offer | TradeOffer> {
-      const user = request.user
-      const offer = await new OfferService().getOfferByUserIdAndReagentId(user.uid, id)
-      if (!offer) {
-        this.setStatus(404)
-        console.error("Offer not found")
-      }
-      return offer
+  @SuccessResponse("200", "offer successfully fetched")
+  @Security("jwt")
+  @Get("{id}/offer")
+  public async getOfferByReagentId(
+    @Path() id: string,
+    @Request() request: AuthRequest,
+  ): Promise<Offer | TradeOffer> {
+    const user = request.user
+    const offer = await new OfferService().getOfferByUserIdAndReagentId(
+      user.uid,
+      id,
+    )
+    if (!offer) {
+      this.setStatus(404)
+      console.error("Offer not found")
     }
+    return offer
+  }
 }
