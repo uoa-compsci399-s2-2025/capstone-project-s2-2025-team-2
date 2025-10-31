@@ -64,7 +64,7 @@ const Sidebar = () => {
       href: "/bountyboard",
       label: "Bounty Board",
       icon: UserGroupIcon,
-      requireSignIn: true,
+      requireSignIn: false,
     },
     { href: "/inbox", label: "Inbox", icon: EnvelopeIcon, requireSignIn: true },
     {
@@ -151,6 +151,13 @@ const Sidebar = () => {
                   )}
                 </div>
               ))}
+             <div>
+                {!isSignedIn && (
+                  <div className="mx-4 mt-8 p-4 bg-blue-primary/20 border border-blue-primary rounded-md text-sm text-white">
+                    Please sign in with your institutional email to access all features.
+                  </div>
+                )}
+              </div>
           </div>
           <div className="w-full flex justify-center">
             {isSignedIn ? (
