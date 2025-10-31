@@ -48,7 +48,9 @@ const ImageCarousel = ({
     return () => clearInterval(intervalId)
   }, [autoPlay, interval, goToNext])
 
-  if (images.length === 0) return
+  if (images.length === 0) {
+    images = ["/placeholder.webp"]
+  }
 
   return (
     <div className={["flex flex-col gap-1", className].join(" ")} {...props}>
