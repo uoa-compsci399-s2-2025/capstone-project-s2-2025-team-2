@@ -217,7 +217,7 @@ export default function Orders() {
               {offers
                 .filter(
                   (offer) =>
-                    offer.status !== "approved" &&
+                    offer.status === "pending" &&
                     offer.owner_id === currentUserId,
                 )
                 .map((offer) => {
@@ -246,7 +246,7 @@ export default function Orders() {
               {offers
                 .filter(
                   (offer) =>
-                    offer.status !== "approved" &&
+                    offer.status === "pending" &&
                     offer.owner_id !== currentUserId,
                 )
                 .map((offer) => {
