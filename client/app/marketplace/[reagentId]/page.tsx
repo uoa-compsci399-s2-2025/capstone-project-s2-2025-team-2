@@ -94,7 +94,6 @@ export default function ReagentView({ params }: ReagentViewProps) {
             <div className="bg-primary -mt-[1.3rem] relative z-10 rounded-t-3xl lg:mt-0 md:mb-0 md:rounded-none md:z-auto md:bg-transparent">
               <div className="hidden" />
               <div className="flex md:flex-row flex-col justify-center items-start md:items-stretch mt-12 gap-12 md:gap-0">
-                
                 {/* img carousel */}
                 {reagent.images && (
                   <div className="order-2 md:order-1 md:self-stretch">
@@ -103,18 +102,22 @@ export default function ReagentView({ params }: ReagentViewProps) {
                 )}
                 {/* reagent info */}
                 <div className="order-1 md:order-2 w-full px-9 md:flex-none md:w-[38rem] md:self-stretch">
-                  <div className="h-full bg-primary/60 backdrop-blur-md rounded-2xl p-6 md:p-8">
-
+                  <div className="h-full shadow-lg hover:border-white/30 duration-300 bg-primary/90 border border-white/20 backdrop-blur-md rounded-2xl p-6 md:p-8">
                     {/* trading type header */}
                     <div className="flex items-center justify-center md:justify-start gap-2 mb-4">
                       {(() => {
-                        const style = TYPE_STYLES[(reagent.tradingType as any) || "giveaway"]
+                        const style =
+                          TYPE_STYLES[
+                            (reagent.tradingType as any) || "giveaway"
+                          ]
                         const IconC = style?.Icon || GiftIcon
                         const color = style?.color || "text-blue-100"
                         return (
                           <>
                             <IconC className={`w-6 h-6 ${color}`} />
-                            <span className={`text-xl md:text-2xl font-medium capitalize ${color}`}>
+                            <span
+                              className={`text-xl md:text-2xl font-medium capitalize ${color}`}
+                            >
                               {reagent.tradingType}
                             </span>
                           </>
@@ -125,9 +128,10 @@ export default function ReagentView({ params }: ReagentViewProps) {
                     {/*reagent name (quantity + unit)*/}
                     <h1 className="text-2xl md:text-3xl text-white tracking-wider mb-3 text-center md:text-left">
                       {reagent.name}{" "}
-                      {(reagent.quantity && reagent.unit) && (
+                      {reagent.quantity && reagent.unit && (
                         <span className="text-white/70 text-base md:text-lg font-normal">
-                          ({reagent.quantity}{reagent.unit})
+                          ({reagent.quantity}
+                          {reagent.unit})
                         </span>
                       )}
                     </h1>
@@ -150,9 +154,12 @@ export default function ReagentView({ params }: ReagentViewProps) {
 
                     {/*description*/}
                     <div className="mb-6 text-base">
-                      <span className="text-gray-300 mb-1 block">Description:</span>
+                      <span className="text-gray-300 mb-1 block">
+                        Description:
+                      </span>
                       <p className="text-white leading-relaxed line-clamp-4">
-                        {reagent.description || "No description provided for this reagent."}
+                        {reagent.description ||
+                          "No description provided for this reagent."}
                       </p>
                     </div>
 
