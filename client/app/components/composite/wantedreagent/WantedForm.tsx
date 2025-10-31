@@ -208,18 +208,18 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
   return (
     <form onSubmit={handleFormSubmit} className="space-y-6">
       <FormField
-        label="Name"
+        label="Title"
         required
         input={formInput("name", {
-          placeholder: "Enter reagent name",
+          placeholder: "e.g. Hydrogen Peroxide (500 mL)",
           required: true,
         })}
       />
       <FormField
-        label="Message"
+        label="Details"
         required
         input={formInput("description", {
-          placeholder: "Enter a message to describe what you need",
+          placeholder: "Describe what you need, grade, quantity, etc.",
           required: true,
         })}
       />
@@ -239,7 +239,7 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
             {TRADING_TYPES.map((type) => (
               <option key={type} value={type} className="bg-primary">
                 {type === "sell"
-                  ? "Buy"
+                  ? "Purchase"
                   : type.charAt(0).toUpperCase() + type.slice(1)}
               </option>
             ))}
@@ -283,7 +283,7 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
       )}
       <div className="grid grid-cols-2 gap-4">
         <FormField
-          label="Date You Need It By"
+          label="Needed by"
           required
           input={formInput("expiryDate", {
             type: "date",
@@ -295,7 +295,7 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
           label="Location"
           required
           input={formInput("location", {
-            placeholder: "Current location",
+            placeholder: "Pickup or delivery location",
             required: true,
           })}
         />
@@ -341,7 +341,7 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
           disabled={dataSubmitting}
           className={`${buttonStyles} min-w-[120px] bg-blue-primary hover:bg-blue-primary/80 disabled:opacity-50 disabled:cursor-not-allowed`}
         >
-          {dataSubmitting ? "Submitting..." : "Create Request"}
+          {dataSubmitting ? "Submitting..." : "Create Bounty"}
         </button>
       </div>
     </form>
