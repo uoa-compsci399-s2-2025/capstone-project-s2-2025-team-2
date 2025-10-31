@@ -7,6 +7,7 @@ import type { components } from "@/models/__generated__/schema"
 import { toast } from "sonner"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../../../config/firebase"
+import Link from "next/link"
 
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
@@ -125,16 +126,31 @@ const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
             />
           )}
 
-          <img
-            src={
-              imageLoaded && sellerInfo?.image
-                ? sellerInfo.image
-                : "/default_pfp.jpg"
-            }
-            alt="User Profile Photo"
-            className="w-full h-full object-cover transition-opacity duration-300"
-            style={{ imageRendering: "auto" }}
-          />
+          {sellerInfo?.id ? (
+            <Link href={`/profile/${sellerInfo.id}`}>
+                <img
+                  src={
+                    imageLoaded && sellerInfo?.image
+                      ? sellerInfo.image
+                      : "/default_pfp.jpg"
+                  }
+                  alt="User Profile Photo"
+                  className="w-full h-full object-cover transition-opacity duration-300 cursor-pointer hover:opacity-80"
+                  style={{ imageRendering: "auto" }}
+                />
+            </Link>
+          ) : (
+            <img
+              src={
+                imageLoaded && sellerInfo?.image
+                  ? sellerInfo.image
+                  : "/default_pfp.jpg"
+              }
+              alt="User Profile Photo"
+              className="w-full h-full object-cover transition-opacity duration-300"
+              style={{ imageRendering: "auto" }}
+            />
+          )}
         </div>
 
         <div className="hidden md:block mx-[1.5rem]">

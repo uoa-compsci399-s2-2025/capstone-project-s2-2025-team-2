@@ -72,11 +72,13 @@ const UserProfile = () => {
     label: string
     categoryFilterValue: reagentCategoryFilter
     icon: ElementType
+    isProfileOwner?: boolean
   }[] = [
     {
       label: "All Reagents",
       categoryFilterValue: "all",
       icon: Square3Stack3DIcon,
+      isProfileOwner: userUid === idOfUserBeingViewed,
     },
     {
       label: "On Marketplace",
@@ -87,18 +89,27 @@ const UserProfile = () => {
       label: "Expiring Soon",
       categoryFilterValue: "expiring soon",
       icon: ExclamationTriangleIcon,
+            isProfileOwner: userUid === idOfUserBeingViewed,
+
     },
     {
       label: "Private Inventory",
       categoryFilterValue: "private",
       icon: LockClosedIcon,
+      isProfileOwner: userUid === idOfUserBeingViewed,
     },
     {
       label: "Expired Reagents",
       categoryFilterValue: "expired",
       icon: XMarkIcon,
+      isProfileOwner: userUid === idOfUserBeingViewed,
     },
   ]
+    //filter out links when user is viewing another persons profile
+  const visibleFilters = reagentFilters.filter((filter) => {
+    if (filter.isProfileOwner === undefined) return true
+    return filter.isProfileOwner
+  })
 
   const getReagents = async () => {
     const result = await fetchWithAuth<ReagentWithId[]>(
@@ -343,7 +354,7 @@ const UserProfile = () => {
             {/*inventory tabs*/}
             <div className="flex flex-col gap-4">
               <div className="flex justify-center gap-8 border-b-2 border-secondary/20">
-                {reagentFilters.map((btnProps) => {
+                {visibleFilters.map((btnProps) => {
                   const isSelected =
                     reagentCategoryFilter === btnProps.categoryFilterValue
                   return (
@@ -365,6 +376,7 @@ const UserProfile = () => {
                               btnProps.categoryFilterValue,
                             )
                           }
+                          disabled={userUid !== idOfUserBeingViewed }
                         >
                           {btnProps.label}
                         </button>
