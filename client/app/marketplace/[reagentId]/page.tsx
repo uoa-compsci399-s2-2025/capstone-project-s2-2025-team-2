@@ -96,7 +96,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
               <div className="flex md:flex-row flex-col justify-center items-start md:items-stretch mt-12 gap-12 md:gap-0">
                 {/* img carousel */}
                 {reagent.images && (
-                  <div className="order-2 md:order-1 md:self-stretch">
+                  <div className="order-2 md:order-1 self-stretch border border-white/10 py-4 rounded-2xl bg-primary/50">
                     <ImageCarousel images={reagent.images} />
                   </div>
                 )}
@@ -157,7 +157,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                       <span className="text-gray-300 mb-1 block">
                         Description:
                       </span>
-                      <p className="text-white leading-relaxed line-clamp-4">
+                      <p className="text-white/90 leading-relaxed line-clamp-4 border-b border-white/20 pb-2">
                         {reagent.description ||
                           "No description provided for this reagent."}
                       </p>
@@ -165,17 +165,17 @@ export default function ReagentView({ params }: ReagentViewProps) {
 
                     {/*display tags*/}
                     <div className="mt-4 text-base">
-                      <span className="text-gray-300 mb-2 block">Tags:</span>
+                      <p className="text-gray-300 mb-2 block">Tags:</p>
                       <div className="flex flex-wrap gap-2">
                         {reagent.restricted && (
-                          <span className="px-2 py-1 text-xs rounded-lg font-medium tracking-widest text-white bg-red-500/70">
+                          <span className="shadow-lg px-2 py-1 text-xs rounded-lg font-medium tracking-widest text-white bg-red-500/70">
                             restricted
                           </span>
                         )}
                         {reagent.categories?.map((tag) => (
                           <span
                             key={tag}
-                            className="px-2 py-1 text-xs rounded-lg font-medium tracking-widest text-white bg-secondary/30"
+                            className="shadow-lg px-2 py-1 text-xs rounded-lg font-medium tracking-widest text-white bg-secondary/30"
                           >
                             {tag}
                           </span>
