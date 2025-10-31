@@ -89,8 +89,7 @@ const UserProfile = () => {
       label: "Expiring Soon",
       categoryFilterValue: "expiring soon",
       icon: ExclamationTriangleIcon,
-            isProfileOwner: userUid === idOfUserBeingViewed,
-
+      isProfileOwner: userUid === idOfUserBeingViewed,
     },
     {
       label: "Private Inventory",
@@ -105,7 +104,7 @@ const UserProfile = () => {
       isProfileOwner: userUid === idOfUserBeingViewed,
     },
   ]
-    //filter out links when user is viewing another persons profile
+  //filter out links when user is viewing another persons profile
   const visibleFilters = reagentFilters.filter((filter) => {
     if (filter.isProfileOwner === undefined) return true
     return filter.isProfileOwner
@@ -376,7 +375,7 @@ const UserProfile = () => {
                               btnProps.categoryFilterValue,
                             )
                           }
-                          disabled={userUid !== idOfUserBeingViewed }
+                          disabled={userUid !== idOfUserBeingViewed}
                         >
                           {btnProps.label}
                         </button>

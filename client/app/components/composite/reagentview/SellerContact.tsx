@@ -128,16 +128,16 @@ const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
 
           {sellerInfo?.id ? (
             <Link href={`/profile/${sellerInfo.id}`}>
-                <img
-                  src={
-                    imageLoaded && sellerInfo?.image
-                      ? sellerInfo.image
-                      : "/default_pfp.jpg"
-                  }
-                  alt="User Profile Photo"
-                  className="w-full h-full object-cover transition-opacity duration-300 cursor-pointer hover:opacity-80"
-                  style={{ imageRendering: "auto" }}
-                />
+              <img
+                src={
+                  imageLoaded && sellerInfo?.image
+                    ? sellerInfo.image
+                    : "/default_pfp.jpg"
+                }
+                alt="User Profile Photo"
+                className="w-full h-full object-cover transition-opacity duration-300 cursor-pointer hover:opacity-80"
+                style={{ imageRendering: "auto" }}
+              />
             </Link>
           ) : (
             <img
