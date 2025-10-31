@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback, useMemo } from "react"
+import { useState, useCallback, useMemo, useEffect } from "react"
 import { toast } from "sonner"
 import type { components } from "@/models/__generated__/schema"
 import client from "../../../services/fetch-client"
@@ -8,6 +8,8 @@ import {
   uploadReagentImage,
   deleteReagentImage,
 } from "../../../services/firebase-storage"
+import { onAuthStateChanged } from "firebase/auth"
+import { auth } from "../../../config/firebase"
 
 type ReagentTradingType = components["schemas"]["ReagentTradingType"]
 type ReagentCategory = components["schemas"]["ReagentCategory"]
@@ -107,6 +109,10 @@ export const ReagentForm = ({
   const [deleteTimeout, setDeleteTimeout] = useState<NodeJS.Timeout | null>(
     null,
   )
+  const [currentUser, setCurrentUser] = useState<any>(null)
+
+
+
 
   //today date calc
   const todaysDate = useMemo(() => new Date().toISOString().split("T")[0], [])
@@ -118,6 +124,27 @@ export const ReagentForm = ({
     },
     [],
   )
+
+  //validate user role
+  const validateUserRole = async (): Promise<boolean> => {
+    if (!currentUser) return false
+    if (currentUser.role === "admin" || currentUser.role === "lab_manager") {
+      return true
+    }
+    return false
+  }
+  
+  //changes user based on auth state
+  useEffect(() => {
+
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user)
+    })
+
+    return () => {
+      unsubscribe()
+    }
+  }, [])
 
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -139,6 +166,13 @@ export const ReagentForm = ({
       const idToken = localStorage.getItem("authToken")
       if (!idToken) {
         toast(`Please sign in to ${editMode ? "edit" : "create"} a reagent.`)
+        setDataSubmitting(false)
+        return
+      }
+      //validate user role
+      const isValidRole = await validateUserRole()
+      if (!isValidRole) {
+        toast("You do not have permission to perform this action.")
         setDataSubmitting(false)
         return
       }
