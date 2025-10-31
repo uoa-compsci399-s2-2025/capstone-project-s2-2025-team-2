@@ -91,7 +91,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                 className="object-cover"
               />
             </div>
-            <div className="bg-primary -mt-[1.3rem] relative z-10 rounded-t-3xl lg:mt-0 md:mb-0 md:rounded-none md:z-auto md:bg-transparent">
+            <div className="bg-primary -mt-18 relative z-10 rounded-t-3xl lg:mt-0 md:mb-0 md:rounded-none md:z-auto md:bg-transparent">
               <div className="hidden" />
               <div className="flex md:flex-row flex-col justify-center items-start md:items-stretch mt-12 gap-12 md:gap-0">
                 {/* img carousel */}
