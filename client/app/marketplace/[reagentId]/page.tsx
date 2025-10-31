@@ -96,7 +96,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
               <div className="flex md:flex-row flex-col justify-center items-start md:items-stretch mt-12 gap-12 md:gap-0">
                 {/* img carousel */}
                 {reagent.images && (
-                  <div className="order-2 md:order-1 self-stretch border border-white/10 py-4 rounded-2xl bg-primary/50">
+                  <div className="order-2 md:order-1 mx-16 hover:border-white/40 duration-300 hover:shadow-lg md:m-0 self-stretch border border-white/30 py-6 rounded-2xl bg-black/30">
                     <ImageCarousel images={reagent.images} />
                   </div>
                 )}
