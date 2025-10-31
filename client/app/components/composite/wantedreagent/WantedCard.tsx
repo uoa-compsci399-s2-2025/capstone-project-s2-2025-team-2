@@ -133,7 +133,7 @@ const WantedCard = ({
           </div>
 
           {/* Description */}
-          <p className="text-white text-sm md:text-base leading-relaxed line-clamp-2 mt-4">
+          <p className="text-white text-sm md:text-base leading-relaxed line-clamp-2 mt-4 min-h-[2.85rem] md:min-h-[3.25rem]">
             {onViewDetails ? offer.message : wanted.description}
           </p>
         </div>
