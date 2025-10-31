@@ -48,6 +48,7 @@ interface OrderDetailsModalProps {
   reagent: ReagentWithId | EnrichedWantedReagent
   offeredReagent?: ReagentWithId
   onApprove?: (orderId: string) => void
+  onDecline?: (orderId: string) => void
   isOfferDetails?: boolean
 }
 
@@ -172,12 +173,15 @@ export default function OrderDetailsModal({
   reagent,
   offeredReagent: testOfferedReagent,
   onApprove,
+  onDecline,
   isOfferDetails = false,
 }: OrderDetailsModalProps) {
   const currentUserId = auth?.currentUser?.uid
   const isOwner = currentUserId === order?.owner_id
   const [approving, setApproving] = useState(false)
+  const [declining, setDeclining] = useState(false)
   const [approved, setApproved] = useState(false)
+  const [declined, setDeclined] = useState(false)
 
   const { data: requesterData } = useFetch<any>(
     order.requester_id ? `/users/${order.requester_id}` : null,
@@ -226,6 +230,29 @@ export default function OrderDetailsModal({
       console.error("Failed to approve order:", error)
       toast("Failed to approve request. Please try again.")
       setApproving(false)
+    }
+  }
+
+  const handleDecline = async () => {
+    setDeclining(true)
+    try {
+      const token = localStorage.getItem("authToken")
+      if (isOfferDetails) {
+        await client.PATCH(`/offers/${order.id}/cancel` as any, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+      } else {
+        await client.PATCH(`/orders/${order.id}/cancel` as any, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+      }
+      toast("Request declined!")
+      setDeclined(true)
+      onDecline?.(order.id)
+    } catch (error) {
+      console.error("Failed to approve order:", error)
+      toast("Failed to approve request. Please try again.")
+      setDeclining(false)
     }
   }
 
@@ -352,7 +379,6 @@ export default function OrderDetailsModal({
                   )}
               </div>
             </div>
-
             <button
               onClick={() => (window.location.href = "/inbox")}
               className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer"
@@ -367,7 +393,14 @@ export default function OrderDetailsModal({
               >
                 {approved ? "Approved" : approving ? "Approving..." : "Approve"}
               </button>
-            )}
+            )}{" "}
+            <button
+              onClick={handleDecline}
+              disabled={declining || declined}
+              className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 disabled:bg-blue-primary/50 disabled:cursor-not-allowed rounded-lg transition-colors"
+            >
+              {declined ? "Declined" : declining ? "Declining..." : "Decline"}
+            </button>
           </div>
         </div>
       </div>
