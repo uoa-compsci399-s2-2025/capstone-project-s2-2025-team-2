@@ -70,7 +70,12 @@ export default function SignUpBox({
     setNotificationState("sending")
     const requestBody: SendVerificationCodeRequestDto = { email }
     console.log("Sending verification code to:", email)
-    sendVerificationCode(requestBody).then(handleSendVerificationCodeResponse)
+    sendVerificationCode(requestBody)
+      .then(handleSendVerificationCodeResponse)
+      .catch((error) => {
+        console.error("Error sending verification code:", error)
+        setNotificationState("sending-fail")
+      })
   }
 
   //            function: handleSendVerificationCodeResponse           //
@@ -80,7 +85,16 @@ export default function SignUpBox({
     if (response.success) {
       setNotificationState("sent")
     } else {
-      setNotificationState("sending-fail")
+      // Check if the error is due to email already existing
+      if (response.message && response.message.includes("already registered")) {
+        setNotificationState("email-already-exists")
+        // Redirect to sign in page after a short delay
+        setTimeout(() => {
+          handleSignInClick()
+        }, 2000)
+      } else {
+        setNotificationState("sending-fail")
+      }
     }
   }
 

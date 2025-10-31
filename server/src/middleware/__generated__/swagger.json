@@ -1266,7 +1266,7 @@
 						}
 					}
 				},
-				"description": "\r\nCreate a reagent by passing in all the required props.\r\nUser must be authenticated to access this endpoint (lab manager / admin)",
+				"description": "\nCreate a reagent by passing in all the required props.\nUser must be authenticated to access this endpoint (lab manager / admin)",
 				"tags": [
 					"Wanted"
 				],
