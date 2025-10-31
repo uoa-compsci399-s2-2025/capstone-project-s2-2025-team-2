@@ -171,7 +171,7 @@ const UserProfile = () => {
       case "expired": {
         const expiryDate = new Date(r.expiryDate)
         const today = new Date()
-        categoryMatch = expiryDate < today
+        categoryMatch = expiryDate.setHours(0, 0, 0, 0) < today.setHours(0, 0, 0, 0)
         break
       }
       default:
