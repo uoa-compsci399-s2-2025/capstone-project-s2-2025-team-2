@@ -66,7 +66,10 @@ const UserDisplay = ({
 }: UserDisplayProps) => (
   <div className="flex flex-col items-center flex-1 min-w-0">
     <div className="flex items-center gap-3">
-      <div className="text-white text-3xl font-semibold truncate md:truncate-none max-w-[100px] md:max-w-none">
+      <div
+        className="text-white text-3xl font-semibold truncate max-w-[80px] md:max-w-[150px]"
+        title={name}
+      >
         {name}
       </div>
       {showIcon && !showPriceInput && (
@@ -376,6 +379,17 @@ export const ReagentRequest = ({
   const requesterName = currentUser?.displayName || "You"
   const ownerName = ownerInfo?.displayName || "User"
 
+  const isSell = reagent.tradingType === "sell"
+  const capitalise = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
+  const displayTradeType = !isBountyBoard
+    ? isSell
+      ? "Purchase"
+      : capitalise(reagent.tradingType)
+    : isSell
+      ? "Sell"
+      : capitalise(reagent.tradingType)
+  const displayTransaction = isBountyBoard ? "Offer" : "Request"
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70"
@@ -416,14 +430,9 @@ export const ReagentRequest = ({
                   ].icon,
                   { className: "w-6 h-6" },
                 )}
-                {isBountyBoard && reagent.tradingType === "sell"
-                  ? "Purchase"
-                  : reagent.tradingType.charAt(0).toUpperCase() +
-                    reagent.tradingType.slice(1)}
+                {displayTradeType}
               </span>
-              <span className="text-2xl font-medium">
-                {isBountyBoard ? "Offer" : "Request"}
-              </span>
+              <span className="text-2xl font-medium">{displayTransaction}</span>
             </h2>
 
             <div className="flex items-center justify-center mb-8">

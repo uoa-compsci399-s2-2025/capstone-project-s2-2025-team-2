@@ -154,7 +154,7 @@ const History = () => {
         History
       </p>
       <div className="ml-8">
-        <p className="text-blue-primary italic font-bold inline mr-2 tracking-[0.05em]">
+        <p className="text-warning italic font-bold inline mr-2 tracking-[0.05em]">
           View
         </p>
         <p className="text-gray-100 italic inline">Past orders</p>

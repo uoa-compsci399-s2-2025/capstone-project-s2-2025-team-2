@@ -10,6 +10,11 @@ import SellerContact from "@/app/components/composite/reagentview/SellerContact"
 import ImageCarousel from "@/app/components/generic/image_carousel/ImageCarousel"
 import Overlay from "@/app/components/composite/Overlay"
 import LoadingState from "@/app/components/composite/loadingstate/LoadingState"
+import {
+  GiftIcon,
+  CurrencyDollarIcon,
+  ArrowsRightLeftIcon,
+} from "@heroicons/react/24/outline"
 
 interface ReagentViewProps {
   params: Promise<{ reagentId: string }>
@@ -19,6 +24,11 @@ export default function ReagentView({ params }: ReagentViewProps) {
   const { reagentId } = use(params)
   const [sellerInfo, setSellerInfo] = useState<any>(null)
   const [reagent, setReagent] = useState<Reagent | null>(null)
+  const TYPE_STYLES: any = {
+    giveaway: { color: "text-blue-100", Icon: GiftIcon },
+    sell: { color: "text-green-100", Icon: CurrencyDollarIcon },
+    trade: { color: "text-purple-100", Icon: ArrowsRightLeftIcon },
+  }
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [reagentId])
@@ -81,88 +91,95 @@ export default function ReagentView({ params }: ReagentViewProps) {
                 className="object-cover"
               />
             </div>
-            <div className="bg-primary -mt-[1.3rem] relative z-10 rounded-t-3xl lg:mt-0 md:mb-0 md:rounded-none md:z-auto md:bg-transparent">
-              <div className="flex flex-col items-start">
-                {/* reagent name */}
-                <h1 className="w-full text-center text-3xl md:text-4xl ml-0 mt-[2rem] md:mt-0 mb-[1rem] text-white tracking-wider">
-                  {reagent.name}
-                </h1>
-                {/* metadata */}
-                <div className="flex flex-col md:flex-row justify-center items-center w-full gap-3 md:gap-7">
-                  <h5 className="flex text-[#43C05A] dark:text-[#78F58F] items-center text-[0.8rem]">
-                    <FaRegClock className="text-[#43C05A] dark:text-[#78F58F] mr-[0.3rem] w-5 h-5" />{" "}
-                    Listed —{" "}
-                    {reagent.createdAtReadable
-                      ? reagent.createdAtReadable
-                      : "N/A"}
-                  </h5>
-                  <h5 className="flex text-[#E5595B] dark:text-[#FF797B] items-center text-[0.8rem]">
-                    <LuClockAlert className="text-[#E5595B] dark:text-[#FF797B] mr-[0.3rem] w-5 h-5" />
-                    Expires — {reagent.expiryDate}
-                  </h5>
-                  <h5 className="flex text-[#58A3E2] dark:text-[#71BEFF] items-center text-[0.8rem]">
-                    <LuHouse className="text-[#58A3E2] dark:text-[#71BEFF] mr-[0.3rem] w-5 h-5" />{" "}
-                    Location — {reagent.location}
-                  </h5>
-                </div>
-              </div>
-              <div className="flex md:flex-row flex-col justify-center items-center mt-12 gap-12 md:gap-0">
+            <div className="bg-primary -mt-18 relative z-10 rounded-t-3xl lg:mt-0 md:mb-0 md:rounded-none md:z-auto md:bg-transparent">
+              <div className="hidden" />
+              <div className="flex md:flex-row flex-col justify-center items-start md:items-stretch mt-12 gap-12 md:gap-0">
                 {/* img carousel */}
                 {reagent.images && (
-                  <div className="order-2 md:order-1">
+                  <div className="order-2 md:order-1 mx-16 hover:border-white/40 duration-300 hover:shadow-lg md:m-0 self-stretch border border-white/30 py-6 rounded-2xl bg-black/30">
                     <ImageCarousel images={reagent.images} />
                   </div>
                 )}
                 {/* reagent info */}
-                <div className="flex-[1.2] order-1 md:order-2 w-full px-9">
-                  <div className="rounded-[8px] overflow-hidden shadow-[0_4px_6px_rgba(0,0,0,0.4)]">
-                    <div
-                      className={`text-center py-[1rem] ${
-                        reagent.tradingType === "giveaway"
-                          ? "bg-[#8FCAF4] dark:bg-[#427AA2] dark:text-[#D4EDFF] text-[#327FB5]"
-                          : reagent.tradingType === "sell"
-                            ? "bg-[#9AE39C] dark:bg-[#3F6340] dark:text-[#AFFFB2] text-[#428B44]"
-                            : reagent.tradingType === "trade"
-                              ? "bg-blue-primary dark:bg-[#826387] dark:text-[#FFDBB6] text-[#9B7856]"
-                              : "bg-blue-primary/75"
-                      }`}
-                    >
-                      <h4 className="text-lg md:text-xl">Trading Type</h4>
-                      <h2 className="text-2xl md:text-4xl capitalize">
-                        {reagent.tradingType}
-                      </h2>
+                <div className="order-1 md:mt-0 mt-10 md:order-2 w-full px-9 md:flex-none md:w-[38rem] md:self-stretch">
+                  <div className="h-full shadow-lg hover:border-white/30 duration-300 bg-secondary/10 border border-white/20 backdrop-blur-md rounded-2xl p-6 md:p-8">
+                    {/* trading type header */}
+                    <div className="flex items-center justify-center md:justify-start gap-2 mb-4">
+                      {(() => {
+                        const style =
+                          TYPE_STYLES[
+                            (reagent.tradingType as any) || "giveaway"
+                          ]
+                        const IconC = style?.Icon || GiftIcon
+                        const color = style?.color || "text-blue-100"
+                        return (
+                          <>
+                            <IconC className={`w-6 h-6 ${color}`} />
+                            <span
+                              className={`text-xl md:text-2xl font-medium capitalize ${color}`}
+                            >
+                              {reagent.tradingType}
+                            </span>
+                          </>
+                        )
+                      })()}
                     </div>
-                    <div className="flex flex-col bg-primary p-[2rem] text-center">
-                      <div className="mb-[1rem]">
-                        <h5 className="text-white/80">
-                          Quantity: {reagent.quantity}
-                        </h5>
-                        <h5 className="text-white/80">
-                          Unit: {reagent.unit || "Not specified"}
-                        </h5>
-                      </div>
-                      <div className="">
-                        <p className="text-white">
-                          {reagent.description ||
-                            "No description provided for this reagent."}
-                        </p>
-                        <div className="mt-[2rem] flex justify-center">
-                          {reagent.restricted && (
-                            <div className="px-2 py-1 mr-[1rem] text-xs rounded-lg font-medium tracking-widest text-white bg-red-400/70">
-                              restricted
-                            </div>
-                          )}
-                          {reagent.categories?.map((tag) => {
-                            return (
-                              <div
-                                className="px-2 py-1 mr-[1rem] text-xs rounded-lg font-medium tracking-widest text-white bg-secondary/30"
-                                key={tag}
-                              >
-                                {tag}
-                              </div>
-                            )
-                          })}
-                        </div>
+
+                    {/*reagent name (quantity + unit)*/}
+                    <h1 className="text-2xl md:text-3xl text-white tracking-wider mb-3 text-center md:text-left">
+                      {reagent.name}{" "}
+                      {reagent.quantity && reagent.unit && (
+                        <span className="text-white/70 text-base md:text-lg font-normal">
+                          ({reagent.quantity}
+                          {reagent.unit})
+                        </span>
+                      )}
+                    </h1>
+
+                    {/*listed date, expiry date, location*/}
+                    <div className="flex flex-wrap items-center gap-3 mb-6 justify-start">
+                      <span className="flex items-center text-[#43C05A] text-sm font-semibold">
+                        <FaRegClock className="mr-1 w-4 h-4" />
+                        Listed — {reagent.createdAtReadable || "N/A"}
+                      </span>
+                      <span className="flex items-center text-red-500 text-sm font-semibold">
+                        <LuClockAlert className="mr-1 w-4 h-4" />
+                        Expires — {reagent.expiryDate}
+                      </span>
+                      <span className="flex items-center text-[#58A3E2] text-sm font-semibold">
+                        <LuHouse className="mr-1 w-4 h-4" />
+                        Location — {reagent.location}
+                      </span>
+                    </div>
+
+                    {/*description*/}
+                    <div className="mb-6 text-base">
+                      <span className="text-gray-300 mb-1 block">
+                        Description:
+                      </span>
+                      <p className="text-white/90 leading-relaxed line-clamp-4 border-b border-white/20 pb-2">
+                        {reagent.description ||
+                          "No description provided for this reagent."}
+                      </p>
+                    </div>
+
+                    {/*display tags*/}
+                    <div className="mt-4 text-base">
+                      <p className="text-gray-300 mb-2 block">Tags:</p>
+                      <div className="flex flex-wrap gap-2">
+                        {reagent.restricted && (
+                          <span className="shadow-lg px-2 py-1 text-xs rounded-lg font-medium tracking-widest text-white bg-red-500/70">
+                            restricted
+                          </span>
+                        )}
+                        {reagent.categories?.map((tag) => (
+                          <span
+                            key={tag}
+                            className="shadow-lg px-2 py-1 text-xs rounded-lg font-medium tracking-widest text-white bg-secondary/30"
+                          >
+                            {tag}
+                          </span>
+                        ))}
                       </div>
                     </div>
                   </div>

@@ -135,8 +135,8 @@ export default function ChatBox({
             </div>
           </div>
 
-          <div className="flex space-x-2 md:m-0 mt-4">
-            <button className="md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--dark-gray)] text-white hover:bg-[var(--dark-gray)]/70 cursor-pointer rounded-2xl transition-colors">
+          <div className="flex flex-wrap gap-2 md:m-0 mt-4 w-full md:w-auto md:justify-end">
+            <button className="w-full sm:w-auto md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--dark-gray)] text-white hover:bg-[var(--dark-gray)]/70 cursor-pointer rounded-2xl transition-colors">
               Edit Request
             </button>
             <button
@@ -147,7 +147,7 @@ export default function ChatBox({
                   )
                 }
               }}
-              className="md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--dark-gray)] text-white hover:bg-[var(--dark-gray)]/70 cursor-pointer rounded-2xl transition-colors"
+              className="w-full sm:w-auto md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--dark-gray)] text-white hover:bg-[var(--dark-gray)]/70 cursor-pointer rounded-2xl transition-colors"
             >
               View Listing
             </button>

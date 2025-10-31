@@ -14,7 +14,8 @@ export interface paths {
     /** @description Get all wanted reagents with an option to filter them by category. */
     get: operations["GetAllWantedReagents"]
     put?: never
-    /** @description Create a reagent by passing in all the required props.
+    /** @description
+     *     Create a reagent by passing in all the required props.
      *     User must be authenticated to access this endpoint (lab manager / admin) */
     post: operations["CreateWantedReagent"]
     delete?: never
@@ -38,24 +39,6 @@ export interface paths {
     options?: never
     head?: never
     patch?: never
-    trace?: never
-  }
-  "/users/{id}": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    /** @description Update user information by their ID
-     *     User **must** be authenticated to access this endpoint */
-    patch: operations["UpdateUser"]
     trace?: never
   }
   "/users/{id}": {
@@ -279,6 +262,23 @@ export interface paths {
     patch: operations["UpdateReagent"]
     trace?: never
   }
+  "/reagents/{id}/private": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    /** @description Turn all expired reagents private by their ID. */
+    patch: operations["TurnExpiredReagentsPrivate"]
+    trace?: never
+  }
   "/orders": {
     parameters: {
       query?: never
@@ -327,6 +327,22 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  "/orders/pending": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations["GetPendingOrdersWithReagents"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   "/orders/{id}": {
     parameters: {
       query?: never
@@ -360,6 +376,86 @@ export interface paths {
     trace?: never
   }
   "/orders/{id}/cancel": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch: operations["CancelOrder"]
+    trace?: never
+  }
+  "/offers": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations["GetOffers"]
+    put?: never
+    post: operations["CreateOffer"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/offers/trades": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: operations["CreateTrade"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/offers/{id}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get: operations["GetOfferById"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
+  "/offers/{id}/approve": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch: operations["ApproveOrder"]
+    trace?: never
+  }
+  "/offers/{id}/cancel": {
     parameters: {
       query?: never
       header?: never
@@ -576,94 +672,12 @@ export interface paths {
 export type webhooks = Record<string, never>
 export interface components {
   schemas: {
-    User: {
-      email: string
-      displayName: string
-      preferredName: string
-      lastName?: string
-      university: string
-      about?: string
-      /** @enum {string} */
-      role: "user" | "lab_manager" | "admin"
-      image?: string
-    }
-    /** @description Make all properties in T optional */
-    Partial_User_: {
-      email?: string
-      displayName?: string
-      preferredName?: string
-      lastName?: string
-      university?: string
-      about?: string
-      /** @enum {string} */
-      role?: "user" | "lab_manager" | "admin"
-      image?: string
-    }
     /** @enum {string} */
     ReagentTradingType: "trade" | "giveaway" | "sell"
     /** @enum {string} */
     ReagentCategory: "chemical" | "hazardous" | "biological"
     /** @enum {string} */
     ReagentVisibility: "everyone" | "region" | "institution" | "private"
-    /** @description From T, pick a set of properties whose keys are in the union K */
-    "Pick_Reagent.Exclude_keyofReagent.condition-or-quantity-or-unit-or-expiryDate__": {
-      user_id: string
-      name: string
-      description: string
-      /** Format: double */
-      price?: number
-      tradingType: components["schemas"]["ReagentTradingType"]
-      images?: string[]
-      categories: components["schemas"]["ReagentCategory"][]
-      createdAt: string
-      createdAtReadable: string
-      location: string
-      visibility?: components["schemas"]["ReagentVisibility"]
-    }
-    Wanted: {
-      user_id: string
-      name: string
-      description: string
-      /** Format: double */
-      price?: number
-      tradingType: components["schemas"]["ReagentTradingType"]
-      images?: string[]
-      categories: components["schemas"]["ReagentCategory"][]
-      createdAt: string
-      createdAtReadable: string
-      location: string
-      visibility?: components["schemas"]["ReagentVisibility"]
-    }
-    CreateWantedRequest: {
-      name: string
-      description: string
-      location: string
-      categories: components["schemas"]["ReagentCategory"][]
-      tradingType: components["schemas"]["ReagentTradingType"]
-    }
-    User: {
-      email: string
-      displayName: string
-      preferredName: string
-      lastName?: string
-      university: string
-      about?: string
-      /** @enum {string} */
-      role: "user" | "lab_manager" | "admin"
-      image?: string
-    }
-    /** @description Make all properties in T optional */
-    Partial_User_: {
-      email?: string
-      displayName?: string
-      preferredName?: string
-      lastName?: string
-      university?: string
-      about?: string
-      /** @enum {string} */
-      role?: "user" | "lab_manager" | "admin"
-      image?: string
-    }
     Reagent: {
       user_id: string
       name: string
@@ -682,7 +696,42 @@ export interface components {
       location: string
       unit: string
       visibility?: components["schemas"]["ReagentVisibility"]
+      requesterOfferedReagentId?: string
       restricted: boolean
+    }
+    CreateWantedRequest: {
+      name: string
+      description: string
+      location: string
+      categories: components["schemas"]["ReagentCategory"][]
+      tradingType: components["schemas"]["ReagentTradingType"]
+      requesterOfferedReagentId?: string
+      /** Format: double */
+      price?: number
+      expiryDate: string
+    }
+    User: {
+      email: string
+      displayName: string
+      preferredName: string
+      lastName?: string
+      university: string
+      about?: string
+      /** @enum {string} */
+      role: "user" | "lab_manager" | "admin"
+      image?: string
+    }
+    /** @description Make all properties in T optional */
+    Partial_User_: {
+      email?: string
+      displayName?: string
+      preferredName?: string
+      lastName?: string
+      university?: string
+      about?: string
+      /** @enum {string} */
+      role?: "user" | "lab_manager" | "admin"
+      image?: string
     }
     CreateReagentRequest: {
       name: string
@@ -720,6 +769,7 @@ export interface components {
       location?: string
       unit?: string
       visibility?: components["schemas"]["ReagentVisibility"]
+      requesterOfferedReagentId?: string
       restricted?: boolean
     }
     /** @description Construct a type with a set of properties K of type T */
@@ -796,6 +846,73 @@ export interface components {
       quantity?: number
       /** @enum {string} */
       type: "exchange"
+      unit?: string
+    }
+    OrderWithReagent: {
+      requester_id: string
+      reagent_id: string
+      owner_id: string
+      /** @enum {string} */
+      status: "pending" | "approved" | "canceled"
+      /** Format: date-time */
+      createdAt: string
+      message?: string
+      /** Format: double */
+      quantity?: number
+      unit?: string
+      id: string
+      reagent?: components["schemas"]["Reagent"] | null
+    }
+    Offer: {
+      requester_id: string
+      reagent_id: string
+      owner_id: string
+      /** @enum {string} */
+      status: "pending" | "approved" | "canceled"
+      /** Format: date-time */
+      createdAt: string
+      message?: string
+      /** Format: double */
+      quantity?: number
+      unit?: string
+      offeredReagentId: string
+    }
+    CreateOfferRequest: {
+      reagent_id: string
+      message?: string
+      offeredReagentId: string
+      /** Format: double */
+      quantity?: number
+      /** @enum {string} */
+      type: "order"
+      unit?: string
+    }
+    TradeOffer: {
+      requester_id: string
+      reagent_id: string
+      owner_id: string
+      /** @enum {string} */
+      status: "pending" | "approved" | "canceled"
+      /** Format: date-time */
+      createdAt: string
+      message?: string
+      /** Format: double */
+      quantity?: number
+      unit?: string
+      offeredReagentId: string
+      /** Format: double */
+      price: number
+    }
+    CreateOfferTradeRequest: {
+      reagent_id: string
+      message?: string
+      /** Format: double */
+      price: number
+      offeredReagentId: string
+      /** Format: double */
+      quantity?: number
+      /** @enum {string} */
+      type: "trade"
       unit?: string
     }
     ChatRoom: {
@@ -914,7 +1031,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["Wanted"][]
+          "application/json": components["schemas"]["Reagent"][]
         }
       }
     }
@@ -938,7 +1055,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["Wanted"]
+          "application/json": components["schemas"]["Reagent"]
         }
       }
     }
@@ -961,35 +1078,7 @@ export interface operations {
           [name: string]: unknown
         }
         content: {
-          "application/json": components["schemas"]["Wanted"]
-        }
-      }
-    }
-  }
-  UpdateUser: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description - The ID of the user to update */
-        id: string
-      }
-      cookie?: never
-    }
-    /** @description - The user information to update */
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["Partial_User_"]
-      }
-    }
-    responses: {
-      /** @description Ok */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["User"]
+          "application/json": components["schemas"]["Reagent"]
         }
       }
     }
@@ -1415,6 +1504,24 @@ export interface operations {
       }
     }
   }
+  TurnExpiredReagentsPrivate: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description Reagent made private successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content?: never
+      }
+    }
+  }
   GetOrders: {
     parameters: {
       query?: never
@@ -1510,7 +1617,50 @@ export interface operations {
       }
     }
   }
+  GetPendingOrdersWithReagents: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description All pending orders returned successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["OrderWithReagent"][]
+        }
+      }
+    }
+  }
   GetOrderById: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description All orders returned successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json":
+            | components["schemas"]["Order"][]
+            | components["schemas"]["Trade"][]
+            | components["schemas"]["Exchange"][]
+        }
+      }
+    }
+  }
+  ApproveOrder: {
     parameters: {
       query?: never
       header?: never
@@ -1521,7 +1671,125 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description All orders returned successfully */
+      /** @description order successfully approved */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json":
+            | components["schemas"]["Order"]
+            | components["schemas"]["Trade"]
+            | components["schemas"]["Exchange"]
+        }
+      }
+    }
+  }
+  CancelOrder: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description order successfully canceled */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json":
+            | components["schemas"]["Order"]
+            | components["schemas"]["Trade"]
+            | components["schemas"]["Exchange"]
+        }
+      }
+    }
+  }
+  GetOffers: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description All offers returned successfully */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Offer"][]
+        }
+      }
+    }
+  }
+  CreateOffer: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateOfferRequest"]
+      }
+    }
+    responses: {
+      /** @description Offer created successfully */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["Offer"]
+        }
+      }
+    }
+  }
+  CreateTrade: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["CreateOfferTradeRequest"]
+      }
+    }
+    responses: {
+      /** @description Trade created successfully */
+      201: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["TradeOffer"]
+        }
+      }
+    }
+  }
+  GetOfferById: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description All offers returned successfully */
       200: {
         headers: {
           [name: string]: unknown
@@ -1571,7 +1839,7 @@ export interface operations {
     }
     requestBody?: never
     responses: {
-      /** @description order successfully canceld */
+      /** @description order successfully canceled */
       200: {
         headers: {
           [name: string]: unknown
