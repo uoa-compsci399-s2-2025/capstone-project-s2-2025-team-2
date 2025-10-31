@@ -322,9 +322,9 @@ const BountyBoard = () => {
         >
           <div className="bg-primary rounded-lg max-w-2xl w-full max-h-[90vh] overflow-hidden flex flex-col shadow-2xl ">
             <div className="flex items-center justify-between p-6 border-b border-gray-700/50">
-                <h2 className="text-2xl font-medium text-white">
-                  Create Reagent Bounty
-                </h2>
+              <h2 className="text-2xl font-medium text-white">
+                Create Reagent Bounty
+              </h2>
               <button
                 onClick={() => setIsFormOpen(false)}
                 className="text-gray-400 text-3xl hover:text-white "

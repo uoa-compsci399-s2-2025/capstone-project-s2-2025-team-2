@@ -42,10 +42,16 @@ export default function ConversationItem({
           {/* 이름과 reagent */}
           <div className="flex-1 min-w-0 flex items-start justify-between">
             <div className="flex flex-col items-start space-x-2 min-w-0">
-              <h3 className="text-sm font-medium text-tint truncate max-w-[8.75rem] sm:max-w-[11rem]" title={conversation.name}>
+              <h3
+                className="text-sm font-medium text-tint truncate max-w-[8.75rem] sm:max-w-[11rem]"
+                title={conversation.name}
+              >
                 {conversation.name}
               </h3>
-              <span className="inline-flex text-xs font-medium text-light-gray truncate max-w-[9.5rem] sm:max-w-[12rem]" title={conversation.reagent}>
+              <span
+                className="inline-flex text-xs font-medium text-light-gray truncate max-w-[9.5rem] sm:max-w-[12rem]"
+                title={conversation.reagent}
+              >
                 {conversation.reagent}
               </span>
             </div>
