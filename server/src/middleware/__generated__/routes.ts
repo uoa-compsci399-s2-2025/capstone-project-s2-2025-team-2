@@ -249,7 +249,6 @@ const models: TsoaRoute.Models = {
             "quantity": {"dataType":"double"},
             "unit": {"dataType":"string"},
             "offeredReagentId": {"dataType":"string"},
-            "offeredReagentId": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
