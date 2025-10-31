@@ -44,8 +44,8 @@ export class OfferService {
     // Create chat room between requester and reagent owner
     try {
       await this.inboxService.createChatRoom({
-        user1_id: wanted.user_id,
-        user2_id: user_id,
+        user1_id: user_id,
+        user2_id: wanted.user_id,
         initial_message: requestBody.message,
       })
     } catch (error) {
@@ -87,8 +87,8 @@ export class OfferService {
     // Create chat room between requester and reagent owner
     try {
       await this.inboxService.createChatRoom({
-        user1_id: wanted.user_id,
-        user2_id: user_id,
+        user1_id: user_id,
+        user2_id: wanted.user_id,
         initial_message: requestBody.message,
       })
     } catch (error) {
@@ -128,8 +128,8 @@ export class OfferService {
     // Create chat room between requester and reagent owner
     try {
       await this.inboxService.createChatRoom({
-        user1_id: wanted.user_id,
-        user2_id: user_id,
+        user1_id: user_id,
+        user2_id: wanted.user_id,
         initial_message: requestBody.message,
       })
     } catch (error) {
