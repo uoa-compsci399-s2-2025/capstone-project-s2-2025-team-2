@@ -11,7 +11,7 @@
     "dev": "HTTPS=true NODE_ENV=development ts-node-dev --inspect --respawn src/server.ts",
     "nodemon": "nodemon",
     "build": "tsc -p ./tsconfig.json && tsc-alias",
-    "serve": "node --es-module-specifier-resolution=node dist/index.js",
+    "serve": "node --es-module-specifier-resolution=node dist/server/src/index.js",
     "start": "concurrently \"pnpm nodemon -e ts,js --exec\" \"pnpm tsoa spec-and-routes\""
   },
   "dependencies": {
