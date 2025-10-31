@@ -17,7 +17,7 @@ interface ReagentViewProps {
 
 export default function ReagentView({ params }: ReagentViewProps) {
   const { reagentId } = use(params)
-
+  const [sellerInfo, setSellerInfo] = useState<any>(null)
   const [reagent, setReagent] = useState<Reagent | null>(null)
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -31,8 +31,28 @@ export default function ReagentView({ params }: ReagentViewProps) {
     fetchReagents()
   }, [])
 
+  //fetch seller info using user id
+  useEffect(() => {
+    if (!reagent?.user_id) return
+
+    const fetchSellerInfo = async () => {
+      try {
+        const { data } = await client.GET(
+          `/users/${reagent.user_id}` as any,
+          {},
+        )
+        if (data) {
+          setSellerInfo(data)
+        }
+      } catch (error) {
+        console.error("Failed to fetch seller information:", error)
+      }
+    }
+
+    fetchSellerInfo()
+  }, [reagent?.user_id])
   // loading state
-  if (!reagent)
+  if (!reagent || !sellerInfo)
     return (
       <div className="bg-transparent h-[100vh] w-full">
         <div className="bg-transparent w-full items-center gap-4 text-white flex justify-center mt-[50vh]">
@@ -99,34 +119,43 @@ export default function ReagentView({ params }: ReagentViewProps) {
                     <div
                       className={`text-center py-[1rem] ${
                         reagent.tradingType === "giveaway"
-                          ? "bg-[#8FCAF4] dark:bg-[#427AA2] dark:text-[#D4EDFF] text-[#327FB5]"
+                          ? "bg-blue-primary text-[#327FB5]"
                           : reagent.tradingType === "sell"
-                            ? "bg-[#9AE39C] dark:bg-[#3F6340] dark:text-[#AFFFB2] text-[#428B44]"
+                            ? "bg-blue-primary  text-[#428B44]"
                             : reagent.tradingType === "trade"
-                              ? "bg-blue-primary dark:bg-[#826387] dark:text-[#FFDBB6] text-[#9B7856]"
+                              ? "bg-blue-primary text-[#9B7856]"
                               : "bg-blue-primary/75"
                       }`}
                     >
-                      <h4 className="text-lg md:text-xl">Trading Type</h4>
+                      <h4 className="text-lg md:text-xl text-white/80">
+                        Trading Type
+                      </h4>
                       <h2 className="text-2xl md:text-4xl capitalize">
                         {reagent.tradingType}
                       </h2>
                     </div>
-                    <div className="flex flex-col bg-primary p-[2rem] text-center">
+                    <div className="flex flex-col bg-primary gap-2 p-4">
                       <div className="mb-[1rem]">
-                        <h5 className="text-white/80">
-                          Quantity: {reagent.quantity}
-                        </h5>
-                        <h5 className="text-white/80">
-                          Unit: {reagent.unit || "Not specified"}
-                        </h5>
+                        <p className="text-white">
+                          <span className="text-white/80">Quantity:</span>{" "}
+                          {reagent.quantity}
+                        </p>
+                        <p className="text-white">
+                          <span className="text-white/80">Unit:</span>{" "}
+                          {reagent.unit || "Not specified"}
+                        </p>
                       </div>
                       <div className="">
                         <p className="text-white">
-                          {reagent.description ||
-                            "No description provided for this reagent."}
+                          {reagent.description ? (
+                            <span className="text-white/80 ">
+                              Description: {reagent.description}
+                            </span>
+                          ) : (
+                            "No description provided for this reagent."
+                          )}
                         </p>
-                        <div className="mt-[2rem] flex justify-center">
+                        <div className="mt-[2rem] flex">
                           {reagent.restricted && (
                             <div className="px-2 py-1 mr-[1rem] text-xs rounded-lg font-medium tracking-widest text-white bg-red-400/70">
                               restricted
@@ -190,6 +219,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                 </h4>
               </div>
               <SellerContact
+                sellerInfo={sellerInfo}
                 reagent={
                   reagent
                     ? {

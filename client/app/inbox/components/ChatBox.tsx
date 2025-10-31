@@ -20,7 +20,6 @@ export default function ChatBox({
   const [messageInput, setMessageInput] = useState("")
   const [sending, setSending] = useState(false)
   const [user, setUser] = useState<User | null>(null)
-  const [isResponser, setIsResponser] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
 
@@ -41,19 +40,6 @@ export default function ChatBox({
   useEffect(() => {
     scrollToBottom()
   }, [selectedConversation?.messages])
-
-  //            effect: check if user is responder           //
-  useEffect(() => {
-    if (user?.uid && selectedConversation?.chat_room?.user2_id) {
-      if (user.uid === selectedConversation.chat_room.user2_id) {
-        setIsResponser(true)
-      } else {
-        setIsResponser(false)
-      }
-    } else {
-      setIsResponser(false)
-    }
-  }, [user?.uid, selectedConversation?.chat_room?.user2_id])
 
   //            function: transformMessage           //
   const transformMessage = (message: any, isUser: boolean) => ({
@@ -162,16 +148,6 @@ export default function ChatBox({
             >
               View Listing
             </button>
-            {!isResponser && (
-              <button className="md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--dark-gray)] text-white hover:bg-[var(--dark-gray)]/70 cursor-pointer rounded-2xl transition-colors">
-                Edit Request
-              </button>
-            )}
-            {isResponser && (
-              <button className="md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--succ-green-light)] hover:bg-green-700 text-white rounded-2xl transition-colors">
-                Confirm Trade
-              </button>
-            )}
           </div>
         </div>
       </div>

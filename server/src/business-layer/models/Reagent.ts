@@ -22,5 +22,6 @@ export interface Reagent {
   location: string
   unit: string
   visibility?: ReagentVisibility
+  requesterOfferedReagentId?: string
   restricted: boolean
 }
