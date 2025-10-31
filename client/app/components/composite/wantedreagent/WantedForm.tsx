@@ -5,6 +5,7 @@ import { toast } from "sonner"
 import type { components } from "@/models/__generated__/schema"
 import client from "../../../services/fetch-client"
 import { useEffect } from "react"
+import { auth } from "../../../config/firebase"
 
 type ReagentTradingType = components["schemas"]["ReagentTradingType"]
 type ReagentCategory = components["schemas"]["ReagentCategory"]
@@ -79,12 +80,42 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
     requesterOfferedReagentId: "",
     expiryDate: "",
   })
+  const [currentUser, setCurrentUser] = useState<any>(null)
 
   const [dataSubmitting, setDataSubmitting] = useState(false)
   const [userReagents, setUserReagents] = useState<ReagentWithId[]>([])
   //today date calc
   const todaysDate = useMemo(() => new Date().toISOString().split("T")[0], [])
+  //get user info on auth state change
+useEffect(() => {
+  const fetchUserInfo = async () => {
+    try {
+      const authToken = localStorage.getItem("authToken")
+      const userid = auth.currentUser?.uid
+      
+      if (authToken && userid) {
+        const userInfo = await client.GET(`/users/${userid}` as any, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
 
+        setCurrentUser(userInfo.data)
+      }
+    }
+    catch (error) {
+      console.error("Error fetching user info:", error)
+    }
+  }
+  
+  fetchUserInfo()
+}, [])
+
+  //validate user role
+const validateUserRole = (): boolean => {
+  if (!currentUser) return false
+  return currentUser.role === "admin" || currentUser.role === "lab_manager"
+}
   useEffect(() => {
     // Only fetch when user chooses 'trade' as listing type
     if (formData.tradingType !== "trade") return
@@ -151,6 +182,13 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
         setDataSubmitting(false)
         return
       }
+            //validate user role
+            const isValidRole = validateUserRole()
+            if (!isValidRole) {
+              toast("You do not have permission to perform this action.")
+              setDataSubmitting(false)
+              return
+            }
       const wantedData: CreateWantedRequest = {
         name: formData.name,
         description: formData.description,

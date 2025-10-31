@@ -8,9 +8,7 @@ import {
   uploadReagentImage,
   deleteReagentImage,
 } from "../../../services/firebase-storage"
-import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../../../config/firebase"
-import { set } from "zod"
 
 type ReagentTradingType = components["schemas"]["ReagentTradingType"]
 type ReagentCategory = components["schemas"]["ReagentCategory"]
