@@ -78,7 +78,7 @@ const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
   return (
     <div className="flex flex-row items-center md:mb-[2rem] gap-[4.5rem] md:gap-[8.5rem]">
       <div className="flex flex-row justify-center items-center">
-        <div className="hidden md:block relative rounded-full border-2 border-white h-[4rem] w-[4rem] overflow-hidden">
+        <div className="hidden md:block relative rounded-full h-[4rem] w-[4rem] overflow-hidden">
           {sellerInfo?.image && (
             <img
               src={sellerInfo.image}
