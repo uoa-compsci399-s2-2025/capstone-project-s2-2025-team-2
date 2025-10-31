@@ -10,6 +10,7 @@ import {
 } from "../../../services/firebase-storage"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../../../config/firebase"
+import { set } from "zod"
 
 type ReagentTradingType = components["schemas"]["ReagentTradingType"]
 type ReagentCategory = components["schemas"]["ReagentCategory"]
@@ -26,6 +27,8 @@ const VISIBILITY_OPTIONS: ReagentVisibility[] = [
   "institution",
   "private",
 ]
+const CONDITION_OPTIONS = ["unopened", "used-like new", "used"]
+const UNIT_OPTIONS = ["g", "kg", "mL", "L", "bottles", "boxes"]
 const MAX_IMAGES = 5
 
 interface ReagentFormProps {
@@ -125,27 +128,37 @@ export const ReagentForm = ({
     [],
   )
 
-  //validate user role
-  const validateUserRole = async (): Promise<boolean> => {
-    if (!currentUser) return false
-    if (currentUser.role === "admin" || currentUser.role === "lab_manager") {
-      return true
+  
+  //get user info on auth state change
+useEffect(() => {
+  const fetchUserInfo = async () => {
+    try {
+      const authToken = localStorage.getItem("authToken")
+      const userid = auth.currentUser?.uid
+      
+      if (authToken && userid) {
+        const userInfo = await client.GET(`/users/${userid}` as any, {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        })
+
+        setCurrentUser(userInfo.data)
+      }
     }
-    return false
+    catch (error) {
+      console.error("Error fetching user info:", error)
+    }
   }
   
-  //changes user based on auth state
-  useEffect(() => {
+  fetchUserInfo()
+}, [])
 
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user)
-    })
-
-    return () => {
-      unsubscribe()
-    }
-  }, [])
-
+  //validate user role
+const validateUserRole = (): boolean => {
+  if (!currentUser) return false
+  return currentUser.role === "admin" || currentUser.role === "lab_manager"
+}
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -170,7 +183,7 @@ export const ReagentForm = ({
         return
       }
       //validate user role
-      const isValidRole = await validateUserRole()
+      const isValidRole = validateUserRole()
       if (!isValidRole) {
         toast("You do not have permission to perform this action.")
         setDataSubmitting(false)
@@ -495,10 +508,19 @@ export const ReagentForm = ({
         <FormField
           label="Condition"
           required
-          input={formInput("condition", {
-            placeholder: "e.g. New, Opened and unused",
-            required: true,
-          })}
+          input={
+            <select
+              value={formData.condition}
+              onChange={(e) => handleFieldChange("condition", e.target.value)}
+              className={inputStyles}
+            >
+              {CONDITION_OPTIONS.map((option) => (
+                <option key={option} value={option} className="bg-primary">
+                  {option.charAt(0).toUpperCase() + option.slice(1)}
+                </option>
+              ))}
+            </select>
+          }
         />
         <FormField
           label="Visibility"
@@ -557,10 +579,19 @@ export const ReagentForm = ({
         <FormField
           label="Unit"
           required
-          input={formInput("unit", {
-            placeholder: "g, mL, etc.",
-            required: true,
-          })}
+          input={            <select
+              value={formData.unit}
+              onChange={(e) => handleFieldChange("unit", e.target.value)}
+              className={inputStyles}
+            >
+              {UNIT_OPTIONS.map((option) => (
+                <option key={option} value={option} className="bg-primary">
+                  {option.charAt(0).toUpperCase() + option.slice(1)}
+                </option>
+              ))}
+            </select>}
+
+          
         />
       </div>
 
