@@ -710,6 +710,7 @@
 					"owner_id",
 					"status",
 					"createdAt"
+					"createdAt"
 				],
 				"type": "object",
 				"additionalProperties": false
