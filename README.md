@@ -1,6 +1,6 @@
 # CoLab
 
-A collaborative web-based platform designed to help researchers connect across New Zealand. Share and exchange labratory reagents to minimise waste. 
+A collaborative web-based platform designed to help researchers connect across New Zealand. Share and exchange labratory reagents to minimise waste.
 
 - **Reduce Waste**: Minimise environmental wastage by exchanging unused chemicals.
 - **Save Money**: Avoid unecessary bulk purchasing and source affordable materials.
@@ -13,49 +13,55 @@ A collaborative web-based platform designed to help researchers connect across N
 ## Technologies Used
 
 ### Languages
-- **TypeScript 5.9.2** 
+
+- **TypeScript 5.9.2**
 
 ### Frontend
-- **Next.js 15.4.4** 
+
+- **Next.js 15.4.4**
 - **React 19.1.0**
-- **React DOM 19.1.0** 
-- **Tailwind CSS 4.1.13** 
-- **openapi-fetch 0.14.0** 
-- **openapi-typescript 7.9.1** 
-- **next-themes 0.4.6** 
-- **sonner 2.0.7** 
-- **react-icons 5.5.0** 
+- **React DOM 19.1.0**
+- **Tailwind CSS 4.1.13**
+- **openapi-fetch 0.14.0**
+- **openapi-typescript 7.9.1**
+- **next-themes 0.4.6**
+- **sonner 2.0.7**
+- **react-icons 5.5.0**
 - **@mui/icons-material 7.3.2**
 - **@heroicons/react 2.2.0**
 
 ### Backend
+
 - **Node.js**
-- **Express 5.1.0** 
-- **TSOA 6.6.0** 
+- **Express 5.1.0**
+- **TSOA 6.6.0**
 - **swagger-jsdoc 6.2.8**
 - **swagger-ui-express 5.0.1**
 - **body-parser 2.2.0**
-- **cors 2.8.5** 
+- **cors 2.8.5**
 - **helmet 8.1.0**
 
 ### Authentication & Database
+
 - **Firebase 12.3.0**
 - **Firebase Admin 13.5.0**
-- **Google Auth Library 10.3.0** 
+- **Google Auth Library 10.3.0**
 
 ### Utilities
-- **nodemailer 7.0.6** 
-- **node-cron 4.2.1** 
-- **zod 4.1.11** 
-- **uuid 13.0.0** 
-- **dotenv 16.6.1** 
+
+- **nodemailer 7.0.6**
+- **node-cron 4.2.1**
+- **zod 4.1.11**
+- **uuid 13.0.0**
+- **dotenv 16.6.1**
 
 ### Development Tools
-- **pnpm 10.7.1** 
-- **ESLint 9.36.0** 
-- **Prettier 3.6.2**  
-- **Storybook 9.1.10** 
-- **ts-node 10.9.2** 
+
+- **pnpm 10.7.1**
+- **ESLint 9.36.0**
+- **Prettier 3.6.2**
+- **Storybook 9.1.10**
+- **ts-node 10.9.2**
 - **tsc-alias 1.8.16**
 - **concurrently 9.2.1**
 
@@ -63,8 +69,8 @@ A collaborative web-based platform designed to help researchers connect across N
 
 ### Prerequisites
 
-- **Node.js** 
-- **pnpm** 
+- **Node.js**
+- **pnpm**
 - **Git**
 
 ### Step 1: Clone the Repository
@@ -86,9 +92,8 @@ pnpm install
 
 Create environment variable files for both client and server:
 
-- Create a `.env` file in both the `server/` and `client/` directory 
+- Create a `.env` file in both the `server/` and `client/` directory
 - Enter their respective variables disclosed in the assignment submission.
-
 
 ### Step 4: Generate Type Definitions
 
@@ -99,6 +104,7 @@ pnpm generate:types
 ```
 
 This will:
+
 - Generate OpenAPI spec and routes using TSOA
 - Generate TypeScript types for the client from the OpenAPI spec
 
@@ -115,7 +121,6 @@ pnpm run dev
 - **Frontend**: http://localhost:3000
 - **Backend**: http://localhost:8000
 - **Swagger UI**: http://localhost:8000/swagger
-
 
 ## Usage Examples
 
@@ -153,7 +158,6 @@ pnpm run dev
 4. Sort by expiry date or name
 5. View reagent details by clicking on a card]
 
-
 ### Profile and User Management
 
 - Navigate to profile through sidebar navigation (Profile Button)
@@ -169,13 +173,13 @@ pnpm run dev
 ### Request a Reagent
 
 1. Open a reagent's details page through `/marketplace`
-2. Click "Request" 
+2. Click "Request"
 3. Provide message/price/reagent as required and submit
 4. Track outgoing requests on `/requests`
 
-### View, Approve, Decline Pending Transactions (requests/offers) 
+### View, Approve, Decline Pending Transactions (requests/offers)
 
-1. In `/requests` or `/offers` 
+1. In `/requests` or `/offers`
    - View transaction details with the "View" button at the bottom of each reagent card
    - Open chat
    - Confirm/Decline trade (processed transactions are moved to `/history`)
@@ -185,12 +189,14 @@ pnpm run dev
 1. Open `/inbox` to view conversations (each conversation is tied to a specific order)
 2. Select a conversation to chat with the other user
 3. "View Listing" button to redirect to reagent details page
-4. "Edit Request" button to bring up   
+4. "Edit Request" button to bring up
 
 ### View Transaction History
+
 - Visit `/history` to view past request transactions
 
 ### Bounty Board Page
+
 - Navigate to `/bountyboard`
 - Create a bounty for any reagent you seek but is currently unlisted
 - Browse board to find any bounties you are able to fufill, make a subsequent offer
@@ -208,7 +214,7 @@ For future releases we plan to add:
 - **Rating and Review System**: Allow users to rate others and leave reviews
 - **Notification System**: Real-time notifications for new requests, messages, and expiring reagents
 - **Analytics Dashboard**: Provide users with insights into their environmental impact (AI calculated)
-- **Partial Quantity Trading**: Ability to specify and exchange specific quantities from a reagent listing 
+- **Partial Quantity Trading**: Ability to specify and exchange specific quantities from a reagent listing
 - **Advanced Messaging Features**: Read receipts, file sharing, image attachments in messages
 
 ## Acknowledgements
