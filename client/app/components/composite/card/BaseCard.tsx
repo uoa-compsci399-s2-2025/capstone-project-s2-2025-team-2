@@ -73,8 +73,8 @@ const BaseCard = ({
   const tradingTypeLabel = tradingType[0].toUpperCase() + tradingType.slice(1)
 
   const ExpiryDisplay = () => (
-    <p className="flex items-center justify-center gap-0.5 text-warning text-sm md:text-base">
-      <ClockIcon className="w-5 h-5 md:w-6 md:h-6 text-warning" />
+    <p className="flex items-center justify-center gap-0.5 text-red-500 text-sm md:text-base">
+      <ClockIcon className="w-5 h-5 md:w-6 md:h-6 text-red-500" />
       {expiryDate}
     </p>
   )
