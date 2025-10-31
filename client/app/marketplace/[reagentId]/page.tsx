@@ -101,8 +101,8 @@ export default function ReagentView({ params }: ReagentViewProps) {
                   </div>
                 )}
                 {/* reagent info */}
-                <div className="order-1 md:order-2 w-full px-9 md:flex-none md:w-[38rem] md:self-stretch">
-                  <div className="h-full shadow-lg hover:border-white/30 duration-300 bg-primary/90 border border-white/20 backdrop-blur-md rounded-2xl p-6 md:p-8">
+                <div className="order-1 md:mt-0 mt-10 md:order-2 w-full px-9 md:flex-none md:w-[38rem] md:self-stretch">
+                  <div className="h-full shadow-lg hover:border-white/30 duration-300 bg-secondary/10 border border-white/20 backdrop-blur-md rounded-2xl p-6 md:p-8">
                     {/* trading type header */}
                     <div className="flex items-center justify-center md:justify-start gap-2 mb-4">
                       {(() => {
