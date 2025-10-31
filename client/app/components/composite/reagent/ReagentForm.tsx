@@ -26,7 +26,7 @@ const VISIBILITY_OPTIONS: ReagentVisibility[] = [
   "private",
 ]
 const CONDITION_OPTIONS = ["unopened", "used-like new", "used"]
-const UNIT_OPTIONS = ["g", "kg", "mL", "L", "bottles", "boxes"]
+const UNIT_OPTIONS = ["g", "kg", "mL", "L", "bottles", "boxes", "units"]
 const MAX_IMAGES = 5
 
 interface ReagentFormProps {
