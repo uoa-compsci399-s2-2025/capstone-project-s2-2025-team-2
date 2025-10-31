@@ -25,6 +25,24 @@ export default class AuthService {
     email: string,
   ): Promise<SendVerificationCodeResponse> {
     try {
+      // Check if user already exists in Firebase Auth
+      try {
+        await auth.getUserByEmail(email)
+        // User exists, return error response
+        const responseBody: SendVerificationCodeResponse = {
+          success: false,
+          message: "This email is already registered. Please sign in instead.",
+        }
+        return responseBody
+      } catch (error: any) {
+        // User doesn't exist (auth/user-not-found is expected)
+        if (error.code !== "auth/user-not-found") {
+          // Other error occurred
+          console.error("Error checking user existence:", error)
+          throw new Error("Failed to check user existence")
+        }
+      }
+
       // Generate verification code
       const verificationCode = generateVerificationCode()
       await this.authRepository.saveVerificationCode(email, verificationCode)
