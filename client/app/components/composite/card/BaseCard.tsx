@@ -131,14 +131,14 @@ const BaseCard = ({
             <div className="absolute rounded-b-lg bottom-0 left-0 right-0 p-2">
               <div className="hidden md:flex flex-wrap gap-1">
                 {restricted && (
-                  <span className="bg-red-500/70 text-white text-xs px-2 py-1 rounded-lg font-medium backdrop-blur-sm">
+                  <span className="bg-red-500/70 border-red-500 border text-white text-xs px-2 py-1 rounded-lg font-medium backdrop-blur-sm">
                     restricted
                   </span>
                 )}
                 {categories.map((cat, i) => (
                   <span
                     key={i}
-                    className="bg-background/70 text-white text-xs px-2 py-1 rounded-lg font-medium backdrop-blur-sm"
+                    className="bg-background/70 border-white/10 border text-white text-xs px-2 py-1 rounded-lg font-medium backdrop-blur-sm"
                   >
                     {cat}
                   </span>
