@@ -60,7 +60,7 @@ function CustomDropdown({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between bg-primary text-white px-2 py-1 pr-8 border border-secondary/20 shadow-lg hover:bg-primary/90 transition-colors outline-none"
+        className="w-full flex items-center justify-between bg-primary text-white px-2 py-1 pr-8 border border-secondary/20 shadow-lg hover:bg-primary/90 hover:cursor-pointer transition-colors outline-none"
       >
         <span className="truncate">{selectedLabel}</span>
         {/*open dropdown rotates chevron*/}

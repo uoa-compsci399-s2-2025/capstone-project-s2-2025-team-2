@@ -7,7 +7,7 @@ export class ScheduleService {
    */
   public scheduleExpiryEmails(): void {
     cron.schedule(
-      "0 9 * * *",
+      "0 12 * * *",
       async () => {
         try {
           await new ExpiryController().sendExpiryNotifications()
@@ -20,7 +20,7 @@ export class ScheduleService {
       },
     )
     console.log(
-      "Scheduler started - expiry notifications will run daily at 9:00 AM",
+      "Scheduler started - expiry notifications will run daily at 12:00 PM",
     )
   }
 

@@ -7,7 +7,7 @@ export interface Offer {
   message?: string
   quantity?: number
   unit?: string
-  offeredReagentId: string
+  offeredReagentId?: string
 }
 
 export interface TradeOffer extends Offer {
