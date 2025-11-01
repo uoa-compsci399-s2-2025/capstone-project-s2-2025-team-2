@@ -44,8 +44,8 @@ export class OfferService {
     // Create chat room between requester and reagent owner
     try {
       await this.inboxService.createChatRoom({
-        user1_id: wanted.user_id,
-        user2_id: user_id,
+        user1_id: user_id,
+        user2_id: wanted.user_id,
         initial_message: requestBody.message,
       })
     } catch (error) {
@@ -87,8 +87,8 @@ export class OfferService {
     // Create chat room between requester and reagent owner
     try {
       await this.inboxService.createChatRoom({
-        user1_id: wanted.user_id,
-        user2_id: user_id,
+        user1_id: user_id,
+        user2_id: wanted.user_id,
         initial_message: requestBody.message,
       })
     } catch (error) {
@@ -128,8 +128,8 @@ export class OfferService {
     // Create chat room between requester and reagent owner
     try {
       await this.inboxService.createChatRoom({
-        user1_id: wanted.user_id,
-        user2_id: user_id,
+        user1_id: user_id,
+        user2_id: wanted.user_id,
         initial_message: requestBody.message,
       })
     } catch (error) {
@@ -279,5 +279,32 @@ export class OfferService {
 
       return { ...offer, status: "approved" }
     })
+  }
+
+  /**
+   * Get an offer for a user by reagent ID
+   */
+  async getOfferByUserIdAndReagentId(
+    user_id: string,
+    reagent_id: string,
+  ): Promise<Offer | TradeOffer | null> {
+    try {
+      const offerDoc = await FirestoreCollections.offers
+        .where("requester_id", "==", user_id)
+        .where("reagent_id", "==", reagent_id)
+        .get()
+
+      if (offerDoc.empty) {
+        return null
+      }
+      const doc = offerDoc.docs[0]
+      const data = doc.data()
+      return {
+        id: doc.id,
+        ...data,
+      } as Offer
+    } catch (err) {
+      throw new Error(`Failed to get offer: ${(err as Error).message}`)
+    }
   }
 }

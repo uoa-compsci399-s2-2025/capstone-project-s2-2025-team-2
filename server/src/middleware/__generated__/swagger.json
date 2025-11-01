@@ -709,8 +709,7 @@
 					"reagent_id",
 					"owner_id",
 					"status",
-					"createdAt",
-					"offeredReagentId"
+					"createdAt"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -796,7 +795,6 @@
 					"owner_id",
 					"status",
 					"createdAt",
-					"offeredReagentId",
 					"price"
 				],
 				"type": "object",
@@ -1826,7 +1824,7 @@
 						}
 					}
 				},
-				"description": "\r\nGet all reagents that are expiring in 30 days",
+				"description": "\nGet all reagents that are expiring in 30 days",
 				"security": [],
 				"parameters": []
 			}
@@ -1880,7 +1878,7 @@
 						}
 					}
 				},
-				"description": "Get a reagent by its ID.\r\nCan only be done by lab_admin and admin",
+				"description": "Get a reagent by its ID.\nCan only be done by lab_admin and admin",
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -1940,7 +1938,7 @@
 						}
 					}
 				},
-				"description": "Delete a reagent by its ID.\r\nCan only be done by lab_admin (who owns the reagent) and admin",
+				"description": "Delete a reagent by its ID.\nCan only be done by lab_admin (who owns the reagent) and admin",
 				"security": [],
 				"parameters": [
 					{
@@ -1968,7 +1966,7 @@
 						}
 					}
 				},
-				"description": "Update a reagent by its ID.\r\nCan only be done by lab_admin (who owns the reagent) and admin",
+				"description": "Update a reagent by its ID.\nCan only be done by lab_admin (who owns the reagent) and admin",
 				"security": [],
 				"parameters": [
 					{
@@ -2323,6 +2321,52 @@
 				]
 			}
 		},
+		"/orders/requested/{reagent_id}": {
+			"get": {
+				"operationId": "GetOrderByReagentId",
+				"responses": {
+					"200": {
+						"description": "order successfully fetched",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/Order"
+										},
+										{
+											"$ref": "#/components/schemas/Trade"
+										},
+										{
+											"$ref": "#/components/schemas/Exchange"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"description": "Get an order for a user by reagent ID",
+				"tags": [
+					"Order"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "reagent_id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
 		"/offers": {
 			"post": {
 				"operationId": "CreateOffer",
@@ -2549,6 +2593,49 @@
 					{
 						"in": "path",
 						"name": "id",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				]
+			}
+		},
+		"/offers/requested/{reagent_id}": {
+			"get": {
+				"operationId": "GetOfferByReagentId",
+				"responses": {
+					"200": {
+						"description": "offer successfully fetched",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"$ref": "#/components/schemas/Offer"
+										},
+										{
+											"$ref": "#/components/schemas/TradeOffer"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"description": "Get an offer for a user by reagent ID.",
+				"tags": [
+					"Offers"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "reagent_id",
 						"required": true,
 						"schema": {
 							"type": "string"

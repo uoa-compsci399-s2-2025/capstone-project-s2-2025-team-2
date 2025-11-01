@@ -7,6 +7,7 @@ import type { components } from "@/models/__generated__/schema"
 import { toast } from "sonner"
 import { onAuthStateChanged } from "firebase/auth"
 import { auth } from "../../../config/firebase"
+import Link from "next/link"
 
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
@@ -21,13 +22,45 @@ const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
   const [isCheckingInventory, setIsCheckingInventory] = useState(false)
   const [isSignedIn, setIsSignedIn] = useState(false)
   const [imageLoaded, setImageLoaded] = useState(false)
-
+  const [reagentRequested, setReagentRequested] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   //check auth state
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setIsSignedIn(!!user)
     })
     return () => unsubscribe()
+  }, [])
+
+  //check if reagent has already been requested by user
+  useEffect(() => {
+    const checkRequested = async () => {
+      setIsLoading(true)
+      if (!reagent) return
+      try {
+        const token = localStorage.getItem("authToken")
+        const { data, error } = await client.GET(
+          `/orders/requested/${reagent.id}` as any,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        )
+
+        if (error) {
+          console.error("Failed to check request status:", error)
+          return
+        }
+
+        if (data) {
+          setReagentRequested(true)
+        }
+      } catch (error) {
+        console.error("Failed to check request status:", error)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+    checkRequested()
   }, [])
 
   const handleRequestClick = async () => {
@@ -71,8 +104,12 @@ const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
     setIsRequestOpen(false)
   }
 
-  const handleRequestSubmit = () => {
-    console.log("Request submitted successfully")
+  const handleRequestSubmit = (success: boolean) => {
+    if (success) {
+      console.log("Request submitted successfully")
+      setReagentRequested(true)
+    }
+    setIsRequestOpen(false)
   }
 
   return (
@@ -89,16 +126,31 @@ const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
             />
           )}
 
-          <img
-            src={
-              imageLoaded && sellerInfo?.image
-                ? sellerInfo.image
-                : "/default_pfp.jpg"
-            }
-            alt="User Profile Photo"
-            className="w-full h-full object-cover transition-opacity duration-300"
-            style={{ imageRendering: "auto" }}
-          />
+          {sellerInfo?.id ? (
+            <Link href={`/profile/${sellerInfo.id}`}>
+              <img
+                src={
+                  imageLoaded && sellerInfo?.image
+                    ? sellerInfo.image
+                    : "/default_pfp.jpg"
+                }
+                alt="User Profile Photo"
+                className="w-full h-full object-cover transition-opacity duration-300 cursor-pointer hover:opacity-80"
+                style={{ imageRendering: "auto" }}
+              />
+            </Link>
+          ) : (
+            <img
+              src={
+                imageLoaded && sellerInfo?.image
+                  ? sellerInfo.image
+                  : "/default_pfp.jpg"
+              }
+              alt="User Profile Photo"
+              className="w-full h-full object-cover transition-opacity duration-300"
+              style={{ imageRendering: "auto" }}
+            />
+          )}
         </div>
 
         <div className="hidden md:block mx-[1.5rem]">
@@ -114,12 +166,19 @@ const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
 
       {isSignedIn && (
         <Button
-          label={isCheckingInventory ? "Checking..." : "Request Reagent"}
+          label={
+            isCheckingInventory || isLoading
+              ? "Checking..."
+              : reagentRequested
+                ? "Reagent Requested"
+                : "Request Reagent"
+          }
           onClick={handleRequestClick}
-          disabled={isCheckingInventory}
+          disabled={isCheckingInventory || reagentRequested}
           className="
             px-[1.5rem] py-[1.5rem] rounded-[18px] md:rounded-[8px] md:text-sm md:px-6 md:w-auto md:py-1.5 md:justify-center
             font-semibold hover:bg-blue-primary/70 transition-colors cursor-pointer
+            disabled:bg-blue-primary disabled:cursor-not-allowed disabled:opacity-50
             "
         />
       )}

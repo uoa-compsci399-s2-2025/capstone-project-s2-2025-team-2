@@ -140,4 +140,25 @@ export class OfferController extends Controller {
     )
     return updatedOrder
   }
+
+  /**
+   * Get an offer for a user by reagent ID.
+   */
+  @SuccessResponse("200", "offer successfully fetched")
+  @Security("jwt")
+  @Get("requested/{reagent_id}")
+  public async getOfferByReagentId(
+    @Path() reagent_id: string,
+    @Request() request: AuthRequest,
+  ): Promise<Offer | TradeOffer> {
+    const user = request.user
+    const offer = await new OfferService().getOfferByUserIdAndReagentId(
+      user.uid,
+      reagent_id,
+    )
+    if (!offer) {
+      console.log("This reagent was not offered by this user")
+    }
+    return offer
+  }
 }

@@ -31,6 +31,35 @@ interface ContactButtonProps {
 const ContactButton = ({ wanted, className = "" }: ContactButtonProps) => {
   const [isCheckingInventory, setIsCheckingInventory] = useState(false)
   const [isRequestOpen, setIsRequestOpen] = useState(false)
+  const [reagentOffered, setReagentOffered] = useState(false)
+
+  //check if reagent has already been offered by the current user
+  useEffect(() => {
+    const checkOffered = async () => {
+      if (!wanted) return
+      try {
+        const token = localStorage.getItem("authToken")
+        const { data, error } = await client.GET(
+          `/offers/requested/${wanted.id}` as any,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          },
+        )
+
+        if (error) {
+          console.error("Failed to check request status:", error)
+          return
+        }
+
+        if (data) {
+          setReagentOffered(true)
+        }
+      } catch (error) {
+        console.error("Failed to check request status:", error)
+      }
+    }
+    checkOffered()
+  }, [])
 
   // Fetch offered reagent name if requesterOfferedReagentId is present
   const [offeredReagentName, setOfferedReagentName] = useState<string>("")
@@ -65,34 +94,33 @@ const ContactButton = ({ wanted, className = "" }: ContactButtonProps) => {
     if (!wanted) return
 
     //check if user has reagents to offer for exchange
-    if (wanted.tradingType === "trade") {
-      setIsCheckingInventory(true)
-      try {
-        const token = localStorage.getItem("authToken")
-        const { data: userReagents, error } = await client.GET(
-          "/users/reagents" as any,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          },
-        )
 
-        if (error) {
-          toast.error("Failed to check your inventory. Please try again.")
-          return
-        }
+    setIsCheckingInventory(true)
+    try {
+      const token = localStorage.getItem("authToken")
+      const { data: userReagents, error } = await client.GET(
+        "/users/reagents" as any,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
 
-        if (!userReagents?.length) {
-          toast.error(
-            "You need to have reagents to offer before making a trade request. Please list some reagents first.",
-          )
-          return
-        }
-      } catch {
+      if (error) {
         toast.error("Failed to check your inventory. Please try again.")
         return
-      } finally {
-        setIsCheckingInventory(false)
       }
+
+      if (!userReagents?.length) {
+        toast.error(
+          "You need to have reagents in your inventory to offer. Please list some reagents first.",
+        )
+        return
+      }
+    } catch {
+      toast.error("Failed to check your inventory. Please try again.")
+      return
+    } finally {
+      setIsCheckingInventory(false)
     }
 
     setIsRequestOpen(true)
@@ -101,8 +129,12 @@ const ContactButton = ({ wanted, className = "" }: ContactButtonProps) => {
     setIsRequestOpen(false)
   }
 
-  const handleRequestSubmit = () => {
-    console.log("Request submitted successfully")
+  const handleRequestSubmit = (success: boolean) => {
+    if (success) {
+      console.log("Request submitted successfully")
+      setReagentOffered(true)
+    }
+    setIsRequestOpen(false)
   }
 
   // for the fields WantedReagent doesn't include from ReagentWithId.
@@ -118,13 +150,19 @@ const ContactButton = ({ wanted, className = "" }: ContactButtonProps) => {
     <div className={className}>
       <button
         onClick={handleRequestClick}
-        disabled={isCheckingInventory}
+        disabled={isCheckingInventory || reagentOffered}
         aria-busy={isCheckingInventory}
-        className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer"
+        className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white 
+        bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer
+        disabled:bg-blue-primary disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {isCheckingInventory ? "Checking..." : "Offer"}
+        {isCheckingInventory
+          ? "Checking..."
+          : reagentOffered
+            ? "Offered"
+            : "Offer"}
 
-        <ArrowRightIcon className="w-5 h-5" />
+        {!reagentOffered && <ArrowRightIcon className="w-5 h-5" />}
       </button>
       {wanted && (
         <ReagentRequest

@@ -31,8 +31,8 @@ export default function AuthPage() {
     <div className="min-h-screen flex items-center justify-center bg-background">
       <div className="flex gap-8 w-full max-w-6xl justify-center min-h-screen md:min-h-0">
         {/* Left side - Welcome Box */}
-        <AuthWelcomeBox />
-        {/* Right side - Auth Components */}
+        <AuthWelcomeBox setAuthType={setAuthType} />
+        {/* Right side - Sign In Box */}
         {authType === "signin" ? (
           <SignInBox setAuthType={setAuthType} />
         ) : authType === "signup" ? (

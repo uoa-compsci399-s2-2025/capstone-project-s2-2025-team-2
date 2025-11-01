@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useCallback, useMemo } from "react"
+import { useState, useCallback, useMemo, useEffect } from "react"
 import { toast } from "sonner"
 import type { components } from "@/models/__generated__/schema"
 import client from "../../../services/fetch-client"
@@ -8,6 +8,7 @@ import {
   uploadReagentImage,
   deleteReagentImage,
 } from "../../../services/firebase-storage"
+import { auth } from "../../../config/firebase"
 
 type ReagentTradingType = components["schemas"]["ReagentTradingType"]
 type ReagentCategory = components["schemas"]["ReagentCategory"]
@@ -24,6 +25,8 @@ const VISIBILITY_OPTIONS: ReagentVisibility[] = [
   "institution",
   "private",
 ]
+const CONDITION_OPTIONS = ["unopened", "used-like new", "used"]
+const UNIT_OPTIONS = ["g", "kg", "mL", "L", "bottles", "boxes", "units"]
 const MAX_IMAGES = 5
 
 interface ReagentFormProps {
@@ -107,6 +110,7 @@ export const ReagentForm = ({
   const [deleteTimeout, setDeleteTimeout] = useState<NodeJS.Timeout | null>(
     null,
   )
+  const [currentUser, setCurrentUser] = useState<any>(null)
 
   //today date calc
   const todaysDate = useMemo(() => new Date().toISOString().split("T")[0], [])
@@ -119,6 +123,35 @@ export const ReagentForm = ({
     [],
   )
 
+  //get user info on auth state change
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const authToken = localStorage.getItem("authToken")
+        const userid = auth.currentUser?.uid
+
+        if (authToken && userid) {
+          const userInfo = await client.GET(`/users/${userid}` as any, {
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+          })
+
+          setCurrentUser(userInfo.data)
+        }
+      } catch (error) {
+        console.error("Error fetching user info:", error)
+      }
+    }
+
+    fetchUserInfo()
+  }, [])
+
+  //validate user role
+  const validateUserRole = (): boolean => {
+    if (!currentUser) return false
+    return currentUser.role === "admin" || currentUser.role === "lab_manager"
+  }
   const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
@@ -139,6 +172,13 @@ export const ReagentForm = ({
       const idToken = localStorage.getItem("authToken")
       if (!idToken) {
         toast(`Please sign in to ${editMode ? "edit" : "create"} a reagent.`)
+        setDataSubmitting(false)
+        return
+      }
+      //validate user role
+      const isValidRole = validateUserRole()
+      if (!isValidRole) {
+        toast("You do not have permission to perform this action.")
         setDataSubmitting(false)
         return
       }
@@ -461,10 +501,19 @@ export const ReagentForm = ({
         <FormField
           label="Condition"
           required
-          input={formInput("condition", {
-            placeholder: "e.g. New, Opened and unused",
-            required: true,
-          })}
+          input={
+            <select
+              value={formData.condition}
+              onChange={(e) => handleFieldChange("condition", e.target.value)}
+              className={inputStyles}
+            >
+              {CONDITION_OPTIONS.map((option) => (
+                <option key={option} value={option} className="bg-primary">
+                  {option.charAt(0).toUpperCase() + option.slice(1)}
+                </option>
+              ))}
+            </select>
+          }
         />
         <FormField
           label="Visibility"
@@ -523,10 +572,19 @@ export const ReagentForm = ({
         <FormField
           label="Unit"
           required
-          input={formInput("unit", {
-            placeholder: "g, mL, etc.",
-            required: true,
-          })}
+          input={
+            <select
+              value={formData.unit}
+              onChange={(e) => handleFieldChange("unit", e.target.value)}
+              className={inputStyles}
+            >
+              {UNIT_OPTIONS.map((option) => (
+                <option key={option} value={option} className="bg-primary">
+                  {option.charAt(0).toUpperCase() + option.slice(1)}
+                </option>
+              ))}
+            </select>
+          }
         />
       </div>
 
