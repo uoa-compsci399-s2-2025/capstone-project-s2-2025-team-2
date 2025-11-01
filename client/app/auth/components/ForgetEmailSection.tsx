@@ -169,21 +169,23 @@ export default function ForgetEmailSection({
             Verification Code
           </label>
           <div className="mt-1 flex space-x-2">
-            <input
-              id="verificationCode"
-              name="verificationCode"
-              type="text"
-              required
-              value={verificationCode}
-              onChange={(e) => setVerificationCode(e.target.value)}
-              className="flex-1 px-3 py-2 border border-muted rounded-md shadow-sm placeholder-secondary bg-primary text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-blue-primary transition-colors"
-              placeholder="Enter your verification code"
-            />
+            <div className="flex-1">
+              <input
+                id="verificationCode"
+                name="verificationCode"
+                type="text"
+                required
+                value={verificationCode}
+                onChange={(e) => setVerificationCode(e.target.value)}
+                className="flex-1 w-full px-3 py-2 border border-muted rounded-md shadow-sm placeholder-secondary bg-primary text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-blue-primary transition-colors"
+                placeholder="Enter your verification code"
+              />
+            </div>
             {!isVerificationCodeValid ? (
               <DisabledButton
                 label="Validate"
                 textSize="text-sm"
-                className={`!w-[92px]`}
+                className={`!w-[92px] flex justify-center items-center`}
               />
             ) : (
               <Button
