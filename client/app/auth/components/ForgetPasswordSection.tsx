@@ -121,15 +121,15 @@ export default function ForgetPasswordSection({
         />
       </div>
 
-      <div className="mt-auto space-y-6">
+      <div className="mt-auto space-y-6 w-full">
         {/* Action Buttons */}
-        <div className="flex space-x-3">
+        <div className="flex space-x-3 w-full">
           <Button
             type="button"
             label="Confirm"
             textSize="text-sm"
-            className="justify-center w-full"
             onClick={handlePasswordReset}
+            className="w-full flex justify-center items-center"
           />
         </div>
       </div>
