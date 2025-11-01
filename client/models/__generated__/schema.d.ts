@@ -4,2193 +4,2241 @@
  */
 
 export interface paths {
-  "/wanted": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** @description Get all wanted reagents with an option to filter them by category. */
-    get: operations["GetAllWantedReagents"]
-    put?: never
-    /** @description
-     *     Create a reagent by passing in all the required props.
-     *     User must be authenticated to access this endpoint (lab manager / admin) */
-    post: operations["CreateWantedReagent"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/wanted/{id}": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** @description Get a wanted reagent by its ID. */
-    get: operations["GetWantedReagentById"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/users/{id}": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    /** @description Update user information by their ID
-     *     User **must** be authenticated to access this endpoint */
-    patch: operations["UpdateUser"]
-    trace?: never
-  }
-  "/users/{id}": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    /** @description Update user information by their ID
-     *     User **must** be authenticated to access this endpoint */
-    patch: operations["UpdateUser"]
-    trace?: never
-  }
-  "/users/reagents/expiring": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** @description Get reagents those are expiring in 60 days or less under a user by their user id */
-    get: operations["GetReagentsExpiringSoon"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/users": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get: operations["GetAllUsers"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/users/reagents": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** @description Get all reagents under a user
-     *     User must be authenticated to access this endpoint */
-    get: operations["GetReagents"]
-    put?: never
-    /** @description Create a reagent by passing in all the required props.
-     *     User **must** be authenticated to access this endpoint (lab manager / admin) [seller] */
-    post: operations["CreateReagent"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/users/{user_id}": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** @description get user info using user id */
-    get: operations["GetUserById"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/users/{user_id}/email": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** @description Get email of the current logged in user */
-    get: operations["GetEmail"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/users/{user_id}/jwt": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** @description Gets the basic information of a user */
-    get: operations["GetUser"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/users/reagents/{id}": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** @description Get a reagent by using its ID
-     *     User must be authenticated to access this endpoint */
-    get: operations["GetReagentById"]
-    put?: never
-    post?: never
-    /** @description Delete a reagent by using its ID
-     *     User **must** be authenticated to access this endpoint */
-    delete: operations["DeleteReagentById"]
-    options?: never
-    head?: never
-    /** @description Update a reagent by its ID.
-     *     User **must** be authenticated to access this endpoint */
-    patch: operations["UpdateReagent"]
-    trace?: never
-  }
-  "/users/{id}/reagents": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** @description
-     *     Get all reagents under another user by their user id
-     *     Can only be done by admin* */
-    get: operations["GetReagentsByUserId"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/reagents/expiring": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** @description
-     *     Get all reagents that are expiring in 30 days */
-    get: operations["GetReagentsExpiringSoon"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/reagents": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** @description Get all reagents with an option to filter them by category. */
-    get: operations["GetAllReagents"]
-    put?: never
-    /** @description Get a reagent by its ID.
-     *     Can only be done by lab_admin and admin */
-    post: operations["CreateReagent"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/reagents/{id}": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** @description Get a reagent by its ID. */
-    get: operations["GetReagent"]
-    put?: never
-    post?: never
-    /** @description Delete a reagent by its ID.
-     *     Can only be done by lab_admin (who owns the reagent) and admin */
-    delete: operations["DeleteReagent"]
-    options?: never
-    head?: never
-    /** @description Update a reagent by its ID.
-     *     Can only be done by lab_admin (who owns the reagent) and admin */
-    patch: operations["UpdateReagent"]
-    trace?: never
-  }
-  "/reagents/{id}/private": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    /** @description Turn all expired reagents private by their ID. */
-    patch: operations["TurnExpiredReagentsPrivate"]
-    trace?: never
-  }
-  "/orders": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get: operations["GetOrders"]
-    put?: never
-    post: operations["CreateOrder"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/orders/trades": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post: operations["CreateTrade"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/orders/exchanges": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post: operations["CreateExchange"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/orders/pending": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get: operations["GetPendingOrdersWithReagents"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/orders/{id}": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get: operations["GetOrderById"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/orders/{id}/approve": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch: operations["ApproveOrder"]
-    trace?: never
-  }
-  "/orders/{id}/cancel": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch: operations["CancelOrder"]
-    trace?: never
-  }
-  "/offers": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get: operations["GetOffers"]
-    put?: never
-    post: operations["CreateOffer"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/offers/trades": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post: operations["CreateTrade"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/offers/{id}": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get: operations["GetOfferById"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/offers/{id}/approve": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch: operations["ApproveOrder"]
-    trace?: never
-  }
-  "/offers/{id}/cancel": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch: operations["CancelOrder"]
-    trace?: never
-  }
-  "/inbox/chatroom": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post: operations["CreateChatRoom"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/inbox/message": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post: operations["SendMessage"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/inbox/conversations/{userId}": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get: operations["GetConversations"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/inbox/chatroom/{chatRoomId}/{userId}": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get: operations["GetChatRoomById"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/auth/google/verify": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /** @description Verifies Google ID token and authenticates user. */
-    post: operations["VerifyToken"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/Expiry/send-expiry-emails": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** @description Send email notifications to all users who has reagents expiring in 30 days */
-    get: operations["SendExpiryNotifications"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/auth/send-verification-code": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post: operations["SendVerificationCode"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/auth/verify-code": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post: operations["VerifyCode"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/auth/reset-password": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post: operations["ResetPassword"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/auth/verify-token": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post: operations["VerifyToken"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/auth/valid-email-domains": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** @description Gets all valid valid email domains for signup */
-    get: operations["GetValidEmailDomains"]
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/auth/{domain_id}": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    /** @description Allows admins to remove a valid signup email domain */
-    delete: operations["RemoveValidSignupEmailDomain"]
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/auth": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    /** @description Allows admins to add a new valid signup email domain */
-    post: operations["AddValidSignupEmailDomain"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
+    "/wanted": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get all wanted reagents with an option to filter them by category. */
+        get: operations["GetAllWantedReagents"];
+        put?: never;
+        /** @description
+         *     Create a reagent by passing in all the required props.
+         *     User must be authenticated to access this endpoint (lab manager / admin) */
+        post: operations["CreateWantedReagent"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/wanted/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get a wanted reagent by its ID. */
+        get: operations["GetWantedReagentById"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** @description Update user information by their ID
+         *     User **must** be authenticated to access this endpoint */
+        patch: operations["UpdateUser"];
+        trace?: never;
+    };
+    "/users/reagents/expiring": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get reagents those are expiring in 60 days or less under a user by their user id */
+        get: operations["GetReagentsExpiringSoon"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetAllUsers"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/reagents": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get all reagents under a user
+         *     User must be authenticated to access this endpoint */
+        get: operations["GetReagents"];
+        put?: never;
+        /** @description Create a reagent by passing in all the required props.
+         *     User **must** be authenticated to access this endpoint (lab manager / admin) [seller] */
+        post: operations["CreateReagent"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/{user_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description get user info using user id */
+        get: operations["GetUserById"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/{user_id}/email": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get email of the current logged in user */
+        get: operations["GetEmail"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/{user_id}/jwt": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Gets the basic information of a user */
+        get: operations["GetUser"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/users/reagents/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get a reagent by using its ID
+         *     User must be authenticated to access this endpoint */
+        get: operations["GetReagentById"];
+        put?: never;
+        post?: never;
+        /** @description Delete a reagent by using its ID
+         *     User **must** be authenticated to access this endpoint */
+        delete: operations["DeleteReagentById"];
+        options?: never;
+        head?: never;
+        /** @description Update a reagent by its ID.
+         *     User **must** be authenticated to access this endpoint */
+        patch: operations["UpdateReagent"];
+        trace?: never;
+    };
+    "/users/{id}/reagents": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description
+         *     Get all reagents under another user by their user id
+         *     Can only be done by admin* */
+        get: operations["GetReagentsByUserId"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reagents/expiring": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description
+         *     Get all reagents that are expiring in 30 days */
+        get: operations["GetReagentsExpiringSoon"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reagents": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get all reagents with an option to filter them by category. */
+        get: operations["GetAllReagents"];
+        put?: never;
+        /** @description Get a reagent by its ID.
+         *     Can only be done by lab_admin and admin */
+        post: operations["CreateReagent"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/reagents/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get a reagent by its ID. */
+        get: operations["GetReagent"];
+        put?: never;
+        post?: never;
+        /** @description Delete a reagent by its ID.
+         *     Can only be done by lab_admin (who owns the reagent) and admin */
+        delete: operations["DeleteReagent"];
+        options?: never;
+        head?: never;
+        /** @description Update a reagent by its ID.
+         *     Can only be done by lab_admin (who owns the reagent) and admin */
+        patch: operations["UpdateReagent"];
+        trace?: never;
+    };
+    "/reagents/{id}/private": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        /** @description Turn all expired reagents private by their ID. */
+        patch: operations["TurnExpiredReagentsPrivate"];
+        trace?: never;
+    };
+    "/orders": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetOrders"];
+        put?: never;
+        post: operations["CreateOrder"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orders/trades": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["CreateTrade"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orders/exchanges": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["CreateExchange"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orders/pending": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetPendingOrdersWithReagents"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orders/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetOrderById"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/orders/{id}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["ApproveOrder"];
+        trace?: never;
+    };
+    "/orders/{id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["CancelOrder"];
+        trace?: never;
+    };
+    "/orders/requested/{reagent_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an order for a user by reagent ID */
+        get: operations["GetOrderByReagentId"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/offers": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetOffers"];
+        put?: never;
+        post: operations["CreateOffer"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/offers/trades": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["CreateTrade"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/offers/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetOfferById"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/offers/{id}/approve": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["ApproveOrder"];
+        trace?: never;
+    };
+    "/offers/{id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["CancelOrder"];
+        trace?: never;
+    };
+    "/offers/requested/{reagent_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an offer for a user by reagent ID. */
+        get: operations["GetOfferByReagentId"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/inbox/chatroom": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["CreateChatRoom"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/inbox/message": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["SendMessage"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/inbox/conversations/{userId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetConversations"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/inbox/chatroom/{chatRoomId}/{userId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["GetChatRoomById"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/google/verify": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Verifies Google ID token and authenticates user. */
+        post: operations["VerifyToken"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/Expiry/send-expiry-emails": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Send email notifications to all users who has reagents expiring in 30 days */
+        get: operations["SendExpiryNotifications"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/send-verification-code": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["SendVerificationCode"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/verify-code": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["VerifyCode"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/reset-password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["ResetPassword"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/verify-token": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["VerifyToken"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/valid-email-domains": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Gets all valid valid email domains for signup */
+        get: operations["GetValidEmailDomains"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth/{domain_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        /** @description Allows admins to remove a valid signup email domain */
+        delete: operations["RemoveValidSignupEmailDomain"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/auth": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Allows admins to add a new valid signup email domain */
+        post: operations["AddValidSignupEmailDomain"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
-export type webhooks = Record<string, never>
+export type webhooks = Record<string, never>;
 export interface components {
-  schemas: {
-    /** @enum {string} */
-    ReagentTradingType: "trade" | "giveaway" | "sell"
-    /** @enum {string} */
-    ReagentCategory: "chemical" | "hazardous" | "biological"
-    /** @enum {string} */
-    ReagentVisibility: "everyone" | "region" | "institution" | "private"
-    Reagent: {
-      user_id: string
-      name: string
-      description: string
-      condition: string
-      /** Format: double */
-      price?: number
-      /** Format: double */
-      quantity: number
-      expiryDate: string
-      tradingType: components["schemas"]["ReagentTradingType"]
-      images?: string[]
-      categories: components["schemas"]["ReagentCategory"][]
-      createdAt: string
-      createdAtReadable: string
-      location: string
-      unit: string
-      visibility?: components["schemas"]["ReagentVisibility"]
-      requesterOfferedReagentId?: string
-      restricted: boolean
-    }
-    CreateWantedRequest: {
-      name: string
-      description: string
-      location: string
-      categories: components["schemas"]["ReagentCategory"][]
-      tradingType: components["schemas"]["ReagentTradingType"]
-      requesterOfferedReagentId?: string
-      /** Format: double */
-      price?: number
-      expiryDate: string
-    }
-    User: {
-      email: string
-      displayName: string
-      preferredName: string
-      lastName?: string
-      university: string
-      about?: string
-      /** @enum {string} */
-      role: "user" | "lab_manager" | "admin"
-      image?: string
-    }
-    /** @description Make all properties in T optional */
-    Partial_User_: {
-      email?: string
-      displayName?: string
-      preferredName?: string
-      lastName?: string
-      university?: string
-      about?: string
-      /** @enum {string} */
-      role?: "user" | "lab_manager" | "admin"
-      image?: string
-    }
-    CreateReagentRequest: {
-      name: string
-      description?: string
-      condition: string
-      categories: components["schemas"]["ReagentCategory"][]
-      /** Format: double */
-      price?: number
-      /** Format: double */
-      quantity: number
-      unit: string
-      expiryDate: string
-      tradingType: components["schemas"]["ReagentTradingType"]
-      location: string
-      images?: string[]
-      visibility?: components["schemas"]["ReagentVisibility"]
-      restricted: boolean
-    }
-    /** @description Make all properties in T optional */
-    Partial_Reagent_: {
-      user_id?: string
-      name?: string
-      description?: string
-      condition?: string
-      /** Format: double */
-      price?: number
-      /** Format: double */
-      quantity?: number
-      expiryDate?: string
-      tradingType?: components["schemas"]["ReagentTradingType"]
-      images?: string[]
-      categories?: components["schemas"]["ReagentCategory"][]
-      createdAt?: string
-      createdAtReadable?: string
-      location?: string
-      unit?: string
-      visibility?: components["schemas"]["ReagentVisibility"]
-      requesterOfferedReagentId?: string
-      restricted?: boolean
-    }
-    /** @description Construct a type with a set of properties K of type T */
-    "Record_string.Reagent-Array_": {
-      [key: string]: components["schemas"]["Reagent"][]
-    }
-    Order: {
-      requester_id: string
-      reagent_id: string
-      owner_id: string
-      /** @enum {string} */
-      status: "pending" | "approved" | "canceled"
-      /** Format: date-time */
-      createdAt: string
-      message?: string
-      /** Format: double */
-      quantity?: number
-      unit?: string
-    }
-    CreateOrderRequest: {
-      reagent_id: string
-      message?: string
-      /** @enum {string} */
-      type: "order"
-      /** Format: double */
-      quantity?: number
-      unit?: string
-    }
-    Trade: {
-      requester_id: string
-      reagent_id: string
-      owner_id: string
-      /** @enum {string} */
-      status: "pending" | "approved" | "canceled"
-      /** Format: date-time */
-      createdAt: string
-      message?: string
-      /** Format: double */
-      quantity?: number
-      unit?: string
-      /** Format: double */
-      price: number
-    }
-    CreateTradeRequest: {
-      reagent_id: string
-      message?: string
-      /** Format: double */
-      price: number
-      /** @enum {string} */
-      type: "trade"
-      /** Format: double */
-      quantity?: number
-      unit?: string
-    }
-    Exchange: {
-      requester_id: string
-      reagent_id: string
-      owner_id: string
-      /** @enum {string} */
-      status: "pending" | "approved" | "canceled"
-      /** Format: date-time */
-      createdAt: string
-      message?: string
-      /** Format: double */
-      quantity?: number
-      unit?: string
-      offeredReagentId: string
-    }
-    CreateExchangeRequest: {
-      reagent_id: string
-      message?: string
-      offeredReagentId: string
-      /** Format: double */
-      quantity?: number
-      /** @enum {string} */
-      type: "exchange"
-      unit?: string
-    }
-    OrderWithReagent: {
-      requester_id: string
-      reagent_id: string
-      owner_id: string
-      /** @enum {string} */
-      status: "pending" | "approved" | "canceled"
-      /** Format: date-time */
-      createdAt: string
-      message?: string
-      /** Format: double */
-      quantity?: number
-      unit?: string
-      id: string
-      reagent?: components["schemas"]["Reagent"] | null
-    }
-    Offer: {
-      requester_id: string
-      reagent_id: string
-      owner_id: string
-      /** @enum {string} */
-      status: "pending" | "approved" | "canceled"
-      /** Format: date-time */
-      createdAt: string
-      message?: string
-      /** Format: double */
-      quantity?: number
-      unit?: string
-      offeredReagentId: string
-    }
-    CreateOfferRequest: {
-      reagent_id: string
-      message?: string
-      offeredReagentId: string
-      /** Format: double */
-      quantity?: number
-      /** @enum {string} */
-      type: "order"
-      unit?: string
-    }
-    TradeOffer: {
-      requester_id: string
-      reagent_id: string
-      owner_id: string
-      /** @enum {string} */
-      status: "pending" | "approved" | "canceled"
-      /** Format: date-time */
-      createdAt: string
-      message?: string
-      /** Format: double */
-      quantity?: number
-      unit?: string
-      offeredReagentId: string
-      /** Format: double */
-      price: number
-    }
-    CreateOfferTradeRequest: {
-      reagent_id: string
-      message?: string
-      /** Format: double */
-      price: number
-      offeredReagentId: string
-      /** Format: double */
-      quantity?: number
-      /** @enum {string} */
-      type: "trade"
-      unit?: string
-    }
-    ChatRoom: {
-      id?: string
-      user1_id: string
-      user2_id: string
-      /** Format: date-time */
-      created_at: string
-    }
-    Message: {
-      id?: string
-      chat_room_id: string
-      sender_id: string
-      content: string
-      /** Format: date-time */
-      created_at: string
-    }
-    ChatRoomResponse: {
-      chat_room: components["schemas"]["ChatRoom"]
-      messages: components["schemas"]["Message"][]
-      other_user: {
-        email: string
-        name: string
-        id: string
-      }
-    }
-    CreateChatRoomRequest: {
-      user1_id: string
-      user2_id: string
-      initial_message?: string
-    }
-    SendMessageRequest: {
-      chat_room_id: string
-      sender_id: string
-      content: string
-    }
-    ConversationListResponse: {
-      conversations: components["schemas"]["ChatRoomResponse"][]
-    }
-    GoogleOAuthUser: {
-      uid: string
-      email: string
-      displayName?: string
-      photoURL?: string
-    }
-    GoogleOAuthResponse: {
-      success: boolean
-      message: string
-      token?: string
-      user?: components["schemas"]["GoogleOAuthUser"]
-    }
-    GoogleOAuthRequest: {
-      idToken: string
-    }
-    SendVerificationCodeResponse: {
-      success: boolean
-      message: string
-    }
-    SendVerificationCodeRequest: {
-      email: string
-    }
-    VerifyCodeResponse: {
-      success: boolean
-      message: string
-    }
-    VerifyCodeRequest: {
-      email: string
-      inputCode: string
-    }
-    ResetPasswordResponse: {
-      success: boolean
-      message: string
-    }
-    ResetPasswordRequest: {
-      email: string
-      newPassword: string
-    }
-    VerifyTokenResponse: {
-      success: boolean
-      message: string
-      uid?: string
-      email?: string
-    }
-    VerifyTokenRequest: {
-      idToken: string
-      preferredName?: string
-      university?: string
-    }
-    AuthDomainAllowedRoles: ("staff" | "student")[]
-    AuthDomain: {
-      emailDomains: string[]
-      institutionName: string
-      allowedRoles: components["schemas"]["AuthDomainAllowedRoles"]
-    }
-    AddSignupEmailDomainRequest: {
-      institutionName: string
-      emailDomains: string[]
-      allowedRoles: components["schemas"]["AuthDomainAllowedRoles"]
-    }
-  }
-  responses: never
-  parameters: never
-  requestBodies: never
-  headers: never
-  pathItems: never
+    schemas: {
+        /** @enum {string} */
+        ReagentTradingType: "trade" | "giveaway" | "sell";
+        /** @enum {string} */
+        ReagentCategory: "chemical" | "hazardous" | "biological";
+        /** @enum {string} */
+        ReagentVisibility: "everyone" | "region" | "institution" | "private";
+        Reagent: {
+            user_id: string;
+            name: string;
+            description: string;
+            condition: string;
+            /** Format: double */
+            price?: number;
+            /** Format: double */
+            quantity: number;
+            expiryDate: string;
+            tradingType: components["schemas"]["ReagentTradingType"];
+            images?: string[];
+            categories: components["schemas"]["ReagentCategory"][];
+            createdAt: string;
+            createdAtReadable: string;
+            location: string;
+            unit: string;
+            visibility?: components["schemas"]["ReagentVisibility"];
+            requesterOfferedReagentId?: string;
+            restricted: boolean;
+        };
+        CreateWantedRequest: {
+            name: string;
+            description: string;
+            location: string;
+            categories: components["schemas"]["ReagentCategory"][];
+            tradingType: components["schemas"]["ReagentTradingType"];
+            requesterOfferedReagentId?: string;
+            /** Format: double */
+            price?: number;
+            expiryDate: string;
+        };
+        User: {
+            email: string;
+            displayName: string;
+            preferredName: string;
+            lastName?: string;
+            university: string;
+            about?: string;
+            /** @enum {string} */
+            role: "user" | "lab_manager" | "admin";
+            image?: string;
+        };
+        /** @description Make all properties in T optional */
+        Partial_User_: {
+            email?: string;
+            displayName?: string;
+            preferredName?: string;
+            lastName?: string;
+            university?: string;
+            about?: string;
+            /** @enum {string} */
+            role?: "user" | "lab_manager" | "admin";
+            image?: string;
+        };
+        CreateReagentRequest: {
+            name: string;
+            description?: string;
+            condition: string;
+            categories: components["schemas"]["ReagentCategory"][];
+            /** Format: double */
+            price?: number;
+            /** Format: double */
+            quantity: number;
+            unit: string;
+            expiryDate: string;
+            tradingType: components["schemas"]["ReagentTradingType"];
+            location: string;
+            images?: string[];
+            visibility?: components["schemas"]["ReagentVisibility"];
+            restricted: boolean;
+        };
+        /** @description Make all properties in T optional */
+        Partial_Reagent_: {
+            user_id?: string;
+            name?: string;
+            description?: string;
+            condition?: string;
+            /** Format: double */
+            price?: number;
+            /** Format: double */
+            quantity?: number;
+            expiryDate?: string;
+            tradingType?: components["schemas"]["ReagentTradingType"];
+            images?: string[];
+            categories?: components["schemas"]["ReagentCategory"][];
+            createdAt?: string;
+            createdAtReadable?: string;
+            location?: string;
+            unit?: string;
+            visibility?: components["schemas"]["ReagentVisibility"];
+            requesterOfferedReagentId?: string;
+            restricted?: boolean;
+        };
+        /** @description Construct a type with a set of properties K of type T */
+        "Record_string.Reagent-Array_": {
+            [key: string]: components["schemas"]["Reagent"][];
+        };
+        Order: {
+            requester_id: string;
+            reagent_id: string;
+            owner_id: string;
+            /** @enum {string} */
+            status: "pending" | "approved" | "canceled";
+            /** Format: date-time */
+            createdAt: string;
+            message?: string;
+            /** Format: double */
+            quantity?: number;
+            unit?: string;
+        };
+        CreateOrderRequest: {
+            reagent_id: string;
+            message?: string;
+            /** @enum {string} */
+            type: "order";
+            /** Format: double */
+            quantity?: number;
+            unit?: string;
+        };
+        Trade: {
+            requester_id: string;
+            reagent_id: string;
+            owner_id: string;
+            /** @enum {string} */
+            status: "pending" | "approved" | "canceled";
+            /** Format: date-time */
+            createdAt: string;
+            message?: string;
+            /** Format: double */
+            quantity?: number;
+            unit?: string;
+            /** Format: double */
+            price: number;
+        };
+        CreateTradeRequest: {
+            reagent_id: string;
+            message?: string;
+            /** Format: double */
+            price: number;
+            /** @enum {string} */
+            type: "trade";
+            /** Format: double */
+            quantity?: number;
+            unit?: string;
+        };
+        Exchange: {
+            requester_id: string;
+            reagent_id: string;
+            owner_id: string;
+            /** @enum {string} */
+            status: "pending" | "approved" | "canceled";
+            /** Format: date-time */
+            createdAt: string;
+            message?: string;
+            /** Format: double */
+            quantity?: number;
+            unit?: string;
+            offeredReagentId: string;
+        };
+        CreateExchangeRequest: {
+            reagent_id: string;
+            message?: string;
+            offeredReagentId: string;
+            /** Format: double */
+            quantity?: number;
+            /** @enum {string} */
+            type: "exchange";
+            unit?: string;
+        };
+        OrderWithReagent: {
+            requester_id: string;
+            reagent_id: string;
+            owner_id: string;
+            /** @enum {string} */
+            status: "pending" | "approved" | "canceled";
+            /** Format: date-time */
+            createdAt: string;
+            message?: string;
+            /** Format: double */
+            quantity?: number;
+            unit?: string;
+            id: string;
+            reagent?: components["schemas"]["Reagent"] | null;
+        };
+        Offer: {
+            requester_id: string;
+            reagent_id: string;
+            owner_id: string;
+            /** @enum {string} */
+            status: "pending" | "approved" | "canceled";
+            /** Format: date-time */
+            createdAt: string;
+            message?: string;
+            /** Format: double */
+            quantity?: number;
+            unit?: string;
+            offeredReagentId?: string;
+        };
+        CreateOfferRequest: {
+            reagent_id: string;
+            message?: string;
+            offeredReagentId: string;
+            /** Format: double */
+            quantity?: number;
+            /** @enum {string} */
+            type: "order";
+            unit?: string;
+        };
+        TradeOffer: {
+            requester_id: string;
+            reagent_id: string;
+            owner_id: string;
+            /** @enum {string} */
+            status: "pending" | "approved" | "canceled";
+            /** Format: date-time */
+            createdAt: string;
+            message?: string;
+            /** Format: double */
+            quantity?: number;
+            unit?: string;
+            offeredReagentId?: string;
+            /** Format: double */
+            price: number;
+        };
+        CreateOfferTradeRequest: {
+            reagent_id: string;
+            message?: string;
+            /** Format: double */
+            price: number;
+            offeredReagentId: string;
+            /** Format: double */
+            quantity?: number;
+            /** @enum {string} */
+            type: "trade";
+            unit?: string;
+        };
+        ChatRoom: {
+            id?: string;
+            user1_id: string;
+            user2_id: string;
+            /** Format: date-time */
+            created_at: string;
+            order_id?: string;
+            offer_id?: string;
+            reagent_id?: string;
+        };
+        Message: {
+            id?: string;
+            chat_room_id: string;
+            sender_id: string;
+            content: string;
+            /** Format: date-time */
+            created_at: string;
+        };
+        ChatRoomResponse: {
+            chat_room: components["schemas"]["ChatRoom"];
+            messages: components["schemas"]["Message"][];
+            other_user: {
+                email: string;
+                name: string;
+                id: string;
+            };
+            reagent_name?: string;
+        };
+        CreateChatRoomRequest: {
+            user1_id: string;
+            user2_id: string;
+            initial_message?: string;
+            order_id?: string;
+            offer_id?: string;
+            reagent_id?: string;
+        };
+        SendMessageRequest: {
+            chat_room_id: string;
+            sender_id: string;
+            content: string;
+        };
+        ConversationListResponse: {
+            conversations: components["schemas"]["ChatRoomResponse"][];
+        };
+        GoogleOAuthUser: {
+            uid: string;
+            email: string;
+            displayName?: string;
+            photoURL?: string;
+        };
+        GoogleOAuthResponse: {
+            success: boolean;
+            message: string;
+            token?: string;
+            user?: components["schemas"]["GoogleOAuthUser"];
+        };
+        GoogleOAuthRequest: {
+            idToken: string;
+        };
+        SendVerificationCodeResponse: {
+            success: boolean;
+            message: string;
+        };
+        SendVerificationCodeRequest: {
+            email: string;
+            /** @enum {string} */
+            purpose?: "signup" | "forgot-password";
+        };
+        VerifyCodeResponse: {
+            success: boolean;
+            message: string;
+        };
+        VerifyCodeRequest: {
+            email: string;
+            inputCode: string;
+        };
+        ResetPasswordResponse: {
+            success: boolean;
+            message: string;
+        };
+        ResetPasswordRequest: {
+            email: string;
+            newPassword: string;
+        };
+        VerifyTokenResponse: {
+            success: boolean;
+            message: string;
+            uid?: string;
+            email?: string;
+        };
+        VerifyTokenRequest: {
+            idToken: string;
+            preferredName?: string;
+            university?: string;
+        };
+        AuthDomainAllowedRoles: ("staff" | "student")[];
+        AuthDomain: {
+            emailDomains: string[];
+            institutionName: string;
+            allowedRoles: components["schemas"]["AuthDomainAllowedRoles"];
+        };
+        AddSignupEmailDomainRequest: {
+            institutionName: string;
+            emailDomains: string[];
+            allowedRoles: components["schemas"]["AuthDomainAllowedRoles"];
+        };
+    };
+    responses: never;
+    parameters: never;
+    requestBodies: never;
+    headers: never;
+    pathItems: never;
 }
-export type $defs = Record<string, never>
+export type $defs = Record<string, never>;
 export interface operations {
-  GetAllWantedReagents: {
-    parameters: {
-      query?: {
-        /** @description - The list of all categories to fetch wanted reagents from. */
-        category?: components["schemas"]["ReagentCategory"][]
-      }
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description All wanted reagents returned successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Reagent"][]
-        }
-      }
-    }
-  }
-  CreateWantedReagent: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateWantedRequest"]
-      }
-    }
-    responses: {
-      /** @description Wanted reagent created successfully */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Reagent"]
-        }
-      }
-    }
-  }
-  GetWantedReagentById: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description - The ID of the wanted reagent to retrieve. */
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Wanted reagents retrieved successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Reagent"]
-        }
-      }
-    }
-  }
-  UpdateUser: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description - The ID of the user to update */
-        id: string
-      }
-      cookie?: never
-    }
-    /** @description - The user information to update */
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["Partial_User_"]
-      }
-    }
-    responses: {
-      /** @description Ok */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["User"]
-        }
-      }
-    }
-  }
-  GetReagentsExpiringSoon: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description All reagents returned successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Reagent"][]
-        }
-      }
-    }
-  }
-  GetAllUsers: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Users retrieved successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["User"][]
-        }
-      }
-    }
-  }
-  GetReagents: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description All reagents returned successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Reagent"][]
-        }
-      }
-    }
-  }
-  CreateReagent: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** @description - the request object containing the data of the reagent (id generated by db) */
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateReagentRequest"]
-      }
-    }
-    responses: {
-      /** @description Reagent created successfully */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Reagent"]
-        }
-      }
-    }
-  }
-  GetUserById: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description - the id of the user to fetch */
-        user_id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description User retrieved successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["User"] | null
-        }
-      }
-    }
-  }
-  GetEmail: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        user_id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description User email retrieved successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": {
-            email: string
-          }
-        }
-      }
-    }
-  }
-  GetUser: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description - the ID of the user to retrieve */
-        user_id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description User information returned successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["User"]
-        }
-      }
-    }
-  }
-  GetReagentById: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description - The ID of the reagent to fetch */
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description reagent returned successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Reagent"] | null
-        }
-      }
-    }
-  }
-  DeleteReagentById: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description - The ID of the reagent to delete */
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description reagent deleted successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Reagent"] | null
-        }
-      }
-    }
-  }
-  UpdateReagent: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description - The ID of the reagent to update. */
-        id: string
-      }
-      cookie?: never
-    }
-    /** @description - The updated reagent data (partial fields allowed) */
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["Partial_Reagent_"]
-      }
-    }
-    responses: {
-      /** @description Reagent updated successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Reagent"]
-        }
-      }
-    }
-  }
-  GetReagentsByUserId: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description All reagents returned successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Reagent"][]
-        }
-      }
-    }
-  }
-  GetReagentsExpiringSoon: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description All reagents returned successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Record_string.Reagent-Array_"]
-        }
-      }
-    }
-  }
-  GetAllReagents: {
-    parameters: {
-      query?: {
-        /** @description - The list of all categories to fetch reagents from. */
-        category?: components["schemas"]["ReagentCategory"][]
-      }
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Reagents retrieved successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Reagent"][]
-        }
-      }
-    }
-  }
-  CreateReagent: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** @description - the request object containing the data of the reagent (id generated by db) */
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateReagentRequest"]
-      }
-    }
-    responses: {
-      /** @description Reagent created successfully */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Reagent"]
-        }
-      }
-    }
-  }
-  GetReagent: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description - The ID of the reagent to retrieve. */
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Reagent retrieved successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Reagent"]
-        }
-      }
-    }
-  }
-  DeleteReagent: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description - The ID of the reagent to delete. */
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Reagent deleted successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Reagent"]
-        }
-      }
-    }
-  }
-  UpdateReagent: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description - The ID of the reagent to update. */
-        id: string
-      }
-      cookie?: never
-    }
-    /** @description - The updated reagent data (partial fields allowed) */
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["Partial_Reagent_"]
-      }
-    }
-    responses: {
-      /** @description Reagent updated successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Reagent"]
-        }
-      }
-    }
-  }
-  TurnExpiredReagentsPrivate: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Reagent made private successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  GetOrders: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description All orders returned successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json":
-            | components["schemas"]["Order"][]
-            | components["schemas"]["Trade"][]
-            | components["schemas"]["Exchange"][]
-        }
-      }
-    }
-  }
-  CreateOrder: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateOrderRequest"]
-      }
-    }
-    responses: {
-      /** @description Order created successfully */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Order"]
-        }
-      }
-    }
-  }
-  CreateTrade: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateTradeRequest"]
-      }
-    }
-    responses: {
-      /** @description Trade created successfully */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Trade"]
-        }
-      }
-    }
-  }
-  CreateExchange: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateExchangeRequest"]
-      }
-    }
-    responses: {
-      /** @description Exchange created successfully */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Exchange"]
-        }
-      }
-    }
-  }
-  GetPendingOrdersWithReagents: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description All pending orders returned successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["OrderWithReagent"][]
-        }
-      }
-    }
-  }
-  GetOrderById: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description All orders returned successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json":
-            | components["schemas"]["Order"][]
-            | components["schemas"]["Trade"][]
-            | components["schemas"]["Exchange"][]
-        }
-      }
-    }
-  }
-  ApproveOrder: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description order successfully approved */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json":
-            | components["schemas"]["Order"]
-            | components["schemas"]["Trade"]
-            | components["schemas"]["Exchange"]
-        }
-      }
-    }
-  }
-  CancelOrder: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description order successfully canceled */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json":
-            | components["schemas"]["Order"]
-            | components["schemas"]["Trade"]
-            | components["schemas"]["Exchange"]
-        }
-      }
-    }
-  }
-  GetOffers: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description All offers returned successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Offer"][]
-        }
-      }
-    }
-  }
-  CreateOffer: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateOfferRequest"]
-      }
-    }
-    responses: {
-      /** @description Offer created successfully */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Offer"]
-        }
-      }
-    }
-  }
-  CreateTrade: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateOfferTradeRequest"]
-      }
-    }
-    responses: {
-      /** @description Trade created successfully */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["TradeOffer"]
-        }
-      }
-    }
-  }
-  GetOfferById: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description All offers returned successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json":
-            | components["schemas"]["Order"]
-            | components["schemas"]["Trade"]
-            | components["schemas"]["Exchange"]
-        }
-      }
-    }
-  }
-  ApproveOrder: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description order successfully approved */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json":
-            | components["schemas"]["Order"]
-            | components["schemas"]["Trade"]
-            | components["schemas"]["Exchange"]
-        }
-      }
-    }
-  }
-  CancelOrder: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description order successfully canceled */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json":
-            | components["schemas"]["Order"]
-            | components["schemas"]["Trade"]
-            | components["schemas"]["Exchange"]
-        }
-      }
-    }
-  }
-  CreateChatRoom: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateChatRoomRequest"]
-      }
-    }
-    responses: {
-      /** @description Ok */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["ChatRoomResponse"]
-        }
-      }
-    }
-  }
-  SendMessage: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["SendMessageRequest"]
-      }
-    }
-    responses: {
-      /** @description Ok */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["ChatRoomResponse"]
-        }
-      }
-    }
-  }
-  GetConversations: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        userId: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Ok */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["ConversationListResponse"]
-        }
-      }
-    }
-  }
-  GetChatRoomById: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        chatRoomId: string
-        userId: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Ok */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["ChatRoomResponse"]
-        }
-      }
-    }
-  }
-  VerifyToken: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["GoogleOAuthRequest"]
-      }
-    }
-    responses: {
-      /** @description Ok */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["GoogleOAuthResponse"]
-        }
-      }
-    }
-  }
-  SendExpiryNotifications: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Email notifications sent successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content?: never
-      }
-    }
-  }
-  SendVerificationCode: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["SendVerificationCodeRequest"]
-      }
-    }
-    responses: {
-      /** @description Ok */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["SendVerificationCodeResponse"]
-        }
-      }
-    }
-  }
-  VerifyCode: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["VerifyCodeRequest"]
-      }
-    }
-    responses: {
-      /** @description Ok */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["VerifyCodeResponse"]
-        }
-      }
-    }
-  }
-  ResetPassword: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["ResetPasswordRequest"]
-      }
-    }
-    responses: {
-      /** @description Ok */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["ResetPasswordResponse"]
-        }
-      }
-    }
-  }
-  VerifyToken: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["VerifyTokenRequest"]
-      }
-    }
-    responses: {
-      /** @description Ok */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["VerifyTokenResponse"]
-        }
-      }
-    }
-  }
-  GetValidEmailDomains: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Valid email domains retrieved successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": string[]
-        }
-      }
-    }
-  }
-  RemoveValidSignupEmailDomain: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        /** @description - the ID of the domain to delete */
-        domain_id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description Valid signup domain removed successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["AuthDomain"]
-        }
-      }
-    }
-  }
-  AddValidSignupEmailDomain: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AddSignupEmailDomainRequest"]
-      }
-    }
-    responses: {
-      /** @description Valid signup email domain added successfully */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["AuthDomain"]
-        }
-      }
-    }
-  }
+    GetAllWantedReagents: {
+        parameters: {
+            query?: {
+                /** @description - The list of all categories to fetch wanted reagents from. */
+                category?: components["schemas"]["ReagentCategory"][];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description All wanted reagents returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reagent"][];
+                };
+            };
+        };
+    };
+    CreateWantedReagent: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateWantedRequest"];
+            };
+        };
+        responses: {
+            /** @description Wanted reagent created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reagent"];
+                };
+            };
+        };
+    };
+    GetWantedReagentById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description - The ID of the wanted reagent to retrieve. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Wanted reagents retrieved successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reagent"];
+                };
+            };
+        };
+    };
+    UpdateUser: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description - The ID of the user to update */
+                id: string;
+            };
+            cookie?: never;
+        };
+        /** @description - The user information to update */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Partial_User_"];
+            };
+        };
+        responses: {
+            /** @description Ok */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["User"];
+                };
+            };
+        };
+    };
+    GetReagentsExpiringSoon: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description All reagents returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reagent"][];
+                };
+            };
+        };
+    };
+    GetAllUsers: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Users retrieved successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["User"][];
+                };
+            };
+        };
+    };
+    GetReagents: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description All reagents returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reagent"][];
+                };
+            };
+        };
+    };
+    CreateReagent: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description - the request object containing the data of the reagent (id generated by db) */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateReagentRequest"];
+            };
+        };
+        responses: {
+            /** @description Reagent created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reagent"];
+                };
+            };
+        };
+    };
+    GetUserById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description - the id of the user to fetch */
+                user_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User retrieved successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["User"] | null;
+                };
+            };
+        };
+    };
+    GetEmail: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                user_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User email retrieved successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        email: string;
+                    };
+                };
+            };
+        };
+    };
+    GetUser: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description - the ID of the user to retrieve */
+                user_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User information returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["User"];
+                };
+            };
+        };
+    };
+    GetReagentById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description - The ID of the reagent to fetch */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description reagent returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reagent"] | null;
+                };
+            };
+        };
+    };
+    DeleteReagentById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description - The ID of the reagent to delete */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description reagent deleted successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reagent"] | null;
+                };
+            };
+        };
+    };
+    UpdateReagent: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description - The ID of the reagent to update. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        /** @description - The updated reagent data (partial fields allowed) */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Partial_Reagent_"];
+            };
+        };
+        responses: {
+            /** @description Reagent updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reagent"];
+                };
+            };
+        };
+    };
+    GetReagentsByUserId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description All reagents returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reagent"][];
+                };
+            };
+        };
+    };
+    GetReagentsExpiringSoon: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description All reagents returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Record_string.Reagent-Array_"];
+                };
+            };
+        };
+    };
+    GetAllReagents: {
+        parameters: {
+            query?: {
+                /** @description - The list of all categories to fetch reagents from. */
+                category?: components["schemas"]["ReagentCategory"][];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Reagents retrieved successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reagent"][];
+                };
+            };
+        };
+    };
+    CreateReagent: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description - the request object containing the data of the reagent (id generated by db) */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateReagentRequest"];
+            };
+        };
+        responses: {
+            /** @description Reagent created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reagent"];
+                };
+            };
+        };
+    };
+    GetReagent: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description - The ID of the reagent to retrieve. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Reagent retrieved successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reagent"];
+                };
+            };
+        };
+    };
+    DeleteReagent: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description - The ID of the reagent to delete. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Reagent deleted successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reagent"];
+                };
+            };
+        };
+    };
+    UpdateReagent: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description - The ID of the reagent to update. */
+                id: string;
+            };
+            cookie?: never;
+        };
+        /** @description - The updated reagent data (partial fields allowed) */
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["Partial_Reagent_"];
+            };
+        };
+        responses: {
+            /** @description Reagent updated successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Reagent"];
+                };
+            };
+        };
+    };
+    TurnExpiredReagentsPrivate: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Reagent made private successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    GetOrders: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description All orders returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Order"][] | components["schemas"]["Trade"][] | components["schemas"]["Exchange"][];
+                };
+            };
+        };
+    };
+    CreateOrder: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateOrderRequest"];
+            };
+        };
+        responses: {
+            /** @description Order created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Order"];
+                };
+            };
+        };
+    };
+    CreateTrade: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateTradeRequest"];
+            };
+        };
+        responses: {
+            /** @description Trade created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Trade"];
+                };
+            };
+        };
+    };
+    CreateExchange: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateExchangeRequest"];
+            };
+        };
+        responses: {
+            /** @description Exchange created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Exchange"];
+                };
+            };
+        };
+    };
+    GetPendingOrdersWithReagents: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description All pending orders returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["OrderWithReagent"][];
+                };
+            };
+        };
+    };
+    GetOrderById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description All orders returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Order"][] | components["schemas"]["Trade"][] | components["schemas"]["Exchange"][];
+                };
+            };
+        };
+    };
+    ApproveOrder: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description order successfully approved */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Order"] | components["schemas"]["Trade"] | components["schemas"]["Exchange"];
+                };
+            };
+        };
+    };
+    CancelOrder: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description order successfully canceled */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Order"] | components["schemas"]["Trade"] | components["schemas"]["Exchange"];
+                };
+            };
+        };
+    };
+    GetOrderByReagentId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                reagent_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description order successfully fetched */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Order"] | components["schemas"]["Trade"] | components["schemas"]["Exchange"];
+                };
+            };
+        };
+    };
+    GetOffers: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description All offers returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Offer"][];
+                };
+            };
+        };
+    };
+    CreateOffer: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateOfferRequest"];
+            };
+        };
+        responses: {
+            /** @description Offer created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Offer"];
+                };
+            };
+        };
+    };
+    CreateTrade: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateOfferTradeRequest"];
+            };
+        };
+        responses: {
+            /** @description Trade created successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TradeOffer"];
+                };
+            };
+        };
+    };
+    GetOfferById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description All offers returned successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Order"] | components["schemas"]["Trade"] | components["schemas"]["Exchange"];
+                };
+            };
+        };
+    };
+    ApproveOrder: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description order successfully approved */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Order"] | components["schemas"]["Trade"] | components["schemas"]["Exchange"];
+                };
+            };
+        };
+    };
+    CancelOrder: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description order successfully canceled */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Order"] | components["schemas"]["Trade"] | components["schemas"]["Exchange"];
+                };
+            };
+        };
+    };
+    GetOfferByReagentId: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                reagent_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description offer successfully fetched */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["Offer"] | components["schemas"]["TradeOffer"];
+                };
+            };
+        };
+    };
+    CreateChatRoom: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateChatRoomRequest"];
+            };
+        };
+        responses: {
+            /** @description Ok */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChatRoomResponse"];
+                };
+            };
+        };
+    };
+    SendMessage: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SendMessageRequest"];
+            };
+        };
+        responses: {
+            /** @description Ok */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChatRoomResponse"];
+                };
+            };
+        };
+    };
+    GetConversations: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                userId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Ok */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ConversationListResponse"];
+                };
+            };
+        };
+    };
+    GetChatRoomById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                chatRoomId: string;
+                userId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Ok */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ChatRoomResponse"];
+                };
+            };
+        };
+    };
+    VerifyToken: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["GoogleOAuthRequest"];
+            };
+        };
+        responses: {
+            /** @description Ok */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["GoogleOAuthResponse"];
+                };
+            };
+        };
+    };
+    SendExpiryNotifications: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Email notifications sent successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    SendVerificationCode: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SendVerificationCodeRequest"];
+            };
+        };
+        responses: {
+            /** @description Ok */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["SendVerificationCodeResponse"];
+                };
+            };
+        };
+    };
+    VerifyCode: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VerifyCodeRequest"];
+            };
+        };
+        responses: {
+            /** @description Ok */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VerifyCodeResponse"];
+                };
+            };
+        };
+    };
+    ResetPassword: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResetPasswordRequest"];
+            };
+        };
+        responses: {
+            /** @description Ok */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResetPasswordResponse"];
+                };
+            };
+        };
+    };
+    VerifyToken: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["VerifyTokenRequest"];
+            };
+        };
+        responses: {
+            /** @description Ok */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["VerifyTokenResponse"];
+                };
+            };
+        };
+    };
+    GetValidEmailDomains: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Valid email domains retrieved successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": string[];
+                };
+            };
+        };
+    };
+    RemoveValidSignupEmailDomain: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description - the ID of the domain to delete */
+                domain_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Valid signup domain removed successfully */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthDomain"];
+                };
+            };
+        };
+    };
+    AddValidSignupEmailDomain: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AddSignupEmailDomainRequest"];
+            };
+        };
+        responses: {
+            /** @description Valid signup email domain added successfully */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AuthDomain"];
+                };
+            };
+        };
+    };
 }
