@@ -853,6 +853,15 @@
 					"created_at": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"order_id": {
+						"type": "string"
+					},
+					"offer_id": {
+						"type": "string"
+					},
+					"reagent_id": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -920,6 +929,9 @@
 							"id"
 						],
 						"type": "object"
+					},
+					"reagent_name": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -939,6 +951,15 @@
 						"type": "string"
 					},
 					"initial_message": {
+						"type": "string"
+					},
+					"order_id": {
+						"type": "string"
+					},
+					"offer_id": {
+						"type": "string"
+					},
+					"reagent_id": {
 						"type": "string"
 					}
 				},

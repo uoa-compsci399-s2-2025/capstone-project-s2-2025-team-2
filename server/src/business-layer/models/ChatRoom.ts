@@ -3,6 +3,9 @@ export interface ChatRoom {
   user1_id: string
   user2_id: string
   created_at: Date
+  order_id?: string 
+  offer_id?: string 
+  reagent_id?: string 
 }
 
 export interface Message {
