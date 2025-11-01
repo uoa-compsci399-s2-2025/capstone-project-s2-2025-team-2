@@ -9,7 +9,6 @@ export function expressAuthentication(
   securityName: string,
   scopes?: string[],
 ) {
-  console.log("ray is gay")
   if (securityName === "jwt") {
     const authHeader = String(request.headers.authorization || "")
 
