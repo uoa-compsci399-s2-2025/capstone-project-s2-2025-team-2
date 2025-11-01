@@ -65,38 +65,29 @@ export const verifyToken = async (
   preferredName?: string,
   university?: string,
 ): Promise<any> => {
-  try {
-    // Get ID token from Firebase Auth
-    const idToken = await getIdToken()
+  // Get ID token from Firebase Auth
+  const idToken = await getIdToken()
 
-    if (!idToken) {
-      throw new Error("No ID token available")
-    }
-
-    // Call backend to verify token and save/verify user in Firestore
-    const requestBody: VerifyTokenRequestDto = {
-      idToken,
-      preferredName,
-      university,
-    }
-
-    console.log("Sending verify token request:", requestBody)
-
-    const response = await client.POST(VERIFY_TOKEN_URL, {
-      body: requestBody,
-    })
-
-    console.log("Token verification response:", response.data)
-
-    if (response.error) {
-      throw new Error("Token verification failed")
-    }
-
-    return response.data
-  } catch (error) {
-    console.error("Error verifying token:", error)
-    throw error
+  if (!idToken) {
+    throw new Error("No ID token available")
   }
+
+  // Call backend to verify token and save/verify user in Firestore
+  const requestBody: VerifyTokenRequestDto = {
+    idToken,
+    preferredName,
+    university,
+  }
+
+  const response = await client.POST(VERIFY_TOKEN_URL, {
+    body: requestBody,
+  })
+
+  if (response.error) {
+    throw new Error("Token verification failed")
+  }
+
+  return response.data
 }
 
 export const resetPassword = async (

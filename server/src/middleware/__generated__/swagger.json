@@ -1060,6 +1060,13 @@
 				"properties": {
 					"email": {
 						"type": "string"
+					},
+					"purpose": {
+						"type": "string",
+						"enum": [
+							"signup",
+							"forgot-password"
+						]
 					}
 				},
 				"required": [

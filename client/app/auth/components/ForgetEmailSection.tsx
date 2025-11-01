@@ -48,9 +48,18 @@ export default function ForgetEmailSection({
   //            function: onVerifyEmail           //
   const onClickSendVerificationCode = () => {
     setNotificationState("sending")
-    const requestBody: SendVerificationCodeRequestDto = { email }
-    console.log("Sending verification code to:", email)
-    sendVerificationCode(requestBody).then(handleSendVerificationCodeResponse)
+    const requestBody: SendVerificationCodeRequestDto = {
+      email,
+      purpose: "forgot-password",
+    }
+
+    sendVerificationCode(requestBody)
+      .then((response) => {
+        handleSendVerificationCodeResponse(response)
+      })
+      .catch(() => {
+        setNotificationState("sending-fail")
+      })
   }
 
   //            function: handleSendVerificationCodeResponse           //
@@ -58,10 +67,8 @@ export default function ForgetEmailSection({
     response: SendVerificationCodeResponseDto,
   ) => {
     if (response.success) {
-      console.log("Verification code sent successfully")
       setNotificationState("sent")
     } else {
-      console.log("Failed to send verification code")
       setNotificationState("sending-fail")
     }
   }
@@ -72,7 +79,6 @@ export default function ForgetEmailSection({
       email,
       inputCode: verificationCode,
     }
-    console.log("Verifying code for:", email)
     verifyCode(requestBody).then(handleValidateCodeResponse)
   }
 

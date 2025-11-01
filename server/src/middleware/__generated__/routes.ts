@@ -401,6 +401,7 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "email": {"dataType":"string","required":true},
+            "purpose": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["signup"]},{"dataType":"enum","enums":["forgot-password"]}]},
         },
         "additionalProperties": false,
     },

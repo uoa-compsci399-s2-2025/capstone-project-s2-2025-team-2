@@ -24,41 +24,97 @@ export default class AuthService {
 
   public async sendVerificationCode(
     email: string,
+    purpose: "signup" | "forgot-password" = "signup",
   ): Promise<SendVerificationCodeResponse> {
+    console.log("=== Auth Service: sendVerificationCode Started ===")
+    console.log("Email parameter:", email)
+    console.log("Purpose:", purpose)
+
     try {
       // Check if user already exists in Firebase Auth
+      console.log("Checking if user exists in Firebase Auth...")
       try {
-        await auth.getUserByEmail(email)
-        // User exists, return error response
-        const responseBody: SendVerificationCodeResponse = {
-          success: false,
-          message: "This email is already registered. Please sign in instead.",
+        const user = await auth.getUserByEmail(email)
+        console.log("User found in Firebase Auth:", user.uid)
+
+        // For signup: user should NOT exist (return error)
+        // For forgot-password: user SHOULD exist (continue)
+        if (purpose === "signup") {
+          const responseBody: SendVerificationCodeResponse = {
+            success: false,
+            message:
+              "This email is already registered. Please sign in instead.",
+          }
+          console.log(
+            "Returning error response (user exists for signup):",
+            responseBody,
+          )
+          return responseBody
+        } else {
+          // For forgot-password, user exists is expected and correct
+          console.log(
+            "User exists (expected for forgot-password), continuing...",
+          )
         }
-        return responseBody
       } catch (error: any) {
-        // User doesn't exist (auth/user-not-found is expected)
+        console.log("User check error:", error)
+        console.log("Error code:", error.code)
+        // User doesn't exist (auth/user-not-found)
         if (error.code !== "auth/user-not-found") {
           // Other error occurred
-          console.error("Error checking user existence:", error)
+          console.error("Unexpected error checking user existence:", error)
           throw new Error("Failed to check user existence")
         }
+
+        // For signup: user not found is expected (continue)
+        // For forgot-password: user not found is an error
+        if (purpose === "forgot-password") {
+          const responseBody: SendVerificationCodeResponse = {
+            success: false,
+            message: "This email is not registered. Please sign up instead.",
+          }
+          console.log(
+            "Returning error response (user not found for forgot-password):",
+            responseBody,
+          )
+          return responseBody
+        }
+        console.log("User not found (expected for signup)")
       }
 
       // Generate verification code
+      console.log("Generating verification code...")
       const verificationCode = generateVerificationCode()
+      console.log("Verification code generated:", verificationCode)
+
+      console.log("Saving verification code to repository...")
       await this.authRepository.saveVerificationCode(email, verificationCode)
+      console.log("Verification code saved successfully")
 
       // Send verification code via email
+      console.log("Sending verification email...")
       await this.emailService.sendVerificationEmail(email, verificationCode)
+      console.log("Verification email sent successfully")
 
       // Return response
       const responseBody: SendVerificationCodeResponse = {
         success: true,
         message: "Verification code sent successfully",
       }
+      console.log("Returning success response:", responseBody)
       return responseBody
     } catch (err) {
-      console.error("Error sending verification code:", err)
+      console.error("=== Auth Service: Error in sendVerificationCode ===")
+      console.error("Error type:", err?.constructor?.name)
+      console.error(
+        "Error message:",
+        err instanceof Error ? err.message : String(err),
+      )
+      console.error(
+        "Error stack:",
+        err instanceof Error ? err.stack : undefined,
+      )
+      console.error("Full error:", err)
       throw new Error("Failed to send verification code")
     }
   }
