@@ -50,6 +50,8 @@ export class OrderService {
         user1_id: user_id,
         user2_id: reagent.user_id,
         initial_message: requestBody.message,
+        order_id: createdOrder.id,
+        reagent_id: requestBody.reagent_id,
       })
     } catch (error) {
       console.error("Error creating chat room for order:", error)
@@ -94,6 +96,8 @@ export class OrderService {
         user1_id: user_id,
         user2_id: reagent.user_id,
         initial_message: requestBody.message,
+        order_id: createdTrade.id,
+        reagent_id: requestBody.reagent_id,
       })
     } catch (error) {
       console.error("Error creating chat room for order:", error)
@@ -141,6 +145,8 @@ export class OrderService {
         user1_id: user_id,
         user2_id: reagent.user_id,
         initial_message: requestBody.message,
+        order_id: createdExchange.id,
+        reagent_id: requestBody.reagent_id,
       })
     } catch (error) {
       console.error("Error creating chat room for order:", error)
