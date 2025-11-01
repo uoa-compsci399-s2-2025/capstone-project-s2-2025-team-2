@@ -16,6 +16,10 @@ export type AuthNotificationState =
   | "signing-in"
   | "login-success"
   | "login-fail"
+  | "forget-password-success"
+  | "forget-password-fail"
+  | "setting-forget-password"
+  | "google-oauth-password-reset-not-allowed"
   | "email-already-exists"
 
 // type: NotificationType
@@ -131,6 +135,28 @@ const getNotificationConfig = (
       return {
         type: "error",
         message: "Login failed. Please check your credentials and try again.",
+      }
+    case "forget-password-success":
+      return {
+        type: "success",
+        message:
+          "Password reset successfully! You can now sign in with your new password.",
+      }
+    case "forget-password-fail":
+      return {
+        type: "error",
+        message: "Password reset failed. Please try again.",
+      }
+    case "setting-forget-password":
+      return {
+        type: "info",
+        message: "Setting your new password...",
+      }
+    case "google-oauth-password-reset-not-allowed":
+      return {
+        type: "error",
+        message:
+          "Google sign-in users cannot change their password in CoLab. Please use Google to manage your account.",
       }
     case "email-already-exists":
       return {

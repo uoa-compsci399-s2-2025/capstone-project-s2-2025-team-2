@@ -4,6 +4,8 @@ import SendVerificationCodeResponseDto from "../models/response-models/SendVerif
 import VerifyCodeRequestDto from "../models/request-models/VerifyCodeRequestDto"
 import VerifyCodeResponseDto from "../models/response-models/VerifyCodeResponseDto"
 import VerifyTokenRequestDto from "../models/request-models/VerifyTokenRequestDto"
+import ResetPasswordRequestDto from "../models/request-models/ResetPasswordRequestDto"
+import ResetPasswordResponseDto from "../models/response-models/ResetPasswordResponseDto"
 import client from "./fetch-client"
 import GoogleOAuthResponseDto from "../models/response-models/GoogleOAuthResponseDto"
 import { getIdToken } from "./firebase-auth"
@@ -14,6 +16,7 @@ const VERIFY_GOOGLE_OAUTH_URL = `${AUTH_BASE}/google/verify`
 const SEND_VERIFICATION_CODE_URL = `${AUTH_BASE}/send-verification-code`
 const VERIFY_CODE_URL = `${AUTH_BASE}/verify-code`
 const VERIFY_TOKEN_URL = `${AUTH_BASE}/verify-token`
+const RESET_PASSWORD_URL = `${AUTH_BASE}/reset-password`
 
 export const oauthVerify = async (
   requestBody: GoogleOAuthRequestDto,
@@ -62,36 +65,41 @@ export const verifyToken = async (
   preferredName?: string,
   university?: string,
 ): Promise<any> => {
-  try {
-    // Get ID token from Firebase Auth
-    const idToken = await getIdToken()
+  // Get ID token from Firebase Auth
+  const idToken = await getIdToken()
 
-    if (!idToken) {
-      throw new Error("No ID token available")
-    }
-
-    // Call backend to verify token and save/verify user in Firestore
-    const requestBody: VerifyTokenRequestDto = {
-      idToken,
-      preferredName,
-      university,
-    }
-
-    console.log("Sending verify token request:", requestBody)
-
-    const response = await client.POST(VERIFY_TOKEN_URL, {
-      body: requestBody,
-    })
-
-    console.log("Token verification response:", response.data)
-
-    if (response.error) {
-      throw new Error("Token verification failed")
-    }
-
-    return response.data
-  } catch (error) {
-    console.error("Error verifying token:", error)
-    throw error
+  if (!idToken) {
+    throw new Error("No ID token available")
   }
+
+  // Call backend to verify token and save/verify user in Firestore
+  const requestBody: VerifyTokenRequestDto = {
+    idToken,
+    preferredName,
+    university,
+  }
+
+  const response = await client.POST(VERIFY_TOKEN_URL, {
+    body: requestBody,
+  })
+
+  if (response.error) {
+    throw new Error("Token verification failed")
+  }
+
+  return response.data
+}
+
+export const resetPassword = async (
+  requestBody: ResetPasswordRequestDto,
+): Promise<ResetPasswordResponseDto> => {
+  const response = await client.POST(RESET_PASSWORD_URL, {
+    body: requestBody,
+  })
+
+  if (response.error) {
+    throw new Error("Password reset failed")
+  }
+
+  return response.data
 }

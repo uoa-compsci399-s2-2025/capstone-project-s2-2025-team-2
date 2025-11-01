@@ -3,43 +3,93 @@
 import Button from "../../components/generic/button/regular/Button"
 import DisabledButton from "../../components/generic/button/disabled/DisabledButton"
 
-import AuthText from "../../components/auth/AuthText"
-import AuthLink from "../../components/auth/AuthLink"
 import { useEffect, useState } from "react"
 import { useEmailValidation } from "../../hooks/useSignupEmailValidation"
+import SendVerificationCodeRequestDto from "../../models/request-models/SendVerificationCodeRequestDto"
+import SendVerificationCodeResponseDto from "../../models/response-models/SendVerificationCodeResponseDto"
+import { sendVerificationCode, verifyCode } from "../../services/auth"
+import VerifyCodeRequestDto from "../../models/request-models/VerifyCodeRequestDto"
+import VerifyCodeResponseDto from "../../models/response-models/VerifyCodeResponseDto"
+import AuthNotificationBox, {
+  AuthNotificationState,
+} from "./AuthNotificationBox"
 
-interface SignUpEmailSectionProps {
-  email: string
-  verificationCode: string
-  isEmailValid: boolean
-  isVerificationSuccess: boolean
-  onEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onVerificationCodeChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onVerifyEmail: () => void
-  onNextStep: () => void
+interface ForgetEmailSectionProps {
+  onNextStep: (email: string, verificationCode: string) => void
   onSignInClick: () => void
-  onValidateCode: () => void
 }
 
-//            function: SignUpEmailSection           //
-export default function SignUpEmailSection({
-  email,
-  verificationCode,
-  isEmailValid,
-  isVerificationSuccess,
-  onEmailChange,
-  onVerificationCodeChange,
-  onVerifyEmail,
+//            function: ForgetEmailSection           //
+export default function ForgetEmailSection({
   onNextStep,
-  onSignInClick,
-  onValidateCode,
-}: SignUpEmailSectionProps) {
+}: ForgetEmailSectionProps) {
+  //            state           //
+  const [email, setEmail] = useState("")
+  const [verificationCode, setVerificationCode] = useState("")
+  const [isEmailValid, setIsEmailValid] = useState(false)
   const [isVerificationCodeValid, setIsVerificationCodeValid] = useState(false)
+  const [notificationState, setNotificationState] =
+    useState<AuthNotificationState>("not-displaying")
   const {
     validateEmail,
     isValid: isUserEmailDomainValid,
     errorMessage: emailDomainErrorMessage,
   } = useEmailValidation()
+
+  //            function: handleEmailChange           //
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const emailValue = e.target.value
+    setEmail(emailValue)
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    setIsEmailValid(emailRegex.test(emailValue))
+  }
+
+  //            function: onVerifyEmail           //
+  const onClickSendVerificationCode = () => {
+    setNotificationState("sending")
+    const requestBody: SendVerificationCodeRequestDto = {
+      email,
+      purpose: "forgot-password",
+    }
+
+    sendVerificationCode(requestBody)
+      .then((response) => {
+        handleSendVerificationCodeResponse(response)
+      })
+      .catch(() => {
+        setNotificationState("sending-fail")
+      })
+  }
+
+  //            function: handleSendVerificationCodeResponse           //
+  const handleSendVerificationCodeResponse = (
+    response: SendVerificationCodeResponseDto,
+  ) => {
+    if (response.success) {
+      setNotificationState("sent")
+    } else {
+      setNotificationState("sending-fail")
+    }
+  }
+
+  //            function: onClickVerifyCode           //
+  const onClickValidateCode = () => {
+    const requestBody: VerifyCodeRequestDto = {
+      email,
+      inputCode: verificationCode,
+    }
+    verifyCode(requestBody).then(handleValidateCodeResponse)
+  }
+
+  //            function: handleVerifyCodeResponse           //
+  const handleValidateCodeResponse = (response: VerifyCodeResponseDto) => {
+    if (response.success) {
+      setNotificationState("validated")
+    } else {
+      setNotificationState("validation-fail")
+    }
+  }
 
   useEffect(() => {
     if (verificationCode.length >= 4) {
@@ -54,9 +104,11 @@ export default function SignUpEmailSection({
     if (email) validateEmail(email)
   }, [email, validateEmail])
 
-  //            render: SignUpEmailSection           //
+  //            render: ForgetEmailSection           //
   return (
     <div className="flex flex-col flex-1 justify-between">
+      <AuthNotificationBox state={notificationState} />
+
       {/* Email Input and Verify Button */}
       <div className="space-y-4">
         <div>
@@ -74,7 +126,7 @@ export default function SignUpEmailSection({
                 type="email"
                 required
                 value={email}
-                onChange={onEmailChange}
+                onChange={handleEmailChange}
                 className={`flex-1 w-full px-3 py-2 border rounded-md shadow-sm placeholder-secondary bg-primary text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-blue-primary transition-colors ${
                   email && !isUserEmailDomainValid
                     ? "border-red-500"
@@ -85,7 +137,7 @@ export default function SignUpEmailSection({
                 placeholder="Enter your email"
               />
             </div>
-            {!isEmailValid || !isUserEmailDomainValid ? (
+            {email.length === 0 ? (
               <DisabledButton
                 label="Verify"
                 textSize="text-sm"
@@ -93,7 +145,7 @@ export default function SignUpEmailSection({
               />
             ) : (
               <Button
-                onClick={onVerifyEmail}
+                onClick={onClickSendVerificationCode}
                 label="Verify"
                 textSize="text-sm"
                 className={`!w-[92px] flex justify-center items-center`}
@@ -130,7 +182,7 @@ export default function SignUpEmailSection({
                 type="text"
                 required
                 value={verificationCode}
-                onChange={onVerificationCodeChange}
+                onChange={(e) => setVerificationCode(e.target.value)}
                 className="flex-1 w-full px-3 py-2 border border-muted rounded-md shadow-sm placeholder-secondary bg-primary text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-blue-primary transition-colors"
                 placeholder="Enter your verification code"
               />
@@ -143,7 +195,7 @@ export default function SignUpEmailSection({
               />
             ) : (
               <Button
-                onClick={onValidateCode}
+                onClick={onClickValidateCode}
                 label="Validate"
                 textSize="text-sm"
                 className={`!w-[92px] flex justify-center items-center`}
@@ -156,9 +208,7 @@ export default function SignUpEmailSection({
       <div className="mt-auto space-y-6">
         {/* Next Step Button */}
         <div className="flex justify-center w-full">
-          {!isVerificationSuccess ||
-          !isEmailValid ||
-          !isUserEmailDomainValid ? (
+          {notificationState !== "validated" || !isEmailValid ? (
             <DisabledButton
               label="Next Page"
               textSize="text-sm"
@@ -169,17 +219,11 @@ export default function SignUpEmailSection({
               type="button"
               label="Next Page"
               textSize="text-sm"
-              onClick={onNextStep}
-              className="justify-center w-full"
+              onClick={() => onNextStep(email, verificationCode)}
+              className="flex justify-center items-center w-full"
             />
           )}
         </div>
-
-        {/* Sign In Link */}
-        <AuthText className="text-center">
-          Already have an account?{" "}
-          <AuthLink onClick={onSignInClick}>Sign in</AuthLink>
-        </AuthText>
       </div>
     </div>
   )

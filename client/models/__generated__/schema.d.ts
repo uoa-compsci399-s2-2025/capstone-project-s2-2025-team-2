@@ -59,6 +59,24 @@ export interface paths {
     patch: operations["UpdateUser"]
     trace?: never
   }
+  "/users/{id}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    /** @description Update user information by their ID
+     *     User **must** be authenticated to access this endpoint */
+    patch: operations["UpdateUser"]
+    trace?: never
+  }
   "/users/reagents/expiring": {
     parameters: {
       query?: never
@@ -601,6 +619,22 @@ export interface paths {
     patch?: never
     trace?: never
   }
+  "/auth/reset-password": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    get?: never
+    put?: never
+    post: operations["ResetPassword"]
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   "/auth/verify-token": {
     parameters: {
       query?: never
@@ -981,6 +1015,14 @@ export interface components {
     VerifyCodeRequest: {
       email: string
       inputCode: string
+    }
+    ResetPasswordResponse: {
+      success: boolean
+      message: string
+    }
+    ResetPasswordRequest: {
+      email: string
+      newPassword: string
     }
     VerifyTokenResponse: {
       success: boolean
@@ -2032,6 +2074,30 @@ export interface operations {
         }
         content: {
           "application/json": components["schemas"]["VerifyCodeResponse"]
+        }
+      }
+    }
+  }
+  ResetPassword: {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    requestBody: {
+      content: {
+        "application/json": components["schemas"]["ResetPasswordRequest"]
+      }
+    }
+    responses: {
+      /** @description Ok */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json": components["schemas"]["ResetPasswordResponse"]
         }
       }
     }

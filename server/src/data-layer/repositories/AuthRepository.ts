@@ -96,4 +96,29 @@ export class AuthRepository {
       throw new Error(`Failed to get valid signup email domains: ${err}`)
     }
   }
+
+  async getUserByEmail(email: string): Promise<any> {
+    try {
+      const snapshot = await db
+        .collection("users")
+        .where("email", "==", email)
+        .get()
+      if (snapshot.empty) {
+        return null
+      }
+      return snapshot.docs[0].data()
+    } catch (err) {
+      console.error("Error getting user by email:", err)
+      throw new Error(`Failed to get user by email: ${err}`)
+    }
+  }
+
+  async deleteVerificationCode(email: string): Promise<void> {
+    try {
+      await db.collection("verificationCodes").doc(email).delete()
+    } catch (err) {
+      console.error("Error deleting verification code:", err)
+      throw new Error(`Failed to delete verification code: ${err}`)
+    }
+  }
 }

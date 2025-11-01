@@ -24,6 +24,8 @@ import { VerifyTokenResponse } from "../../service-layer/dtos/response/VerifyTok
 import { AuthDomain } from "../../business-layer/models/AuthDomain"
 import { AuthRequest } from "../../service-layer/dtos/request/AuthRequest"
 import { AddSignupEmailDomainRequest } from "../../service-layer/dtos/request/SignupEmailDomainRequest"
+import { ResetPasswordRequest } from "../../service-layer/dtos/request/ResetPasswordRequest"
+import { ResetPasswordResponse } from "../../service-layer/dtos/response/ResetPasswordResponse"
 
 @Route("auth")
 @Tags("Authentication")
@@ -38,10 +40,33 @@ export class AuthController extends Controller {
   public async sendVerificationCode(
     @Body() requestBody: SendVerificationCodeRequest,
   ): Promise<SendVerificationCodeResponse> {
-    const result = await this.authService.sendVerificationCode(
-      requestBody.email,
-    )
-    return result
+    console.log("=== Auth Controller: sendVerificationCode Request ===")
+    console.log("Request body received:", requestBody)
+    console.log("Email from request:", requestBody.email)
+    console.log("Purpose from request:", requestBody.purpose)
+
+    try {
+      const result = await this.authService.sendVerificationCode(
+        requestBody.email,
+        requestBody.purpose || "signup",
+      )
+      console.log("Auth Service returned:", result)
+      console.log("Returning response to client")
+      return result
+    } catch (error) {
+      console.error("=== Auth Controller: Error in sendVerificationCode ===")
+      console.error("Error type:", error?.constructor?.name)
+      console.error(
+        "Error message:",
+        error instanceof Error ? error.message : String(error),
+      )
+      console.error(
+        "Error stack:",
+        error instanceof Error ? error.stack : undefined,
+      )
+      console.error("Full error:", error)
+      throw error
+    }
   }
 
   @Post("/verify-code")
@@ -51,6 +76,17 @@ export class AuthController extends Controller {
     const result = await this.authService.verifyCode(
       requestBody.email,
       requestBody.inputCode,
+    )
+    return result
+  }
+
+  @Post("/reset-password")
+  public async resetPassword(
+    @Body() requestBody: ResetPasswordRequest,
+  ): Promise<ResetPasswordResponse> {
+    const result = await this.authService.resetPassword(
+      requestBody.email,
+      requestBody.newPassword,
     )
     return result
   }

@@ -68,7 +68,10 @@ export default function SignUpBox({
   //            function: onVerifyEmail           //
   const onClickSendVerificationCode = () => {
     setNotificationState("sending")
-    const requestBody: SendVerificationCodeRequestDto = { email }
+    const requestBody: SendVerificationCodeRequestDto = {
+      email,
+      purpose: "signup",
+    }
     console.log("Sending verification code to:", email)
     sendVerificationCode(requestBody)
       .then(handleSendVerificationCodeResponse)
