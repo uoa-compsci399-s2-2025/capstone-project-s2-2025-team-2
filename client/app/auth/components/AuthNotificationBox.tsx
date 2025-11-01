@@ -20,6 +20,7 @@ export type AuthNotificationState =
   | "forget-password-fail"
   | "setting-forget-password"
   | "google-oauth-password-reset-not-allowed"
+  | "email-already-exists"
 
 // type: NotificationType
 type NotificationType = "info" | "success" | "error"
@@ -156,6 +157,11 @@ const getNotificationConfig = (
         type: "error",
         message:
           "Google sign-in users cannot change their password in CoLab. Please use Google to manage your account.",
+      }
+    case "email-already-exists":
+      return {
+        type: "error",
+        message: "This email is already registered. Please sign in instead.",
       }
     default:
       return {

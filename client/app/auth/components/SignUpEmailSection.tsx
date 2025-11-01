@@ -144,7 +144,7 @@ export default function SignUpEmailSection({
                 onClick={onValidateCode}
                 label="Validate"
                 textSize="text-sm"
-                className={`!w-[92px]`}
+                className={`!w-[92px] flex justify-center items-center`}
               />
             )}
           </div>

@@ -100,7 +100,6 @@ export default function SignInBox({
         uid: response.uid,
         email: response.email,
       })
-
       // Store ID token in localStorage
       try {
         const idToken = await getIdToken()

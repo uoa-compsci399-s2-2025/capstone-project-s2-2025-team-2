@@ -20,15 +20,36 @@ type OrderWithId = Order & {
   offeredReagentId?: string
 }
 type Reagent = components["schemas"]["Reagent"]
-type ReagentWithId = Reagent & { id: string }
+type ReagentWithId = Reagent & {
+  id: string
+  requesterOfferedReagentId?: string
+}
+interface EnrichedWantedReagent {
+  id: string
+  name: string
+  description: string
+  createdAt: string
+  createdAtReadable: string
+  user_id: string
+  price?: number
+  categories: any[]
+  tradingType: string
+  location: string
+  expiryDate: string
+  requesterInfo?: any
+  offeredReagentName?: string | null
+  requesterOfferedReagentId?: string
+}
 
 interface OrderDetailsModalProps {
   isOpen: boolean
   onClose: () => void
-  order: OrderWithId
-  reagent: ReagentWithId
+  order: OrderWithId | any
+  reagent: ReagentWithId | EnrichedWantedReagent
   offeredReagent?: ReagentWithId
   onApprove?: (orderId: string) => void
+  onDecline?: (orderId: string) => void
+  isOfferDetails?: boolean
 }
 
 const TRADING_CONFIG = {
@@ -89,21 +110,46 @@ const DetailRow = ({
 const ReagentDetails = ({
   title,
   reagent,
+  offerDetails = false,
+  requesterOfferedReagentName,
+  offerPrice: price,
 }: {
   title: string
   reagent: any
+  offerDetails?: boolean
+  requesterOfferedReagentName?: string | null
+  offerPrice?: string | number
 }) => (
   <div className="bg-primary/80 backdrop-blur-sm rounded-2xl p-6 border border-muted shadow-xl w-fit min-w-[300px] h-fit">
     <h3 className="text-white text-lg font-medium mb-4">{title}</h3>
     <div className="space-y-3">
       <DetailRow label="Name" value={reagent?.name} truncate />
-      <DetailRow label="Condition" value={reagent?.condition} />
-      <DetailRow
-        label="Quantity"
-        value={`${reagent?.quantity} ${reagent?.unit}`}
-      />
-      <DetailRow label="Expiry" value={reagent?.expiryDate} />
+      {!offerDetails && (
+        <>
+          <DetailRow label="Condition" value={reagent?.condition} />
+          <DetailRow
+            label="Quantity"
+            value={`${reagent?.quantity} ${reagent?.unit}`}
+          />
+          <DetailRow label="Expiry" value={reagent?.expiryDate} />
+        </>
+      )}
+      {reagent.requesterOfferedReagentId && (
+        <>
+          <DetailRow
+            label="Your Offered Reagent"
+            value={
+              requesterOfferedReagentName ?? reagent.requesterOfferedReagentId
+            }
+            truncate
+          />
+        </>
+      )}
+
       <DetailRow label="Location" value={reagent?.location} truncate />
+      {offerDetails && reagent.price > 0 && (
+        <DetailRow label="Offered Price" value={`$${price}`} />
+      )}
       {reagent?.categories?.length > 0 && (
         <div className="flex flex-wrap gap-1 mt-4">
           {reagent.categories.map((cat: string) => (
@@ -127,22 +173,31 @@ export default function OrderDetailsModal({
   reagent,
   offeredReagent: testOfferedReagent,
   onApprove,
+  onDecline,
+  isOfferDetails = false,
 }: OrderDetailsModalProps) {
   const currentUserId = auth?.currentUser?.uid
   const isOwner = currentUserId === order?.owner_id
   const [approving, setApproving] = useState(false)
+  const [declining, setDeclining] = useState(false)
   const [approved, setApproved] = useState(false)
+  const [declined, setDeclined] = useState(false)
 
   const { data: requesterData } = useFetch<any>(
     order.requester_id ? `/users/${order.requester_id}` : null,
     isOpen,
   )
 
+  const { data: fetchedRequesterOfferedReagent } = useFetch<any>(
+    reagent.tradingType === "trade" && reagent.requesterOfferedReagentId
+      ? `/reagents/${reagent.requesterOfferedReagentId}`
+      : null,
+    isOpen,
+  )
+
   const { data: fetchedOfferedReagent, loading: offeredReagentLoading } =
     useFetch<any>(
-      reagent.tradingType === "trade" &&
-        order.offeredReagentId &&
-        !testOfferedReagent
+      order.offeredReagentId && !testOfferedReagent
         ? `/reagents/${order.offeredReagentId}`
         : null,
       isOpen,
@@ -150,7 +205,7 @@ export default function OrderDetailsModal({
 
   const offeredReagent = testOfferedReagent || fetchedOfferedReagent
   const isTradeLoading =
-    reagent.tradingType === "trade" &&
+    (reagent.tradingType === "trade" || isOfferDetails) &&
     !testOfferedReagent &&
     (offeredReagentLoading ||
       (!fetchedOfferedReagent && !!order.offeredReagentId))
@@ -159,9 +214,15 @@ export default function OrderDetailsModal({
     setApproving(true)
     try {
       const token = localStorage.getItem("authToken")
-      await client.PATCH(`/orders/${order.id}/approve` as any, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      if (isOfferDetails) {
+        await client.PATCH(`/offers/${order.id}/approve` as any, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+      } else {
+        await client.PATCH(`/orders/${order.id}/approve` as any, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+      }
       toast("Request approved!")
       setApproved(true)
       onApprove?.(order.id)
@@ -169,6 +230,29 @@ export default function OrderDetailsModal({
       console.error("Failed to approve order:", error)
       toast("Failed to approve request. Please try again.")
       setApproving(false)
+    }
+  }
+
+  const handleDecline = async () => {
+    setDeclining(true)
+    try {
+      const token = localStorage.getItem("authToken")
+      if (isOfferDetails) {
+        await client.PATCH(`/offers/${order.id}/cancel` as any, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+      } else {
+        await client.PATCH(`/orders/${order.id}/cancel` as any, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+      }
+      toast("Request declined!")
+      setDeclined(true)
+      onDecline?.(order.id)
+    } catch (error) {
+      console.error("Failed to approve order:", error)
+      toast("Failed to approve request. Please try again.")
+      setDeclining(false)
     }
   }
 
@@ -209,11 +293,10 @@ export default function OrderDetailsModal({
   const { icon: Icon, color } = TRADING_CONFIG[tradingType]
   const label = tradingType.charAt(0).toUpperCase() + tradingType.slice(1)
 
-  const price =
-    (reagent.tradingType === "sell" && reagent.price) || (order as any).price
+  const price = (order as any).price ?? reagent.price
   const hasPrice = price !== null && price !== undefined && `${price}` !== ""
   const gridCols =
-    reagent.tradingType === "trade"
+    reagent.tradingType === "trade" || isOfferDetails
       ? "lg:grid-cols-3 max-w-7xl"
       : "lg:grid-cols-2 max-w-5xl"
 
@@ -235,9 +318,23 @@ export default function OrderDetailsModal({
         <div
           className={`grid grid-cols-1 gap-8 w-full pointer-events-auto relative z-10 items-start ${gridCols}`}
         >
-          <ReagentDetails title="Your Reagent:" reagent={reagent} />
+          <ReagentDetails
+            title={isOfferDetails ? "Your Request:" : "Your Reagent:"}
+            reagent={reagent}
+            offerDetails={isOfferDetails}
+            requesterOfferedReagentName={
+              fetchedRequesterOfferedReagent?.name ?? undefined
+            }
+            offerPrice={hasPrice ? price : undefined}
+          />
 
-          {reagent.tradingType === "trade" && offeredReagent && (
+          {!isOfferDetails &&
+            reagent.tradingType === "trade" &&
+            offeredReagent && (
+              <ReagentDetails title="Their Reagent:" reagent={offeredReagent} />
+            )}
+
+          {isOfferDetails && offeredReagent && (
             <ReagentDetails title="Their Reagent:" reagent={offeredReagent} />
           )}
 
@@ -248,11 +345,17 @@ export default function OrderDetailsModal({
                   <Icon className="w-4 h-4 flex-shrink-0" />
                   {label}
                 </span>
-                <span className="text-lg">Request</span>
+                <span className="text-lg">
+                  {isOfferDetails ? "Offer" : "Request"}
+                </span>
               </h3>
 
               <div className="space-y-3">
-                <DetailRow label="Requester" value={requesterName} truncate />
+                <DetailRow
+                  label={isOfferDetails ? "Offerer" : "Requester"}
+                  value={requesterName}
+                  truncate
+                />
                 <DetailRow
                   label="Status"
                   value={
@@ -261,7 +364,7 @@ export default function OrderDetailsModal({
                   }
                 />
 
-                {hasPrice && (
+                {!isOfferDetails && hasPrice && (
                   <DetailRow label="Offered Price" value={`$${price}`} />
                 )}
 
@@ -276,7 +379,6 @@ export default function OrderDetailsModal({
                   )}
               </div>
             </div>
-
             <button
               onClick={() => (window.location.href = "/inbox")}
               className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer"
@@ -291,7 +393,14 @@ export default function OrderDetailsModal({
               >
                 {approved ? "Approved" : approving ? "Approving..." : "Approve"}
               </button>
-            )}
+            )}{" "}
+            <button
+              onClick={handleDecline}
+              disabled={declining || declined}
+              className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 disabled:bg-blue-primary/50 disabled:cursor-not-allowed rounded-lg transition-colors"
+            >
+              {declined ? "Declined" : declining ? "Declining..." : "Decline"}
+            </button>
           </div>
         </div>
       </div>

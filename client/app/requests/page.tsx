@@ -9,13 +9,17 @@ import { useRouter } from "next/navigation"
 import type { components } from "@/models/__generated__/schema"
 import { usePageSize } from "../hooks/usePageSize"
 import { usePagination } from "../hooks/usePagination"
-import Pagination from "../components/composite/pagination/Pagination"
 import LoadingState from "../components/composite/loadingstate/LoadingState"
+import { auth } from "@/app/config/firebase"
+import { onAuthStateChanged } from "firebase/auth"
 
 type Order = components["schemas"]["Order"]
 type OrderWithId = Order & { id: string; owner_id: string }
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
+interface OrderWithReagentResponse extends OrderWithId {
+  reagent?: Reagent | null
+}
 
 interface ModalState {
   isOpen: boolean
@@ -25,6 +29,7 @@ interface ModalState {
 
 export default function Orders() {
   const [orders, setOrders] = useState<OrderWithId[]>([])
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const [reagents, setReagents] = useState<Map<string, ReagentWithId>>(
     new Map(),
   )
@@ -36,43 +41,63 @@ export default function Orders() {
   })
   const router = useRouter()
 
-  //fetch all orders where user is owner/requester
+  //fetch userID of the logged in user
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setCurrentUserId(user.uid)
+      } else {
+        setCurrentUserId(null)
+      }
+    })
+    return () => unsubscribe()
+  }, [])
+  // fetch all orders where user is owner/requester
   const fetchOrders = useCallback(async () => {
     const token = localStorage.getItem("authToken")
-    if (!token) return router.push("/auth")
+    if (!token) {
+      router.push("/auth")
+      return
+    }
 
-    const { data: ordersData = [] } = await client.GET("/orders" as any, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-
-    //only show pending orders
-    const pendingOrders = (ordersData as OrderWithId[]).filter(
-      (order) => order.status === "pending",
-    )
-    setOrders(pendingOrders)
-
-    //fetch all reagents involved in orders, map ids
-    const uniqueIds = [
-      ...new Set(pendingOrders.map((o: Order) => o.reagent_id)),
-    ]
-    const reagentData = await Promise.all(
-      uniqueIds.map(async (id) => {
-        const { data } = await client.GET(`/reagents/${id}` as any, {
+    setLoading(true)
+    try {
+      const { data: ordersData = [] } = await client.GET(
+        "/orders/pending" as any,
+        {
           headers: { Authorization: `Bearer ${token}` },
-        })
-        return data && ({ ...data, id } as ReagentWithId)
-      }),
-    )
+        },
+      )
+      console.log(ordersData)
+      const ordersWithReagents = ordersData as OrderWithReagentResponse[]
+      const reagentMap = new Map<string, ReagentWithId>()
+      const ordersList: OrderWithId[] = []
 
-    setReagents(new Map(reagentData.filter(Boolean).map((r) => [r!.id, r!])))
-    setLoading(false)
+      ordersWithReagents.forEach((orderData) => {
+        const { reagent, ...order } = orderData
+        ordersList.push(order)
+        if (reagent) {
+          reagentMap.set(order.reagent_id, {
+            ...reagent,
+            id: order.reagent_id,
+          })
+        }
+      })
+
+      setOrders(ordersList)
+      setReagents(reagentMap)
+    } catch (err) {
+      console.error("Failed to fetch orders:", err)
+    } finally {
+      setLoading(false)
+    }
   }, [router])
 
   useEffect(() => {
     fetchOrders()
   }, [fetchOrders])
 
-  //open order details modal
+  // open order details modal
   const handleOrderDetails = (orderId: string) => {
     const order = orders.find((o) => o.id === orderId)
     const reagent = order ? reagents.get(order.reagent_id) : null
@@ -85,19 +110,22 @@ export default function Orders() {
   const handleCloseModal = () => {
     setModalState({ isOpen: false, order: null, reagent: null })
   }
+
   // pagination
   const pageSize = usePageSize()
   const { currentPage, setCurrentPage, totalPages } = usePagination(
     orders,
     pageSize,
   )
+
   useEffect(() => {
     if (currentPage > totalPages && totalPages > 0) {
       setCurrentPage(totalPages)
     } else if (currentPage < 1) {
       setCurrentPage(1)
     }
-  }, [currentPage, totalPages])
+  }, [currentPage, totalPages, setCurrentPage])
+
   return (
     <Overlay>
       <p className="text-4xl font-medium text-white mt-4 ml-4 md:ml-8 tracking-[0.05em]">
@@ -111,7 +139,6 @@ export default function Orders() {
       </div>
 
       <div className="mt-5"></div>
-
       <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
         {/*loading state*/}
         {loading ? (
@@ -125,22 +152,62 @@ export default function Orders() {
             </p>
           </div>
         ) : (
-          //render order cards
-          orders.map((order) => {
-            const reagent = reagents.get(order.reagent_id)
-            if (!reagent) return null
-            return (
-              <OrderCard
-                key={order.id}
-                reagent={reagent}
-                order={order}
-                onViewDetails={handleOrderDetails}
-              />
-            )
-          })
+          <div className="w-full">
+            {orders.filter((order) => order.owner_id === currentUserId).length >
+              0 && (
+              <div>
+                <div className="text-xl font-medium text-white mb-4">
+                  Requests You Received
+                </div>
+                <div className="bg-transparent flex flex-wrap gap-4 md:gap-[2rem] pb-[1rem]">
+                  {orders
+                    .filter((order) => order.owner_id === currentUserId)
+                    .map((order) => {
+                      const reagent = reagents.get(order.reagent_id)
+                      if (!reagent) return null
+                      return (
+                        <OrderCard
+                          key={order.id}
+                          reagent={reagent}
+                          order={order}
+                          onViewDetails={handleOrderDetails}
+                        />
+                      )
+                    })}
+                </div>
+              </div>
+            )}
+
+            {orders.filter((order) => order.owner_id !== currentUserId).length >
+              0 && (
+              <div>
+                <div className="text-xl font-medium text-white mb-4 mt-[1rem]">
+                  Requests You Sent
+                </div>
+                <div className="bg-transparent flex flex-wrap gap-4 md:gap-[2rem]">
+                  {orders
+                    .filter((order) => order.owner_id !== currentUserId)
+                    .map((order) => {
+                      const reagent = reagents.get(order.reagent_id)
+                      if (!reagent) return null
+                      return (
+                        <OrderCard
+                          key={order.id}
+                          reagent={reagent}
+                          order={order}
+                          onViewDetails={handleOrderDetails}
+                        />
+                      )
+                    })}
+                </div>
+              </div>
+            )}
+          </div>
         )}
       </div>
-      {!loading && (
+
+      {/*  Pagination hidden for now
+            {!loading && (
         <div className="pb-[4rem] md:pb-0">
           <Pagination
             currentPage={currentPage}
@@ -149,6 +216,7 @@ export default function Orders() {
           />
         </div>
       )}
+      */}
 
       {/*request details modal*/}
       {modalState.order && modalState.reagent && (
