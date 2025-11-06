@@ -10,8 +10,7 @@ interface ProfileFormProps {
 }
 
 interface formData {
-  lastName: string
-  preferredName: string
+  displayName: string
   about: string
   university: string
   imageUrl?: string
@@ -61,8 +60,7 @@ export const ProfileForm = ({
   userId,
 }: ProfileFormProps) => {
   const [formData, setFormData] = useState<formData>({
-    lastName: "",
-    preferredName: "",
+    displayName: "",
     about: "",
     university: "",
     imageUrl: "",
@@ -97,8 +95,7 @@ export const ProfileForm = ({
           const userImage = userData.image || ""
           setOriginalImageUrl(userImage)
           setFormData({
-            lastName: userData.lastName || "",
-            preferredName: userData.preferredName || "",
+            displayName: userData.displayName || "",
             about: userData.about || "",
             university: userData.university || "",
             imageUrl: userImage,
@@ -139,9 +136,9 @@ export const ProfileForm = ({
     if (dataSubmitting) return
     setDataSubmitting(true)
 
-    // First name cant be empty
-    if (formData.preferredName.trim() === "") {
-      toast("First name cannot be empty")
+    // Name cant be empty
+    if (formData.displayName.trim() === "") {
+      toast("Name cannot be empty")
       setDataSubmitting(false)
       return
     }
@@ -175,8 +172,7 @@ export const ProfileForm = ({
       }
 
       const userData = {
-        lastName: formData.lastName.trim(),
-        preferredName: formData.preferredName.trim(),
+        displayName: formData.displayName.trim(),
         about: formData.about.trim(),
         image: finalImageUrl?.trim() || "",
         university: formData.university.trim(),
@@ -290,24 +286,13 @@ export const ProfileForm = ({
       </div>
 
       <FormField
-        label="First Name"
+        label="Name"
         required
         input={
           <input
             type="text"
-            value={formData.preferredName}
-            onChange={(e) => handleFieldChange("preferredName", e.target.value)}
-            className={inputStyles}
-          />
-        }
-      />
-      <FormField
-        label="Last Name"
-        input={
-          <input
-            type="text"
-            value={formData.lastName}
-            onChange={(e) => handleFieldChange("lastName", e.target.value)}
+            value={formData.displayName}
+            onChange={(e) => handleFieldChange("displayName", e.target.value)}
             className={inputStyles}
           />
         }
