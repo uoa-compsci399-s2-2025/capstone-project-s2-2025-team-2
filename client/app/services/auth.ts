@@ -64,6 +64,7 @@ export const verifyCode = async (
 export const verifyToken = async (
   displayName?: string,
   university?: string,
+  location?: string,
 ): Promise<any> => {
   // Get ID token from Firebase Auth
   const idToken = await getIdToken()
@@ -77,6 +78,7 @@ export const verifyToken = async (
     idToken,
     displayName,
     university,
+    location,
   }
 
   const response = await client.POST(VERIFY_TOKEN_URL, {

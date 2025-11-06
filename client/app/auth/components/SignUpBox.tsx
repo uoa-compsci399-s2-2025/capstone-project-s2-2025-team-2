@@ -32,6 +32,7 @@ export default function SignUpBox({
   const [verificationCode, setVerificationCode] = useState("")
   const [displayName, setDisplayName] = useState("")
   const [university, setUniversity] = useState("")
+  const [location, setLocation] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [isEmailValid, setIsEmailValid] = useState(false)
@@ -63,6 +64,11 @@ export default function SignUpBox({
   //            function: handleUniversityChange           //
   const handleUniversityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setUniversity(e.target.value)
+  }
+
+  //            function: handleLocationChange           //
+  const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocation(e.target.value)
   }
 
   //            function: onVerifyEmail           //
@@ -207,6 +213,7 @@ export default function SignUpBox({
         email: response.email,
         displayName,
         university,
+        location,
       })
     } else {
       setNotificationState("sign-up-fail")
@@ -216,7 +223,7 @@ export default function SignUpBox({
   //            function: saveUserToFirestore           //
   const saveUserToFirestore = async () => {
     try {
-      const response = await verifyToken(displayName, university)
+      const response = await verifyToken(displayName, university, location)
 
       if (response && response.success) {
         console.log(
@@ -259,8 +266,10 @@ export default function SignUpBox({
         <SignUpPersonalSection
           displayName={displayName}
           university={university}
+          location={location}
           onDisplayNameChange={handleDisplayNameChange}
           onUniversityChange={handleUniversityChange}
+          onLocationChange={handleLocationChange}
           onNextStep={handleNextStep}
           onSignInClick={handleSignInClick}
         />

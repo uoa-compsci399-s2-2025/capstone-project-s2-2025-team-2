@@ -10,8 +10,10 @@ import { useState, useEffect } from "react"
 interface SignUpPersonalSectionProps {
   displayName: string
   university: string
+  location: string
   onDisplayNameChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onUniversityChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
+  onLocationChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onNextStep: () => void
   onSignInClick: () => void
 }
@@ -33,8 +35,10 @@ const NEW_ZEALAND_UNIVERSITIES = [
 export default function SignUpPersonalSection({
   displayName,
   university,
+  location,
   onDisplayNameChange,
   onUniversityChange,
+  onLocationChange,
   onNextStep,
   onSignInClick,
 }: SignUpPersonalSectionProps) {
@@ -82,6 +86,16 @@ export default function SignUpPersonalSection({
             ))}
           </select>
         </div>
+
+        <AuthInputBox
+          id="location"
+          name="location"
+          type="text"
+          label="Location"
+          placeholder="e.g., Auckland, New Zealand"
+          value={location}
+          onChange={onLocationChange}
+        />
       </div>
 
       <div className="mt-auto space-y-6">
