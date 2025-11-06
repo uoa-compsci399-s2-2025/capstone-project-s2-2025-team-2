@@ -155,7 +155,7 @@ const SellerContact = ({ sellerInfo, reagent }: SellerContactProps) => {
 
         <div className="hidden md:block mx-[1.5rem]">
           <h4 className="text-[1rem] text-white">
-            {sellerInfo?.preferredName || "Unknown Seller"}
+            {sellerInfo?.displayName || "Unknown Seller"}
           </h4>
           <span className="flex items-center text-[0.8rem] font-bold text-white">
             <LuHouse className="mr-[0.3rem]" />

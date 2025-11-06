@@ -62,7 +62,7 @@ export default function SignInBox({
       console.error("Error storing Google OAuth token:", error)
     }
     //welcome toast, redirect to marketplace
-    toast(`Welcome, ${userData.preferredName || userData.displayName || userData.email}!`)
+    toast(`Welcome, ${userData.displayName || userData.email}!`)
     router.push("/marketplace")
   }
 

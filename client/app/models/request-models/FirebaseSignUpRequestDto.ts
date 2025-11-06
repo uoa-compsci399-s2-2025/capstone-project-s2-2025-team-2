@@ -1,6 +1,6 @@
 export default interface FirebaseSignUpRequestDto {
   email: string
   password: string
-  preferredName: string
+  displayName: string
   university: string
 }

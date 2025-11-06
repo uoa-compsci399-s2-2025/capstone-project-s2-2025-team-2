@@ -93,10 +93,10 @@ const History = () => {
             reagentName:
               reagentMap[order.reagent_id]?.name || "Deleted Reagent",
             ownerName:
-              ownerMap[order.owner_id]?.preferredName ||
+              ownerMap[order.owner_id]?.displayName ||
               "Unknown Owner",
             requesterName:
-              requesterMap[order.requester_id]?.preferredName ||
+              requesterMap[order.requester_id]?.displayName ||
               "Unknown Requester",
           }))
           setOrders(ordersWithInfo)

@@ -376,8 +376,8 @@ export const ReagentRequest = ({
 
   if (!isOpen) return null
 
-  const requesterName = currentUser?.preferredName || "You"
-  const ownerName = ownerInfo?.preferredName || "User"
+  const requesterName = currentUser?.displayName || "You"
+  const ownerName = ownerInfo?.displayName || "User"
 
   const isSell = reagent.tradingType === "sell"
   const capitalise = (s: string) => s.charAt(0).toUpperCase() + s.slice(1)
