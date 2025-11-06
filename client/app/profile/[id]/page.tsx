@@ -333,10 +333,12 @@ const UserProfile = () => {
                 )}
               </div>
               <p className="text-sm text-white">{userBeingViewed.university}</p>
-              <p className="flex items-center gap-1 text-xs text-gray-100">
-                <MapPinIcon className="w-5 h-5" />
-                Auckland, New Zealand
-              </p>
+              {userBeingViewed.location && (
+                <p className="flex items-center gap-1 text-xs text-gray-100">
+                  <MapPinIcon className="w-5 h-5" />
+                  {userBeingViewed.location}
+                </p>
+              )}
               {/* About Me section */}
               {userBeingViewed.about && (
                 <p className="text-sm text-white leading-relaxed max-w-md">

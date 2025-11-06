@@ -162,13 +162,13 @@
 					"displayName": {
 						"type": "string"
 					},
-					"preferredName": {
-						"type": "string"
-					},
 					"lastName": {
 						"type": "string"
 					},
 					"university": {
+						"type": "string"
+					},
+					"location": {
 						"type": "string"
 					},
 					"about": {
@@ -189,7 +189,6 @@
 				"required": [
 					"email",
 					"displayName",
-					"preferredName",
 					"university",
 					"role"
 				],
@@ -204,13 +203,13 @@
 					"displayName": {
 						"type": "string"
 					},
-					"preferredName": {
-						"type": "string"
-					},
 					"lastName": {
 						"type": "string"
 					},
 					"university": {
+						"type": "string"
+					},
+					"location": {
 						"type": "string"
 					},
 					"about": {
@@ -1187,10 +1186,13 @@
 					"idToken": {
 						"type": "string"
 					},
-					"preferredName": {
+					"displayName": {
 						"type": "string"
 					},
 					"university": {
+						"type": "string"
+					},
+					"location": {
 						"type": "string"
 					}
 				},
