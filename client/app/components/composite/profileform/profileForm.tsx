@@ -13,6 +13,7 @@ interface formData {
   displayName: string
   about: string
   university: string
+  location: string
   imageUrl?: string
 }
 
@@ -33,6 +34,19 @@ const inputStyles =
   "w-full px-3 py-2 border border-muted rounded-lg bg-primary/50 text-white focus:outline-none focus:ring-2 focus:ring-blue-primary focus:border-transparent"
 const labelStyles = "block text-sm font-medium text-white"
 const buttonStyles = "px-4 py-2 text-white rounded-lg"
+
+// New Zealand Universities list
+const NEW_ZEALAND_UNIVERSITIES = [
+  "University of Auckland",
+  "Auckland University of Technology",
+  "University of Waikato",
+  "Massey University",
+  "Victoria University of Wellington",
+  "University of Canterbury",
+  "Lincoln University",
+  "University of Otago",
+  "Other",
+]
 
 //input fields wrapper
 const FormField = ({
@@ -63,6 +77,7 @@ export const ProfileForm = ({
     displayName: "",
     about: "",
     university: "",
+    location: "",
     imageUrl: "",
   })
   const [dataSubmitting, setDataSubmitting] = useState(false)
@@ -98,6 +113,7 @@ export const ProfileForm = ({
             displayName: userData.displayName || "",
             about: userData.about || "",
             university: userData.university || "",
+            location: userData.location || "",
             imageUrl: userImage,
           })
         }
@@ -176,6 +192,7 @@ export const ProfileForm = ({
         about: formData.about.trim(),
         image: finalImageUrl?.trim() || "",
         university: formData.university.trim(),
+        location: formData.location.trim(),
       }
 
       const { data: updateUser, error } = await client.PATCH(
@@ -298,13 +315,21 @@ export const ProfileForm = ({
         }
       />
       <FormField
-        label="About"
+        label="University"
         input={
-          <textarea
-            value={formData.about}
-            onChange={(e) => handleFieldChange("about", e.target.value)}
+          <select
+            id="university"
+            name="university"
+            value={formData.university}
+            onChange={(e) => handleFieldChange("university", e.target.value)}
             className={inputStyles}
-          />
+          >
+            {NEW_ZEALAND_UNIVERSITIES.map((uni) => (
+              <option key={uni} value={uni} className="bg-primary text-white">
+                {uni}
+              </option>
+            ))}
+          </select>
         }
       />
       <FormField

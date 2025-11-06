@@ -90,9 +90,9 @@ const models: TsoaRoute.Models = {
         "properties": {
             "email": {"dataType":"string","required":true},
             "displayName": {"dataType":"string","required":true},
-            "preferredName": {"dataType":"string","required":true},
             "lastName": {"dataType":"string"},
             "university": {"dataType":"string","required":true},
+            "location": {"dataType":"string"},
             "about": {"dataType":"string"},
             "role": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["user"]},{"dataType":"enum","enums":["lab_manager"]},{"dataType":"enum","enums":["admin"]}],"required":true},
             "image": {"dataType":"string"},
@@ -102,7 +102,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Partial_User_": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"email":{"dataType":"string"},"displayName":{"dataType":"string"},"preferredName":{"dataType":"string"},"lastName":{"dataType":"string"},"university":{"dataType":"string"},"about":{"dataType":"string"},"role":{"dataType":"union","subSchemas":[{"dataType":"enum","enums":["user"]},{"dataType":"enum","enums":["lab_manager"]},{"dataType":"enum","enums":["admin"]}]},"image":{"dataType":"string"}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"email":{"dataType":"string"},"displayName":{"dataType":"string"},"lastName":{"dataType":"string"},"university":{"dataType":"string"},"location":{"dataType":"string"},"about":{"dataType":"string"},"role":{"dataType":"union","subSchemas":[{"dataType":"enum","enums":["user"]},{"dataType":"enum","enums":["lab_manager"]},{"dataType":"enum","enums":["admin"]}]},"image":{"dataType":"string"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "CreateReagentRequest": {
@@ -464,8 +464,9 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "idToken": {"dataType":"string","required":true},
-            "preferredName": {"dataType":"string"},
+            "displayName": {"dataType":"string"},
             "university": {"dataType":"string"},
+            "location": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
