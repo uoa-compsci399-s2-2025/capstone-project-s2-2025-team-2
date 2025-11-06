@@ -322,8 +322,7 @@ const UserProfile = () => {
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-4">
                 <h1 className="font-light text-white text-2xl md:text-3xl">
-                  {userBeingViewed?.displayName ||
-                    userBeingViewed?.preferredName}
+                  {userBeingViewed?.preferredName || "Unknown User"}
                 </h1>
                 {/* show 'edit profile' btn if user is viewing their own profile */}
                 {idOfUserBeingViewed === userUid && (

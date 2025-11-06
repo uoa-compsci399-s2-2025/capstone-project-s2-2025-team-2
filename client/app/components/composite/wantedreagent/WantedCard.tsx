@@ -119,7 +119,7 @@ const WantedCard = ({
             <div className="flex items-center gap-1 text-white/70">
               <UserIcon className="w-4 h-4" />
               <span className="text-sm">
-                {requesterInfo?.displayName || requesterInfo?.preferredName},{" "}
+                {requesterInfo?.preferredName || "Unknown User"},{" "}
                 {wanted?.location || "Unknown University"}
               </span>
             </div>

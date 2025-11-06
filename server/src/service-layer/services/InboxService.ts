@@ -103,7 +103,7 @@ export class InboxService {
           messages: messages,
           other_user: {
             id: otherUserId,
-            name: otherUser.displayName || otherUser.email,
+            name: otherUser.preferredName || otherUser.email,
             email: otherUser.email,
           },
           reagent_name: reagentName,
