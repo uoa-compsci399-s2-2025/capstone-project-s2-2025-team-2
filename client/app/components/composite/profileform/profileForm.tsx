@@ -286,7 +286,7 @@ export const ProfileForm = ({
       </div>
 
       <FormField
-        label="Name"
+        label="Display Name"
         required
         input={
           <input

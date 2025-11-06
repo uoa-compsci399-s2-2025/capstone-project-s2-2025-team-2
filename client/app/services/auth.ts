@@ -62,7 +62,7 @@ export const verifyCode = async (
 
 //            function: verifyToken           //
 export const verifyToken = async (
-  preferredName?: string,
+  displayName?: string,
   university?: string,
 ): Promise<any> => {
   // Get ID token from Firebase Auth
@@ -75,7 +75,7 @@ export const verifyToken = async (
   // Call backend to verify token and save/verify user in Firestore
   const requestBody: VerifyTokenRequestDto = {
     idToken,
-    preferredName,
+    displayName,
     university,
   }
 

@@ -317,12 +317,10 @@ export default function OrderDetailsModal({
 
   const requesterName = !requesterData
     ? "Unknown User"
-    : (requesterData.preferredName || requesterData.displayName)
+    : requesterData.displayName
         ?.charAt(0)
         .toUpperCase() +
-        (requesterData.preferredName || requesterData.displayName)
-          ?.slice(1)
-          .toLowerCase() || "Unknown User"
+        requesterData.displayName?.slice(1).toLowerCase() || "Unknown User"
 
   const tradingType = reagent.tradingType as keyof typeof TRADING_CONFIG
   const { icon: Icon, color } = TRADING_CONFIG[tradingType]

@@ -1,5 +1,5 @@
 export default interface VerifyTokenRequestDto {
   idToken: string
-  preferredName?: string
+  displayName?: string
   university?: string
 }

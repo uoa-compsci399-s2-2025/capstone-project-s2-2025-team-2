@@ -32,13 +32,13 @@ export class AuthRepository {
   async saveUser(
     uid: string,
     email: string,
-    preferredName: string,
+    displayName: string,
     university: string,
   ): Promise<void> {
     await db.collection("users").doc(uid).set({
       uid,
       email,
-      preferredName,
+      displayName,
       university,
       createdAt: new Date(),
     })

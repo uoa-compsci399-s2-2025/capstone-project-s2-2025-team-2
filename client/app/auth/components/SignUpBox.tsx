@@ -30,7 +30,7 @@ export default function SignUpBox({
   const [currentStep, setCurrentStep] = useState(1)
   const [email, setEmail] = useState("")
   const [verificationCode, setVerificationCode] = useState("")
-  const [preferredName, setPreferredName] = useState("")
+  const [displayName, setDisplayName] = useState("")
   const [university, setUniversity] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
@@ -53,11 +53,11 @@ export default function SignUpBox({
     setIsEmailValid(emailRegex.test(emailValue))
   }
 
-  //            function: handlePreferredNameChange           //
-  const handlePreferredNameChange = (
+  //            function: handleDisplayNameChange           //
+  const handleDisplayNameChange = (
     e: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setPreferredName(e.target.value)
+    setDisplayName(e.target.value)
   }
 
   //            function: handleUniversityChange           //
@@ -130,7 +130,7 @@ export default function SignUpBox({
         toast("Please fill in all required fields.")
       }
     } else if (currentStep === 2) {
-      if (preferredName && university) {
+      if (displayName && university) {
         setCurrentStep(3)
       } else {
         toast("Please fill in all required fields.")
@@ -155,13 +155,13 @@ export default function SignUpBox({
       const requestBody: FirebaseSignUpRequestDto = {
         email,
         password,
-        preferredName,
+        displayName,
         university,
       }
       console.log("Signing up with Firebase:", {
         email,
         password,
-        preferredName,
+        displayName,
         university,
       })
       const response = await firebaseSignUp(requestBody)
@@ -197,7 +197,7 @@ export default function SignUpBox({
 
       //welcome toast, marketplace redirect
       toast(
-        `Welcome, ${preferredName || response.email}! Your account has been created successfully.`,
+        `Welcome, ${displayName || response.email}! Your account has been created successfully.`,
       )
       router.replace("/marketplace")
 
@@ -205,7 +205,7 @@ export default function SignUpBox({
       console.log("User created and signed in:", {
         uid: response.uid,
         email: response.email,
-        preferredName,
+        displayName,
         university,
       })
     } else {
@@ -216,7 +216,7 @@ export default function SignUpBox({
   //            function: saveUserToFirestore           //
   const saveUserToFirestore = async () => {
     try {
-      const response = await verifyToken(preferredName, university)
+      const response = await verifyToken(displayName, university)
 
       if (response && response.success) {
         console.log(
@@ -257,9 +257,9 @@ export default function SignUpBox({
         />
       ) : currentStep === 2 ? (
         <SignUpPersonalSection
-          preferredName={preferredName}
+          displayName={displayName}
           university={university}
-          onPreferredNameChange={handlePreferredNameChange}
+          onDisplayNameChange={handleDisplayNameChange}
           onUniversityChange={handleUniversityChange}
           onNextStep={handleNextStep}
           onSignInClick={handleSignInClick}
