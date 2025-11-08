@@ -215,6 +215,16 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
           },
         },
       )
+      if (
+        wantedData.tradingType === "trade" &&
+        !wantedData.requesterOfferedReagentId
+      ) {
+        toast.error(
+          "You can't create a trade listing without offering a reagent.",
+        )
+        setDataSubmitting(false)
+        return
+      }
       if (error) {
         throw new Error("Failed to create wanted listing")
       }
@@ -286,33 +296,39 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
       {formData.tradingType === "sell" && (
         <FormField
           label="Unit Price"
+          required
           input={formInput("price", {
             type: "number",
             placeholder: "0.00",
             min: "0",
+            required: true,
           })}
         />
       )}
       {formData.tradingType === "trade" && (
         <FormField
           label="Offer one of your reagents"
+          required
           input={
             <select
               value={formData.requesterOfferedReagentId}
               onChange={(e) =>
                 handleFieldChange("requesterOfferedReagentId", e.target.value)
               }
-              className={inputStyles}
+              className={`${inputStyles} ${userReagents.length === 0 ? "appearance-none" : ""}`}
               disabled={dataSubmitting || userReagents.length === 0}
             >
               {userReagents.length === 0 ? (
-                <option value="">Select a Reagent</option>
+                <option value="">You don't have any reagents to offer</option>
               ) : (
-                userReagents.map((r) => (
-                  <option key={r.id} value={r.id} className="bg-primary">
-                    {r.name}
-                  </option>
-                ))
+                <>
+                  <option value="">Select a reagent</option>
+                  {userReagents.map((r) => (
+                    <option key={r.id} value={r.id} className="bg-primary">
+                      {r.name}
+                    </option>
+                  ))}
+                </>
               )}
             </select>
           }
