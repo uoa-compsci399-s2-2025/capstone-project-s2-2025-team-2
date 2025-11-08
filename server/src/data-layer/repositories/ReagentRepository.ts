@@ -210,7 +210,7 @@ export class ReagentService {
       const expiredReagents = reagents.filter((reagent) => {
         if (!reagent.expiryDate) return false
         const daysLeft = daysUntilExpiry(reagent.expiryDate)
-        return daysLeft === -1
+        return daysLeft < -1
       })
       for (const reagent of expiredReagents) {
         await this.updateReagent(reagent.id, { visibility: "private" })
