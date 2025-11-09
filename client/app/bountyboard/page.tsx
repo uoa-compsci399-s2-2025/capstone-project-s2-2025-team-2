@@ -273,6 +273,7 @@ const BountyBoard = () => {
           setFilter={setFilter}
           sort={sort}
           setSort={setSort}
+          isBountyBoard={true}
         />
       </div>
 
