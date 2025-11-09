@@ -13,6 +13,18 @@ type ReagentCategory = components["schemas"]["ReagentCategory"]
 const TRADING_TYPES: ReagentTradingType[] = ["trade", "giveaway", "sell"]
 const CATEGORIES: ReagentCategory[] = ["chemical", "hazardous", "biological"]
 
+const NEW_ZEALAND_UNIVERSITIES = [
+  "University of Auckland",
+  "Auckland University of Technology",
+  "University of Waikato",
+  "Massey University",
+  "Victoria University of Wellington",
+  "University of Canterbury",
+  "Lincoln University",
+  "University of Otago",
+  "Other",
+]
+
 interface WantedFormProps {
   onSubmit: (data: any) => void
   onCancel: () => void
@@ -347,10 +359,24 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
         <FormField
           label="Location"
           required
-          input={formInput("location", {
-            placeholder: "Pickup or delivery location",
-            required: true,
-          })}
+          input={
+          <select
+            value={formData.location}
+            onChange={(e) =>
+              handleFieldChange(
+                "location",
+                e.target.value
+              )
+            }
+            className={inputStyles}
+          >
+            {NEW_ZEALAND_UNIVERSITIES.map((type) => (
+              <option key={type} value={type} className="bg-primary">
+                {type}
+              </option>
+            ))}
+          </select>
+          }
         />
       </div>
       <FormField
