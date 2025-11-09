@@ -189,9 +189,15 @@ export const ReagentRequest = ({
     //validate user
     const validateUser = () => {
       if (!currentUser) return false
-      if (currentUser.uid === reagent.user_id) {
+      if (currentUser.uid === reagent.user_id && !isBountyBoard) {
         guardUpdate(isClosed, () => {
           setError("You cannot request your own reagent")
+          setIsInitialising(false)
+        })
+        return false
+      } else if (currentUser.uid === reagent.user_id && isBountyBoard) {
+        guardUpdate(isClosed, () => {
+          setError("You cannot make an offer on your own request")
           setIsInitialising(false)
         })
         return false
