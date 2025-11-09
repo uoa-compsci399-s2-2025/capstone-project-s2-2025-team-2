@@ -21,7 +21,8 @@ import { onAuthStateChanged, User } from "firebase/auth"
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [user, setUser] = useState<User | null>(null)
-  const [isSignedIn, setIsSignedIn] = useState(false)
+  // initialize from Firebase currentUser to avoid UI flash before auth state change fires
+  const [isSignedIn, setIsSignedIn] = useState<boolean>(() => !!auth.currentUser)
 
   //auth state change listener
   useEffect(() => {
@@ -53,6 +54,14 @@ const Sidebar = () => {
       icon: UserCircleIcon,
       isButton: true,
       requireSignIn: true,
+    },
+    {
+      href: "/auth",
+      label: "Sign In",
+      icon: UserCircleIcon,
+      isButton: true,
+      requireSignIn: false,
+      showWhenSignedOut: true,
     },
     {
       href: "/marketplace",
@@ -119,11 +128,12 @@ const Sidebar = () => {
 
         <div className="flex flex-col justify-between h-full min-h-screen">
           <div>
-            {!isSignedIn && (
-              <div className="mb-5 h-[2px] w-full bg-gradient-to-r from-transparent from-15% via-blue-primary via-50% to-transparent to-85%" />
-            )}
             {links
-              .filter(({ requireSignIn }) => !requireSignIn || isSignedIn)
+              .filter(({ requireSignIn, showWhenSignedOut }) => {
+                if (requireSignIn && !isSignedIn) return false
+                if (showWhenSignedOut && isSignedIn) return false
+                return true
+              })
               .map(({ href, label, icon: Icon, isButton }) => (
                 <div key={href}>
                   {isButton ? (
@@ -146,7 +156,7 @@ const Sidebar = () => {
                       {label}
                     </Link>
                   )}
-                  {label === "Profile" && (
+                  {((label === "Profile" && isSignedIn) || label === "Sign In") && (
                     <div className="mt-5 h-[2px] w-full bg-gradient-to-r from-transparent from-15% via-blue-primary via-50% to-transparent to-85%" />
                   )}
                 </div>
@@ -161,7 +171,7 @@ const Sidebar = () => {
             </div>
           </div>
           <div className="w-full flex justify-center">
-            {isSignedIn ? (
+            {isSignedIn && (
               <div
                 className="flex items-center mb-30 p-2 text-red-70 cursor-pointer hover:text-red-70/80"
                 onClick={handleSignOut}
@@ -169,13 +179,6 @@ const Sidebar = () => {
                 <ArrowLeftStartOnRectangleIcon className="w-5 h-5" />
                 Sign Out
               </div>
-            ) : (
-              <Link href="/auth">
-                <div className="flex items-center mb-30 p-2 text-blue-primary cursor-pointer hover:text-blue-secondary">
-                  <UserCircleIcon className="w-5 h-5" />
-                  Sign In
-                </div>
-              </Link>
             )}
           </div>
         </div>
