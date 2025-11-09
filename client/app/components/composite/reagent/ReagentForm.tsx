@@ -26,7 +26,7 @@ const VISIBILITY_OPTIONS: ReagentVisibility[] = [
   "private",
 ]
 const CONDITION_OPTIONS = ["unopened", "used-like new", "used"]
-const UNIT_OPTIONS = ["g", "kg", "mL", "L", "bottles", "boxes", "units"]
+const UNIT_OPTIONS = ["g", "kg", "mL", "L", "Bottles", "Boxes", "Units"]
 const MAX_IMAGES = 5
 
 interface ReagentFormProps {
@@ -580,7 +580,7 @@ export const ReagentForm = ({
             >
               {UNIT_OPTIONS.map((option) => (
                 <option key={option} value={option} className="bg-primary">
-                  {option.charAt(0).toUpperCase() + option.slice(1)}
+                  {option}
                 </option>
               ))}
             </select>

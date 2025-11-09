@@ -9,6 +9,7 @@ import { WantedForm } from "../components/composite/wantedreagent/WantedForm"
 import { usePagination } from "../hooks/usePagination"
 import Pagination from "../components/composite/pagination/Pagination"
 import LoadingState from "../components/composite/loadingstate/LoadingState"
+import { XMarkIcon } from "@heroicons/react/24/solid"
 
 type ReagentCategory = "chemical" | "hazardous" | "biological"
 type ReagentTradingType = "trade" | "giveaway" | "sell"
@@ -328,9 +329,9 @@ const BountyBoard = () => {
               </h2>
               <button
                 onClick={() => setIsFormOpen(false)}
-                className="text-gray-400 text-3xl hover:text-white "
+                className="text-white hover:text-gray-300"
               >
-                ❌
+                <XMarkIcon className="w-6 h-6" />
               </button>
             </div>
 
