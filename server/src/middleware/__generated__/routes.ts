@@ -1691,6 +1691,37 @@ export function RegisterRoutes(app: Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsOfferController_getAllPendingOffers: Record<string, TsoaRoute.ParameterSchema> = {
+                request: {"in":"request","name":"request","required":true,"dataType":"object"},
+        };
+        app.get('/offers/user/pending',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(OfferController)),
+            ...(fetchMiddlewares<RequestHandler>(OfferController.prototype.getAllPendingOffers)),
+
+            async function OfferController_getAllPendingOffers(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsOfferController_getAllPendingOffers, request, response });
+
+                const controller = new OfferController();
+
+              await templateService.apiHandler({
+                methodName: 'getAllPendingOffers',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsInboxController_createChatRoom: Record<string, TsoaRoute.ParameterSchema> = {
                 request: {"in":"body","name":"request","required":true,"ref":"CreateChatRoomRequest"},
         };

@@ -83,7 +83,7 @@ export default function Orders() {
     setLoading(true)
     try {
       //fetch offers
-      const { data: offersData = [] } = await client.GET("/offers" as any, {
+      const { data: offersData = [] } = await client.GET("/offers/user/pending" as any, {
         headers: { Authorization: `Bearer ${token}` },
       })
 

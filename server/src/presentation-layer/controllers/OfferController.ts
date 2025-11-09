@@ -161,4 +161,15 @@ export class OfferController extends Controller {
     }
     return offer
   }
+  /**
+   * Get all pending offers for a user.
+   */
+  @SuccessResponse("200", "offers successfully fetched")
+  @Security("jwt")
+  @Get("user/pending")
+  public async getAllPendingOffers(@Request() request: AuthRequest): Promise<Offer[]> {
+    const user = request.user
+    const pendingOffers = await new OfferService().getAllPendingOffers(user.uid)
+    return pendingOffers
+  }
 }

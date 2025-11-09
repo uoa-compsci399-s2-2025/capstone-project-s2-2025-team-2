@@ -338,4 +338,24 @@ export class OfferService {
       throw error
     }
   }
+  /**
+   * Get all pending offers
+   */
+  async getAllPendingOffers(user_id: string): Promise<Offer[]> {
+    const [snap1, snap2] = await Promise.all([
+      this.db.collection("offers").where("requester_id", "==", user_id).where("status", "==", "pending").get(),
+      this.db.collection("offers").where("owner_id", "==", user_id).where("status", "==", "pending").get(),
+    ])
+
+    return [
+      ...snap1.docs.map((d) => {
+        const data = d.data() as Omit<Offer, "id">
+        return { id: d.id, ...data }
+      }),
+      ...snap2.docs.map((d) => {
+        const data = d.data() as Omit<Offer, "id">
+        return { id: d.id, ...data }
+      }),
+    ]
+  }
 }

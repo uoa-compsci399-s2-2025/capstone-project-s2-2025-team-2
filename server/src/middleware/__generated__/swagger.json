@@ -2651,6 +2651,36 @@
 				]
 			}
 		},
+		"/offers/user/pending": {
+			"get": {
+				"operationId": "GetAllPendingOffers",
+				"responses": {
+					"200": {
+						"description": "offers successfully fetched",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Offer"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get all pending offers for a user.",
+				"tags": [
+					"Offers"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
+			}
+		},
 		"/inbox/chatroom": {
 			"post": {
 				"operationId": "CreateChatRoom",
