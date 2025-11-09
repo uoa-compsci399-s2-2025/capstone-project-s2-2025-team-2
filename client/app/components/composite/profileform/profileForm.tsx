@@ -35,19 +35,6 @@ const inputStyles =
 const labelStyles = "block text-sm font-medium text-white"
 const buttonStyles = "px-4 py-2 text-white rounded-lg"
 
-// New Zealand Universities list
-const NEW_ZEALAND_UNIVERSITIES = [
-  "University of Auckland",
-  "Auckland University of Technology",
-  "University of Waikato",
-  "Massey University",
-  "Victoria University of Wellington",
-  "University of Canterbury",
-  "Lincoln University",
-  "University of Otago",
-  "Other",
-]
-
 //input fields wrapper
 const FormField = ({
   label,
@@ -333,24 +320,25 @@ export const ProfileForm = ({
         }
       />
       <FormField
-        label="University"
+        label="Location"
         input={
-          <select
-            value={formData.university}
-            onChange={(e) =>
-              handleFieldChange(
-                "university",
-                e.target.value
-              )
-            }
+          <input
+            type="text"
+            value={formData.location}
+            onChange={(e) => handleFieldChange("location", e.target.value)}
+            placeholder="e.g., Auckland, New Zealand"
             className={inputStyles}
-          >
-            {NEW_ZEALAND_UNIVERSITIES.map((type) => (
-              <option key={type} value={type} className="bg-primary">
-                {type}
-              </option>
-            ))}
-          </select>
+          />
+        }
+      />
+      <FormField
+        label="About"
+        input={
+          <textarea
+            value={formData.about}
+            onChange={(e) => handleFieldChange("about", e.target.value)}
+            className={inputStyles}
+          />
         }
       />
 
