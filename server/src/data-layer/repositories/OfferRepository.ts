@@ -4,14 +4,14 @@ import { CreateOfferTradeRequest } from "../../service-layer/dtos/request/Create
 import { CreateOfferExchangeRequest } from "../../service-layer/dtos/request/CreateOfferExchangeRequest"
 
 import { UserService } from "./UserRepository"
-import { WantedService } from "./WantedRepository"
+import { BountyService } from "./BountyRepository"
 import { InboxService } from "../../service-layer/services/InboxService"
 import admin from "firebase-admin"
 import { Offer, TradeOffer } from "business-layer/models/Offer"
 
 export class OfferService {
   userService = new UserService()
-  wantedService = new WantedService()
+  bountyService = new BountyService()
   inboxService = new InboxService()
   db = admin.firestore()
   async createOffer(
@@ -19,7 +19,7 @@ export class OfferService {
     requestBody: CreateOfferRequest,
   ): Promise<Offer> {
     const user = await this.userService.getUserById(user_id)
-    const wanted = await this.wantedService.getWantedReagentById(
+    const wanted = await this.bountyService.getWantedReagentById(
       requestBody.reagent_id,
     )
     if (!user || !wanted) throw new Error("No user or reagent found")
@@ -61,7 +61,7 @@ export class OfferService {
     requestBody: CreateOfferTradeRequest,
   ): Promise<TradeOffer> {
     const user = await this.userService.getUserById(user_id)
-    const wanted = await this.wantedService.getWantedReagentById(
+    const wanted = await this.bountyService.getWantedReagentById(
       requestBody.reagent_id,
     )
     if (!user || !wanted) throw new Error("No user or reagent found")
@@ -103,7 +103,7 @@ export class OfferService {
     requestBody: CreateOfferExchangeRequest,
   ): Promise<Offer> {
     const user = await this.userService.getUserById(user_id)
-    const wanted = await this.wantedService.getWantedReagentById(
+    const wanted = await this.bountyService.getWantedReagentById(
       requestBody.reagent_id,
     )
     if (!user || !wanted) throw new Error("No user or reagent found")
@@ -305,6 +305,37 @@ export class OfferService {
       } as Offer
     } catch (err) {
       throw new Error(`Failed to get offer: ${(err as Error).message}`)
+    }
+  }
+
+  /**
+   * Delete offers by reagent ID or offered reagent ID
+   */
+  async deleteOfferByReagentIdOrOfferedReagentId(
+    reagent_id: string,
+  ): Promise<void> {
+    try {
+      const wantedReagentSnapshot = await FirestoreCollections.offers
+        .where("reagent_id", "==", reagent_id)
+        .get()
+
+      const offeredReagentSnapshot = await FirestoreCollections.offers
+        .where("offeredReagentId", "==", reagent_id)
+        .get()
+
+      const deletePromises = [
+        ...wantedReagentSnapshot.docs.map((doc) => doc.ref.delete()),
+        ...offeredReagentSnapshot.docs.map((doc) => doc.ref.delete()),
+      ]
+
+      await Promise.all(deletePromises)
+
+      console.log(
+        `Deleted ${deletePromises.length} offers related to reagent ${reagent_id}`,
+      )
+    } catch (error) {
+      console.error(`Error deleting offers for reagent ${reagent_id}:`, error)
+      throw error
     }
   }
 }

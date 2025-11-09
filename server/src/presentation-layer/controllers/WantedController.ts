@@ -12,7 +12,7 @@ import {
   Query,
 } from "tsoa"
 import { Reagent } from "../../business-layer/models/Reagent"
-import { WantedService } from "../../data-layer/repositories/WantedRepository"
+import { BountyService } from "../../data-layer/repositories/BountyRepository"
 import { ReagentCategory } from "../../business-layer/models/Reagent"
 import { AuthRequest } from "../../service-layer/dtos/request/AuthRequest"
 import { CreateWantedRequest } from "../../service-layer/dtos/request/WantedRequest"
@@ -37,12 +37,12 @@ export class WantedController extends Controller {
     @Query() category?: ReagentCategory[],
   ): Promise<Reagent[]> {
     if (category) {
-      const wanted = await new WantedService().getWantedReagentsByCategory(
+      const wanted = await new BountyService().getWantedReagentsByCategory(
         category,
       )
       return wanted
     }
-    const wanted = await new WantedService().getAllWantedReagents()
+    const wanted = await new BountyService().getAllWantedReagents()
     return wanted
   }
 
@@ -56,7 +56,7 @@ export class WantedController extends Controller {
   @SuccessResponse("200", "Wanted reagents retrieved successfully")
   @Get("{id}")
   public async getWantedReagentById(@Path() id: string): Promise<Reagent> {
-    const wanted = await new WantedService().getWantedReagentById(id)
+    const wanted = await new BountyService().getWantedReagentById(id)
     if (wanted === null) {
       this.setStatus(404)
       return undefined
@@ -90,7 +90,7 @@ User must be authenticated to access this endpoint (lab manager / admin)
       ...requestObject,
       user_id,
     }
-    const newWanted = await new WantedService().createWanted(data)
+    const newWanted = await new BountyService().createWanted(data)
     return newWanted
   }
 }

@@ -3,7 +3,7 @@ import { Reagent } from "../../business-layer/models/Reagent"
 import { ReagentCategory } from "business-layer/models/Reagent"
 import { Timestamp } from "firebase-admin/firestore"
 
-export class WantedService {
+export class BountyService {
   /**
    * Get all wanted reagents from the database.
    *
@@ -128,6 +128,25 @@ Creates a new wanted reagent in the Firestore database.*
     } catch (err) {
       console.log(err)
       throw new Error(`Failed to update wanted reagent - ${id}: ${err}`)
+    }
+  }
+  /**
+   * Delete a wanted reagent by its offered reagent ID.
+   */
+  async deleteBountiesByOfferedReagentId(
+    offeredReagentId: string,
+  ): Promise<void> {
+    try {
+      const wantedSnapshot = await FirestoreCollections.wanted
+        .where("requesterOfferedReagentId", "==", offeredReagentId)
+        .get()
+      const deletePromises = wantedSnapshot.docs.map((doc) => doc.ref.delete())
+      await Promise.all(deletePromises)
+    } catch (err) {
+      console.log(err)
+      throw new Error(
+        `Failed to delete wanted reagents - ${offeredReagentId}: ${err}`,
+      )
     }
   }
 }

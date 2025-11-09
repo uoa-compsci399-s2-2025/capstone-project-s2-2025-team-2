@@ -350,4 +350,34 @@ export class OrderService {
       throw new Error(`Failed to get order: ${(err as Error).message}`)
     }
   }
+  /**
+   * delete orders by reagent ID or offered reagent ID
+   */
+  async deleteOrdersByReagentIdOrOfferedReagentId(
+    reagent_id: string,
+  ): Promise<void> {
+    try {
+      const orderReagentSnapshot = await FirestoreCollections.orders
+        .where("reagent_id", "==", reagent_id)
+        .get()
+
+      const offeredReagentSnapshot = await FirestoreCollections.orders
+        .where("offeredReagentId", "==", reagent_id)
+        .get()
+
+      const deletePromises = [
+        ...orderReagentSnapshot.docs.map((doc) => doc.ref.delete()),
+        ...offeredReagentSnapshot.docs.map((doc) => doc.ref.delete()),
+      ]
+
+      await Promise.all(deletePromises)
+
+      console.log(
+        `Deleted ${deletePromises.length} offers related to reagent ${reagent_id}`,
+      )
+    } catch (error) {
+      console.error(`Error deleting offers for reagent ${reagent_id}:`, error)
+      throw error
+    }
+  }
 }

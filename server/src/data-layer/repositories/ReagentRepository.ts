@@ -2,6 +2,9 @@ import FirestoreCollections from "../adapters/FirestoreCollections"
 import { Reagent, ReagentCategory } from "../../business-layer/models/Reagent"
 import { daysUntilExpiry } from "../../utils/dateCalculate"
 import { Timestamp } from "firebase-admin/firestore"
+import { OrderService } from "./OrderRepository"
+import { OfferService } from "./OfferRepository"
+import { BountyService } from "./BountyRepository"
 
 export class ReagentService {
   /**
@@ -93,6 +96,13 @@ export class ReagentService {
       }
       const reagent = (await docRef.get()).data() as Reagent
       await docRef.delete()
+
+      //when the reagent gets deleted
+      //delete orders, offers, bounties associated with this reagent
+      await new OrderService().deleteOrdersByReagentIdOrOfferedReagentId(id)
+      await new OfferService().deleteOfferByReagentIdOrOfferedReagentId(id)
+      await new BountyService().deleteBountiesByOfferedReagentId(id)
+
       return reagent
     } catch (err) {
       console.log(err)
