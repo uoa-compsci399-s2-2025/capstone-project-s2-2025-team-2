@@ -12,6 +12,7 @@ import client from "@/app/services/fetch-client"
 import { toast } from "sonner"
 import LoadingState from "../loadingstate/LoadingState"
 import { auth } from "@/app/config/firebase"
+import { onAuthStateChanged } from "firebase/auth"
 
 type Order = components["schemas"]["Order"]
 type OrderWithId = Order & {
@@ -96,10 +97,10 @@ const DetailRow = ({
   value?: string | number
   truncate?: boolean
 }) => (
-  <div className="flex justify-between">
+  <div className="flex justify-between gap-2">
     <span className="text-gray-300">{label}:</span>
     <span
-      className={`text-white ${truncate ? "truncate max-w-[150px]" : ""}`}
+      className={`text-white ${truncate ? "truncate max-w-[100px]" : ""}`}
       title={truncate && value ? String(value) : undefined}
     >
       {value ?? "N/A"}
@@ -137,7 +138,7 @@ const ReagentDetails = ({
       {reagent.requesterOfferedReagentId && (
         <>
           <DetailRow
-            label="Your Offered Reagent"
+            label="Offered Reagent"
             value={
               requesterOfferedReagentName ?? reagent.requesterOfferedReagentId
             }
@@ -182,11 +183,45 @@ export default function OrderDetailsModal({
   const [declining, setDeclining] = useState(false)
   const [approved, setApproved] = useState(false)
   const [declined, setDeclined] = useState(false)
+  const [userUid, setUserUid] = useState<string | null>(null)
+  const [requestReagentTitle, setRequestReagentTitle] = useState<string>("Your Reagent:")
+  const [tradeReagentTitle, setTradeReagentTitle] = useState<string>("Their Reagent:")
 
   const { data: requesterData } = useFetch<any>(
     order.requester_id ? `/users/${order.requester_id}` : null,
     isOpen,
   )
+
+  //check user is viewing their own request or request they sent out
+  useEffect(() => {
+    if (!auth) return
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUserUid(user?.uid ?? null)
+    })
+
+    return () => unsubscribe()
+  }, [])
+  
+  useEffect(() => {
+    if (userUid === order.requester_id && !isOfferDetails) {
+      // User is viewing a request they sent out
+      setRequestReagentTitle("Their Reagent:")
+      setTradeReagentTitle("Your Offered Reagent:")
+
+    } else if (userUid === order.owner_id && !isOfferDetails) {
+      // User is viewing their own request
+      setRequestReagentTitle("Your Reagent:")
+      setTradeReagentTitle("Their Offered Reagent:")
+    } else if (userUid === order.requester_id && isOfferDetails) {
+      // User is viewing a offer they sent out
+      setRequestReagentTitle("Their Request:")
+      setTradeReagentTitle("Your Offered Reagent:")
+    } else if (userUid === order.owner_id && isOfferDetails) {
+      // User is viewing their own request
+      setRequestReagentTitle("Your Request:")
+      setTradeReagentTitle("Their Offered Reagent:")
+    }
+  }, [userUid, order.requester_id, order.owner_id, isOfferDetails])
 
   const { data: fetchedRequesterOfferedReagent } = useFetch<any>(
     reagent.tradingType === "trade" && reagent.requesterOfferedReagentId
@@ -319,7 +354,7 @@ export default function OrderDetailsModal({
           className={`grid grid-cols-1 gap-8 w-full pointer-events-auto relative z-10 items-start ${gridCols}`}
         >
           <ReagentDetails
-            title={isOfferDetails ? "Your Request:" : "Your Reagent:"}
+            title={requestReagentTitle}
             reagent={reagent}
             offerDetails={isOfferDetails}
             requesterOfferedReagentName={
@@ -331,11 +366,11 @@ export default function OrderDetailsModal({
           {!isOfferDetails &&
             reagent.tradingType === "trade" &&
             offeredReagent && (
-              <ReagentDetails title="Their Reagent:" reagent={offeredReagent} />
+              <ReagentDetails title={tradeReagentTitle} reagent={offeredReagent} />
             )}
 
           {isOfferDetails && offeredReagent && (
-            <ReagentDetails title="Their Reagent:" reagent={offeredReagent} />
+            <ReagentDetails title={tradeReagentTitle} reagent={offeredReagent} />
           )}
 
           <div className="bg-primary/80 backdrop-blur-sm rounded-2xl p-6 border border-muted shadow-xl flex flex-col w-fit min-w-[300px] h-fit">
