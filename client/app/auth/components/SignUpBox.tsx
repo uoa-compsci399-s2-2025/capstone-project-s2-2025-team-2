@@ -55,9 +55,7 @@ export default function SignUpBox({
   }
 
   //            function: handleDisplayNameChange           //
-  const handleDisplayNameChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleDisplayNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setDisplayName(e.target.value)
   }
 

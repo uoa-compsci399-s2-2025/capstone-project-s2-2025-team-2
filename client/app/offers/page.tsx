@@ -83,9 +83,12 @@ export default function Orders() {
     setLoading(true)
     try {
       //fetch offers
-      const { data: offersData = [] } = await client.GET("/offers/user/pending" as any, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
+      const { data: offersData = [] } = await client.GET(
+        "/offers/user/pending" as any,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        },
+      )
 
       console.debug("[Requests] fetched offers:", offersData)
       setOffers(offersData as any[])

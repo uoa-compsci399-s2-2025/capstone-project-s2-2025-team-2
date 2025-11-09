@@ -22,7 +22,9 @@ const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [user, setUser] = useState<User | null>(null)
   // initialize from Firebase currentUser to avoid UI flash before auth state change fires
-  const [isSignedIn, setIsSignedIn] = useState<boolean>(() => !!auth.currentUser)
+  const [isSignedIn, setIsSignedIn] = useState<boolean>(
+    () => !!auth.currentUser,
+  )
 
   //auth state change listener
   useEffect(() => {
@@ -156,7 +158,8 @@ const Sidebar = () => {
                       {label}
                     </Link>
                   )}
-                  {((label === "Profile" && isSignedIn) || label === "Sign In") && (
+                  {((label === "Profile" && isSignedIn) ||
+                    label === "Sign In") && (
                     <div className="mt-5 h-[2px] w-full bg-gradient-to-r from-transparent from-15% via-blue-primary via-50% to-transparent to-85%" />
                   )}
                 </div>

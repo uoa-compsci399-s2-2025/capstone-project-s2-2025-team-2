@@ -92,9 +92,7 @@ const History = () => {
             ...order,
             reagentName:
               reagentMap[order.reagent_id]?.name || "Deleted Reagent",
-            ownerName:
-              ownerMap[order.owner_id]?.displayName ||
-              "Unknown Owner",
+            ownerName: ownerMap[order.owner_id]?.displayName || "Unknown Owner",
             requesterName:
               requesterMap[order.requester_id]?.displayName ||
               "Unknown Requester",

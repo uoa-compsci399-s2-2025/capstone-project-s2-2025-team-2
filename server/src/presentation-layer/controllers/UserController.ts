@@ -302,9 +302,7 @@ Can only be done by admin*
   @SuccessResponse("200", "All reagents returned successfully")
   @Security("jwt")
   @Get("/{id}/reagents")
-  public async getReagentsByUserId(
-    @Path() id: string,
-  ): Promise<Reagent[]> {
+  public async getReagentsByUserId(@Path() id: string): Promise<Reagent[]> {
     try {
       const reagents = await new ReagentService().getReagentsByUserId(id)
       return reagents

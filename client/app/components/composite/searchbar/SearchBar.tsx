@@ -137,7 +137,7 @@ export default function SearchBar({
   setFilter,
   sort,
   setSort,
-  isBountyBoard = false
+  isBountyBoard = false,
 }: SearchBarProps) {
   return (
     <div className="flex items-center py-1 gap-1">

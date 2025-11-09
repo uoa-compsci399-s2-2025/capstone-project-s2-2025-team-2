@@ -331,7 +331,9 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
               disabled={dataSubmitting || userReagents.length === 0}
             >
               {userReagents.length === 0 ? (
-                <option value="">You don't have any reagents to offer</option>
+                <option value="">
+                  You don&apost;have any reagents to offer
+                </option>
               ) : (
                 <>
                   <option value="">Select a reagent</option>
@@ -360,22 +362,17 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
           label="Location"
           required
           input={
-          <select
-            value={formData.location}
-            onChange={(e) =>
-              handleFieldChange(
-                "location",
-                e.target.value
-              )
-            }
-            className={inputStyles}
-          >
-            {NEW_ZEALAND_UNIVERSITIES.map((type) => (
-              <option key={type} value={type} className="bg-primary">
-                {type}
-              </option>
-            ))}
-          </select>
+            <select
+              value={formData.location}
+              onChange={(e) => handleFieldChange("location", e.target.value)}
+              className={inputStyles}
+            >
+              {NEW_ZEALAND_UNIVERSITIES.map((type) => (
+                <option key={type} value={type} className="bg-primary">
+                  {type}
+                </option>
+              ))}
+            </select>
           }
         />
       </div>

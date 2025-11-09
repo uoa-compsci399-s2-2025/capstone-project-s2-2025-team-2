@@ -8,7 +8,7 @@ export interface ChatRoomResponse {
     name: string
     email: string
   }
-  reagent_name?: string 
+  reagent_name?: string
 }
 
 export interface ConversationListResponse {

@@ -349,8 +349,16 @@ export class OfferService {
    */
   async getAllPendingOffers(user_id: string): Promise<Offer[]> {
     const [snap1, snap2] = await Promise.all([
-      this.db.collection("offers").where("requester_id", "==", user_id).where("status", "==", "pending").get(),
-      this.db.collection("offers").where("owner_id", "==", user_id).where("status", "==", "pending").get(),
+      this.db
+        .collection("offers")
+        .where("requester_id", "==", user_id)
+        .where("status", "==", "pending")
+        .get(),
+      this.db
+        .collection("offers")
+        .where("owner_id", "==", user_id)
+        .where("status", "==", "pending")
+        .get(),
     ])
 
     return [

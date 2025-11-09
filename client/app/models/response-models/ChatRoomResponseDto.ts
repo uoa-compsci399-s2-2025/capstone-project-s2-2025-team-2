@@ -11,7 +11,7 @@ export default interface ChatRoomResponseDto {
     name: string
     email: string
   }
-  reagent_name?: string 
+  reagent_name?: string
 }
 
 export interface MessageDto {

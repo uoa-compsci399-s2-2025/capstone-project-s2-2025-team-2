@@ -54,7 +54,6 @@ interface FormData {
   existingImages: string[] //the firebase storage urls of existing images
 }
 
-
 const NEW_ZEALAND_UNIVERSITIES = [
   "University of Auckland",
   "Auckland University of Technology",
@@ -565,22 +564,17 @@ export const ReagentForm = ({
           label="Location"
           required
           input={
-                  <select
-            value={formData.location}
-            onChange={(e) =>
-              handleFieldChange(
-                "location",
-                e.target.value
-              )
-            }
-            className={inputStyles}
-          >
-            {NEW_ZEALAND_UNIVERSITIES.map((type) => (
-              <option key={type} value={type} className="bg-primary">
-                {type}
-              </option>
-            ))}
-          </select>
+            <select
+              value={formData.location}
+              onChange={(e) => handleFieldChange("location", e.target.value)}
+              className={inputStyles}
+            >
+              {NEW_ZEALAND_UNIVERSITIES.map((type) => (
+                <option key={type} value={type} className="bg-primary">
+                  {type}
+                </option>
+              ))}
+            </select>
           }
         />
       </div>

@@ -184,8 +184,10 @@ export default function OrderDetailsModal({
   const [approved, setApproved] = useState(false)
   const [declined, setDeclined] = useState(false)
   const [userUid, setUserUid] = useState<string | null>(null)
-  const [requestReagentTitle, setRequestReagentTitle] = useState<string>("Your Reagent:")
-  const [tradeReagentTitle, setTradeReagentTitle] = useState<string>("Their Reagent:")
+  const [requestReagentTitle, setRequestReagentTitle] =
+    useState<string>("Your Reagent:")
+  const [tradeReagentTitle, setTradeReagentTitle] =
+    useState<string>("Their Reagent:")
 
   const { data: requesterData } = useFetch<any>(
     order.requester_id ? `/users/${order.requester_id}` : null,
@@ -201,13 +203,12 @@ export default function OrderDetailsModal({
 
     return () => unsubscribe()
   }, [])
-  
+
   useEffect(() => {
     if (userUid === order.requester_id && !isOfferDetails) {
       // User is viewing a request they sent out
       setRequestReagentTitle("Their Reagent:")
       setTradeReagentTitle("Your Offered Reagent:")
-
     } else if (userUid === order.owner_id && !isOfferDetails) {
       // User is viewing their own request
       setRequestReagentTitle("Your Reagent:")
@@ -317,9 +318,7 @@ export default function OrderDetailsModal({
 
   const requesterName = !requesterData
     ? "Unknown User"
-    : requesterData.displayName
-        ?.charAt(0)
-        .toUpperCase() +
+    : requesterData.displayName?.charAt(0).toUpperCase() +
         requesterData.displayName?.slice(1).toLowerCase() || "Unknown User"
 
   const tradingType = reagent.tradingType as keyof typeof TRADING_CONFIG
@@ -364,11 +363,17 @@ export default function OrderDetailsModal({
           {!isOfferDetails &&
             reagent.tradingType === "trade" &&
             offeredReagent && (
-              <ReagentDetails title={tradeReagentTitle} reagent={offeredReagent} />
+              <ReagentDetails
+                title={tradeReagentTitle}
+                reagent={offeredReagent}
+              />
             )}
 
           {isOfferDetails && offeredReagent && (
-            <ReagentDetails title={tradeReagentTitle} reagent={offeredReagent} />
+            <ReagentDetails
+              title={tradeReagentTitle}
+              reagent={offeredReagent}
+            />
           )}
 
           <div className="bg-primary/80 backdrop-blur-sm rounded-2xl p-6 border border-muted shadow-xl flex flex-col w-fit min-w-[300px] h-fit">
