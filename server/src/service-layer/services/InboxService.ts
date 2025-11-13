@@ -7,16 +7,19 @@ import {
   ChatRoomResponse,
   ConversationListResponse,
 } from "../dtos/response/ChatRoomResponse"
+import { ReagentService } from "../../data-layer/repositories/ReagentRepository"
 
 export class InboxService {
   private inboxRepository = new InboxRepository()
   private userService = new UserService()
+  private reagentService = new ReagentService()
 
   async createChatRoom(request: CreateChatRoomRequest): Promise<ChatRoom> {
     // Check if chat room already exists between these users
     const existingChatRoom = await this.inboxRepository.getChatRoomByUsers(
       request.user1_id,
       request.user2_id,
+      request.reagent_id,
     )
 
     if (existingChatRoom) {
@@ -36,6 +39,8 @@ export class InboxService {
     const chatRoom: ChatRoom = {
       user1_id: request.user1_id,
       user2_id: request.user2_id,
+      reagent_id: request.reagent_id,
+      order_id: request.order_id,
       created_at: new Date(),
     }
 
@@ -83,9 +88,23 @@ export class InboxService {
       console.log("other user..")
       console.log(otherUser)
 
+      // get info of reagent thats being requested
+      let reagentName
+      try {
+        const reagent = await this.reagentService.getReagentById(
+          chatRoom.reagent_id,
+        )
+        reagentName = reagent?.name
+      } catch (err) {
+        console.error(`Error getting reagent info: ${err}`)
+      }
+
       if (otherUser) {
         conversations.push({
-          chat_room: chatRoom,
+          chat_room: {
+            ...chatRoom,
+            reagent_name: reagentName,
+          },
           messages: messages,
           other_user: {
             id: otherUserId,
@@ -146,8 +165,22 @@ export class InboxService {
       throw new Error("Other user not found")
     }
 
+    // get info of reagent thats being requested
+    let reagentName
+    try {
+      const reagent = await this.reagentService.getReagentById(
+        chatRoom.reagent_id,
+      )
+      reagentName = reagent?.name
+    } catch (err) {
+      console.error(`Error getting reagent info: ${err}`)
+    }
+
     return {
-      chat_room: chatRoom,
+      chat_room: {
+        ...chatRoom,
+        reagent_name: reagentName,
+      },
       messages: messages,
       other_user: {
         id: otherUserId,

@@ -178,4 +178,64 @@ export class OrderController extends Controller {
     )
     return updatedOrder
   }
+
+  @SuccessResponse("200", "order successfully updated")
+  @Security("jwt")
+  @Patch("{id}")
+  public async updateOrder(
+    @Path() id: string,
+    @Body()
+    req: { price?: number; offeredReagentId?: string },
+    @Request() request: AuthRequest,
+  ): Promise<Order | Trade | Exchange> {
+    // it might be better to use Body object instead of request obj ?
+    const user = request.user
+    const orderService = new OrderService()
+    const order = await orderService.getOrderById(id)
+
+    if (!order) {
+      this.setStatus(404)
+      throw new Error("Order not found")
+    }
+
+    // currently order editing can only be done by the user who requests
+    // change later if both users should be able to edit an order
+    if (user.uid !== order.requester_id) {
+      this.setStatus(403)
+      throw new Error("Unauthorised to edit this order request")
+    }
+
+    const updates: any = {}
+
+    // update offered price in order, can only update on orders with price propety
+    if (req.price) {
+      if (!("price" in order)) {
+        this.setStatus(400)
+        throw new Error(
+          "Price can only be updated for orders of trade type 'sell'",
+        )
+      }
+      updates.price = req.price
+    }
+
+    // update requested reagent in order
+    if (req.offeredReagentId !== undefined) {
+      if (!("offeredReagentId" in order)) {
+        this.setStatus(400)
+        throw new Error(
+          "offeredReagentId can only be updated orders of trade type 'trade'",
+        )
+      }
+
+      // likely to have checks on frontend for this but just 2 be safe
+      if (req.offeredReagentId === order.reagent_id) {
+        this.setStatus(400)
+        throw new Error("Cannot exchange the same reagent")
+      }
+      updates.offeredReagentId = req.offeredReagentId
+    }
+
+    const updated = await orderService.updateOrderFields(id, updates)
+    return updated
+  }
 }

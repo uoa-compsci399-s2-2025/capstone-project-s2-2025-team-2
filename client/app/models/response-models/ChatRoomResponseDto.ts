@@ -3,6 +3,9 @@ export default interface ChatRoomResponseDto {
     id?: string
     user1_id: string
     user2_id: string
+    reagent_id: string
+    reagent_name: string
+    order_id?: string
     created_at: string
   }
   messages: MessageDto[]

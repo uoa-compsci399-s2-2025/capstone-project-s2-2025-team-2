@@ -7,6 +7,12 @@ import { sendMessage, getChatRoomById } from "../../services/inbox"
 import { onAuthStateChanged, User } from "firebase/auth"
 import { auth } from "../../config/firebase"
 import { formatTime } from "../../hooks/utils/timeFormatter"
+import client from "../../services/fetch-client"
+import { toast } from "sonner"
+import { components } from "@/models/__generated__/schema"
+
+type Reagent = components["schemas"]["Reagent"]
+type ReagentWithId = Reagent & { id: string }
 
 //            function: ChatBox           //
 export default function ChatBox({
@@ -23,6 +29,21 @@ export default function ChatBox({
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
 
+  // edit reagent request state
+  const [canEditRequest, setCanEditRequest] = useState(false)
+  const [tradingType, setTradingType] = useState<
+    "sell" | "trade" | "giveaway" | null
+  >(null)
+  const [orderId, setOrderId] = useState<string | null>(null)
+  const [isEditOpen, setIsEditOpen] = useState(false)
+  const [requestPrice, setRequestPrice] = useState<string>("")
+  const [requestingUserReagents, setRequestingUserReagents] = useState<
+    ReagentWithId[]
+  >([])
+  const [offeredReagentId, setOfferedReagentId] = useState<string>("")
+  const [requestSubmitting, setRequestSubmitting] = useState(false)
+  const [editLoading, setEditLoading] = useState(false)
+
   //            effect: auth state change           //
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -30,6 +51,74 @@ export default function ChatBox({
     })
     return () => unsubscribe()
   }, [])
+
+  // establish state for the reagent request
+  useEffect(() => {
+    const init = async () => {
+      const token = localStorage.getItem("authToken")
+
+      console.log("bruh2")
+      console.log(selectedConversation)
+      if (!selectedConversation?.chat_room || !user?.uid) return
+
+      const reagentId = selectedConversation.chat_room.reagent_id
+      const orderId = selectedConversation.chat_room.order_id
+      setOrderId(orderId)
+      console.log(selectedConversation.chat_room)
+      try {
+        setEditLoading(true)
+        // fetch reagent data to get tradingType
+        const { data: reagent } = await client.GET(
+          `/reagents/${reagentId}` as any,
+          {},
+        )
+        const type = reagent?.tradingType
+        setTradingType(type)
+
+        if (token && orderId) {
+          const { data: order } = await client.GET(
+            `/orders/${orderId}` as any,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            },
+          )
+
+          const requesterId = order.requester_id
+          // editing request can only be done on requesters side
+          setCanEditRequest(requesterId === user.uid)
+
+          if (order.price) {
+            setRequestPrice(String(order.price))
+          }
+          if (order.offeredReagentId) {
+            setOfferedReagentId(order.offeredReagentId)
+          }
+        } else {
+          setCanEditRequest(false)
+        }
+
+        // for order of type trade, get requesting users reagents
+        if (token && type === "trade") {
+          const { data: reagents } = await client.GET(
+            `/users/reagents` as any,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            },
+          )
+          setRequestingUserReagents(reagents)
+        }
+      } catch (err) {
+        console.error(`Failed to initialise request edit state: ${err}`)
+      } finally {
+        setEditLoading(false)
+      }
+    }
+    init()
+  }, [
+    selectedConversation?.chat_room?.id,
+    selectedConversation?.chat_room?.reagent_id,
+    selectedConversation?.chat_room?.order_id,
+  ])
 
   //            function: scrollToBottom           //
   const scrollToBottom = () => {
@@ -96,6 +185,72 @@ export default function ChatBox({
     )
   }
 
+  const cancelOrder = async () => {
+    if (!orderId) return
+    const token = localStorage.getItem("authToken")
+    if (!token) return
+    try {
+      setRequestSubmitting(true)
+      const { error } = await client.PATCH(`/orders/${orderId}/cancel` as any, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (error) {
+        console.error(`Error cancelling order: ${error}`)
+        throw new Error(`Error cancelling order: ${error}`)
+      }
+      toast("Order request deleted")
+      // refresh conversation
+      const updatedConvo = await getChatRoomById(
+        selectedConversation.chat_room.id,
+        user!.uid,
+      )
+      onConversationUpdate(updatedConvo)
+    } catch (err) {
+      console.error(`Error cancelling order: ${err}`)
+      toast("Failed to delete order request")
+    } finally {
+      setRequestSubmitting(false)
+    }
+  }
+
+  const updateOrder = async () => {
+    if (!orderId || !selectedConversation?.chat_room?.reagent_id) return
+    const token = localStorage.getItem("authToken")
+    if (!token) return
+    try {
+      setRequestSubmitting(true)
+      // update order
+      const body: any =
+        tradingType === "sell"
+          ? { price: Number(requestPrice) }
+          : { offeredReagentId }
+
+      const { error } = await client.PATCH(`/orders/${orderId}` as any, {
+        body,
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      if (error) {
+        console.error(`Failed to update request: ${error}`)
+        throw new Error(`Failed to update request: ${error}`)
+      }
+
+      toast("Request updated")
+      setIsEditOpen(false)
+      // refresh convo
+      const updated = await getChatRoomById(
+        selectedConversation.chat_room.id,
+        user!.uid,
+      )
+      onConversationUpdate(updated)
+    } catch (err) {
+      toast("Failed to update request")
+      console.error(`Failed to update request: ${err}`)
+      throw new Error(`Failed to update request: ${err}`)
+    } finally {
+      setRequestSubmitting(false)
+    }
+  }
+
   //            render: ChatBox           //
   if (!selectedConversation) {
     return (
@@ -136,9 +291,26 @@ export default function ChatBox({
           </div>
 
           <div className="flex space-x-2 md:m-0 mt-4">
-            <button className="md:px-4 md:py-2 p-2 text-xs md:text-sm bg-[var(--dark-gray)] text-white hover:bg-[var(--dark-gray)]/70 cursor-pointer rounded-2xl transition-colors">
-              Edit Request
-            </button>
+            {/* edit request form btn */}
+            {canEditRequest && tradingType && tradingType !== "giveaway" && (
+              <button
+                onClick={() => setIsEditOpen(true)}
+                disabled={editLoading}
+                className="p-2 text-xs md:text-sm bg-[var(--dark-gray)] text-white hover:bg-[var(--dark-gray)]/70 cursor-pointer rounded-2xl transition-colors disabled:opacity-50"
+              >
+                Edit Request
+              </button>
+            )}
+            {/* 'edit request' btn becomes 'cancel request' if reagent listing of type 'giveaway' */}
+            {canEditRequest && tradingType === "giveaway" && (
+              <button
+                onClick={cancelOrder}
+                disabled={requestSubmitting || editLoading}
+                className="md:px-4 md:py-2 p-2 text-xs md:text-sm bg-red-600 text-white hover:bg-red-700 cursor-pointer rounded-2xl transition-colors disabled:opacity-50"
+              >
+                Delete Request
+              </button>
+            )}
             <button
               onClick={() => {
                 if (selectedConversation.chat_room.reagent_id) {
@@ -215,6 +387,84 @@ export default function ChatBox({
           </button>
         </div>
       </div>
+
+      {/* edit req form */}
+      {isEditOpen &&
+        canEditRequest &&
+        tradingType &&
+        tradingType !== "giveaway" && (
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70"
+            onClick={(e) => {
+              if (e.target === e.currentTarget) setIsEditOpen(false)
+            }}
+          >
+            <div className="relative w-full bg-primary/80 rounded-2xl p-6">
+              <h2 className="text-2xl font-medium text-white">
+                Edit Reagent Request
+              </h2>
+
+              {/* for listings of type 'sell', requesting user can change sell price offered */}
+              {tradingType === "sell" && (
+                <div>
+                  <label className="block text-sm font-medium text-white">
+                    Reagent Price
+                  </label>
+                  <input
+                    type="number"
+                    value={requestPrice}
+                    onChange={(e) => setRequestPrice(e.target.value)}
+                    placeholder="0"
+                    disabled={requestSubmitting}
+                    className="w-full px-3 py-2 border rounded-lg bg-primary/50 text-white"
+                  />
+                </div>
+              )}
+
+              {/* for listings of type 'trade', requesting user can change reagent offered from a list of other reagents they own */}
+              {tradingType === "trade" && (
+                <div>
+                  <label className="block text-sm font-medium text-white">
+                    Reagent to Trade
+                  </label>
+                  <select
+                    value={offeredReagentId}
+                    onChange={(e) => setOfferedReagentId(e.target.value)}
+                    disabled={requestSubmitting}
+                    className="w-full px-3 py-2 border rounded-lg bg-primary/50 text-white"
+                  >
+                    {requestingUserReagents.map((reagent) => (
+                      <option
+                        key={reagent.id}
+                        value={reagent.id}
+                        className="bg-primary"
+                      >
+                        {reagent.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+              <div className="flex justify-between pt-6 mt-6">
+                <button
+                  onClick={() => setIsEditOpen(false)}
+                  disabled={requestSubmitting}
+                  className="px-4 py-2 text-white rounded-lg bg-gray-600 hover:bg-red-500 disabled:opacity-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={updateOrder}
+                  disabled={requestSubmitting}
+                  className="px-4 py-2 text-white rounded-lg bg-blue-primary hover:bg-blue-primary/80 disabled:opacity-50"
+                >
+                  Update Request
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
     </div>
   )
 }

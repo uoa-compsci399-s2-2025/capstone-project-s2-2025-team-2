@@ -50,6 +50,8 @@ export class OrderService {
         user1_id: user_id,
         user2_id: reagent.user_id,
         initial_message: requestBody.message,
+        reagent_id: requestBody.reagent_id,
+        order_id: createdOrder.id,
       })
     } catch (error) {
       console.error("Error creating chat room for order:", error)
@@ -94,6 +96,8 @@ export class OrderService {
         user1_id: user_id,
         user2_id: reagent.user_id,
         initial_message: requestBody.message,
+        reagent_id: requestBody.reagent_id,
+        order_id: createdTrade.id,
       })
     } catch (error) {
       console.error("Error creating chat room for order:", error)
@@ -141,6 +145,8 @@ export class OrderService {
         user1_id: user_id,
         user2_id: reagent.user_id,
         initial_message: requestBody.message,
+        reagent_id: requestBody.reagent_id,
+        order_id: createdExchange.id,
       })
     } catch (error) {
       console.error("Error creating chat room for order:", error)
@@ -242,6 +248,20 @@ export class OrderService {
       throw new Error(
         `Failed to update order status: ${(err as Error).message}`,
       )
+    }
+  }
+
+  // func for updating propeties within an order (price and/or requested reagent id)
+  async updateOrderFields(
+    id: string,
+    fields: Partial<Order & Trade & Exchange>,
+  ): Promise<Order | Trade | Exchange> {
+    try {
+      const orderRef = FirestoreCollections.orders.doc(id)
+      await orderRef.update(fields)
+      return await this.getOrderById(id)
+    } catch (err) {
+      throw new Error(`Failed to update order: ${err}`)
     }
   }
 
