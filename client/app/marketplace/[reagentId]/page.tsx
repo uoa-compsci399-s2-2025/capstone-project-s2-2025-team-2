@@ -93,10 +93,10 @@ export default function ReagentView({ params }: ReagentViewProps) {
             </div>
             <div className="bg-primary -mt-18 relative z-10 rounded-t-3xl lg:mt-0 md:mb-0 md:rounded-none md:z-auto md:bg-transparent">
               <div className="hidden" />
-              <div className="flex md:flex-row flex-col justify-center items-start md:items-stretch mt-12 gap-12 md:gap-0">
+              <div className="flex md:flex-row flex-col justify-center items-start md:items-center mt-12 gap-12 md:gap-0">
                 {/* img carousel */}
                 {reagent.images && (
-                  <div className="order-2 md:order-1 mx-16 hover:border-white/40 duration-300 hover:shadow-lg md:m-0 self-stretch border border-white/30 py-6 rounded-2xl bg-black/30">
+                  <div className="order-2 md:order-1 mx-16 hover:border-white/40 duration-300 hover:shadow-lg md:m-0 border border-white/30 py-6 rounded-2xl bg-black/30">
                     <ImageCarousel images={reagent.images} />
                   </div>
                 )}
