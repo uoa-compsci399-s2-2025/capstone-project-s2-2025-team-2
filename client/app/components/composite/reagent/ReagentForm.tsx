@@ -484,6 +484,7 @@ export const ReagentForm = ({
         input={formInput("name", {
           placeholder: "Reagent name",
           required: true,
+          maxLength: 100,
         })}
       />
 
