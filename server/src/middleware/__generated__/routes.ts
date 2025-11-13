@@ -303,6 +303,9 @@ const models: TsoaRoute.Models = {
             "id": {"dataType":"string"},
             "user1_id": {"dataType":"string","required":true},
             "user2_id": {"dataType":"string","required":true},
+            "reagent_id": {"dataType":"string"},
+            "reagent_name": {"dataType":"string"},
+            "order_id": {"dataType":"string"},
             "created_at": {"dataType":"datetime","required":true},
         },
         "additionalProperties": false,
@@ -336,6 +339,8 @@ const models: TsoaRoute.Models = {
             "user1_id": {"dataType":"string","required":true},
             "user2_id": {"dataType":"string","required":true},
             "initial_message": {"dataType":"string"},
+            "reagent_id": {"dataType":"string","required":true},
+            "order_id": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -1406,6 +1411,39 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'cancelOrder',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsOrderController_updateOrder: Record<string, TsoaRoute.ParameterSchema> = {
+                id: {"in":"path","name":"id","required":true,"dataType":"string"},
+                req: {"in":"body","name":"req","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"offeredReagentId":{"dataType":"string"},"price":{"dataType":"double"}}},
+                request: {"in":"request","name":"request","required":true,"dataType":"object"},
+        };
+        app.patch('/orders/:id',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(OrderController)),
+            ...(fetchMiddlewares<RequestHandler>(OrderController.prototype.updateOrder)),
+
+            async function OrderController_updateOrder(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsOrderController_updateOrder, request, response });
+
+                const controller = new OrderController();
+
+              await templateService.apiHandler({
+                methodName: 'updateOrder',
                 controller,
                 response,
                 next,
