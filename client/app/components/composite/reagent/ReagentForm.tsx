@@ -623,13 +623,19 @@ export const ReagentForm = ({
       <FormField
         label="Description"
         input={
-          <textarea
-            value={formData.description}
-            onChange={(e) => handleFieldChange("description", e.target.value)}
-            placeholder="Additional reagent details"
-            rows={3}
-            className={`${inputStyles} min-h-[80px] resize-y`}
-          />
+          <>
+            <textarea
+              value={formData.description}
+              onChange={(e) => handleFieldChange("description", e.target.value)}
+              placeholder="Additional reagent details"
+              rows={3}
+              className={`${inputStyles} min-h-[80px] resize-y`}
+              maxLength={500}
+            />
+            <div className="text-right text-xs text-gray-300">
+              {formData.description.length}/500
+            </div>
+          </>
         }
       />
 
