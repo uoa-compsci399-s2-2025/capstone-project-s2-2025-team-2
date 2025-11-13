@@ -159,7 +159,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                       <span className="text-gray-300 mb-1 block">
                         Description:
                       </span>
-                      <p className="text-white/90 leading-relaxed line-clamp-4 border-b border-white/20 pb-2">
+                      <p className="text-white/90 leading-relaxed border-b border-white/20 pb-2 break-words">
                         {reagent.description ||
                           "No description provided for this reagent."}
                       </p>
