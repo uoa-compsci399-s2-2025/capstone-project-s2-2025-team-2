@@ -26,7 +26,7 @@ const VISIBILITY_OPTIONS: ReagentVisibility[] = [
   "private",
 ]
 const CONDITION_OPTIONS = ["unopened", "used-like new", "used"]
-const UNIT_OPTIONS = ["g", "kg", "mL", "L", "bottles", "boxes", "units"]
+const UNIT_OPTIONS = ["g", "kg", "mL", "L", "Bottles", "Boxes", "Units"]
 const MAX_IMAGES = 5
 
 interface ReagentFormProps {
@@ -53,6 +53,18 @@ interface FormData {
   restricted: boolean
   existingImages: string[] //the firebase storage urls of existing images
 }
+
+const NEW_ZEALAND_UNIVERSITIES = [
+  "University of Auckland",
+  "Auckland University of Technology",
+  "University of Waikato",
+  "Massey University",
+  "Victoria University of Wellington",
+  "University of Canterbury",
+  "Lincoln University",
+  "University of Otago",
+  "Other",
+]
 
 //reusable styling classes
 const inputStyles =
@@ -472,6 +484,7 @@ export const ReagentForm = ({
         input={formInput("name", {
           placeholder: "Reagent name",
           required: true,
+          maxLength: 100,
         })}
       />
 
@@ -551,10 +564,19 @@ export const ReagentForm = ({
         <FormField
           label="Location"
           required
-          input={formInput("location", {
-            placeholder: "Current location",
-            required: true,
-          })}
+          input={
+            <select
+              value={formData.location}
+              onChange={(e) => handleFieldChange("location", e.target.value)}
+              className={inputStyles}
+            >
+              {NEW_ZEALAND_UNIVERSITIES.map((type) => (
+                <option key={type} value={type} className="bg-primary">
+                  {type}
+                </option>
+              ))}
+            </select>
+          }
         />
       </div>
 
@@ -580,7 +602,7 @@ export const ReagentForm = ({
             >
               {UNIT_OPTIONS.map((option) => (
                 <option key={option} value={option} className="bg-primary">
-                  {option.charAt(0).toUpperCase() + option.slice(1)}
+                  {option}
                 </option>
               ))}
             </select>
@@ -602,13 +624,19 @@ export const ReagentForm = ({
       <FormField
         label="Description"
         input={
-          <textarea
-            value={formData.description}
-            onChange={(e) => handleFieldChange("description", e.target.value)}
-            placeholder="Additional reagent details"
-            rows={3}
-            className={`${inputStyles} min-h-[80px] resize-y`}
-          />
+          <>
+            <textarea
+              value={formData.description}
+              onChange={(e) => handleFieldChange("description", e.target.value)}
+              placeholder="Additional reagent details"
+              rows={3}
+              className={`${inputStyles} min-h-[80px] resize-y`}
+              maxLength={500}
+            />
+            <div className="text-right text-xs text-gray-300">
+              {formData.description.length}/500
+            </div>
+          </>
         }
       />
 

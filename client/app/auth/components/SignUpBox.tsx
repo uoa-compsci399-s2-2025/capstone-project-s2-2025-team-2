@@ -30,8 +30,9 @@ export default function SignUpBox({
   const [currentStep, setCurrentStep] = useState(1)
   const [email, setEmail] = useState("")
   const [verificationCode, setVerificationCode] = useState("")
-  const [preferredName, setPreferredName] = useState("")
+  const [displayName, setDisplayName] = useState("")
   const [university, setUniversity] = useState("")
+  const [location, setLocation] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
   const [isEmailValid, setIsEmailValid] = useState(false)
@@ -53,16 +54,19 @@ export default function SignUpBox({
     setIsEmailValid(emailRegex.test(emailValue))
   }
 
-  //            function: handlePreferredNameChange           //
-  const handlePreferredNameChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
-    setPreferredName(e.target.value)
+  //            function: handleDisplayNameChange           //
+  const handleDisplayNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDisplayName(e.target.value)
   }
 
   //            function: handleUniversityChange           //
   const handleUniversityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setUniversity(e.target.value)
+  }
+
+  //            function: handleLocationChange           //
+  const handleLocationChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setLocation(e.target.value)
   }
 
   //            function: onVerifyEmail           //
@@ -130,7 +134,7 @@ export default function SignUpBox({
         toast("Please fill in all required fields.")
       }
     } else if (currentStep === 2) {
-      if (preferredName && university) {
+      if (displayName && university) {
         setCurrentStep(3)
       } else {
         toast("Please fill in all required fields.")
@@ -155,13 +159,13 @@ export default function SignUpBox({
       const requestBody: FirebaseSignUpRequestDto = {
         email,
         password,
-        preferredName,
+        displayName,
         university,
       }
       console.log("Signing up with Firebase:", {
         email,
         password,
-        preferredName,
+        displayName,
         university,
       })
       const response = await firebaseSignUp(requestBody)
@@ -197,7 +201,7 @@ export default function SignUpBox({
 
       //welcome toast, marketplace redirect
       toast(
-        `Welcome, ${preferredName || response.email}! Your account has been created successfully.`,
+        `Welcome, ${displayName || response.email}! Your account has been created successfully.`,
       )
       router.replace("/marketplace")
 
@@ -205,8 +209,9 @@ export default function SignUpBox({
       console.log("User created and signed in:", {
         uid: response.uid,
         email: response.email,
-        preferredName,
+        displayName,
         university,
+        location,
       })
     } else {
       setNotificationState("sign-up-fail")
@@ -216,7 +221,7 @@ export default function SignUpBox({
   //            function: saveUserToFirestore           //
   const saveUserToFirestore = async () => {
     try {
-      const response = await verifyToken(preferredName, university)
+      const response = await verifyToken(displayName, university, location)
 
       if (response && response.success) {
         console.log(
@@ -257,10 +262,12 @@ export default function SignUpBox({
         />
       ) : currentStep === 2 ? (
         <SignUpPersonalSection
-          preferredName={preferredName}
+          displayName={displayName}
           university={university}
-          onPreferredNameChange={handlePreferredNameChange}
+          location={location}
+          onDisplayNameChange={handleDisplayNameChange}
           onUniversityChange={handleUniversityChange}
+          onLocationChange={handleLocationChange}
           onNextStep={handleNextStep}
           onSignInClick={handleSignInClick}
         />

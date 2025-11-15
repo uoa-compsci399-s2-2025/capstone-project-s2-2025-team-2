@@ -302,17 +302,8 @@ Can only be done by admin*
   @SuccessResponse("200", "All reagents returned successfully")
   @Security("jwt")
   @Get("/{id}/reagents")
-  public async getReagentsByUserId(
-    @Path() id: string,
-    @Request() request: AuthRequest,
-  ): Promise<Reagent[]> {
+  public async getReagentsByUserId(@Path() id: string): Promise<Reagent[]> {
     try {
-      if (request.user.role !== "admin" && request.user.uid !== id) {
-        this.setStatus(403)
-        console.error(
-          "You don't have permission to access other users reagents",
-        )
-      }
       const reagents = await new ReagentService().getReagentsByUserId(id)
       return reagents
     } catch (err) {

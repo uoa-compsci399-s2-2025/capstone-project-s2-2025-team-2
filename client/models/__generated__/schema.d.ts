@@ -59,24 +59,6 @@ export interface paths {
     patch: operations["UpdateUser"]
     trace?: never
   }
-  "/users/{id}": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    /** @description Update user information by their ID
-     *     User **must** be authenticated to access this endpoint */
-    patch: operations["UpdateUser"]
-    trace?: never
-  }
   "/users/reagents/expiring": {
     parameters: {
       query?: never
@@ -409,6 +391,23 @@ export interface paths {
     patch: operations["CancelOrder"]
     trace?: never
   }
+  "/orders/requested/{reagent_id}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description Get an order for a user by reagent ID */
+    get: operations["GetOrderByReagentId"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
+    trace?: never
+  }
   "/offers": {
     parameters: {
       query?: never
@@ -487,6 +486,23 @@ export interface paths {
     options?: never
     head?: never
     patch: operations["CancelOrder"]
+    trace?: never
+  }
+  "/offers/requested/{reagent_id}": {
+    parameters: {
+      query?: never
+      header?: never
+      path?: never
+      cookie?: never
+    }
+    /** @description Get an offer for a user by reagent ID. */
+    get: operations["GetOfferByReagentId"]
+    put?: never
+    post?: never
+    delete?: never
+    options?: never
+    head?: never
+    patch?: never
     trace?: never
   }
   "/inbox/chatroom": {
@@ -909,7 +925,7 @@ export interface components {
       /** Format: double */
       quantity?: number
       unit?: string
-      offeredReagentId: string
+      offeredReagentId?: string
     }
     CreateOfferRequest: {
       reagent_id: string
@@ -933,7 +949,7 @@ export interface components {
       /** Format: double */
       quantity?: number
       unit?: string
-      offeredReagentId: string
+      offeredReagentId?: string
       /** Format: double */
       price: number
     }
@@ -955,6 +971,9 @@ export interface components {
       user2_id: string
       /** Format: date-time */
       created_at: string
+      order_id?: string
+      offer_id?: string
+      reagent_id?: string
     }
     Message: {
       id?: string
@@ -972,11 +991,15 @@ export interface components {
         name: string
         id: string
       }
+      reagent_name?: string
     }
     CreateChatRoomRequest: {
       user1_id: string
       user2_id: string
       initial_message?: string
+      order_id?: string
+      offer_id?: string
+      reagent_id?: string
     }
     SendMessageRequest: {
       chat_room_id: string
@@ -1007,6 +1030,8 @@ export interface components {
     }
     SendVerificationCodeRequest: {
       email: string
+      /** @enum {string} */
+      purpose?: "signup" | "forgot-password"
     }
     VerifyCodeResponse: {
       success: boolean
@@ -1752,6 +1777,31 @@ export interface operations {
       }
     }
   }
+  GetOrderByReagentId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        reagent_id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description order successfully fetched */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json":
+            | components["schemas"]["Order"]
+            | components["schemas"]["Trade"]
+            | components["schemas"]["Exchange"]
+        }
+      }
+    }
+  }
   GetOffers: {
     parameters: {
       query?: never
@@ -1891,6 +1941,30 @@ export interface operations {
             | components["schemas"]["Order"]
             | components["schemas"]["Trade"]
             | components["schemas"]["Exchange"]
+        }
+      }
+    }
+  }
+  GetOfferByReagentId: {
+    parameters: {
+      query?: never
+      header?: never
+      path: {
+        reagent_id: string
+      }
+      cookie?: never
+    }
+    requestBody?: never
+    responses: {
+      /** @description offer successfully fetched */
+      200: {
+        headers: {
+          [name: string]: unknown
+        }
+        content: {
+          "application/json":
+            | components["schemas"]["Offer"]
+            | components["schemas"]["TradeOffer"]
         }
       }
     }

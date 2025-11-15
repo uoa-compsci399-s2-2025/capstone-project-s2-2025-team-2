@@ -4,14 +4,14 @@ import { CreateOfferTradeRequest } from "../../service-layer/dtos/request/Create
 import { CreateOfferExchangeRequest } from "../../service-layer/dtos/request/CreateOfferExchangeRequest"
 
 import { UserService } from "./UserRepository"
-import { WantedService } from "./WantedRepository"
+import { BountyService } from "./BountyRepository"
 import { InboxService } from "../../service-layer/services/InboxService"
 import admin from "firebase-admin"
 import { Offer, TradeOffer } from "business-layer/models/Offer"
 
 export class OfferService {
   userService = new UserService()
-  wantedService = new WantedService()
+  bountyService = new BountyService()
   inboxService = new InboxService()
   db = admin.firestore()
   async createOffer(
@@ -19,7 +19,7 @@ export class OfferService {
     requestBody: CreateOfferRequest,
   ): Promise<Offer> {
     const user = await this.userService.getUserById(user_id)
-    const wanted = await this.wantedService.getWantedReagentById(
+    const wanted = await this.bountyService.getWantedReagentById(
       requestBody.reagent_id,
     )
     if (!user || !wanted) throw new Error("No user or reagent found")
@@ -47,6 +47,8 @@ export class OfferService {
         user1_id: user_id,
         user2_id: wanted.user_id,
         initial_message: requestBody.message,
+        offer_id: createdOffer.id,
+        reagent_id: requestBody.reagent_id,
       })
     } catch (error) {
       console.error("Error creating chat room for order:", error)
@@ -61,7 +63,7 @@ export class OfferService {
     requestBody: CreateOfferTradeRequest,
   ): Promise<TradeOffer> {
     const user = await this.userService.getUserById(user_id)
-    const wanted = await this.wantedService.getWantedReagentById(
+    const wanted = await this.bountyService.getWantedReagentById(
       requestBody.reagent_id,
     )
     if (!user || !wanted) throw new Error("No user or reagent found")
@@ -90,6 +92,8 @@ export class OfferService {
         user1_id: user_id,
         user2_id: wanted.user_id,
         initial_message: requestBody.message,
+        offer_id: createdOffer.id,
+        reagent_id: requestBody.reagent_id,
       })
     } catch (error) {
       console.error("Error creating chat room for order:", error)
@@ -103,7 +107,7 @@ export class OfferService {
     requestBody: CreateOfferExchangeRequest,
   ): Promise<Offer> {
     const user = await this.userService.getUserById(user_id)
-    const wanted = await this.wantedService.getWantedReagentById(
+    const wanted = await this.bountyService.getWantedReagentById(
       requestBody.reagent_id,
     )
     if (!user || !wanted) throw new Error("No user or reagent found")
@@ -131,6 +135,8 @@ export class OfferService {
         user1_id: user_id,
         user2_id: wanted.user_id,
         initial_message: requestBody.message,
+        offer_id: createdOffer.id,
+        reagent_id: requestBody.reagent_id,
       })
     } catch (error) {
       console.error("Error creating chat room for order:", error)
@@ -306,5 +312,64 @@ export class OfferService {
     } catch (err) {
       throw new Error(`Failed to get offer: ${(err as Error).message}`)
     }
+  }
+
+  /**
+   * Delete offers by reagent ID or offered reagent ID
+   */
+  async deleteOfferByReagentIdOrOfferedReagentId(
+    reagent_id: string,
+  ): Promise<void> {
+    try {
+      const wantedReagentSnapshot = await FirestoreCollections.offers
+        .where("reagent_id", "==", reagent_id)
+        .get()
+
+      const offeredReagentSnapshot = await FirestoreCollections.offers
+        .where("offeredReagentId", "==", reagent_id)
+        .get()
+
+      const deletePromises = [
+        ...wantedReagentSnapshot.docs.map((doc) => doc.ref.delete()),
+        ...offeredReagentSnapshot.docs.map((doc) => doc.ref.delete()),
+      ]
+
+      await Promise.all(deletePromises)
+
+      console.log(
+        `Deleted ${deletePromises.length} offers related to reagent ${reagent_id}`,
+      )
+    } catch (error) {
+      console.error(`Error deleting offers for reagent ${reagent_id}:`, error)
+      throw error
+    }
+  }
+  /**
+   * Get all pending offers
+   */
+  async getAllPendingOffers(user_id: string): Promise<Offer[]> {
+    const [snap1, snap2] = await Promise.all([
+      this.db
+        .collection("offers")
+        .where("requester_id", "==", user_id)
+        .where("status", "==", "pending")
+        .get(),
+      this.db
+        .collection("offers")
+        .where("owner_id", "==", user_id)
+        .where("status", "==", "pending")
+        .get(),
+    ])
+
+    return [
+      ...snap1.docs.map((d) => {
+        const data = d.data() as Omit<Offer, "id">
+        return { id: d.id, ...data }
+      }),
+      ...snap2.docs.map((d) => {
+        const data = d.data() as Omit<Offer, "id">
+        return { id: d.id, ...data }
+      }),
+    ]
   }
 }

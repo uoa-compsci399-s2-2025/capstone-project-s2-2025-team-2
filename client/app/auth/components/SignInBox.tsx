@@ -81,7 +81,7 @@ export default function SignInBox({
     try {
       setNotificationState("signing-in")
       const requestBody: FirebaseSignInRequestDto = { email, password }
-      console.log("Signing in with Firebase:", { email, password })
+      console.log("Signing in with Firebase:", { email })
       const response = await firebaseSignIn(requestBody)
       handleSignInResponse(response)
     } catch (error) {

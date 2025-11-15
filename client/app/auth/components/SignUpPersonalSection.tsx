@@ -8,10 +8,12 @@ import AuthLink from "../../components/auth/AuthLink"
 import { useState, useEffect } from "react"
 
 interface SignUpPersonalSectionProps {
-  preferredName: string
+  displayName: string
   university: string
-  onPreferredNameChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  location: string
+  onDisplayNameChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onUniversityChange: (e: React.ChangeEvent<HTMLSelectElement>) => void
+  onLocationChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onNextStep: () => void
   onSignInClick: () => void
 }
@@ -31,31 +33,33 @@ const NEW_ZEALAND_UNIVERSITIES = [
 
 //            function: SignUpPersonalSection           //
 export default function SignUpPersonalSection({
-  preferredName,
+  displayName,
   university,
-  onPreferredNameChange,
+  location,
+  onDisplayNameChange,
   onUniversityChange,
+  onLocationChange,
   onNextStep,
   onSignInClick,
 }: SignUpPersonalSectionProps) {
   const [isFormValid, setIsFormValid] = useState(false)
 
   useEffect(() => {
-    setIsFormValid(preferredName.trim().length > 0 && university.length > 0)
-  }, [preferredName, university])
+    setIsFormValid(displayName.trim().length > 0 && university.length > 0)
+  }, [displayName, university])
 
   //            render: SignUpPersonalSection           //
   return (
     <div className="flex flex-col flex-1 justify-between">
       <div className="space-y-4">
         <AuthInputBox
-          id="preferredName"
-          name="preferredName"
+          id="displayName"
+          name="displayName"
           type="text"
-          label="Preferred Name"
-          placeholder="Enter your preferred name"
-          value={preferredName}
-          onChange={onPreferredNameChange}
+          label="Display Name"
+          placeholder="Enter your display name"
+          value={displayName}
+          onChange={onDisplayNameChange}
           required
         />
 
@@ -82,6 +86,16 @@ export default function SignUpPersonalSection({
             ))}
           </select>
         </div>
+
+        <AuthInputBox
+          id="location"
+          name="location"
+          type="text"
+          label="Location"
+          placeholder="e.g., Auckland, New Zealand"
+          value={location}
+          onChange={onLocationChange}
+        />
       </div>
 
       <div className="mt-auto space-y-6">

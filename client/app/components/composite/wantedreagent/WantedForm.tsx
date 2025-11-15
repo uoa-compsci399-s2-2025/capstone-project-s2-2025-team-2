@@ -13,6 +13,18 @@ type ReagentCategory = components["schemas"]["ReagentCategory"]
 const TRADING_TYPES: ReagentTradingType[] = ["trade", "giveaway", "sell"]
 const CATEGORIES: ReagentCategory[] = ["chemical", "hazardous", "biological"]
 
+const NEW_ZEALAND_UNIVERSITIES = [
+  "University of Auckland",
+  "Auckland University of Technology",
+  "University of Waikato",
+  "Massey University",
+  "Victoria University of Wellington",
+  "University of Canterbury",
+  "Lincoln University",
+  "University of Otago",
+  "Other",
+]
+
 interface WantedFormProps {
   onSubmit: (data: any) => void
   onCancel: () => void
@@ -215,6 +227,16 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
           },
         },
       )
+      if (
+        wantedData.tradingType === "trade" &&
+        !wantedData.requesterOfferedReagentId
+      ) {
+        toast.error(
+          "You can't create a trade listing without offering a reagent.",
+        )
+        setDataSubmitting(false)
+        return
+      }
       if (error) {
         throw new Error("Failed to create wanted listing")
       }
@@ -286,33 +308,41 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
       {formData.tradingType === "sell" && (
         <FormField
           label="Unit Price"
+          required
           input={formInput("price", {
             type: "number",
             placeholder: "0.00",
             min: "0",
+            required: true,
           })}
         />
       )}
       {formData.tradingType === "trade" && (
         <FormField
           label="Offer one of your reagents"
+          required
           input={
             <select
               value={formData.requesterOfferedReagentId}
               onChange={(e) =>
                 handleFieldChange("requesterOfferedReagentId", e.target.value)
               }
-              className={inputStyles}
+              className={`${inputStyles} ${userReagents.length === 0 ? "appearance-none" : ""}`}
               disabled={dataSubmitting || userReagents.length === 0}
             >
               {userReagents.length === 0 ? (
-                <option value="">Select a Reagent</option>
+                <option value="">
+                  You don&apost;have any reagents to offer
+                </option>
               ) : (
-                userReagents.map((r) => (
-                  <option key={r.id} value={r.id} className="bg-primary">
-                    {r.name}
-                  </option>
-                ))
+                <>
+                  <option value="">Select a reagent</option>
+                  {userReagents.map((r) => (
+                    <option key={r.id} value={r.id} className="bg-primary">
+                      {r.name}
+                    </option>
+                  ))}
+                </>
               )}
             </select>
           }
@@ -331,10 +361,19 @@ export const WantedForm = ({ onSubmit, onCancel }: WantedFormProps) => {
         <FormField
           label="Location"
           required
-          input={formInput("location", {
-            placeholder: "Pickup or delivery location",
-            required: true,
-          })}
+          input={
+            <select
+              value={formData.location}
+              onChange={(e) => handleFieldChange("location", e.target.value)}
+              className={inputStyles}
+            >
+              {NEW_ZEALAND_UNIVERSITIES.map((type) => (
+                <option key={type} value={type} className="bg-primary">
+                  {type}
+                </option>
+              ))}
+            </select>
+          }
         />
       </div>
       <FormField

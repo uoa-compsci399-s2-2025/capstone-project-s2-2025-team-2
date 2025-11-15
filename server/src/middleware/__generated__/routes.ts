@@ -90,9 +90,9 @@ const models: TsoaRoute.Models = {
         "properties": {
             "email": {"dataType":"string","required":true},
             "displayName": {"dataType":"string","required":true},
-            "preferredName": {"dataType":"string","required":true},
             "lastName": {"dataType":"string"},
             "university": {"dataType":"string","required":true},
+            "location": {"dataType":"string"},
             "about": {"dataType":"string"},
             "role": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["user"]},{"dataType":"enum","enums":["lab_manager"]},{"dataType":"enum","enums":["admin"]}],"required":true},
             "image": {"dataType":"string"},
@@ -102,7 +102,7 @@ const models: TsoaRoute.Models = {
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "Partial_User_": {
         "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"email":{"dataType":"string"},"displayName":{"dataType":"string"},"preferredName":{"dataType":"string"},"lastName":{"dataType":"string"},"university":{"dataType":"string"},"about":{"dataType":"string"},"role":{"dataType":"union","subSchemas":[{"dataType":"enum","enums":["user"]},{"dataType":"enum","enums":["lab_manager"]},{"dataType":"enum","enums":["admin"]}]},"image":{"dataType":"string"}},"validators":{}},
+        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"email":{"dataType":"string"},"displayName":{"dataType":"string"},"lastName":{"dataType":"string"},"university":{"dataType":"string"},"location":{"dataType":"string"},"about":{"dataType":"string"},"role":{"dataType":"union","subSchemas":[{"dataType":"enum","enums":["user"]},{"dataType":"enum","enums":["lab_manager"]},{"dataType":"enum","enums":["admin"]}]},"image":{"dataType":"string"}},"validators":{}},
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "CreateReagentRequest": {
@@ -304,6 +304,9 @@ const models: TsoaRoute.Models = {
             "user1_id": {"dataType":"string","required":true},
             "user2_id": {"dataType":"string","required":true},
             "created_at": {"dataType":"datetime","required":true},
+            "order_id": {"dataType":"string"},
+            "offer_id": {"dataType":"string"},
+            "reagent_id": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -326,6 +329,7 @@ const models: TsoaRoute.Models = {
             "chat_room": {"ref":"ChatRoom","required":true},
             "messages": {"dataType":"array","array":{"dataType":"refObject","ref":"Message"},"required":true},
             "other_user": {"dataType":"nestedObjectLiteral","nestedProperties":{"email":{"dataType":"string","required":true},"name":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}},"required":true},
+            "reagent_name": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -336,6 +340,9 @@ const models: TsoaRoute.Models = {
             "user1_id": {"dataType":"string","required":true},
             "user2_id": {"dataType":"string","required":true},
             "initial_message": {"dataType":"string"},
+            "order_id": {"dataType":"string"},
+            "offer_id": {"dataType":"string"},
+            "reagent_id": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -457,8 +464,9 @@ const models: TsoaRoute.Models = {
         "dataType": "refObject",
         "properties": {
             "idToken": {"dataType":"string","required":true},
-            "preferredName": {"dataType":"string"},
+            "displayName": {"dataType":"string"},
             "university": {"dataType":"string"},
+            "location": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -944,7 +952,6 @@ export function RegisterRoutes(app: Router) {
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsUserController_getReagentsByUserId: Record<string, TsoaRoute.ParameterSchema> = {
                 id: {"in":"path","name":"id","required":true,"dataType":"string"},
-                request: {"in":"request","name":"request","required":true,"dataType":"object"},
         };
         app.get('/users/:id/reagents',
             authenticateMiddleware([{"jwt":[]}]),
@@ -1680,6 +1687,37 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'getOfferByReagentId',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsOfferController_getAllPendingOffers: Record<string, TsoaRoute.ParameterSchema> = {
+                request: {"in":"request","name":"request","required":true,"dataType":"object"},
+        };
+        app.get('/offers/user/pending',
+            authenticateMiddleware([{"jwt":[]}]),
+            ...(fetchMiddlewares<RequestHandler>(OfferController)),
+            ...(fetchMiddlewares<RequestHandler>(OfferController.prototype.getAllPendingOffers)),
+
+            async function OfferController_getAllPendingOffers(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsOfferController_getAllPendingOffers, request, response });
+
+                const controller = new OfferController();
+
+              await templateService.apiHandler({
+                methodName: 'getAllPendingOffers',
                 controller,
                 response,
                 next,

@@ -101,6 +101,7 @@ interface SearchBarProps {
   setSort: (
     val: "earliestExpiry" | "latestExpiry" | "nameAZ" | "nameZA" | "",
   ) => void
+  isBountyBoard?: boolean
 }
 
 //dropdown options for filter and sort
@@ -109,6 +110,14 @@ const FILTER_OPTIONS: DropdownOption[] = [
   { value: "category", label: "Category" },
   { value: "expiryDate", label: "Expiry Date" },
   { value: "condition", label: "Condition" },
+  { value: "location", label: "Location" },
+  { value: "tradingType", label: "Trading Type" },
+]
+
+const BOUNTY_FILTER_OPTIONS: DropdownOption[] = [
+  { value: "all", label: "Filter by..." },
+  { value: "category", label: "Category" },
+  { value: "expiryDate", label: "Needed By Date" },
   { value: "location", label: "Location" },
   { value: "tradingType", label: "Trading Type" },
 ]
@@ -128,6 +137,7 @@ export default function SearchBar({
   setFilter,
   sort,
   setSort,
+  isBountyBoard = false,
 }: SearchBarProps) {
   return (
     <div className="flex items-center py-1 gap-1">
@@ -135,7 +145,7 @@ export default function SearchBar({
       <CustomDropdown
         value={filter}
         onChange={setFilter}
-        options={FILTER_OPTIONS}
+        options={isBountyBoard ? BOUNTY_FILTER_OPTIONS : FILTER_OPTIONS}
         className="w-1/3 md:w-1/5 min-w-32 [&>button]:rounded-l-md"
       />
 

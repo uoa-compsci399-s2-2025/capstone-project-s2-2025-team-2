@@ -102,7 +102,7 @@ const UserDisplay = ({
         <select
           value={selectedReagentId}
           onChange={(e) => onReagentChange?.(e.target.value)}
-          className="w-full text-base font-light text-gray-400 focus:outline-none truncate"
+          className="w-full text-base font-light text-gray-400 focus:outline-none truncate hover:cursor-pointer"
           disabled={isSubmitting}
         >
           {userReagents.map((reagent) => (
@@ -189,9 +189,15 @@ export const ReagentRequest = ({
     //validate user
     const validateUser = () => {
       if (!currentUser) return false
-      if (currentUser.uid === reagent.user_id) {
+      if (currentUser.uid === reagent.user_id && !isBountyBoard) {
         guardUpdate(isClosed, () => {
           setError("You cannot request your own reagent")
+          setIsInitialising(false)
+        })
+        return false
+      } else if (currentUser.uid === reagent.user_id && isBountyBoard) {
+        guardUpdate(isClosed, () => {
+          setError("You cannot make an offer on your own request")
           setIsInitialising(false)
         })
         return false
@@ -392,7 +398,7 @@ export const ReagentRequest = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 cursor-default"
       onClick={(e) => {
         if (e.target === e.currentTarget) handleClose()
       }}
@@ -401,7 +407,7 @@ export const ReagentRequest = ({
         <button
           onClick={handleClose}
           disabled={isSubmitting}
-          className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors p-1 rounded-lg hover:bg-white/10"
+          className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors p-1 rounded-lg hover:bg-white/10 hover:cursor-pointer"
         >
           <XMarkIcon className="w-6 h-6" />
         </button>
@@ -492,7 +498,7 @@ export const ReagentRequest = ({
                 type="button"
                 onClick={handleSubmit}
                 disabled={isSubmitting}
-                className="px-4 py-2 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed bg-blue-primary hover:bg-blue-primary/80 min-w-[120px] text-base font-medium flex items-center justify-center gap-2"
+                className="px-4 py-2 text-white rounded-lg disabled:opacity-50 disabled:cursor-not-allowed bg-blue-primary hover:bg-blue-primary/80 min-w-[120px] text-base font-medium flex items-center justify-center gap-2 hover:cursor-pointer"
               >
                 {isBountyBoard ? "Offer →" : "Request →"}
               </button>

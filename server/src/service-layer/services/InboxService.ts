@@ -1,5 +1,6 @@
 import { InboxRepository } from "../../data-layer/repositories/InboxRepository"
 import { UserService } from "../../data-layer/repositories/UserRepository"
+import { ReagentService } from "../../data-layer/repositories/ReagentRepository"
 import { ChatRoom, Message } from "../../business-layer/models/ChatRoom"
 import { CreateChatRoomRequest } from "../dtos/request/CreateChatRoomRequest"
 import { SendMessageRequest } from "../dtos/request/SendMessageRequest"
@@ -11,6 +12,7 @@ import {
 export class InboxService {
   private inboxRepository = new InboxRepository()
   private userService = new UserService()
+  private reagentService = new ReagentService()
 
   async createChatRoom(request: CreateChatRoomRequest): Promise<ChatRoom> {
     // Check if chat room already exists between these users
@@ -37,6 +39,9 @@ export class InboxService {
       user1_id: request.user1_id,
       user2_id: request.user2_id,
       created_at: new Date(),
+      ...(request.order_id && { order_id: request.order_id }),
+      ...(request.offer_id && { offer_id: request.offer_id }),
+      ...(request.reagent_id && { reagent_id: request.reagent_id }),
     }
 
     const createdChatRoom = await this.inboxRepository.createChatRoom(chatRoom)
@@ -83,6 +88,15 @@ export class InboxService {
       console.log("other user..")
       console.log(otherUser)
 
+      //get reagent name if reagent_id exists
+      let reagentName: string | undefined = undefined
+      if (chatRoom.reagent_id) {
+        const reagent = await this.reagentService.getReagentById(
+          chatRoom.reagent_id,
+        )
+        reagentName = reagent?.name
+      }
+
       if (otherUser) {
         conversations.push({
           chat_room: chatRoom,
@@ -92,6 +106,7 @@ export class InboxService {
             name: otherUser.displayName || otherUser.email,
             email: otherUser.email,
           },
+          reagent_name: reagentName,
         })
       }
     }
@@ -146,6 +161,15 @@ export class InboxService {
       throw new Error("Other user not found")
     }
 
+    //get reagent name if reagent_id exists
+    let reagentName: string | undefined = undefined
+    if (chatRoom.reagent_id) {
+      const reagent = await this.reagentService.getReagentById(
+        chatRoom.reagent_id,
+      )
+      reagentName = reagent?.name
+    }
+
     return {
       chat_room: chatRoom,
       messages: messages,
@@ -154,6 +178,7 @@ export class InboxService {
         name: otherUser.displayName || otherUser.email,
         email: otherUser.email,
       },
+      reagent_name: reagentName,
     }
   }
 }

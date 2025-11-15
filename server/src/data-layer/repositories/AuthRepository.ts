@@ -32,16 +32,21 @@ export class AuthRepository {
   async saveUser(
     uid: string,
     email: string,
-    preferredName: string,
+    displayName: string,
     university: string,
+    location?: string,
   ): Promise<void> {
-    await db.collection("users").doc(uid).set({
+    const userData: any = {
       uid,
       email,
-      preferredName,
+      displayName,
       university,
       createdAt: new Date(),
-    })
+    }
+    if (location) {
+      userData.location = location
+    }
+    await db.collection("users").doc(uid).set(userData)
   }
 
   async getUserByUid(uid: string): Promise<any> {

@@ -97,14 +97,16 @@ export class AuthController extends Controller {
   ): Promise<VerifyTokenResponse> {
     console.log("=== Token Verification Request Received ===")
     console.log("ID Token:", requestBody.idToken.substring(0, 20) + "...")
-    console.log("Preferred Name:", requestBody.preferredName)
+    console.log("Display Name:", requestBody.displayName)
     console.log("University:", requestBody.university)
+    console.log("Location:", requestBody.location)
     console.log("===========================================")
 
     const result = await this.authService.verifyIdToken(
       requestBody.idToken,
-      requestBody.preferredName,
+      requestBody.displayName,
       requestBody.university,
+      requestBody.location,
     )
     return result
   }

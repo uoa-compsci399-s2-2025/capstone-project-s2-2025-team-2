@@ -162,13 +162,13 @@
 					"displayName": {
 						"type": "string"
 					},
-					"preferredName": {
-						"type": "string"
-					},
 					"lastName": {
 						"type": "string"
 					},
 					"university": {
+						"type": "string"
+					},
+					"location": {
 						"type": "string"
 					},
 					"about": {
@@ -189,7 +189,6 @@
 				"required": [
 					"email",
 					"displayName",
-					"preferredName",
 					"university",
 					"role"
 				],
@@ -204,13 +203,13 @@
 					"displayName": {
 						"type": "string"
 					},
-					"preferredName": {
-						"type": "string"
-					},
 					"lastName": {
 						"type": "string"
 					},
 					"university": {
+						"type": "string"
+					},
+					"location": {
 						"type": "string"
 					},
 					"about": {
@@ -853,6 +852,15 @@
 					"created_at": {
 						"type": "string",
 						"format": "date-time"
+					},
+					"order_id": {
+						"type": "string"
+					},
+					"offer_id": {
+						"type": "string"
+					},
+					"reagent_id": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -920,6 +928,9 @@
 							"id"
 						],
 						"type": "object"
+					},
+					"reagent_name": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -939,6 +950,15 @@
 						"type": "string"
 					},
 					"initial_message": {
+						"type": "string"
+					},
+					"order_id": {
+						"type": "string"
+					},
+					"offer_id": {
+						"type": "string"
+					},
+					"reagent_id": {
 						"type": "string"
 					}
 				},
@@ -1166,10 +1186,13 @@
 					"idToken": {
 						"type": "string"
 					},
-					"preferredName": {
+					"displayName": {
 						"type": "string"
 					},
 					"university": {
+						"type": "string"
+					},
+					"location": {
 						"type": "string"
 					}
 				},
@@ -1373,7 +1396,7 @@
 						}
 					}
 				},
-				"description": "Update user information by their ID\nUser **must** be authenticated to access this endpoint",
+				"description": "Update user information by their ID\r\nUser **must** be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -1480,7 +1503,7 @@
 						}
 					}
 				},
-				"description": "Get all reagents under a user\nUser must be authenticated to access this endpoint",
+				"description": "Get all reagents under a user\r\nUser must be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -1505,7 +1528,7 @@
 						}
 					}
 				},
-				"description": "Create a reagent by passing in all the required props.\nUser **must** be authenticated to access this endpoint (lab manager / admin) [seller]",
+				"description": "Create a reagent by passing in all the required props.\r\nUser **must** be authenticated to access this endpoint (lab manager / admin) [seller]",
 				"tags": [
 					"User"
 				],
@@ -1668,7 +1691,7 @@
 						}
 					}
 				},
-				"description": "Get a reagent by using its ID\nUser must be authenticated to access this endpoint",
+				"description": "Get a reagent by using its ID\r\nUser must be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -1708,7 +1731,7 @@
 						}
 					}
 				},
-				"description": "Delete a reagent by using its ID\nUser **must** be authenticated to access this endpoint",
+				"description": "Delete a reagent by using its ID\r\nUser **must** be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -1743,7 +1766,7 @@
 						}
 					}
 				},
-				"description": "Update a reagent by its ID.\nUser **must** be authenticated to access this endpoint",
+				"description": "Update a reagent by its ID.\r\nUser **must** be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -1795,7 +1818,7 @@
 						}
 					}
 				},
-				"description": "\nGet all reagents under another user by their user id\nCan only be done by admin*",
+				"description": "\r\nGet all reagents under another user by their user id\r\nCan only be done by admin*",
 				"tags": [
 					"User"
 				],
@@ -2649,6 +2672,36 @@
 						}
 					}
 				]
+			}
+		},
+		"/offers/user/pending": {
+			"get": {
+				"operationId": "GetAllPendingOffers",
+				"responses": {
+					"200": {
+						"description": "offers successfully fetched",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/Offer"
+									},
+									"type": "array"
+								}
+							}
+						}
+					}
+				},
+				"description": "Get all pending offers for a user.",
+				"tags": [
+					"Offers"
+				],
+				"security": [
+					{
+						"jwt": []
+					}
+				],
+				"parameters": []
 			}
 		},
 		"/inbox/chatroom": {

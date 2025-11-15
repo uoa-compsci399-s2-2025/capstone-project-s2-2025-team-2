@@ -10,12 +10,24 @@ interface ProfileFormProps {
 }
 
 interface formData {
-  lastName: string
-  preferredName: string
+  displayName: string
   about: string
   university: string
+  location: string
   imageUrl?: string
 }
+
+const NEW_ZEALAND_UNIVERSITIES = [
+  "University of Auckland",
+  "Auckland University of Technology",
+  "University of Waikato",
+  "Massey University",
+  "Victoria University of Wellington",
+  "University of Canterbury",
+  "Lincoln University",
+  "University of Otago",
+  "Other",
+]
 
 //reusable styling classes
 const inputStyles =
@@ -49,10 +61,10 @@ export const ProfileForm = ({
   userId,
 }: ProfileFormProps) => {
   const [formData, setFormData] = useState<formData>({
-    lastName: "",
-    preferredName: "",
+    displayName: "",
     about: "",
     university: "",
+    location: "",
     imageUrl: "",
   })
   const [dataSubmitting, setDataSubmitting] = useState(false)
@@ -85,10 +97,10 @@ export const ProfileForm = ({
           const userImage = userData.image || ""
           setOriginalImageUrl(userImage)
           setFormData({
-            lastName: userData.lastName || "",
-            preferredName: userData.preferredName || "",
+            displayName: userData.displayName || "",
             about: userData.about || "",
             university: userData.university || "",
+            location: userData.location || "",
             imageUrl: userImage,
           })
         }
@@ -127,9 +139,9 @@ export const ProfileForm = ({
     if (dataSubmitting) return
     setDataSubmitting(true)
 
-    // First name cant be empty
-    if (formData.preferredName.trim() === "") {
-      toast("First name cannot be empty")
+    // Name cant be empty
+    if (formData.displayName.trim() === "") {
+      toast("Name cannot be empty")
       setDataSubmitting(false)
       return
     }
@@ -163,11 +175,11 @@ export const ProfileForm = ({
       }
 
       const userData = {
-        lastName: formData.lastName.trim(),
-        preferredName: formData.preferredName.trim(),
+        displayName: formData.displayName.trim(),
         about: formData.about.trim(),
         image: finalImageUrl?.trim() || "",
         university: formData.university.trim(),
+        location: formData.location.trim(),
       }
 
       const { data: updateUser, error } = await client.PATCH(
@@ -278,24 +290,43 @@ export const ProfileForm = ({
       </div>
 
       <FormField
-        label="First Name"
+        label="Display Name"
         required
         input={
           <input
             type="text"
-            value={formData.preferredName}
-            onChange={(e) => handleFieldChange("preferredName", e.target.value)}
+            value={formData.displayName}
+            onChange={(e) => handleFieldChange("displayName", e.target.value)}
             className={inputStyles}
           />
         }
       />
       <FormField
-        label="Last Name"
+        label="University"
+        input={
+          <select
+            id="university"
+            name="university"
+            value={formData.university}
+            onChange={(e) => handleFieldChange("university", e.target.value)}
+            className={inputStyles}
+          >
+            {NEW_ZEALAND_UNIVERSITIES.map((uni) => (
+              <option key={uni} value={uni} className="bg-primary text-white">
+                {uni}
+              </option>
+            ))}
+          </select>
+        }
+      />
+      <FormField
+        label="Location"
         input={
           <input
             type="text"
-            value={formData.lastName}
-            onChange={(e) => handleFieldChange("lastName", e.target.value)}
+            value={formData.location}
+            onChange={(e) => handleFieldChange("location", e.target.value)}
+            placeholder="e.g., Auckland, New Zealand"
             className={inputStyles}
           />
         }
@@ -306,17 +337,6 @@ export const ProfileForm = ({
           <textarea
             value={formData.about}
             onChange={(e) => handleFieldChange("about", e.target.value)}
-            className={inputStyles}
-          />
-        }
-      />
-      <FormField
-        label="University"
-        input={
-          <input
-            type="text"
-            value={formData.university}
-            onChange={(e) => handleFieldChange("university", e.target.value)}
             className={inputStyles}
           />
         }

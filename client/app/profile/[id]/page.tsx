@@ -322,8 +322,7 @@ const UserProfile = () => {
             <div className="flex flex-col gap-1">
               <div className="flex items-center gap-4">
                 <h1 className="font-light text-white text-2xl md:text-3xl">
-                  {userBeingViewed?.displayName ||
-                    userBeingViewed?.preferredName}
+                  {userBeingViewed?.displayName || "Unknown User"}
                 </h1>
                 {/* show 'edit profile' btn if user is viewing their own profile */}
                 {idOfUserBeingViewed === userUid && (
@@ -334,10 +333,12 @@ const UserProfile = () => {
                 )}
               </div>
               <p className="text-sm text-white">{userBeingViewed.university}</p>
-              <p className="flex items-center gap-1 text-xs text-gray-100">
-                <MapPinIcon className="w-5 h-5" />
-                Auckland, New Zealand
-              </p>
+              {userBeingViewed.location && (
+                <p className="flex items-center gap-1 text-xs text-gray-100">
+                  <MapPinIcon className="w-5 h-5" />
+                  {userBeingViewed.location}
+                </p>
+              )}
               {/* About Me section */}
               {userBeingViewed.about && (
                 <p className="text-sm text-white leading-relaxed max-w-md">

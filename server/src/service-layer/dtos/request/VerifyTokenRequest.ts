@@ -1,5 +1,6 @@
 export interface VerifyTokenRequest {
   idToken: string
-  preferredName?: string
+  displayName?: string
   university?: string
+  location?: string
 }
