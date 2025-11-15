@@ -28,8 +28,28 @@ export default function AuthPage() {
 
   //            render: AuthPage           //
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="flex gap-8 w-full max-w-6xl justify-center min-h-screen md:min-h-0">
+    <div
+      className="min-h-screen flex items-center justify-center bg-background relative"
+      style={{
+        backgroundImage: "url('/Animated Shape.svg')",
+        backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center",
+        height: "100vh",
+      }}
+    >
+      <div className="fixed inset-0 z-0 flex items-center justify-center overflow-hidden pointer-events-none">
+        <span
+          className="font-bold text-white opacity-5"
+          style={{
+            fontSize: "clamp(20rem, 200vw, 28rem)",
+            letterSpacing: "0.1em",
+          }}
+        >
+          CoLab
+        </span>
+      </div>
+      <div className="relative flex gap-8 w-full max-w-6xl justify-center min-h-screen md:min-h-0">
         {/* Left side - Welcome Box */}
         <AuthWelcomeBox setAuthType={setAuthType} />
         {/* Right side - Sign In Box */}
