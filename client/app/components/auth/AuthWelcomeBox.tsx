@@ -6,7 +6,7 @@ interface AuthWelcomeBoxProps {
 }
 export default function AuthWelcomeBox({ setAuthType }: AuthWelcomeBoxProps) {
   return (
-    <div className="max-w-md w-full space-y-8 p-8 bg-gradient-to-b from-blue-400 to-purple-600 rounded-lg shadow-lg flex flex-col justify-center hidden lg:flex">
+    <div className="max-w-md w-full space-y-8 p-8 bg-gradient-to-b from-blue-400/90 to-purple-600/90 rounded-lg shadow-lg flex flex-col justify-center hidden lg:flex">
       {/* Welcome Content */}
       <div className="text-center">
         <h2 className="mb-2">Welcome to</h2>
