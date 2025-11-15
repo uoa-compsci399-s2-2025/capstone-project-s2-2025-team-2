@@ -23,7 +23,7 @@ const Sidebar = () => {
   const [user, setUser] = useState<User | null>(null)
   // initialize from Firebase currentUser to avoid UI flash before auth state change fires
   const [isSignedIn, setIsSignedIn] = useState<boolean>(
-    () => !!auth.currentUser,
+    () => !!auth?.currentUser,
   )
 
   //auth state change listener

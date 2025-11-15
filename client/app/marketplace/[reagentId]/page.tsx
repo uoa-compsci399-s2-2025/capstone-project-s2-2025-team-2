@@ -127,7 +127,10 @@ export default function ReagentView({ params }: ReagentViewProps) {
 
                     {/*reagent name (quantity + unit)*/}
                     <h1 className="text-2xl md:text-3xl text-white tracking-wider mb-3 text-center md:text-left flex items-baseline gap-1">
-                      <span className="truncate min-w-0 max-w-[75%]" title={reagent.name}>
+                      <span
+                        className="truncate min-w-0 max-w-[75%]"
+                        title={reagent.name}
+                      >
                         {reagent.name}
                       </span>
                       {reagent.quantity && reagent.unit && (
