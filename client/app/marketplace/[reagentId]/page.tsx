@@ -93,15 +93,15 @@ export default function ReagentView({ params }: ReagentViewProps) {
             </div>
             <div className="bg-primary -mt-18 relative z-10 rounded-t-3xl lg:mt-0 md:mb-0 md:rounded-none md:z-auto md:bg-transparent">
               <div className="hidden" />
-              <div className="flex md:flex-row flex-col justify-center items-start md:items-center mt-12 gap-12 md:gap-0">
+              <div className="flex xl:flex-row flex-col items-center justify-center mt-12 gap-12 md:gap-0">
                 {/* img carousel */}
                 {reagent.images && (
-                  <div className="order-2 md:order-1 mx-16 hover:border-white/40 duration-300 hover:shadow-lg md:m-0 border border-white/30 py-6 rounded-2xl bg-black/30">
+                  <div className="order-2 md:order-1 w-full mx-32 md:w-[35rem] lg:w-[41rem] md:mx-0 hover:border-white/40 duration-300 hover:shadow-lg border border-white/30 py-6 rounded-2xl bg-black/30 min-w-0 flex-shrink">
                     <ImageCarousel images={reagent.images} />
                   </div>
                 )}
                 {/* reagent info */}
-                <div className="order-1 md:mt-0 mt-10 md:order-2 w-full px-9 md:flex-none md:w-[38rem] md:self-stretch">
+                <div className="order-1 xl:mt-0 mt-10 md:order-2 w-full px-9 md:px-5 md:w-[38rem] lg:w-[44rem] md:self-stretch mx-auto min-w-0">
                   <div className="h-full shadow-lg hover:border-white/30 duration-300 bg-secondary/10 border border-white/20 backdrop-blur-md rounded-2xl p-6 md:p-8">
                     {/* trading type header */}
                     <div className="flex items-center justify-center md:justify-start gap-2 mb-4">
@@ -126,7 +126,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
                     </div>
 
                     {/*reagent name (quantity + unit)*/}
-                    <h1 className="text-2xl md:text-3xl text-white tracking-wider mb-3 text-center md:text-left flex items-baseline gap-1">
+                    <h1 className="text-2xl md:text-3xl text-white tracking-wider mb-3 text-center flex items-baseline gap-1">
                       <span
                         className="truncate min-w-0 max-w-[75%]"
                         title={reagent.name}
@@ -198,7 +198,7 @@ export default function ReagentView({ params }: ReagentViewProps) {
           {/* mobile contact seller section */}
           <div className="fixed bottom-0 w-full md:hidden bg-background z-10 rounded-t-3xl">
             <div
-              className={`flex h-[8rem] ${reagent.tradingType == "sell" ? "justify-between" : "justify-center"}`}
+              className={`flex h-[8rem] ${reagent.tradingType == "sell" ? "justify-between" : "justify-end"}`}
             >
               {reagent.tradingType == "sell" && (
                 <span className="flex flex-col justify-center ml-[2rem]">
