@@ -92,10 +92,10 @@ const BaseCard = ({
   const EditButton = () => (
     <button
       onClick={onEditClick}
-      className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 rounded-lg transition-colors cursor-pointer"
+      className="flex items-center gap-2 px-2 py-1.5 text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 rounded-lg transition-colors cursor-pointer"
     >
       Edit
-      <PencilSquareIcon className="w-4 h-4" />
+      <PencilSquareIcon className="w-5 h-5" />
     </button>
   )
 
