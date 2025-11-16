@@ -30,9 +30,9 @@ const RecordCard = ({
 }: RecordCardProps) => {
   const tradeType = price ? "Sell" : offeredReagentId ? "Trade" : "Giveaway"
   const TRADING_ICONS: Record<string, { Icon: ElementType; color: string }> = {
-    sell: { Icon: CurrencyDollarIcon, color: "text-green-300" },
-    trade: { Icon: ArrowsRightLeftIcon, color: "text-purple-300" },
-    giveaway: { Icon: GiftIcon, color: "text-blue-200" },
+    sell: { Icon: CurrencyDollarIcon, color: "text-green-100" },
+    trade: { Icon: ArrowsRightLeftIcon, color: "text-purple-100" },
+    giveaway: { Icon: GiftIcon, color: "text-blue-100" },
   }
   const { Icon, color } =
     TRADING_ICONS[tradeType.toLowerCase()] || TRADING_ICONS.giveaway
@@ -55,7 +55,7 @@ const RecordCard = ({
       <div>
         <div className="md:flex justify-between items-center m-2">
           <h3 className="md:mr-10 text-lg flex items-center gap-2">
-            {Icon && <Icon className={`w-5 h-5 flex-shrink-0 ${color}`} />}
+            {Icon && <Icon className={`w-6 h-6 flex-shrink-0 ${color}`} />}
             <span>{reagentName}</span>
           </h3>
           <div
