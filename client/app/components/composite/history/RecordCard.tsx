@@ -30,9 +30,9 @@ const RecordCard = ({
 }: RecordCardProps) => {
   const tradeType = price ? "Sell" : offeredReagentId ? "Trade" : "Giveaway"
   const TRADING_ICONS: Record<string, { Icon: ElementType; color: string }> = {
-    sell: { Icon: CurrencyDollarIcon, color: "text-green-300" },
-    trade: { Icon: ArrowsRightLeftIcon, color: "text-purple-300" },
-    giveaway: { Icon: GiftIcon, color: "text-blue-200" },
+    sell: { Icon: CurrencyDollarIcon, color: "text-green-100" },
+    trade: { Icon: ArrowsRightLeftIcon, color: "text-purple-100" },
+    giveaway: { Icon: GiftIcon, color: "text-blue-100" },
   }
   const { Icon, color } =
     TRADING_ICONS[tradeType.toLowerCase()] || TRADING_ICONS.giveaway
@@ -44,18 +44,18 @@ const RecordCard = ({
   const reqClasses = reqKey === "unknown requester" ? "text-red-800" : ""
   const statusClasses =
     statusKey === "pending"
-      ? "bg-yellow-300/40 backdrop-blur-sm border border-yellow-300/90"
+      ? "bg-yellow-500/60 backdrop-blur-sm"
       : statusKey === "approved"
-        ? "bg-green-300/40 backdrop-blur-sm border border-green-300/90"
+        ? "bg-green-500/60 backdrop-blur-sm"
         : statusKey === "canceled"
-          ? "bg-red-300/40 backdrop-blur-sm border border-red-300/90"
-          : "bg-gray-300/40 backdrop-blur-sm border border-gray-300/90"
+          ? "bg-red-500/60 backdrop-blur-sm"
+          : "bg-gray-300/40 backdrop-blur-sm"
   return (
     <div className="w-full border-2 border-secondary/20 px-4 py-1 rounded-2xl bg-primary/70 shadow-lg hover:shadow-xl transition-shadow duration-300">
       <div>
         <div className="md:flex justify-between items-center m-2">
           <h3 className="md:mr-10 text-lg flex items-center gap-2">
-            {Icon && <Icon className={`w-5 h-5 flex-shrink-0 ${color}`} />}
+            {Icon && <Icon className={`w-6 h-6 flex-shrink-0 ${color}`} />}
             <span>{reagentName}</span>
           </h3>
           <div

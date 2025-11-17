@@ -146,17 +146,13 @@ const History = () => {
 
   return (
     <Overlay>
-      <p className="text-4xl font-medium text-white mt-4 ml-8 tracking-[0.05em]">
-        History
-      </p>
+      <p className="text-4xl text-white mt-4 ml-8">History</p>
       <div className="ml-8">
-        <p className="text-warning italic font-bold inline mr-2 tracking-[0.05em]">
-          View
-        </p>
-        <p className="text-gray-100 italic inline">Past orders</p>
+        <p className="text-purple-100 font-semibold inline">View</p>
+        <p className="text-gray-100 inline"> Past Transactions</p>
       </div>
 
-      <div className="mt-5"></div>
+      <div className="mt-4"></div>
       <div className="mx-8 mt-4">
         <div className="text-white gap-2 flex flex-col">
           {orders.length === 0 ? (

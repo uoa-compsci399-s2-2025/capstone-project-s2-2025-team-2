@@ -82,7 +82,7 @@ const BaseCard = ({
   const ViewButton = () => (
     <button
       onClick={onViewClick || (() => router.push(`/marketplace/${reagentId}`))}
-      className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer"
+      className="flex items-center justify-center gap-0.5 px-1.5 py-1.5 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer min-w-[70px]"
     >
       View
       <ArrowRightIcon className="w-5 h-5" />
@@ -92,10 +92,10 @@ const BaseCard = ({
   const EditButton = () => (
     <button
       onClick={onEditClick}
-      className="flex items-center gap-0.5 px-2 py-1.5 text-sm font-medium text-white bg-orange-500 hover:bg-orange-600 rounded-lg transition-colors cursor-pointer"
+      className="flex items-center justify-center gap-0.5 px-1.5 py-1.5 text-sm font-medium text-white bg-gray-500 hover:bg-gray-600 rounded-lg transition-colors cursor-pointer min-w-[70px]"
     >
       Edit
-      <PencilSquareIcon className="w-4 h-4" />
+      <PencilSquareIcon className="w-5 h-5" />
     </button>
   )
 
