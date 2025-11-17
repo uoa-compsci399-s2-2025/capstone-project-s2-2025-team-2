@@ -148,7 +148,7 @@ const ReagentDetails = ({
       )}
 
       <DetailRow label="Location" value={reagent?.location} truncate />
-      {offerDetails && reagent.price > 0 && (
+      {offerDetails && price !== undefined && price !== "" && (
         <DetailRow label="Offered Price" value={`$${price}`} />
       )}
       {reagent?.categories?.length > 0 && (
@@ -330,8 +330,11 @@ export default function OrderDetailsModal({
 
   const price = (order as any).price ?? reagent.price
   const hasPrice = price !== null && price !== undefined && `${price}` !== ""
+  const isTradeType = tradingTypeKey === "trade"
+  const isSellType = tradingTypeKey === "sell"
+  const showPrice = isSellType && hasPrice
   const gridCols =
-    tradingTypeKey === "trade" || isOfferDetails
+    isTradeType || isOfferDetails
       ? "lg:grid-cols-3 max-w-7xl"
       : "lg:grid-cols-2 max-w-5xl"
 
@@ -363,14 +366,14 @@ export default function OrderDetailsModal({
             offerPrice={hasPrice ? price : undefined}
           />
 
-          {!isOfferDetails && tradingTypeKey === "trade" && offeredReagent && (
+          {!isOfferDetails && isTradeType && offeredReagent && (
               <ReagentDetails
                 title={tradeReagentTitle}
                 reagent={offeredReagent}
               />
             )}
 
-          {isOfferDetails && tradingTypeKey === "trade" && offeredReagent && (
+          {isOfferDetails && isTradeType && offeredReagent && (
             <ReagentDetails
               title={tradeReagentTitle}
               reagent={offeredReagent}
@@ -403,7 +406,7 @@ export default function OrderDetailsModal({
                   }
                 />
 
-                {!isOfferDetails && hasPrice && (
+                {!isOfferDetails && showPrice && (
                   <DetailRow label="Offered Price" value={`$${price}`} />
                 )}
 
