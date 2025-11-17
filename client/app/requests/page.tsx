@@ -10,8 +10,6 @@ import type { components } from "@/models/__generated__/schema"
 import { usePageSize } from "../hooks/usePageSize"
 import { usePagination } from "../hooks/usePagination"
 import LoadingState from "../components/composite/loadingstate/LoadingState"
-import { auth } from "@/app/config/firebase"
-import { onAuthStateChanged } from "firebase/auth"
 import {
   Square3Stack3DIcon,
   UserGroupIcon,
@@ -58,7 +56,6 @@ const requestFilters: {
 
 export default function Orders() {
   const [orders, setOrders] = useState<OrderWithId[]>([])
-  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
   const [reagents, setReagents] = useState<Map<string, ReagentWithId>>(
     new Map(),
   )
@@ -71,17 +68,6 @@ export default function Orders() {
   })
   const router = useRouter()
 
-  //fetch userID of the logged in user
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setCurrentUserId(user.uid)
-      } else {
-        setCurrentUserId(null)
-      }
-    })
-    return () => unsubscribe()
-  }, [])
   // fetch all orders where user is owner/requester
   const fetchOrders = useCallback(async () => {
     const token = localStorage.getItem("authToken")
@@ -172,7 +158,10 @@ export default function Orders() {
         <p className="md:ml-8 text-purple-100 font-semibold inline">
           Manage & Track
         </p>
-        <p className="text-gray-100 italic inline"> Your Reagent Transactions</p>
+        <p className="text-gray-100 inline">
+          {" "}
+          Your Reagent Transactions
+        </p>
       </div>
 
       {/*request tabs*/}
@@ -181,7 +170,10 @@ export default function Orders() {
           {requestFilters.map((filter) => {
             const isSelected = requestFilter === filter.filterValue
             return (
-              <div key={filter.filterValue} className="relative flex-1 flex justify-center">
+              <div
+                key={filter.filterValue}
+                className="relative flex-1 flex justify-center"
+              >
                 <span className="hidden md:block">
                   <button
                     type="button"

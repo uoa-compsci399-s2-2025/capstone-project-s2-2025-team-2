@@ -4,7 +4,11 @@ import BaseCard from "../card/BaseCard"
 import type { components } from "@/models/__generated__/schema"
 
 type Order = components["schemas"]["Order"]
-type OrderWithId = Order & { id: string; owner_id: string; offeredReagentId?: string }
+type OrderWithId = Order & {
+  id: string
+  owner_id: string
+  offeredReagentId?: string
+}
 type Reagent = components["schemas"]["Reagent"]
 type ReagentWithId = Reagent & { id: string }
 

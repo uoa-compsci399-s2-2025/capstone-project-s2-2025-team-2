@@ -415,7 +415,11 @@ export class OrderService {
     bounty_id: string | undefined,
     reagent_id: string,
     offeredReagentId: string | undefined,
-  ): Promise<{ requester_id: string; owner_id: string; offeredReagentId: string }> {
+  ): Promise<{
+    requester_id: string
+    owner_id: string
+    offeredReagentId: string
+  }> {
     //reuse order parties method for roles
     const { requester_id, owner_id } = await this.identifyOrderParties(
       user_id,
@@ -439,5 +443,4 @@ export class OrderService {
       offeredReagentId,
     }
   }
-
 }

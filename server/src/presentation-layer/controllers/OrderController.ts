@@ -61,7 +61,7 @@ export class OrderController extends Controller {
   ): Promise<Exchange> {
     const user = request.user
     console.log("User: ", user)
-    
+
     if (!req.bounty_id && req.offeredReagentId) {
       const reagent = await new OrderService().reagentService.getReagentById(
         req.offeredReagentId,

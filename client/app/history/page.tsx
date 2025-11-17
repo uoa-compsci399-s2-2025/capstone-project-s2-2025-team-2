@@ -153,10 +153,8 @@ const History = () => {
   //filter orders based on tab
   const filteredOrders = orders.filter((order) => {
     if (historyFilter === "all") return true
-    if (historyFilter === "sent")
-      return order.requester_id === currentUserId
-    if (historyFilter === "received")
-      return order.owner_id === currentUserId
+    if (historyFilter === "sent") return order.requester_id === currentUserId
+    if (historyFilter === "received") return order.owner_id === currentUserId
     return true
   })
 
@@ -205,7 +203,10 @@ const History = () => {
           {historyFilters.map((filter) => {
             const isSelected = historyFilter === filter.filterValue
             return (
-              <div key={filter.filterValue} className="relative flex-1 flex justify-center">
+              <div
+                key={filter.filterValue}
+                className="relative flex-1 flex justify-center"
+              >
                 <span className="hidden md:block">
                   <button
                     type="button"

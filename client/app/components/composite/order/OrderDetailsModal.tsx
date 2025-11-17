@@ -317,16 +317,11 @@ export default function OrderDetailsModal({
   const hasPriceField =
     (order as any)?.price !== undefined && (order as any)?.price !== null
   const inferredType = (
-    order?.offeredReagentId
-      ? "trade"
-      : hasPriceField
-        ? "sell"
-        : "giveaway"
+    order?.offeredReagentId ? "trade" : hasPriceField ? "sell" : "giveaway"
   ) as keyof typeof TRADING_CONFIG
   const tradingTypeKey = inferredType
   const { icon: Icon, color } = TRADING_CONFIG[tradingTypeKey]
-  const label =
-    tradingTypeKey.charAt(0).toUpperCase() + tradingTypeKey.slice(1)
+  const label = tradingTypeKey.charAt(0).toUpperCase() + tradingTypeKey.slice(1)
 
   const price = (order as any).price ?? reagent.price
   const hasPrice = price !== null && price !== undefined && `${price}` !== ""
@@ -367,11 +362,11 @@ export default function OrderDetailsModal({
           />
 
           {!isOfferDetails && isTradeType && offeredReagent && (
-              <ReagentDetails
-                title={tradeReagentTitle}
-                reagent={offeredReagent}
-              />
-            )}
+            <ReagentDetails
+              title={tradeReagentTitle}
+              reagent={offeredReagent}
+            />
+          )}
 
           {isOfferDetails && isTradeType && offeredReagent && (
             <ReagentDetails
@@ -441,7 +436,11 @@ export default function OrderDetailsModal({
                   disabled={approving || approved}
                   className="w-full px-4 py-2 text-sm font-medium text-white bg-green-500/80 hover:bg-green-500 disabled:bg-green-500/40 disabled:cursor-not-allowed rounded-lg transition-colors"
                 >
-                  {approved ? "Approved" : approving ? "Approving..." : "Approve"}
+                  {approved
+                    ? "Approved"
+                    : approving
+                      ? "Approving..."
+                      : "Approve"}
                 </button>
               )}
             </div>

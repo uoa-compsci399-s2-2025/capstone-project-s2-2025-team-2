@@ -297,8 +297,8 @@ export const ReagentRequest = ({
     try {
       const requestBody = isBountyBoard
         ? {
-            reagent_id: offeredReagentId, 
-            bounty_id: reagent.id, 
+            reagent_id: offeredReagentId,
+            bounty_id: reagent.id,
             ...(message.trim() && { message: message.trim() }),
             ...(reagent.tradingType === "sell" && {
               type: "trade",
