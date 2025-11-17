@@ -172,7 +172,7 @@ export default function Orders() {
         <p className="md:ml-8 text-purple-100 font-semibold inline">
           Manage & Track
         </p>
-        <p className="text-gray-100 italic inline">Your Requested Reagents</p>
+        <p className="text-gray-100 italic inline"> Your Reagent Transactions</p>
       </div>
 
       {/*request tabs*/}
@@ -221,7 +221,7 @@ export default function Orders() {
         </div>
       </div>
 
-      <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[2rem] md:mx-[2rem] pb-[4rem]">
+      <div className="bg-transparent flex flex-wrap pt-[2rem] gap-4 mx-4 md:gap-[1.5rem] md:mx-[2rem] pb-[4rem]">
         {/*loading state*/}
         {loading ? (
           <LoadingState pageName="Requests" />
@@ -238,7 +238,7 @@ export default function Orders() {
             </p>
           </div>
         ) : (
-          <div className="bg-transparent flex flex-wrap gap-4 md:gap-[2rem] w-full">
+          <div className="bg-transparent flex flex-wrap gap-4 md:gap-[1.5rem] w-full">
             {filteredRequests.map((request) => {
               const reagent = reagents.get(request.reagent_id)
               if (!reagent) return null

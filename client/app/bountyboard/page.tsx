@@ -256,12 +256,12 @@ const BountyBoard = () => {
         Bounty Board
       </p>
       <div className="ml-4 md:ml-0">
-        <p className="md:ml-8 text-warning italic font-bold inline mr-2 tracking-[0.05em]">
+        <p className="md:ml-8 text-purple-100 font-semibold inline">
           Reagents Wanted
         </p>
-        <p className="text-gray-100 italic inline">by Other Users</p>
+        <p className="text-gray-100 inline"> by Other Users</p>
       </div>
-      <div className="mt-5"></div>
+      <div className="mt-4"></div>
 
       <div className="bg-transparent pt-[2rem] mx-4 md:gap-[2rem] md:mx-[2rem]">
         <SearchBar
