@@ -132,7 +132,7 @@ export default function Orders() {
         Requests
       </p>
       <div className="ml-4 md:ml-0">
-        <p className="md:ml-8 text-purple-70 font-semibold inline">
+        <p className="md:ml-8 text-purple-100 font-semibold inline">
           Manage & Track
         </p>
         <p className="text-gray-100 inline"> Your Reagent Transactions</p>

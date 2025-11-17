@@ -233,7 +233,7 @@ const Marketplace = () => {
         Marketplace
       </p>
       <div className="ml-4 md:ml-0">
-        <p className="md:ml-8 text-purple-70 font-semibold inline">
+        <p className="md:ml-8 text-purple-100 font-semibold inline">
           Buy, Sell & Exchange
         </p>
         <p className="text-gray-100 inline"> Laboratory Reagents</p>

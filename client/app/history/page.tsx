@@ -150,7 +150,7 @@ const History = () => {
         History
       </p>
       <div className="ml-8">
-        <p className="text-purple-70 font-semibold inline">View</p>
+        <p className="text-purple-100 font-semibold inline">View</p>
         <p className="text-gray-100 inline"> Past Transactions</p>
       </div>
 
