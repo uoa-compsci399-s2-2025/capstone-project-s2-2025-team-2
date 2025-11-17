@@ -158,10 +158,7 @@ export default function Orders() {
         <p className="md:ml-8 text-purple-100 font-semibold inline">
           Manage & Track
         </p>
-        <p className="text-gray-100 inline">
-          {" "}
-          Your Reagent Transactions
-        </p>
+        <p className="text-gray-100 inline"> Your Reagent Transactions</p>
       </div>
 
       {/*request tabs*/}
