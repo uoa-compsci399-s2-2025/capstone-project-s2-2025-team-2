@@ -421,28 +421,30 @@ export default function OrderDetailsModal({
                   )}
               </div>
             </div>
-            <button
-              onClick={() => (window.location.href = "/inbox")}
-              className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer"
-            >
-              Chat
-            </button>
-            {canApprove && (
+            <div className="space-y-4 mt-6 w-full">
               <button
-                onClick={handleApprove}
-                disabled={approving || approved}
-                className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 disabled:bg-blue-primary/50 disabled:cursor-not-allowed rounded-lg transition-colors"
+                onClick={() => (window.location.href = "/inbox")}
+                className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer"
               >
-                {approved ? "Approved" : approving ? "Approving..." : "Approve"}
+                Chat
               </button>
-            )}{" "}
-            <button
-              onClick={handleDecline}
-              disabled={declining || declined}
-              className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 disabled:bg-blue-primary/50 disabled:cursor-not-allowed rounded-lg transition-colors"
-            >
-              {declined ? "Declined" : declining ? "Declining..." : "Decline"}
-            </button>
+              <button
+                onClick={handleDecline}
+                disabled={declining || declined}
+                className="w-full px-4 py-2 text-sm font-medium text-white bg-red-500/80 hover:bg-red-500 disabled:bg-red-500/40 disabled:cursor-not-allowed rounded-lg transition-colors"
+              >
+                {declined ? "Declined" : declining ? "Declining..." : "Decline"}
+              </button>
+              {canApprove && (
+                <button
+                  onClick={handleApprove}
+                  disabled={approving || approved}
+                  className="w-full px-4 py-2 text-sm font-medium text-white bg-green-500/80 hover:bg-green-500 disabled:bg-green-500/40 disabled:cursor-not-allowed rounded-lg transition-colors"
+                >
+                  {approved ? "Approved" : approving ? "Approving..." : "Approve"}
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>
