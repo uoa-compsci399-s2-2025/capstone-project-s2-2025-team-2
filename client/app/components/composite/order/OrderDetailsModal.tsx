@@ -178,7 +178,12 @@ export default function OrderDetailsModal({
   isOfferDetails = false,
 }: OrderDetailsModalProps) {
   const currentUserId = auth?.currentUser?.uid
-  const isOwner = currentUserId === order?.owner_id
+  const isBounty = !!(order as any)?.bounty_id
+  //if bounty, requester approves
+  //if marketplace, owner approves
+  const canApprove = isBounty
+    ? currentUserId === order?.requester_id
+    : currentUserId === order?.owner_id
   const [approving, setApproving] = useState(false)
   const [declining, setDeclining] = useState(false)
   const [approved, setApproved] = useState(false)
@@ -250,15 +255,9 @@ export default function OrderDetailsModal({
     setApproving(true)
     try {
       const token = localStorage.getItem("authToken")
-      if (isOfferDetails) {
-        await client.PATCH(`/offers/${order.id}/approve` as any, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-      } else {
-        await client.PATCH(`/orders/${order.id}/approve` as any, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-      }
+      await client.PATCH(`/orders/${order.id}/approve` as any, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       toast("Request approved!")
       setApproved(true)
       onApprove?.(order.id)
@@ -273,15 +272,9 @@ export default function OrderDetailsModal({
     setDeclining(true)
     try {
       const token = localStorage.getItem("authToken")
-      if (isOfferDetails) {
-        await client.PATCH(`/offers/${order.id}/cancel` as any, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-      } else {
-        await client.PATCH(`/orders/${order.id}/cancel` as any, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-      }
+      await client.PATCH(`/orders/${order.id}/cancel` as any, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       toast("Request declined!")
       setDeclined(true)
       onDecline?.(order.id)
@@ -423,7 +416,7 @@ export default function OrderDetailsModal({
             >
               Chat
             </button>
-            {isOwner && (
+            {canApprove && (
               <button
                 onClick={handleApprove}
                 disabled={approving || approved}
