@@ -146,9 +146,7 @@ const History = () => {
 
   return (
     <Overlay>
-      <p className="text-4xl text-white mt-4 ml-8">
-        History
-      </p>
+      <p className="text-4xl text-white mt-4 ml-8">History</p>
       <div className="ml-8">
         <p className="text-purple-100 font-semibold inline">View</p>
         <p className="text-gray-100 inline"> Past Transactions</p>
