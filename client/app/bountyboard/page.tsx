@@ -42,7 +42,7 @@ const BountyBoard = () => {
   const [wanted, setWanted] = useState<EnrichedWantedReagent[]>([])
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState("all")
-  const [offers, setOffers] = useState<BountyOrder[]>([])
+  const [orders, setOrders] = useState<BountyOrder[]>([])
   const [sort, setSort] = useState<
     "earliestExpiry" | "latestExpiry" | "nameAZ" | "nameZA" | ""
   >("earliestExpiry")
@@ -113,7 +113,7 @@ const BountyBoard = () => {
     }
   }, [])
 
-  const fetchOffers = useCallback(async () => {
+  const fetchOrders = useCallback(async () => {
     try {
       const token = localStorage.getItem("authToken")
       //fetch orders, filter for bounties
@@ -123,10 +123,10 @@ const BountyBoard = () => {
       const bountyOrders = ((data as any[]) || []).filter(
         (order) => order.bounty_id,
       )
-      setOffers(bountyOrders as BountyOrder[])
+      setOrders(bountyOrders as BountyOrder[])
     } catch (error) {
-      console.error("Failed to fetch offers:", error)
-      setOffers([])
+      console.error("Failed to fetch orders:", error)
+      setOrders([])
     }
   }, [])
 
@@ -138,14 +138,14 @@ const BountyBoard = () => {
 
   useEffect(() => {
     fetchWantedReagents()
-    fetchOffers()
+    fetchOrders()
     try {
       const token = localStorage.getItem("authToken")
       setIsSignedIn(!!token)
     } catch {
       setIsSignedIn(false)
     }
-  }, [fetchWantedReagents, fetchOffers])
+  }, [fetchWantedReagents, fetchOrders])
 
   const handleFormSubmit = async () => {
     await fetchWantedReagents()
@@ -155,11 +155,11 @@ const BountyBoard = () => {
   //DEL NOTE: should these not be deleted?
   // Filter out wanted reagents with approved offers
   const availableWanted = wanted.filter((wantedReagent) => {
-    const hasApprovedOffer = offers.some(
-      (offer) =>
-        offer.bounty_id === wantedReagent.id && offer.status === "approved",
+    const hasApprovedBounty = orders.some(
+      (order) =>
+        order.bounty_id === wantedReagent.id && order.status === "approved",
     )
-    return !hasApprovedOffer
+    return !hasApprovedBounty
   })
 
   const filtered = availableWanted.filter((r) => {
