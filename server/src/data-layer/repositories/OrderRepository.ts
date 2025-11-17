@@ -49,8 +49,8 @@ export class OrderService {
     // Create chat room between requester and reagent owner
     try {
       await this.inboxService.createChatRoom({
-        user1_id: requester_id,
-        user2_id: owner_id,
+        user1_id: requestBody.bounty_id ? owner_id : requester_id,
+        user2_id: requestBody.bounty_id ? requester_id : owner_id,
         initial_message: requestBody.message,
         order_id: createdOrder.id,
         reagent_id: requestBody.reagent_id,
@@ -96,8 +96,8 @@ export class OrderService {
     // Create chat room between requester and reagent owner
     try {
       await this.inboxService.createChatRoom({
-        user1_id: requester_id,
-        user2_id: owner_id,
+        user1_id: requestBody.bounty_id ? owner_id : requester_id,
+        user2_id: requestBody.bounty_id ? requester_id : owner_id,
         initial_message: requestBody.message,
         order_id: createdTrade.id,
         reagent_id: requestBody.reagent_id,
@@ -142,8 +142,8 @@ export class OrderService {
     // Create chat room between requester and reagent owner
     try {
       await this.inboxService.createChatRoom({
-        user1_id: requester_id,
-        user2_id: owner_id,
+        user1_id: requestBody.bounty_id ? owner_id : requester_id,
+        user2_id: requestBody.bounty_id ? requester_id : owner_id,
         initial_message: requestBody.message,
         order_id: createdExchange.id,
         reagent_id: requestBody.reagent_id,
