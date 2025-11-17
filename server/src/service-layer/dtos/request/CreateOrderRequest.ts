@@ -4,4 +4,5 @@ export interface CreateOrderRequest {
   type: "order"
   quantity?: number
   unit?: string
+  bounty_id?: string
 }

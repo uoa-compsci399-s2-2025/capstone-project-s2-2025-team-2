@@ -8,6 +8,7 @@ export interface Order {
   message?: string
   quantity?: number
   unit?: string
+  bounty_id?: string 
 }
 
 export interface Exchange extends Order {

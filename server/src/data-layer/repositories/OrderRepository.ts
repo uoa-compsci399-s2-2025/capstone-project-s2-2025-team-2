@@ -6,34 +6,36 @@ import { OrderWithReagent } from "../../business-layer/models/Order"
 import { CreateOrderRequest } from "../../service-layer/dtos/request/CreateOrderRequest"
 import { CreateTradeRequest } from "../../service-layer/dtos/request/CreateTradeRequest"
 import { CreateExchangeRequest } from "../../service-layer/dtos/request/CreateExchangeRequest"
-import { UserService } from "./UserRepository"
 import { ReagentService } from "./ReagentRepository"
+import { BountyService } from "./BountyRepository"
 import { InboxService } from "../../service-layer/services/InboxService"
 import admin from "firebase-admin"
 
 export class OrderService {
-  userService = new UserService()
   reagentService = new ReagentService()
+  bountyService = new BountyService()
   inboxService = new InboxService()
   db = admin.firestore()
   async createOrder(
     user_id: string,
     requestBody: CreateOrderRequest,
   ): Promise<Order> {
-    const user = await this.userService.getUserById(user_id)
-    const reagent = await this.reagentService.getReagentById(
+    const { requester_id, owner_id } = await this.identifyOrderParties(
+      user_id,
+      requestBody.bounty_id,
       requestBody.reagent_id,
     )
-    if (!user || !reagent) throw new Error("No user or reagent found")
+
     const order: Order = {
-      requester_id: user_id,
+      requester_id,
+      owner_id,
       reagent_id: requestBody.reagent_id,
-      owner_id: reagent.user_id,
       status: "pending",
       createdAt: new Date(),
       ...(requestBody.message && { message: requestBody.message }),
       ...(requestBody.quantity && { quantity: requestBody.quantity }),
       ...(requestBody.unit && { unit: requestBody.unit }),
+      ...(requestBody.bounty_id && { bounty_id: requestBody.bounty_id }),
     }
 
     console.log("Order: ", order)
@@ -47,8 +49,8 @@ export class OrderService {
     // Create chat room between requester and reagent owner
     try {
       await this.inboxService.createChatRoom({
-        user1_id: user_id,
-        user2_id: reagent.user_id,
+        user1_id: requester_id,
+        user2_id: owner_id,
         initial_message: requestBody.message,
         order_id: createdOrder.id,
         reagent_id: requestBody.reagent_id,
@@ -65,25 +67,26 @@ export class OrderService {
     user_id: string,
     requestBody: CreateTradeRequest,
   ): Promise<Trade> {
-    const user = await this.userService.getUserById(user_id)
-    const reagent = await this.reagentService.getReagentById(
+    const { requester_id, owner_id } = await this.identifyOrderParties(
+      user_id,
+      requestBody.bounty_id,
       requestBody.reagent_id,
     )
-    if (!user || !reagent) throw new Error("No user or reagent found")
+
     const order: Trade = {
-      requester_id: user_id,
+      requester_id,
+      owner_id,
       reagent_id: requestBody.reagent_id,
-      owner_id: reagent.user_id,
       status: "pending",
       createdAt: new Date(),
-      ...(requestBody.message && { message: requestBody.message }),
       price: requestBody.price,
+      ...(requestBody.message && { message: requestBody.message }),
       ...(requestBody.quantity && { quantity: requestBody.quantity }),
       ...(requestBody.unit && { unit: requestBody.unit }),
+      ...(requestBody.bounty_id && { bounty_id: requestBody.bounty_id }),
     }
 
     console.log("Order: ", order)
-
     const docRef = await FirestoreCollections.orders.add(order)
     const createdTrade = {
       ...order,
@@ -93,8 +96,8 @@ export class OrderService {
     // Create chat room between requester and reagent owner
     try {
       await this.inboxService.createChatRoom({
-        user1_id: user_id,
-        user2_id: reagent.user_id,
+        user1_id: requester_id,
+        user2_id: owner_id,
         initial_message: requestBody.message,
         order_id: createdTrade.id,
         reagent_id: requestBody.reagent_id,
@@ -111,39 +114,36 @@ export class OrderService {
     user_id: string,
     requestBody: CreateExchangeRequest,
   ): Promise<Exchange> {
-    const user = await this.userService.getUserById(user_id)
-    const reagent = await this.reagentService.getReagentById(
-      requestBody.reagent_id,
-    )
-    if (!user || !reagent) throw new Error("No user or reagent found")
-    if (requestBody.offeredReagentId === requestBody.reagent_id) {
-      throw new Error("Cannot exchange the same reagent")
-    }
+    const { requester_id, owner_id, offeredReagentId } =
+      await this.identifyExchangeParties(
+        user_id,
+        requestBody.bounty_id,
+        requestBody.reagent_id,
+        requestBody.offeredReagentId,
+      )
+
     const order: Exchange = {
-      requester_id: user_id,
+      requester_id,
+      owner_id,
       reagent_id: requestBody.reagent_id,
-      owner_id: reagent.user_id,
       status: "pending",
       createdAt: new Date(),
+      offeredReagentId,
       ...(requestBody.message && { message: requestBody.message }),
-      offeredReagentId: requestBody.offeredReagentId,
       ...(requestBody.quantity && { quantity: requestBody.quantity }),
       ...(requestBody.unit && { unit: requestBody.unit }),
+      ...(requestBody.bounty_id && { bounty_id: requestBody.bounty_id }),
     }
 
     console.log("Order: ", order)
-
     const docRef = await FirestoreCollections.orders.add(order)
-    const createdExchange = {
-      ...order,
-      id: docRef.id,
-    }
+    const createdExchange = { ...order, id: docRef.id }
 
     // Create chat room between requester and reagent owner
     try {
       await this.inboxService.createChatRoom({
-        user1_id: user_id,
-        user2_id: reagent.user_id,
+        user1_id: requester_id,
+        user2_id: owner_id,
         initial_message: requestBody.message,
         order_id: createdExchange.id,
         reagent_id: requestBody.reagent_id,
@@ -386,4 +386,58 @@ export class OrderService {
       throw error
     }
   }
+
+  /**
+   * sets requester and owner id based on bounty/marketplace order
+   */
+  private async identifyOrderParties(
+    user_id: string,
+    bounty_id: string | undefined,
+    reagent_id: string,
+  ): Promise<{ requester_id: string; owner_id: string }> {
+    if (bounty_id) {
+      const wanted = await this.bountyService.getWantedReagentById(bounty_id)
+      if (!wanted) throw new Error("Wanted reagent not found")
+      //bounty poster is requester, offerer is owner
+      return { requester_id: wanted.user_id, owner_id: user_id }
+    }
+
+    const reagent = await this.reagentService.getReagentById(reagent_id)
+    if (!reagent) throw new Error("Reagent not found")
+    return { requester_id: user_id, owner_id: reagent.user_id }
+  }
+
+  /**
+   * sets requester, owner, and offeredReagentId based on bounty/marketplace order
+   */
+  private async identifyExchangeParties(
+    user_id: string,
+    bounty_id: string | undefined,
+    reagent_id: string,
+    offeredReagentId: string | undefined,
+  ): Promise<{ requester_id: string; owner_id: string; offeredReagentId: string }> {
+    //reuse order parties method for roles
+    const { requester_id, owner_id } = await this.identifyOrderParties(
+      user_id,
+      bounty_id,
+      reagent_id,
+    )
+
+    //set offeredReagentId
+    if (bounty_id) {
+      const wanted = await this.bountyService.getWantedReagentById(bounty_id)
+      return {
+        requester_id,
+        owner_id,
+        offeredReagentId: wanted.requesterOfferedReagentId,
+      }
+    }
+
+    return {
+      requester_id,
+      owner_id,
+      offeredReagentId,
+    }
+  }
+
 }

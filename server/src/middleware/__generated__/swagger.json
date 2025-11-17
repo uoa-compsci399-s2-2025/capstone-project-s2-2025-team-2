@@ -402,6 +402,9 @@
 					},
 					"unit": {
 						"type": "string"
+					},
+					"bounty_id": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -434,6 +437,9 @@
 						"format": "double"
 					},
 					"unit": {
+						"type": "string"
+					},
+					"bounty_id": {
 						"type": "string"
 					}
 				},
@@ -477,6 +483,9 @@
 					"unit": {
 						"type": "string"
 					},
+					"bounty_id": {
+						"type": "string"
+					},
 					"price": {
 						"type": "number",
 						"format": "double"
@@ -517,6 +526,9 @@
 						"format": "double"
 					},
 					"unit": {
+						"type": "string"
+					},
+					"bounty_id": {
 						"type": "string"
 					}
 				},
@@ -561,6 +573,9 @@
 					"unit": {
 						"type": "string"
 					},
+					"bounty_id": {
+						"type": "string"
+					},
 					"offeredReagentId": {
 						"type": "string"
 					}
@@ -600,11 +615,13 @@
 					},
 					"unit": {
 						"type": "string"
+					},
+					"bounty_id": {
+						"type": "string"
 					}
 				},
 				"required": [
 					"reagent_id",
-					"offeredReagentId",
 					"type"
 				],
 				"type": "object",
@@ -643,6 +660,9 @@
 					"unit": {
 						"type": "string"
 					},
+					"bounty_id": {
+						"type": "string"
+					},
 					"id": {
 						"type": "string"
 					},
@@ -662,178 +682,6 @@
 					"status",
 					"createdAt",
 					"id"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"Offer": {
-				"properties": {
-					"requester_id": {
-						"type": "string"
-					},
-					"reagent_id": {
-						"type": "string"
-					},
-					"owner_id": {
-						"type": "string"
-					},
-					"status": {
-						"type": "string",
-						"enum": [
-							"pending",
-							"approved",
-							"canceled"
-						]
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"message": {
-						"type": "string"
-					},
-					"quantity": {
-						"type": "number",
-						"format": "double"
-					},
-					"unit": {
-						"type": "string"
-					},
-					"offeredReagentId": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"requester_id",
-					"reagent_id",
-					"owner_id",
-					"status",
-					"createdAt"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"CreateOfferRequest": {
-				"properties": {
-					"reagent_id": {
-						"type": "string"
-					},
-					"message": {
-						"type": "string"
-					},
-					"offeredReagentId": {
-						"type": "string"
-					},
-					"quantity": {
-						"type": "number",
-						"format": "double"
-					},
-					"type": {
-						"type": "string",
-						"enum": [
-							"order"
-						],
-						"nullable": false
-					},
-					"unit": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"reagent_id",
-					"offeredReagentId",
-					"type"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"TradeOffer": {
-				"properties": {
-					"requester_id": {
-						"type": "string"
-					},
-					"reagent_id": {
-						"type": "string"
-					},
-					"owner_id": {
-						"type": "string"
-					},
-					"status": {
-						"type": "string",
-						"enum": [
-							"pending",
-							"approved",
-							"canceled"
-						]
-					},
-					"createdAt": {
-						"type": "string",
-						"format": "date-time"
-					},
-					"message": {
-						"type": "string"
-					},
-					"quantity": {
-						"type": "number",
-						"format": "double"
-					},
-					"unit": {
-						"type": "string"
-					},
-					"offeredReagentId": {
-						"type": "string"
-					},
-					"price": {
-						"type": "number",
-						"format": "double"
-					}
-				},
-				"required": [
-					"requester_id",
-					"reagent_id",
-					"owner_id",
-					"status",
-					"createdAt",
-					"price"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"CreateOfferTradeRequest": {
-				"properties": {
-					"reagent_id": {
-						"type": "string"
-					},
-					"message": {
-						"type": "string"
-					},
-					"price": {
-						"type": "number",
-						"format": "double"
-					},
-					"offeredReagentId": {
-						"type": "string"
-					},
-					"quantity": {
-						"type": "number",
-						"format": "double"
-					},
-					"type": {
-						"type": "string",
-						"enum": [
-							"trade"
-						],
-						"nullable": false
-					},
-					"unit": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"reagent_id",
-					"price",
-					"offeredReagentId",
-					"type"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -1396,7 +1244,7 @@
 						}
 					}
 				},
-				"description": "Update user information by their ID\r\nUser **must** be authenticated to access this endpoint",
+				"description": "Update user information by their ID\nUser **must** be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -1503,7 +1351,7 @@
 						}
 					}
 				},
-				"description": "Get all reagents under a user\r\nUser must be authenticated to access this endpoint",
+				"description": "Get all reagents under a user\nUser must be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -1528,7 +1376,7 @@
 						}
 					}
 				},
-				"description": "Create a reagent by passing in all the required props.\r\nUser **must** be authenticated to access this endpoint (lab manager / admin) [seller]",
+				"description": "Create a reagent by passing in all the required props.\nUser **must** be authenticated to access this endpoint (lab manager / admin) [seller]",
 				"tags": [
 					"User"
 				],
@@ -1691,7 +1539,7 @@
 						}
 					}
 				},
-				"description": "Get a reagent by using its ID\r\nUser must be authenticated to access this endpoint",
+				"description": "Get a reagent by using its ID\nUser must be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -1731,7 +1579,7 @@
 						}
 					}
 				},
-				"description": "Delete a reagent by using its ID\r\nUser **must** be authenticated to access this endpoint",
+				"description": "Delete a reagent by using its ID\nUser **must** be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -1766,7 +1614,7 @@
 						}
 					}
 				},
-				"description": "Update a reagent by its ID.\r\nUser **must** be authenticated to access this endpoint",
+				"description": "Update a reagent by its ID.\nUser **must** be authenticated to access this endpoint",
 				"tags": [
 					"User"
 				],
@@ -1818,7 +1666,7 @@
 						}
 					}
 				},
-				"description": "\r\nGet all reagents under another user by their user id\r\nCan only be done by admin*",
+				"description": "\nGet all reagents under another user by their user id\nCan only be done by admin*",
 				"tags": [
 					"User"
 				],
@@ -2395,313 +2243,6 @@
 						}
 					}
 				]
-			}
-		},
-		"/offers": {
-			"post": {
-				"operationId": "CreateOffer",
-				"responses": {
-					"201": {
-						"description": "Offer created successfully",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/Offer"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Offers"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/CreateOfferRequest"
-							}
-						}
-					}
-				}
-			},
-			"get": {
-				"operationId": "GetOffers",
-				"responses": {
-					"200": {
-						"description": "All offers returned successfully",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/Offer"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Offers"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": []
-			}
-		},
-		"/offers/trades": {
-			"post": {
-				"operationId": "CreateTrade",
-				"responses": {
-					"201": {
-						"description": "Trade created successfully",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/TradeOffer"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Offers"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/CreateOfferTradeRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/offers/{id}": {
-			"get": {
-				"operationId": "GetOfferById",
-				"responses": {
-					"200": {
-						"description": "All offers returned successfully",
-						"content": {
-							"application/json": {
-								"schema": {
-									"anyOf": [
-										{
-											"$ref": "#/components/schemas/Order"
-										},
-										{
-											"$ref": "#/components/schemas/Trade"
-										},
-										{
-											"$ref": "#/components/schemas/Exchange"
-										}
-									]
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Offers"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/offers/{id}/approve": {
-			"patch": {
-				"operationId": "ApproveOrder",
-				"responses": {
-					"200": {
-						"description": "order successfully approved",
-						"content": {
-							"application/json": {
-								"schema": {
-									"anyOf": [
-										{
-											"$ref": "#/components/schemas/Order"
-										},
-										{
-											"$ref": "#/components/schemas/Trade"
-										},
-										{
-											"$ref": "#/components/schemas/Exchange"
-										}
-									]
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Offers"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/offers/{id}/cancel": {
-			"patch": {
-				"operationId": "CancelOrder",
-				"responses": {
-					"200": {
-						"description": "order successfully canceled",
-						"content": {
-							"application/json": {
-								"schema": {
-									"anyOf": [
-										{
-											"$ref": "#/components/schemas/Order"
-										},
-										{
-											"$ref": "#/components/schemas/Trade"
-										},
-										{
-											"$ref": "#/components/schemas/Exchange"
-										}
-									]
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Offers"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/offers/requested/{reagent_id}": {
-			"get": {
-				"operationId": "GetOfferByReagentId",
-				"responses": {
-					"200": {
-						"description": "offer successfully fetched",
-						"content": {
-							"application/json": {
-								"schema": {
-									"anyOf": [
-										{
-											"$ref": "#/components/schemas/Offer"
-										},
-										{
-											"$ref": "#/components/schemas/TradeOffer"
-										}
-									]
-								}
-							}
-						}
-					}
-				},
-				"description": "Get an offer for a user by reagent ID.",
-				"tags": [
-					"Offers"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "reagent_id",
-						"required": true,
-						"schema": {
-							"type": "string"
-						}
-					}
-				]
-			}
-		},
-		"/offers/user/pending": {
-			"get": {
-				"operationId": "GetAllPendingOffers",
-				"responses": {
-					"200": {
-						"description": "offers successfully fetched",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/Offer"
-									},
-									"type": "array"
-								}
-							}
-						}
-					}
-				},
-				"description": "Get all pending offers for a user.",
-				"tags": [
-					"Offers"
-				],
-				"security": [
-					{
-						"jwt": []
-					}
-				],
-				"parameters": []
 			}
 		},
 		"/inbox/chatroom": {

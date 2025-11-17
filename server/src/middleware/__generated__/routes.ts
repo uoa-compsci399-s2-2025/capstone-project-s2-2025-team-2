@@ -12,8 +12,6 @@ import { ReagentController } from './../../presentation-layer/controllers/Reagen
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { OrderController } from './../../presentation-layer/controllers/OrderController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { OfferController } from './../../presentation-layer/controllers/OfferController';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { InboxController } from './../../presentation-layer/controllers/InboxController';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { GoogleOAuthController } from './../../presentation-layer/controllers/GoogleOAuthController';
@@ -146,6 +144,7 @@ const models: TsoaRoute.Models = {
             "message": {"dataType":"string"},
             "quantity": {"dataType":"double"},
             "unit": {"dataType":"string"},
+            "bounty_id": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -158,6 +157,7 @@ const models: TsoaRoute.Models = {
             "type": {"dataType":"enum","enums":["order"],"required":true},
             "quantity": {"dataType":"double"},
             "unit": {"dataType":"string"},
+            "bounty_id": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -173,6 +173,7 @@ const models: TsoaRoute.Models = {
             "message": {"dataType":"string"},
             "quantity": {"dataType":"double"},
             "unit": {"dataType":"string"},
+            "bounty_id": {"dataType":"string"},
             "price": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
@@ -187,6 +188,7 @@ const models: TsoaRoute.Models = {
             "type": {"dataType":"enum","enums":["trade"],"required":true},
             "quantity": {"dataType":"double"},
             "unit": {"dataType":"string"},
+            "bounty_id": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -202,6 +204,7 @@ const models: TsoaRoute.Models = {
             "message": {"dataType":"string"},
             "quantity": {"dataType":"double"},
             "unit": {"dataType":"string"},
+            "bounty_id": {"dataType":"string"},
             "offeredReagentId": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
@@ -212,10 +215,11 @@ const models: TsoaRoute.Models = {
         "properties": {
             "reagent_id": {"dataType":"string","required":true},
             "message": {"dataType":"string"},
-            "offeredReagentId": {"dataType":"string","required":true},
+            "offeredReagentId": {"dataType":"string"},
             "quantity": {"dataType":"double"},
             "type": {"dataType":"enum","enums":["exchange"],"required":true},
             "unit": {"dataType":"string"},
+            "bounty_id": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -231,68 +235,9 @@ const models: TsoaRoute.Models = {
             "message": {"dataType":"string"},
             "quantity": {"dataType":"double"},
             "unit": {"dataType":"string"},
+            "bounty_id": {"dataType":"string"},
             "id": {"dataType":"string","required":true},
             "reagent": {"dataType":"union","subSchemas":[{"ref":"Reagent"},{"dataType":"enum","enums":[null]}]},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "Offer": {
-        "dataType": "refObject",
-        "properties": {
-            "requester_id": {"dataType":"string","required":true},
-            "reagent_id": {"dataType":"string","required":true},
-            "owner_id": {"dataType":"string","required":true},
-            "status": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["pending"]},{"dataType":"enum","enums":["approved"]},{"dataType":"enum","enums":["canceled"]}],"required":true},
-            "createdAt": {"dataType":"datetime","required":true},
-            "message": {"dataType":"string"},
-            "quantity": {"dataType":"double"},
-            "unit": {"dataType":"string"},
-            "offeredReagentId": {"dataType":"string"},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "CreateOfferRequest": {
-        "dataType": "refObject",
-        "properties": {
-            "reagent_id": {"dataType":"string","required":true},
-            "message": {"dataType":"string"},
-            "offeredReagentId": {"dataType":"string","required":true},
-            "quantity": {"dataType":"double"},
-            "type": {"dataType":"enum","enums":["order"],"required":true},
-            "unit": {"dataType":"string"},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "TradeOffer": {
-        "dataType": "refObject",
-        "properties": {
-            "requester_id": {"dataType":"string","required":true},
-            "reagent_id": {"dataType":"string","required":true},
-            "owner_id": {"dataType":"string","required":true},
-            "status": {"dataType":"union","subSchemas":[{"dataType":"enum","enums":["pending"]},{"dataType":"enum","enums":["approved"]},{"dataType":"enum","enums":["canceled"]}],"required":true},
-            "createdAt": {"dataType":"datetime","required":true},
-            "message": {"dataType":"string"},
-            "quantity": {"dataType":"double"},
-            "unit": {"dataType":"string"},
-            "offeredReagentId": {"dataType":"string"},
-            "price": {"dataType":"double","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "CreateOfferTradeRequest": {
-        "dataType": "refObject",
-        "properties": {
-            "reagent_id": {"dataType":"string","required":true},
-            "message": {"dataType":"string"},
-            "price": {"dataType":"double","required":true},
-            "offeredReagentId": {"dataType":"string","required":true},
-            "quantity": {"dataType":"double"},
-            "type": {"dataType":"enum","enums":["trade"],"required":true},
-            "unit": {"dataType":"string"},
         },
         "additionalProperties": false,
     },
@@ -1464,260 +1409,6 @@ export function RegisterRoutes(app: Router) {
 
               await templateService.apiHandler({
                 methodName: 'getOrderByReagentId',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: 200,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsOfferController_createOffer: Record<string, TsoaRoute.ParameterSchema> = {
-                req: {"in":"body","name":"req","required":true,"ref":"CreateOfferRequest"},
-                request: {"in":"request","name":"request","required":true,"dataType":"object"},
-        };
-        app.post('/offers',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<RequestHandler>(OfferController)),
-            ...(fetchMiddlewares<RequestHandler>(OfferController.prototype.createOffer)),
-
-            async function OfferController_createOffer(request: ExRequest, response: ExResponse, next: any) {
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsOfferController_createOffer, request, response });
-
-                const controller = new OfferController();
-
-              await templateService.apiHandler({
-                methodName: 'createOffer',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: 201,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsOfferController_createTrade: Record<string, TsoaRoute.ParameterSchema> = {
-                req: {"in":"body","name":"req","required":true,"ref":"CreateOfferTradeRequest"},
-                request: {"in":"request","name":"request","required":true,"dataType":"object"},
-        };
-        app.post('/offers/trades',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<RequestHandler>(OfferController)),
-            ...(fetchMiddlewares<RequestHandler>(OfferController.prototype.createTrade)),
-
-            async function OfferController_createTrade(request: ExRequest, response: ExResponse, next: any) {
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsOfferController_createTrade, request, response });
-
-                const controller = new OfferController();
-
-              await templateService.apiHandler({
-                methodName: 'createTrade',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: 201,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsOfferController_getOffers: Record<string, TsoaRoute.ParameterSchema> = {
-                request: {"in":"request","name":"request","required":true,"dataType":"object"},
-        };
-        app.get('/offers',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<RequestHandler>(OfferController)),
-            ...(fetchMiddlewares<RequestHandler>(OfferController.prototype.getOffers)),
-
-            async function OfferController_getOffers(request: ExRequest, response: ExResponse, next: any) {
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsOfferController_getOffers, request, response });
-
-                const controller = new OfferController();
-
-              await templateService.apiHandler({
-                methodName: 'getOffers',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: 200,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsOfferController_getOfferById: Record<string, TsoaRoute.ParameterSchema> = {
-                id: {"in":"path","name":"id","required":true,"dataType":"string"},
-                request: {"in":"request","name":"request","required":true,"dataType":"object"},
-        };
-        app.get('/offers/:id',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<RequestHandler>(OfferController)),
-            ...(fetchMiddlewares<RequestHandler>(OfferController.prototype.getOfferById)),
-
-            async function OfferController_getOfferById(request: ExRequest, response: ExResponse, next: any) {
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsOfferController_getOfferById, request, response });
-
-                const controller = new OfferController();
-
-              await templateService.apiHandler({
-                methodName: 'getOfferById',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: 200,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsOfferController_approveOrder: Record<string, TsoaRoute.ParameterSchema> = {
-                id: {"in":"path","name":"id","required":true,"dataType":"string"},
-                request: {"in":"request","name":"request","required":true,"dataType":"object"},
-        };
-        app.patch('/offers/:id/approve',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<RequestHandler>(OfferController)),
-            ...(fetchMiddlewares<RequestHandler>(OfferController.prototype.approveOrder)),
-
-            async function OfferController_approveOrder(request: ExRequest, response: ExResponse, next: any) {
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsOfferController_approveOrder, request, response });
-
-                const controller = new OfferController();
-
-              await templateService.apiHandler({
-                methodName: 'approveOrder',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: 200,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsOfferController_cancelOrder: Record<string, TsoaRoute.ParameterSchema> = {
-                id: {"in":"path","name":"id","required":true,"dataType":"string"},
-                request: {"in":"request","name":"request","required":true,"dataType":"object"},
-        };
-        app.patch('/offers/:id/cancel',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<RequestHandler>(OfferController)),
-            ...(fetchMiddlewares<RequestHandler>(OfferController.prototype.cancelOrder)),
-
-            async function OfferController_cancelOrder(request: ExRequest, response: ExResponse, next: any) {
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsOfferController_cancelOrder, request, response });
-
-                const controller = new OfferController();
-
-              await templateService.apiHandler({
-                methodName: 'cancelOrder',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: 200,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsOfferController_getOfferByReagentId: Record<string, TsoaRoute.ParameterSchema> = {
-                reagent_id: {"in":"path","name":"reagent_id","required":true,"dataType":"string"},
-                request: {"in":"request","name":"request","required":true,"dataType":"object"},
-        };
-        app.get('/offers/requested/:reagent_id',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<RequestHandler>(OfferController)),
-            ...(fetchMiddlewares<RequestHandler>(OfferController.prototype.getOfferByReagentId)),
-
-            async function OfferController_getOfferByReagentId(request: ExRequest, response: ExResponse, next: any) {
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsOfferController_getOfferByReagentId, request, response });
-
-                const controller = new OfferController();
-
-              await templateService.apiHandler({
-                methodName: 'getOfferByReagentId',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: 200,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        const argsOfferController_getAllPendingOffers: Record<string, TsoaRoute.ParameterSchema> = {
-                request: {"in":"request","name":"request","required":true,"dataType":"object"},
-        };
-        app.get('/offers/user/pending',
-            authenticateMiddleware([{"jwt":[]}]),
-            ...(fetchMiddlewares<RequestHandler>(OfferController)),
-            ...(fetchMiddlewares<RequestHandler>(OfferController.prototype.getAllPendingOffers)),
-
-            async function OfferController_getAllPendingOffers(request: ExRequest, response: ExResponse, next: any) {
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsOfferController_getAllPendingOffers, request, response });
-
-                const controller = new OfferController();
-
-              await templateService.apiHandler({
-                methodName: 'getAllPendingOffers',
                 controller,
                 response,
                 next,

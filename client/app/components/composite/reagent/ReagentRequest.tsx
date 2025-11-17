@@ -297,16 +297,15 @@ export const ReagentRequest = ({
     try {
       const requestBody = isBountyBoard
         ? {
-            // Bounty board: creating an offer for a wanted reagent
-            reagent_id: reagent.id,
+            reagent_id: offeredReagentId, 
+            bounty_id: reagent.id, 
             ...(message.trim() && { message: message.trim() }),
-            offeredReagentId,
             ...(reagent.tradingType === "sell" && {
               type: "trade",
               price: Number(price),
             }),
             ...(reagent.tradingType === "trade" && {
-              type: "order",
+              type: "exchange",
             }),
             ...(reagent.tradingType === "giveaway" && { type: "order" }),
           }
@@ -326,10 +325,9 @@ export const ReagentRequest = ({
           }
 
       //call endpoint based on trading type and context
-      const baseEndpoint = isBountyBoard ? "/offers" : "/orders"
+      const baseEndpoint = "/orders"
       const endpoint =
-        reagent.tradingType === "giveaway" ||
-        (isBountyBoard && reagent.tradingType === "trade")
+        reagent.tradingType === "giveaway"
           ? baseEndpoint
           : reagent.tradingType === "sell"
             ? `${baseEndpoint}/trades`
