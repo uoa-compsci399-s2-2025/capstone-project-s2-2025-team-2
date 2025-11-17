@@ -150,13 +150,11 @@ const History = () => {
         History
       </p>
       <div className="ml-8">
-        <p className="text-warning italic font-bold inline mr-2 tracking-[0.05em]">
-          View
-        </p>
-        <p className="text-gray-100 italic inline">Past orders</p>
+        <p className="text-purple-70 font-semibold inline">View</p>
+        <p className="text-gray-100 inline"> Past Transactions</p>
       </div>
 
-      <div className="mt-5"></div>
+      <div className="mt-4"></div>
       <div className="mx-8 mt-4">
         <div className="text-white gap-2 flex flex-col">
           {orders.length === 0 ? (

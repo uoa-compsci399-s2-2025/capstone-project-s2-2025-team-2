@@ -229,17 +229,17 @@ const Marketplace = () => {
 
   return (
     <Overlay>
-      <p className="text-4xl font-medium text-white mt-4 ml-4 md:ml-8 tracking-[0.05em]">
+      <p className="text-4xl text-white mt-4 ml-4 md:ml-8">
         Marketplace
       </p>
       <div className="ml-4 md:ml-0">
-        <p className="md:ml-8 text-warning italic font-bold inline mr-2 tracking-[0.05em]">
+        <p className="md:ml-8 text-purple-70 font-semibold inline">
           Buy, Sell & Exchange
         </p>
-        <p className="text-gray-100 italic inline">Laboratory Reagents</p>
+        <p className="text-gray-100 inline"> Laboratory Reagents</p>
       </div>
 
-      <div className="mt-5"></div>
+      <div className="mt-4"></div>
 
       <div className="bg-transparent pt-[2rem] mx-4 md:gap-[2rem] md:mx-[2rem]">
         <SearchBar
