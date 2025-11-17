@@ -8,7 +8,7 @@ import { getConversations } from "../services/inbox"
 import { ConversationListResponseDto } from "../models/response-models/ChatRoomResponseDto"
 import { onAuthStateChanged, User } from "firebase/auth"
 import { auth } from "../config/firebase"
-import { ChevronLeftIcon } from "@heroicons/react/24/outline"
+import { ChevronRightIcon } from "@heroicons/react/24/outline"
 
 //            function: InboxPage           //
 export default function InboxPage() {
@@ -94,11 +94,11 @@ export default function InboxPage() {
             className="md:hidden fixed right-0 mr-3 mt-[1rem] hover:text-white/70 hover:border-white/70 duration-300 text-white cursor-pointer px-3 py-2 flex items-center gap-1 border rounded-lg"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
-            <ChevronLeftIcon className="h-3.5 w-3.5 text-white"></ChevronLeftIcon>
-            inbox
+            Inbox
+            <ChevronRightIcon className="h-3.5 w-3.5 text-white"></ChevronRightIcon>
           </button>
-          {/* Left side - Message List */}{" "}
-          <div className="md:block hidden">
+          {/* Left side - Message List */}
+          <div className="hidden md:flex md:flex-col md:w-[320px] lg:w-[360px] xl:w-[400px] md:flex-shrink-0 md:border-r md:border-white/10">
             {" "}
             <MessageListBox
               conversations={conversations}

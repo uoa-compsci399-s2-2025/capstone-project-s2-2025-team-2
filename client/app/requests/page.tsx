@@ -167,11 +167,9 @@ export default function Orders() {
 
   return (
     <Overlay>
-      <p className="text-4xl font-medium text-white mt-4 ml-4 md:ml-8 tracking-[0.05em]">
-        Requests
-      </p>
+      <p className="text-4xl text-white mt-4 ml-4 md:ml-8">Requests</p>
       <div className="ml-4 md:ml-0">
-        <p className="md:ml-8 text-warning italic font-bold inline mr-2 tracking-[0.05em]">
+        <p className="md:ml-8 text-purple-100 font-semibold inline">
           Manage & Track
         </p>
         <p className="text-gray-100 italic inline">Your Requested Reagents</p>
