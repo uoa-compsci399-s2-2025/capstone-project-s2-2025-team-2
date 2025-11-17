@@ -1,13 +1,18 @@
 "use client"
 import Overlay from "@/app/components/composite/Overlay"
 import client from "../services/fetch-client"
-import { useState, useEffect } from "react"
+import { useState, useEffect, ElementType } from "react"
 import { auth } from "@/app/config/firebase"
 import { components } from "@/models/__generated__/schema"
 import RecordCard from "../components/composite/history/RecordCard"
 import LoadingState from "../components/composite/loadingstate/LoadingState"
 import { usePagination } from "../hooks/usePagination"
 import Pagination from "../components/composite/pagination/Pagination"
+import {
+  Square3Stack3DIcon,
+  ArrowUpTrayIcon,
+  ArrowDownTrayIcon,
+} from "@heroicons/react/24/outline"
 
 type Order = components["schemas"]["Order"]
 type Exchange = components["schemas"]["Exchange"]
@@ -19,8 +24,34 @@ type OrderWithId = Order & {
   requesterName: string
 }
 
+type HistoryFilter = "all" | "sent" | "received"
+
+const historyFilters: {
+  label: string
+  filterValue: HistoryFilter
+  icon: ElementType
+}[] = [
+  {
+    label: "All",
+    filterValue: "all",
+    icon: Square3Stack3DIcon,
+  },
+  {
+    label: "Sent",
+    filterValue: "sent",
+    icon: ArrowUpTrayIcon,
+  },
+  {
+    label: "Received",
+    filterValue: "received",
+    icon: ArrowDownTrayIcon,
+  },
+]
+
 const History = () => {
   const [orders, setOrders] = useState<OrderWithId[]>([])
+  const [currentUserId, setCurrentUserId] = useState<string | null>(null)
+  const [historyFilter, setHistoryFilter] = useState<HistoryFilter>("all")
   const [isLoading, setIsLoading] = useState(true)
   const [err, setErr] = useState<string | null>(null)
 
@@ -32,11 +63,17 @@ const History = () => {
     const unsubscribe = auth.onAuthStateChanged(async (user: any) => {
       if (!user) {
         if (!cancelled) {
+          setCurrentUserId(null)
           setErr("User not logged in")
           setOrders([])
           setIsLoading(false)
         }
         return
+      }
+
+      //current user id for filtering
+      if (!cancelled) {
+        setCurrentUserId(user.uid)
       }
 
       try {
@@ -113,9 +150,19 @@ const History = () => {
     }
   }, [])
 
+  //filter orders based on tab
+  const filteredOrders = orders.filter((order) => {
+    if (historyFilter === "all") return true
+    if (historyFilter === "sent")
+      return order.requester_id === currentUserId
+    if (historyFilter === "received")
+      return order.owner_id === currentUserId
+    return true
+  })
+
   const pageSize = 8
   const { currentPage, setCurrentPage, currentData, totalPages } =
-    usePagination(orders, pageSize)
+    usePagination(filteredOrders, pageSize)
 
   useEffect(() => {
     if (currentPage > totalPages && totalPages > 0) {
@@ -156,11 +203,66 @@ const History = () => {
         <p className="text-gray-100 italic inline">Past orders</p>
       </div>
 
+      {/*order tabs*/}
+      <div className="mt-8 flex flex-col gap-4 mx-4 md:mx-8">
+        <div className="flex justify-center gap-8 border-b-2 border-secondary/20">
+          {historyFilters.map((filter) => {
+            const isSelected = historyFilter === filter.filterValue
+            return (
+              <div key={filter.filterValue} className="relative flex-1 flex justify-center">
+                <span className="hidden md:block">
+                  <button
+                    type="button"
+                    className={`w-full px-4 py-3 text-sm transition-colors duration-200 ${
+                      isSelected
+                        ? "text-white font-semibold"
+                        : "text-gray-100 hover:text-white"
+                    }`}
+                    onClick={() => setHistoryFilter(filter.filterValue)}
+                  >
+                    {filter.label}
+                  </button>
+                </span>
+
+                {/*icons/no text for mobile view tabs*/}
+                <span className="block md:hidden">
+                  <button
+                    type="button"
+                    className={`flex items-center justify-center p-3 text-sm transition-colors duration-200 ${
+                      isSelected
+                        ? "text-white font-semibold"
+                        : "text-gray-100 hover:text-white"
+                    }`}
+                    onClick={() => setHistoryFilter(filter.filterValue)}
+                  >
+                    <filter.icon className="w-5 h-5" />
+                  </button>
+                </span>
+
+                {/*active tab is underlined*/}
+                {isSelected && (
+                  <div className="absolute bottom-[-1px] left-0 right-0 h-0.5 bg-white" />
+                )}
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
       <div className="mt-5"></div>
       <div className="mx-8 mt-4">
         <div className="text-white gap-2 flex flex-col">
-          {orders.length === 0 ? (
-            <p>No orders found</p>
+          {filteredOrders.length === 0 ? (
+            <div className="bg-primary/50 rounded-lg p-8 border border-muted text-gray-400 text-center">
+              <h3 className="text-lg font-medium mb-2">No History Found.</h3>
+              <p className="text-sm">
+                {historyFilter === "all"
+                  ? "Past requests tied to your account will appear here."
+                  : historyFilter === "sent"
+                    ? "You have not sent any requests yet."
+                    : "You have not received any requests yet."}
+              </p>
+            </div>
           ) : (
             <div className="flex flex-col gap-4 pb-[4rem]">
               {currentData.map((order) => {
