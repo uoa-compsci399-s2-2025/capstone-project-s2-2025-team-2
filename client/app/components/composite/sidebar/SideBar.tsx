@@ -85,12 +85,6 @@ const Sidebar = () => {
       requireSignIn: true,
     },
     {
-      href: "/offers",
-      label: "Offers",
-      icon: BanknotesIcon,
-      requireSignIn: true,
-    },
-    {
       href: "/history",
       label: "History",
       icon: FolderIcon,
