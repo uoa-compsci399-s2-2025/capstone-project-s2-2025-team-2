@@ -25,7 +25,7 @@ const VISIBILITY_OPTIONS: ReagentVisibility[] = [
   "institution",
   "private",
 ]
-const CONDITION_OPTIONS = ["unopened", "used-like new", "used"]
+const CONDITION_OPTIONS = ["Unopened", "Lightly Used", "Heavily Used"]
 const UNIT_OPTIONS = ["g", "kg", "mL", "L", "Bottles", "Boxes", "Units"]
 const MAX_IMAGES = 5
 

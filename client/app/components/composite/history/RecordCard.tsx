@@ -44,11 +44,11 @@ const RecordCard = ({
   const reqClasses = reqKey === "unknown requester" ? "text-red-800" : ""
   const statusClasses =
     statusKey === "pending"
-      ? "bg-yellow-500/60 backdrop-blur-sm"
+      ? "bg-yellow-300/50 backdrop-blur-sm"
       : statusKey === "approved"
-        ? "bg-green-500/60 backdrop-blur-sm"
+        ? "bg-success/80 backdrop-blur-sm"
         : statusKey === "canceled"
-          ? "bg-red-500/60 backdrop-blur-sm"
+          ? "bg-warning/80 backdrop-blur-sm"
           : "bg-gray-300/40 backdrop-blur-sm"
   return (
     <div className="w-full border-2 border-secondary/20 px-4 py-1 rounded-2xl bg-primary/70 shadow-lg hover:shadow-xl transition-shadow duration-300">

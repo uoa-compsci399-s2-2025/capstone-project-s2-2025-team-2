@@ -15,10 +15,11 @@ export class InboxService {
   private reagentService = new ReagentService()
 
   async createChatRoom(request: CreateChatRoomRequest): Promise<ChatRoom> {
-    // Check if chat room already exists between these users
-    const existingChatRoom = await this.inboxRepository.getChatRoomByUsers(
+    // Check if a chat room is already created for this order
+    const existingChatRoom = await this.inboxRepository.getChatRoomByOrder(
       request.user1_id,
       request.user2_id,
+      request.order_id,
     )
 
     if (existingChatRoom) {

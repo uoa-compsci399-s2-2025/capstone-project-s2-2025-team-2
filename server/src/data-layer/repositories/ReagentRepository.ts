@@ -3,7 +3,6 @@ import { Reagent, ReagentCategory } from "../../business-layer/models/Reagent"
 import { daysUntilExpiry } from "../../utils/dateCalculate"
 import { Timestamp } from "firebase-admin/firestore"
 import { OrderService } from "./OrderRepository"
-import { OfferService } from "./OfferRepository"
 import { BountyService } from "./BountyRepository"
 
 export class ReagentService {
@@ -98,9 +97,8 @@ export class ReagentService {
       await docRef.delete()
 
       //when the reagent gets deleted
-      //delete orders, offers, bounties associated with this reagent
+      //delete orders and bounties associated with this reagent
       await new OrderService().deleteOrdersByReagentIdOrOfferedReagentId(id)
-      await new OfferService().deleteOfferByReagentIdOrOfferedReagentId(id)
       await new BountyService().deleteBountiesByOfferedReagentId(id)
 
       return reagent

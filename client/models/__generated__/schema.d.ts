@@ -408,46 +408,15 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  "/offers": {
+  "/orders/bounty/{bounty_id}": {
     parameters: {
       query?: never
       header?: never
       path?: never
       cookie?: never
     }
-    get: operations["GetOffers"]
-    put?: never
-    post: operations["CreateOffer"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/offers/trades": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post: operations["CreateTrade"]
-    delete?: never
-    options?: never
-    head?: never
-    patch?: never
-    trace?: never
-  }
-  "/offers/{id}": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get: operations["GetOfferById"]
+    /** @description Get all orders for a specific bounty */
+    get: operations["GetOrdersByBountyId"]
     put?: never
     post?: never
     delete?: never
@@ -456,47 +425,15 @@ export interface paths {
     patch?: never
     trace?: never
   }
-  "/offers/{id}/approve": {
+  "/orders/bounty/{bounty_id}/user": {
     parameters: {
       query?: never
       header?: never
       path?: never
       cookie?: never
     }
-    get?: never
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch: operations["ApproveOrder"]
-    trace?: never
-  }
-  "/offers/{id}/cancel": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    get?: never
-    put?: never
-    post?: never
-    delete?: never
-    options?: never
-    head?: never
-    patch: operations["CancelOrder"]
-    trace?: never
-  }
-  "/offers/requested/{reagent_id}": {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    /** @description Get an offer for a user by reagent ID. */
-    get: operations["GetOfferByReagentId"]
+    /** @description Check if current user has made an offer for a specific bounty */
+    get: operations["GetOrderByBountyIdAndUserId"]
     put?: never
     post?: never
     delete?: never
@@ -763,9 +700,9 @@ export interface components {
     User: {
       email: string
       displayName: string
-      preferredName: string
       lastName?: string
       university: string
+      location?: string
       about?: string
       /** @enum {string} */
       role: "user" | "lab_manager" | "admin"
@@ -775,9 +712,9 @@ export interface components {
     Partial_User_: {
       email?: string
       displayName?: string
-      preferredName?: string
       lastName?: string
       university?: string
+      location?: string
       about?: string
       /** @enum {string} */
       role?: "user" | "lab_manager" | "admin"
@@ -838,6 +775,7 @@ export interface components {
       /** Format: double */
       quantity?: number
       unit?: string
+      bounty_id?: string
     }
     CreateOrderRequest: {
       reagent_id: string
@@ -847,6 +785,7 @@ export interface components {
       /** Format: double */
       quantity?: number
       unit?: string
+      bounty_id?: string
     }
     Trade: {
       requester_id: string
@@ -860,6 +799,7 @@ export interface components {
       /** Format: double */
       quantity?: number
       unit?: string
+      bounty_id?: string
       /** Format: double */
       price: number
     }
@@ -873,6 +813,7 @@ export interface components {
       /** Format: double */
       quantity?: number
       unit?: string
+      bounty_id?: string
     }
     Exchange: {
       requester_id: string
@@ -886,17 +827,19 @@ export interface components {
       /** Format: double */
       quantity?: number
       unit?: string
+      bounty_id?: string
       offeredReagentId: string
     }
     CreateExchangeRequest: {
       reagent_id: string
       message?: string
-      offeredReagentId: string
+      offeredReagentId?: string
       /** Format: double */
       quantity?: number
       /** @enum {string} */
       type: "exchange"
       unit?: string
+      bounty_id?: string
     }
     OrderWithReagent: {
       requester_id: string
@@ -910,60 +853,9 @@ export interface components {
       /** Format: double */
       quantity?: number
       unit?: string
+      bounty_id?: string
       id: string
       reagent?: components["schemas"]["Reagent"] | null
-    }
-    Offer: {
-      requester_id: string
-      reagent_id: string
-      owner_id: string
-      /** @enum {string} */
-      status: "pending" | "approved" | "canceled"
-      /** Format: date-time */
-      createdAt: string
-      message?: string
-      /** Format: double */
-      quantity?: number
-      unit?: string
-      offeredReagentId?: string
-    }
-    CreateOfferRequest: {
-      reagent_id: string
-      message?: string
-      offeredReagentId: string
-      /** Format: double */
-      quantity?: number
-      /** @enum {string} */
-      type: "order"
-      unit?: string
-    }
-    TradeOffer: {
-      requester_id: string
-      reagent_id: string
-      owner_id: string
-      /** @enum {string} */
-      status: "pending" | "approved" | "canceled"
-      /** Format: date-time */
-      createdAt: string
-      message?: string
-      /** Format: double */
-      quantity?: number
-      unit?: string
-      offeredReagentId?: string
-      /** Format: double */
-      price: number
-    }
-    CreateOfferTradeRequest: {
-      reagent_id: string
-      message?: string
-      /** Format: double */
-      price: number
-      offeredReagentId: string
-      /** Format: double */
-      quantity?: number
-      /** @enum {string} */
-      type: "trade"
-      unit?: string
     }
     ChatRoom: {
       id?: string
@@ -1057,8 +949,9 @@ export interface components {
     }
     VerifyTokenRequest: {
       idToken: string
-      preferredName?: string
+      displayName?: string
       university?: string
+      location?: string
     }
     AuthDomainAllowedRoles: ("staff" | "student")[]
     AuthDomain: {
@@ -1802,169 +1695,56 @@ export interface operations {
       }
     }
   }
-  GetOffers: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description All offers returned successfully */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Offer"][]
-        }
-      }
-    }
-  }
-  CreateOffer: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateOfferRequest"]
-      }
-    }
-    responses: {
-      /** @description Offer created successfully */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["Offer"]
-        }
-      }
-    }
-  }
-  CreateTrade: {
-    parameters: {
-      query?: never
-      header?: never
-      path?: never
-      cookie?: never
-    }
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["CreateOfferTradeRequest"]
-      }
-    }
-    responses: {
-      /** @description Trade created successfully */
-      201: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json": components["schemas"]["TradeOffer"]
-        }
-      }
-    }
-  }
-  GetOfferById: {
+  GetOrdersByBountyId: {
     parameters: {
       query?: never
       header?: never
       path: {
-        id: string
+        bounty_id: string
       }
       cookie?: never
     }
     requestBody?: never
     responses: {
-      /** @description All offers returned successfully */
+      /** @description Orders for bounty returned successfully */
       200: {
         headers: {
           [name: string]: unknown
         }
         content: {
-          "application/json":
+          "application/json": (
             | components["schemas"]["Order"]
             | components["schemas"]["Trade"]
             | components["schemas"]["Exchange"]
+          )[]
         }
       }
     }
   }
-  ApproveOrder: {
+  GetOrderByBountyIdAndUserId: {
     parameters: {
       query?: never
       header?: never
       path: {
-        id: string
+        bounty_id: string
       }
       cookie?: never
     }
     requestBody?: never
     responses: {
-      /** @description order successfully approved */
+      /** @description Order for bounty returned successfully */
       200: {
         headers: {
           [name: string]: unknown
         }
         content: {
           "application/json":
-            | components["schemas"]["Order"]
-            | components["schemas"]["Trade"]
-            | components["schemas"]["Exchange"]
-        }
-      }
-    }
-  }
-  CancelOrder: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description order successfully canceled */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json":
-            | components["schemas"]["Order"]
-            | components["schemas"]["Trade"]
-            | components["schemas"]["Exchange"]
-        }
-      }
-    }
-  }
-  GetOfferByReagentId: {
-    parameters: {
-      query?: never
-      header?: never
-      path: {
-        reagent_id: string
-      }
-      cookie?: never
-    }
-    requestBody?: never
-    responses: {
-      /** @description offer successfully fetched */
-      200: {
-        headers: {
-          [name: string]: unknown
-        }
-        content: {
-          "application/json":
-            | components["schemas"]["Offer"]
-            | components["schemas"]["TradeOffer"]
+            | (
+                | components["schemas"]["Order"]
+                | components["schemas"]["Trade"]
+                | components["schemas"]["Exchange"]
+              )
+            | null
         }
       }
     }

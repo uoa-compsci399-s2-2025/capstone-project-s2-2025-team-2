@@ -5,4 +5,5 @@ export interface CreateTradeRequest {
   type: "trade"
   quantity?: number
   unit?: string
+  bounty_id?: string
 }

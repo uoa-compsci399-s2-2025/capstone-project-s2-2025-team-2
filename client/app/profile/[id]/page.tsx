@@ -366,7 +366,7 @@ const UserProfile = () => {
                       <span className="hidden md:block">
                         <button
                           type="button"
-                          className={`px-4 py-3 text-sm transition-colors duration-200 ${
+                          className={`px-4 py-3 text-sm transition-colors duration-200 cursor-pointer ${
                             isSelected
                               ? "text-white font-semibold"
                               : "text-gray-100 hover:text-white"
@@ -386,7 +386,7 @@ const UserProfile = () => {
                       <span className="block md:hidden">
                         <button
                           type="button"
-                          className={`flex items-center justify-center p-3 text-sm transition-colors duration-200 ${
+                          className={`flex items-center justify-center p-3 text-sm transition-colors duration-200 cursor-pointer ${
                             isSelected
                               ? "text-white font-semibold"
                               : "text-gray-100 hover:text-white"

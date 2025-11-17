@@ -148,7 +148,7 @@ const ReagentDetails = ({
       )}
 
       <DetailRow label="Location" value={reagent?.location} truncate />
-      {offerDetails && reagent.price > 0 && (
+      {offerDetails && price !== undefined && price !== "" && (
         <DetailRow label="Offered Price" value={`$${price}`} />
       )}
       {reagent?.categories?.length > 0 && (
@@ -178,7 +178,12 @@ export default function OrderDetailsModal({
   isOfferDetails = false,
 }: OrderDetailsModalProps) {
   const currentUserId = auth?.currentUser?.uid
-  const isOwner = currentUserId === order?.owner_id
+  const isBounty = !!(order as any)?.bounty_id
+  //if bounty, requester approves
+  //if marketplace, owner approves
+  const canApprove = isBounty
+    ? currentUserId === order?.requester_id
+    : currentUserId === order?.owner_id
   const [approving, setApproving] = useState(false)
   const [declining, setDeclining] = useState(false)
   const [approved, setApproved] = useState(false)
@@ -250,15 +255,9 @@ export default function OrderDetailsModal({
     setApproving(true)
     try {
       const token = localStorage.getItem("authToken")
-      if (isOfferDetails) {
-        await client.PATCH(`/offers/${order.id}/approve` as any, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-      } else {
-        await client.PATCH(`/orders/${order.id}/approve` as any, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-      }
+      await client.PATCH(`/orders/${order.id}/approve` as any, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       toast("Request approved!")
       setApproved(true)
       onApprove?.(order.id)
@@ -273,15 +272,9 @@ export default function OrderDetailsModal({
     setDeclining(true)
     try {
       const token = localStorage.getItem("authToken")
-      if (isOfferDetails) {
-        await client.PATCH(`/offers/${order.id}/cancel` as any, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-      } else {
-        await client.PATCH(`/orders/${order.id}/cancel` as any, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-      }
+      await client.PATCH(`/orders/${order.id}/cancel` as any, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       toast("Request declined!")
       setDeclined(true)
       onDecline?.(order.id)
@@ -321,14 +314,22 @@ export default function OrderDetailsModal({
     : requesterData.displayName?.charAt(0).toUpperCase() +
         requesterData.displayName?.slice(1).toLowerCase() || "Unknown User"
 
-  const tradingType = reagent.tradingType as keyof typeof TRADING_CONFIG
-  const { icon: Icon, color } = TRADING_CONFIG[tradingType]
-  const label = tradingType.charAt(0).toUpperCase() + tradingType.slice(1)
+  const hasPriceField =
+    (order as any)?.price !== undefined && (order as any)?.price !== null
+  const inferredType = (
+    order?.offeredReagentId ? "trade" : hasPriceField ? "sell" : "giveaway"
+  ) as keyof typeof TRADING_CONFIG
+  const tradingTypeKey = inferredType
+  const { icon: Icon, color } = TRADING_CONFIG[tradingTypeKey]
+  const label = tradingTypeKey.charAt(0).toUpperCase() + tradingTypeKey.slice(1)
 
   const price = (order as any).price ?? reagent.price
   const hasPrice = price !== null && price !== undefined && `${price}` !== ""
+  const isTradeType = tradingTypeKey === "trade"
+  const isSellType = tradingTypeKey === "sell"
+  const showPrice = isSellType && hasPrice
   const gridCols =
-    reagent.tradingType === "trade" || isOfferDetails
+    isTradeType || isOfferDetails
       ? "lg:grid-cols-3 max-w-7xl"
       : "lg:grid-cols-2 max-w-5xl"
 
@@ -360,16 +361,14 @@ export default function OrderDetailsModal({
             offerPrice={hasPrice ? price : undefined}
           />
 
-          {!isOfferDetails &&
-            reagent.tradingType === "trade" &&
-            offeredReagent && (
-              <ReagentDetails
-                title={tradeReagentTitle}
-                reagent={offeredReagent}
-              />
-            )}
+          {!isOfferDetails && isTradeType && offeredReagent && (
+            <ReagentDetails
+              title={tradeReagentTitle}
+              reagent={offeredReagent}
+            />
+          )}
 
-          {isOfferDetails && offeredReagent && (
+          {isOfferDetails && isTradeType && offeredReagent && (
             <ReagentDetails
               title={tradeReagentTitle}
               reagent={offeredReagent}
@@ -402,7 +401,7 @@ export default function OrderDetailsModal({
                   }
                 />
 
-                {!isOfferDetails && hasPrice && (
+                {!isOfferDetails && showPrice && (
                   <DetailRow label="Offered Price" value={`$${price}`} />
                 )}
 
@@ -417,28 +416,34 @@ export default function OrderDetailsModal({
                   )}
               </div>
             </div>
-            <button
-              onClick={() => (window.location.href = "/inbox")}
-              className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer"
-            >
-              Chat
-            </button>
-            {isOwner && (
+            <div className="space-y-4 mt-6 w-full">
               <button
-                onClick={handleApprove}
-                disabled={approving || approved}
-                className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 disabled:bg-blue-primary/50 disabled:cursor-not-allowed rounded-lg transition-colors"
+                onClick={() => (window.location.href = "/inbox")}
+                className="w-full px-4 py-2 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 rounded-lg transition-colors cursor-pointer"
               >
-                {approved ? "Approved" : approving ? "Approving..." : "Approve"}
+                Chat
               </button>
-            )}{" "}
-            <button
-              onClick={handleDecline}
-              disabled={declining || declined}
-              className="w-full px-4 py-2 mt-6 text-sm font-medium text-white bg-blue-primary hover:bg-blue-primary/70 disabled:bg-blue-primary/50 disabled:cursor-not-allowed rounded-lg transition-colors"
-            >
-              {declined ? "Declined" : declining ? "Declining..." : "Decline"}
-            </button>
+              <button
+                onClick={handleDecline}
+                disabled={declining || declined}
+                className="w-full px-4 py-2 text-sm font-medium text-white bg-red-500/80 hover:bg-red-500 disabled:bg-red-500/40 disabled:cursor-not-allowed rounded-lg transition-colors"
+              >
+                {declined ? "Declined" : declining ? "Declining..." : "Decline"}
+              </button>
+              {canApprove && (
+                <button
+                  onClick={handleApprove}
+                  disabled={approving || approved}
+                  className="w-full px-4 py-2 text-sm font-medium text-white bg-green-500/80 hover:bg-green-500 disabled:bg-green-500/40 disabled:cursor-not-allowed rounded-lg transition-colors"
+                >
+                  {approved
+                    ? "Approved"
+                    : approving
+                      ? "Approving..."
+                      : "Approve"}
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

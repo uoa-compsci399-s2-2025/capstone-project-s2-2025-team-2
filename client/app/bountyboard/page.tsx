@@ -33,24 +33,16 @@ type EnrichedWantedReagent = FirestoreWantedReagent & {
   offeredReagentName?: string | null
 }
 
-type Offer = {
-  id: string
-  requester_id: string
-  reagent_id: string
-  owner_id: string
+type BountyOrder = {
+  bounty_id?: string
   status: "pending" | "approved" | "canceled"
-  createdAt: Date
-  message?: string
-  quantity?: number
-  unit?: string
-  offeredReagentId: string
 }
 
 const BountyBoard = () => {
   const [wanted, setWanted] = useState<EnrichedWantedReagent[]>([])
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState("all")
-  const [offers, setOffers] = useState<Offer[]>([])
+  const [orders, setOrders] = useState<BountyOrder[]>([])
   const [sort, setSort] = useState<
     "earliestExpiry" | "latestExpiry" | "nameAZ" | "nameZA" | ""
   >("earliestExpiry")
@@ -121,16 +113,20 @@ const BountyBoard = () => {
     }
   }, [])
 
-  const fetchOffers = useCallback(async () => {
+  const fetchOrders = useCallback(async () => {
     try {
       const token = localStorage.getItem("authToken")
-      const { data } = await client.GET("/offers" as any, {
+      //fetch orders, filter for bounties
+      const { data } = await client.GET("/orders" as any, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      setOffers((data as Offer[]) || [])
+      const bountyOrders = ((data as any[]) || []).filter(
+        (order) => order.bounty_id,
+      )
+      setOrders(bountyOrders as BountyOrder[])
     } catch (error) {
-      console.error("Failed to fetch offers:", error)
-      setOffers([])
+      console.error("Failed to fetch orders:", error)
+      setOrders([])
     }
   }, [])
 
@@ -142,27 +138,28 @@ const BountyBoard = () => {
 
   useEffect(() => {
     fetchWantedReagents()
-    fetchOffers()
+    fetchOrders()
     try {
       const token = localStorage.getItem("authToken")
       setIsSignedIn(!!token)
     } catch {
       setIsSignedIn(false)
     }
-  }, [fetchWantedReagents, fetchOffers])
+  }, [fetchWantedReagents, fetchOrders])
 
   const handleFormSubmit = async () => {
     await fetchWantedReagents()
     setIsFormOpen(false)
   }
 
+  //DEL NOTE: should these not be deleted?
   // Filter out wanted reagents with approved offers
   const availableWanted = wanted.filter((wantedReagent) => {
-    const hasApprovedOffer = offers.some(
-      (offer) =>
-        offer.reagent_id === wantedReagent.id && offer.status === "approved",
+    const hasApprovedBounty = orders.some(
+      (order) =>
+        order.bounty_id === wantedReagent.id && order.status === "approved",
     )
-    return !hasApprovedOffer
+    return !hasApprovedBounty
   })
 
   const filtered = availableWanted.filter((r) => {
@@ -259,12 +256,12 @@ const BountyBoard = () => {
         Bounty Board
       </p>
       <div className="ml-4 md:ml-0">
-        <p className="md:ml-8 text-warning italic font-bold inline mr-2 tracking-[0.05em]">
+        <p className="md:ml-8 text-purple-100 font-semibold inline">
           Reagents Wanted
         </p>
-        <p className="text-gray-100 italic inline">by Other Users</p>
+        <p className="text-gray-100 inline"> by Other Users</p>
       </div>
-      <div className="mt-5"></div>
+      <div className="mt-4"></div>
 
       <div className="bg-transparent pt-[2rem] mx-4 md:gap-[2rem] md:mx-[2rem]">
         <SearchBar
