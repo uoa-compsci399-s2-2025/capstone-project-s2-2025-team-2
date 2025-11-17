@@ -314,14 +314,24 @@ export default function OrderDetailsModal({
     : requesterData.displayName?.charAt(0).toUpperCase() +
         requesterData.displayName?.slice(1).toLowerCase() || "Unknown User"
 
-  const tradingType = reagent.tradingType as keyof typeof TRADING_CONFIG
-  const { icon: Icon, color } = TRADING_CONFIG[tradingType]
-  const label = tradingType.charAt(0).toUpperCase() + tradingType.slice(1)
+  const hasPriceField =
+    (order as any)?.price !== undefined && (order as any)?.price !== null
+  const inferredType = (
+    order?.offeredReagentId
+      ? "trade"
+      : hasPriceField
+        ? "sell"
+        : "giveaway"
+  ) as keyof typeof TRADING_CONFIG
+  const tradingTypeKey = inferredType
+  const { icon: Icon, color } = TRADING_CONFIG[tradingTypeKey]
+  const label =
+    tradingTypeKey.charAt(0).toUpperCase() + tradingTypeKey.slice(1)
 
   const price = (order as any).price ?? reagent.price
   const hasPrice = price !== null && price !== undefined && `${price}` !== ""
   const gridCols =
-    reagent.tradingType === "trade" || isOfferDetails
+    tradingTypeKey === "trade" || isOfferDetails
       ? "lg:grid-cols-3 max-w-7xl"
       : "lg:grid-cols-2 max-w-5xl"
 
@@ -353,16 +363,14 @@ export default function OrderDetailsModal({
             offerPrice={hasPrice ? price : undefined}
           />
 
-          {!isOfferDetails &&
-            reagent.tradingType === "trade" &&
-            offeredReagent && (
+          {!isOfferDetails && tradingTypeKey === "trade" && offeredReagent && (
               <ReagentDetails
                 title={tradeReagentTitle}
                 reagent={offeredReagent}
               />
             )}
 
-          {isOfferDetails && offeredReagent && (
+          {isOfferDetails && tradingTypeKey === "trade" && offeredReagent && (
             <ReagentDetails
               title={tradeReagentTitle}
               reagent={offeredReagent}
