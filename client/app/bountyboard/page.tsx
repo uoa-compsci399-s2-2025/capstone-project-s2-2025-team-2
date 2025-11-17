@@ -33,24 +33,16 @@ type EnrichedWantedReagent = FirestoreWantedReagent & {
   offeredReagentName?: string | null
 }
 
-type Offer = {
-  id: string
-  requester_id: string
-  reagent_id: string
-  owner_id: string
+type BountyOrder = {
+  bounty_id?: string
   status: "pending" | "approved" | "canceled"
-  createdAt: Date
-  message?: string
-  quantity?: number
-  unit?: string
-  offeredReagentId: string
 }
 
 const BountyBoard = () => {
   const [wanted, setWanted] = useState<EnrichedWantedReagent[]>([])
   const [search, setSearch] = useState("")
   const [filter, setFilter] = useState("all")
-  const [offers, setOffers] = useState<Offer[]>([])
+  const [offers, setOffers] = useState<BountyOrder[]>([])
   const [sort, setSort] = useState<
     "earliestExpiry" | "latestExpiry" | "nameAZ" | "nameZA" | ""
   >("earliestExpiry")
@@ -124,10 +116,14 @@ const BountyBoard = () => {
   const fetchOffers = useCallback(async () => {
     try {
       const token = localStorage.getItem("authToken")
-      const { data } = await client.GET("/offers" as any, {
+      //fetch orders, filter for bounties
+      const { data } = await client.GET("/orders" as any, {
         headers: { Authorization: `Bearer ${token}` },
       })
-      setOffers((data as Offer[]) || [])
+      const bountyOrders = ((data as any[]) || []).filter(
+        (order) => order.bounty_id,
+      )
+      setOffers(bountyOrders as BountyOrder[])
     } catch (error) {
       console.error("Failed to fetch offers:", error)
       setOffers([])
@@ -156,11 +152,12 @@ const BountyBoard = () => {
     setIsFormOpen(false)
   }
 
+  //DEL NOTE: should these not be deleted?
   // Filter out wanted reagents with approved offers
   const availableWanted = wanted.filter((wantedReagent) => {
     const hasApprovedOffer = offers.some(
       (offer) =>
-        offer.reagent_id === wantedReagent.id && offer.status === "approved",
+        offer.bounty_id === wantedReagent.id && offer.status === "approved",
     )
     return !hasApprovedOffer
   })
