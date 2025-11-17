@@ -146,7 +146,7 @@ const History = () => {
 
   return (
     <Overlay>
-      <p className="text-4xl font-medium text-white mt-4 ml-8 tracking-[0.05em]">
+      <p className="text-4xl text-white mt-4 ml-8">
         History
       </p>
       <div className="ml-8">
