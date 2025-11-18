@@ -238,7 +238,7 @@ export default function SignUpBox({
 
   //            render: SignUpBox           //
   return (
-    <div className="max-w-md min-w-full w-full md:min-w-0 p-4 bg-primary rounded-lg shadow-lg min-h-[600px] flex flex-col">
+    <div className="max-w-md min-w-full w-full md:min-w-0 p-4 bg-primary/80 rounded-lg shadow-lg min-h-[600px] flex flex-col">
       {/* Header Section */}
       <div className="text-left md:text-center mb-4">
         <h2 className="text-2xl md:text-3xl">Sign Up</h2>
